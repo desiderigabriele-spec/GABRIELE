@@ -37,9 +37,10 @@ const jsonLd = {
   jsonLd={jsonLd}
 >
   <!-- 01 · ATTENZIONE -->
-  <section class="hero" id="inizio" data-forma="0" data-lato="destra">
+  <section class="hero" id="inizio" data-forma="0" data-lato="destra" data-scala="0.95" data-y-mobile="0.22" data-scala-mobile="0.5" data-luce-mobile="1">
     <div class="wrap">
       <div class="hero-testo">
+        <div class="hero-spazio-occhio" aria-hidden="true"></div>
         <span class="capitolo" data-appare>Capitolo 01 · Attenzione</span>
         <h1 data-righe>
           <span class="riga"><span>Trasformo</span></span>
@@ -51,7 +52,7 @@ const jsonLd = {
           Progettati con la psicologia per portare le persone <strong style="color:var(--latte);font-weight:600">dal primo sguardo al «sì»</strong>.
         </p>
         <div class="hero-azioni" data-appare="0.4">
-          <a class="btn btn-azione btn-grande" href="/preventivo" data-azione>Calcola il tuo preventivo <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="btn btn-azione btn-grande" href="/preventivo" data-azione data-sguardo-meta>Calcola il tuo preventivo <span class="freccia" aria-hidden="true">→</span></a>
           <a class="btn btn-vetro btn-grande" href="#metodo">Guarda come funziona</a>
         </div>
         <ul class="rassicura" data-appare="0.55">
@@ -61,6 +62,10 @@ const jsonLd = {
         </ul>
       </div>
     </div>
+    <p class="sguardo-hint" aria-hidden="true">
+      <span class="sguardo-mouse">Muovi il mouse: ti sto guardando</span>
+      <span class="sguardo-dito">Tocca lo schermo: ti sto guardando</span>
+    </p>
     <a class="scorri" href="#problema" aria-label="Scorri">
       <span class="mono">Scorri</span>
       <span class="scorri-linea"></span>

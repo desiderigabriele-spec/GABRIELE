@@ -47,6 +47,19 @@ Tutto il sito è il percorso AIDA reso visibile: un **campo di migliaia di parti
 
 Il visitatore vive sulla propria pelle quello che Gabriele farà per i suoi clienti: **il sito è la prova del metodo**.
 
+### L'occhio del primo capitolo
+Un bulbo oculare fatto di particelle, costruito come un occhio vero:
+- **iride su una sfera**: quando guarda di lato si schiaccia in prospettiva e scivola sotto le palpebre;
+- **fibre dell'iride, collaretto, anello scuro esterno, pupilla, riflesso della luce sulla cornea, ciglia a ciuffi, piega della palpebra**;
+- **battito di ciglia naturale** ogni 2,5-6 secondi (a volte doppio), disattivato con "riduci movimento".
+
+Cosa guarda:
+- il **puntatore del mouse**, il **punto in cui clicchi** e il **dito** su telefono e tablet (anche mentre scorri);
+- quando la persona sta ferma, **guarda il bottone "Calcola il tuo preventivo"**, con piccoli movimenti a scatti come un occhio vero. È il *gaze cueing*: guardiamo istintivamente dove guarda un volto, quindi l'occhio porta l'attenzione sul punto di conversione;
+- la **pupilla si dilata** quando passi sopra un bottone d'azione (la pupilla si allarga davanti a ciò che ci interessa, studi di Eckhard Hess) e **si stringe a ogni clic**, come davanti a un lampo di luce.
+
+Su telefono l'occhio sta sopra il titolo, a piena luce. Una piccola scritta ("Muovi il mouse: ti sto guardando" / "Tocca lo schermo: ti sto guardando") invita a provarlo e sparisce dopo il primo gesto.
+
 ### Tono di voce
 - Frasi corte. Parole di tutti i giorni. Niente inglese inutile (se serve una parola tecnica, la si spiega subito: *"funnel, cioè il percorso che porta un visitatore a comprare"*).
 - Si parla di **risultati per il cliente**, non di tecnologia.

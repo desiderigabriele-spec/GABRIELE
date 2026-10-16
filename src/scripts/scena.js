@@ -35,24 +35,115 @@ float snoise(vec3 v){
 
 const vertexShader = /* glsl */ `
 uniform float uTime, uForma, uSize, uPR, uVel, uBattito;
-uniform vec2 uMouse, uSguardo;
+uniform vec2 uMouse, uSguardo;      // uSguardo = rotazione del bulbo (destra/sinistra, su/giù) in radianti
+uniform float uPalpebra, uPupilla, uApertura;
 uniform float uAspect;
 uniform vec3 uColA[5];
 uniform vec3 uColB[5];
 attribute vec3 aP1, aP2, aP3, aP4;
-attribute float aRand, aIride, aT;
+attribute float aRand, aT;
+attribute vec4 aOcchio;             // tipo di punto dell'occhio, due parametri, dimensione
 varying vec3 vCol;
-varying float vLuce;
+varying float vLuce, vVis;
 ${NOISE}
 
+// ---------- L'OCCHIO ----------
+// Un bulbo vero: l'iride sta su una sfera che ruota verso ciò che guardi
+// e scompare sotto le palpebre quando guarda di lato. Le palpebre sbattono.
+const float LARG = 1.75;  // metà larghezza della fessura
+const float RS = 1.25;    // raggio del bulbo
+const float RI = 0.64;    // raggio dell'iride (la palpebra ne copre un filo in alto, come nell'occhio vero)
+float hAp(float x){ float u = clamp(x / LARG, -1.0, 1.0); return 0.66 * pow(max(1.0 - u * u, 0.0), 0.85); }
+// palpebra superiore più alta verso l'interno, come in un occhio vero
+float yUp(float x){ float u = clamp(x / LARG, -1.0, 1.0); return hAp(x) * (1.0 + 0.1 * u) * (1.0 + uApertura * 0.14) * (1.0 - 1.95 * uPalpebra) - 0.05; }
+float yLo(float x){ return -hAp(x) * 0.92 - 0.02 + 0.03 * uPalpebra; }
+vec3 bulbo(vec2 d){
+  vec3 p = vec3(d, sqrt(max(RS * RS - dot(d, d), 0.0)));
+  float cp = cos(uSguardo.y), sp = sin(uSguardo.y);
+  p = vec3(p.x, p.y * cp + p.z * sp, -p.y * sp + p.z * cp);
+  float cy = cos(uSguardo.x), sy = sin(uSguardo.x);
+  p = vec3(p.x * cy + p.z * sy, p.y, -p.x * sy + p.z * cy);
+  p.z -= RS - 0.25;
+  return p;
+}
+float dentro(vec2 q){
+  return smoothstep(-0.02, 0.02, yUp(q.x) - q.y) * smoothstep(-0.02, 0.02, q.y - yLo(q.x)) * (1.0 - smoothstep(LARG - 0.1, LARG, abs(q.x)));
+}
+vec3 colIride(float b){
+  vec3 ambra = vec3(1.0, 0.71, 0.28), fuoco = vec3(1.0, 0.37, 0.23), magenta = vec3(0.82, 0.42, 0.84), viola = vec3(0.55, 0.42, 1.0), ciano = vec3(0.36, 0.88, 0.9);
+  if (b < 0.12) return mix(ambra, fuoco, b / 0.12);
+  if (b < 0.3) return mix(fuoco, magenta, (b - 0.12) / 0.18);
+  if (b < 0.62) return mix(magenta, viola, (b - 0.3) / 0.32) * 1.2;
+  return mix(viola, ciano, (b - 0.62) / 0.38) * 1.35;
+}
+vec3 eCol; float eVis; float eSize;
+vec3 occhio(){
+  float tipo = aOcchio.x, a = aOcchio.y, b = aOcchio.z;
+  float u = clamp(a / LARG, -1.0, 1.0);
+  eVis = 1.0; eSize = aOcchio.w;
+  vec3 p;
+  if (tipo < 0.5) {            // sclera: più scura vicino alle palpebre
+    p = vec3(a, mix(yLo(a), yUp(a), b), 0.18 * sqrt(max(1.0 - u * u, 0.0)) - 0.05);
+    eCol = vec3(0.8, 0.76, 0.98) * (0.2 + 0.32 * sin(b * 3.14159)) * (0.75 + 0.25 * sqrt(max(1.0 - u * u, 0.0)));
+    eVis = 1.0 - uPalpebra * 0.85;
+  } else if (tipo < 1.5) {     // palpebra superiore
+    p = vec3(a, yUp(a) + 0.014 + b * 0.03, 0.22);
+    eCol = mix(vec3(1.0, 0.97, 0.94), vec3(0.75, 0.65, 1.0), aRand) * 1.1;
+  } else if (tipo < 2.5) {     // piega della palpebra
+    p = vec3(a * 0.95, hAp(a) * 1.25 * (1.0 - 0.4 * uPalpebra) + 0.2 + b * 0.02, 0.18);
+    eCol = vec3(0.55, 0.45, 0.95) * 0.5;
+  } else if (tipo < 3.5) {     // palpebra inferiore
+    p = vec3(a, yLo(a) - 0.012 + b * 0.018, 0.2);
+    eCol = mix(vec3(0.9, 0.86, 0.95), vec3(0.6, 0.5, 1.0), aRand) * 0.75;
+  } else if (tipo < 4.5) {     // ciglia superiori: si piegano in basso quando l'occhio si chiude
+    vec2 base = vec2(a, yUp(a) + 0.025);
+    vec2 dir = normalize(vec2(u * 0.9 + 0.15 * sign(u), 1.0));
+    dir.y = mix(dir.y, -0.6, uPalpebra);
+    float len = (0.14 + 0.2 * (1.0 - abs(u - 0.2) * 0.6)) * (1.0 - smoothstep(0.78, 1.0, abs(u)));
+    p = vec3(base + dir * len * b + vec2(sign(u) * 0.07, 0.05 * (1.0 - 2.0 * uPalpebra)) * b * b, 0.26);
+    eCol = mix(vec3(0.95, 0.9, 1.0), vec3(0.6, 0.48, 1.0), b) * (1.15 - b * 0.45);
+    eSize *= 1.0 - 0.4 * b;
+  } else if (tipo < 5.5) {     // ciglia inferiori
+    vec2 base = vec2(a, yLo(a) - 0.025);
+    float len = 0.065 * (1.0 - smoothstep(0.7, 1.0, abs(u)));
+    p = vec3(base + normalize(vec2(u * 0.7, -1.0)) * len * b, 0.22);
+    eCol = vec3(0.6, 0.5, 1.0) * 0.6;
+  } else if (tipo < 6.5) {     // iride: fibre radiali leggermente ondulate, la pupilla le comprime
+    float ang = a + 0.05 * sin(b * 9.0 + a * 5.0);
+    float r = mix(uPupilla + 0.012, RI - 0.02, b);
+    p = bulbo(vec2(cos(ang), sin(ang)) * r);
+    eCol = colIride(b) * (0.45 + 0.6 * aRand) * (b > 0.25 && b < 0.38 ? 1.25 : 1.0);
+    eVis = dentro(p.xy);
+  } else if (tipo < 7.5) {     // anello scuro attorno all'iride
+    p = bulbo(vec2(cos(a), sin(a)) * (RI + b * 0.025));
+    eCol = vec3(0.42, 0.3, 0.95);
+    eVis = dentro(p.xy);
+  } else if (tipo < 8.5) {     // bordo della pupilla
+    p = bulbo(vec2(cos(a), sin(a)) * (uPupilla + b * 0.012));
+    eCol = vec3(1.0, 0.75, 0.42);
+    eVis = dentro(p.xy);
+  } else if (tipo < 9.5) {     // riflesso della luce sulla cornea: si sposta meno dell'iride
+    vec3 c = bulbo(vec2(0.0));
+    p = vec3(c.xy * 0.55 + vec2(-0.2, 0.21) + vec2(a, b), 0.45);
+    eCol = vec3(1.0);
+    eVis = dentro(p.xy) * (1.0 - uPalpebra);
+  } else {                     // alone di polvere attorno
+    p = vec3(cos(a) * b * 1.15, sin(a) * b * 0.6, (aRand - 0.5) * 0.8);
+    eCol = vec3(0.55, 0.45, 1.0) * 0.5;
+  }
+  return p;
+}
+
+vec3 eye;
 vec3 forma(int i){
-  if (i == 0) return position;
+  if (i == 0) return eye;
   if (i == 1) return aP1;
   if (i == 2) return aP2;
   if (i == 3) return aP3;
   return aP4;
 }
 vec3 colore(int i){
+  if (i == 0) return eCol;
   vec3 a = uColA[0], b = uColB[0];
   if (i == 1) { a = uColA[1]; b = uColB[1]; }
   else if (i == 2) { a = uColA[2]; b = uColB[2]; }
@@ -64,10 +155,7 @@ mat2 ruota(float a){ float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
 
 // Animazioni proprie di ogni forma
 vec3 vivi(vec3 p, int i){
-  if (i == 0) {
-    // l'iride (e la pupilla) guardano il mouse
-    p.xy += uSguardo * 0.32 * aIride;
-  } else if (i == 1) {
+  if (i == 1) {
     p.xz = ruota(uTime * 0.08) * p.xz;
   } else if (i == 2) {
     p.xz = ruota(uTime * 0.25 + p.y * 0.3) * p.xz;
@@ -89,6 +177,7 @@ void main(){
   float k = f - float(i0);
   // ogni punto parte con un piccolo ritardo diverso: la trasformazione "scorre"
   float t = smoothstep(0.0, 1.0, clamp((k - aRand * 0.35) / 0.65, 0.0, 1.0));
+  eye = occhio();
 
   vec3 a = vivi(forma(i0), i0);
   vec3 b = vivi(forma(i1), i1);
@@ -109,7 +198,8 @@ void main(){
   vec2 d = ndc - uMouse;
   d.x *= uAspect;
   float dist = length(d);
-  float spinta = (1.0 - smoothstep(0.0, 0.28, dist)) * 0.09;
+  // sull'occhio niente spinta: deve restare nitido mentre guarda
+  float spinta = (1.0 - smoothstep(0.0, 0.28, dist)) * 0.09 * smoothstep(0.0, 0.8, f);
   ndc += normalize(d + 1e-5) * spinta * vec2(1.0 / uAspect, 1.0);
   // scorrendo veloce: scia verticale
   ndc.y += uVel * (aRand - 0.5) * 0.06;
@@ -120,51 +210,61 @@ void main(){
   if (i0 == 1 || i1 == 1) pulse = pow(fract(aT - uTime * 0.35), 18.0) * (i0 == 1 ? 1.0 - t : t);
   vLuce = 0.55 + aRand * 0.45 + pulse * 2.0 + spinta * 6.0;
   vCol = mix(colore(i0), colore(i1), t);
-  gl_PointSize = uSize * uPR * (0.45 + aRand * 0.9) * (1.0 + pulse * 1.4) / -mv.z;
+  float vis = i0 == 0 ? mix(eVis, 1.0, t) : 1.0;
+  float dim = i0 == 0 ? mix(eSize, 1.0, t) : 1.0;
+  vVis = vis;
+  gl_PointSize = vis < 0.01 ? 0.0 : uSize * uPR * dim * (0.45 + aRand * 0.9) * (1.0 + pulse * 1.4) / -mv.z;
 }`;
 
 const fragmentShader = /* glsl */ `
 uniform float uOpacity;
 varying vec3 vCol;
-varying float vLuce;
+varying float vLuce, vVis;
 void main(){
   float d = length(gl_PointCoord - 0.5);
   if (d > 0.5) discard;
   float a = smoothstep(0.5, 0.0, d);
   a = pow(a, 1.6);
-  gl_FragColor = vec4(vCol * vLuce, a * uOpacity);
+  gl_FragColor = vec4(vCol * vLuce, a * uOpacity * vVis);
 }`;
 
 // ---------- Forme (coordinate in unità mondo, raggio ~1.5) ----------
 const rnd = (a = -1, b = 1) => a + Math.random() * (b - a);
 function gauss() { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
 
-function occhio(N, out, iride) {
-  for (let i = 0; i < N; i++) {
-    const r = Math.random();
-    let x, y, z = rnd(-0.08, 0.08), ir = 0;
-    if (r < 0.34) {
-      // palpebre: due archi a mandorla con un po' di spessore
-      const u = rnd(-1, 1), sopra = Math.random() < 0.5 ? 1 : -1;
-      x = u * 1.75;
-      y = sopra * 0.82 * Math.pow(1 - u * u, 0.9) + gauss() * 0.018;
-    } else if (r < 0.78) {
-      // iride: fibre radiali
-      const ang = Math.random() * Math.PI * 2, rr = 0.26 + Math.pow(Math.random(), 0.8) * 0.4;
-      x = Math.cos(ang) * rr; y = Math.sin(ang) * rr; z = rnd(-0.03, 0.03) + 0.05; ir = 1;
-    } else if (r < 0.88) {
-      // bordo della pupilla, luminoso
-      const ang = Math.random() * Math.PI * 2, rr = 0.24 + gauss() * 0.012;
-      x = Math.cos(ang) * rr; y = Math.sin(ang) * rr; z = 0.08; ir = 1;
-    } else if (r < 0.9) {
-      // riflesso
-      x = 0.16 + gauss() * 0.03; y = 0.14 + gauss() * 0.03; z = 0.12; ir = 1;
-    } else {
-      // alone
-      const ang = Math.random() * Math.PI * 2, rr = 1.9 + Math.random() * 0.9;
-      x = Math.cos(ang) * rr * 1.1; y = Math.sin(ang) * rr * 0.55; z = rnd(-0.6, 0.6);
+// tipi: 0 sclera · 1 palpebra sup · 2 piega · 3 palpebra inf · 4 ciglia sup · 5 ciglia inf
+//       6 iride · 7 anello · 8 bordo pupilla · 9 riflesso · 10 alone
+const QUOTE = [[0, 0.13, 0.75], [1, 0.13, 0.9], [2, 0.03, 0.7], [3, 0.07, 0.8], [4, 0.1, 0.75], [5, 0.03, 0.6],
+  [6, 0.385, 0.72], [7, 0.05, 0.85], [8, 0.04, 0.75], [9, 0.006, 1.15], [10, 0.03, 0.8]];
+const hash = (n) => { const x = Math.sin(n * 127.1) * 43758.5453; return x - Math.floor(x); };
+function occhio(N, out, attr) {
+  const L = 1.75, h = (x) => 0.86 * Math.pow(Math.max(1 - (x / L) ** 2, 0), 0.9);
+  let i = 0;
+  for (const [tipo, quota, dim] of QUOTE) {
+    const n = tipo === 10 ? N - i : Math.round(N * quota);
+    for (let k = 0; k < n && i < N; k++, i++) {
+      let a = 0, b = 0;
+      if (tipo === 0) { do { a = rnd(-L, L); } while (Math.random() > h(a) / 0.86 + 0.15); b = Math.random(); }
+      else if (tipo <= 3) { a = L * Math.sin(rnd(-1, 1) * Math.PI / 2); b = gauss() * 0.5; }
+      else if (tipo <= 5) { const fili = tipo === 4 ? 78 : 46; a = L * (((Math.random() * fili) | 0) / (fili - 1) * 1.84 - 0.92) + gauss() * 0.004; b = Math.pow(Math.random(), 0.8); }
+      else if (tipo === 6) {
+        // fibre radiali + collaretto + piccole "cripte" vuote
+        for (let tent = 0; tent < 6; tent++) {
+          a = Math.random() < 0.72 ? (((Math.random() * 260) | 0) / 260) * Math.PI * 2 + gauss() * 0.003 : Math.random() * Math.PI * 2;
+          const r = Math.random();
+          b = r < 0.22 ? 0.32 + gauss() * 0.035 : r < 0.4 ? Math.pow(Math.random(), 2) * 0.28 : Math.random();
+          b = Math.min(Math.max(b, 0), 1);
+          const cella = Math.floor((a / (Math.PI * 2)) * 40) * 7 + Math.floor(b * 7);
+          if (!(b > 0.4 && hash(cella) < 0.3 && Math.random() < 0.85)) break;
+        }
+      }
+      else if (tipo === 7 || tipo === 8) { a = Math.random() * Math.PI * 2; b = gauss(); }
+      else if (tipo === 9) { const g = Math.random() < 0.75; a = g ? rnd(-0.045, 0.045) : 0.1 + gauss() * 0.01; b = g ? rnd(-0.035, 0.035) : -0.09 + gauss() * 0.01; }
+      else { a = Math.random() * Math.PI * 2; b = 1.75 + Math.random() * 1.1; }
+      attr[i * 4] = tipo; attr[i * 4 + 1] = a; attr[i * 4 + 2] = b; attr[i * 4 + 3] = dim;
+      // posizione indicativa (serve solo come riferimento della geometria)
+      out[i * 3] = tipo <= 5 ? a : 0; out[i * 3 + 1] = 0; out[i * 3 + 2] = 0;
     }
-    out[i * 3] = x; out[i * 3 + 1] = y; out[i * 3 + 2] = z; iride[i] = ir;
   }
 }
 
@@ -268,12 +368,13 @@ export function avviaScena(canvas) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 60);
   camera.position.z = 7;
+  camera.updateMatrixWorld(); // serve subito per proiettare il centro dell'occhio sullo schermo
 
   // ---------- Particelle principali ----------
   const N = mobile ? (debole ? 4500 : 7000) : (debole ? 9000 : 15000);
   const p0 = new Float32Array(N * 3), p1 = new Float32Array(N * 3), p2 = new Float32Array(N * 3), p3 = new Float32Array(N * 3), p4 = new Float32Array(N * 3);
-  const iride = new Float32Array(N), tt = new Float32Array(N), ra = new Float32Array(N);
-  occhio(N, p0, iride); rete(N, p1, tt); spirale(N, p2); cuore(N, p3); stella(N, p4);
+  const occ = new Float32Array(N * 4), tt = new Float32Array(N), ra = new Float32Array(N);
+  occhio(N, p0, occ); rete(N, p1, tt); spirale(N, p2); cuore(N, p3); stella(N, p4);
   for (let i = 0; i < N; i++) ra[i] = Math.random();
 
   const geo = new THREE.BufferGeometry();
@@ -282,7 +383,7 @@ export function avviaScena(canvas) {
   geo.setAttribute('aP2', new THREE.BufferAttribute(p2, 3));
   geo.setAttribute('aP3', new THREE.BufferAttribute(p3, 3));
   geo.setAttribute('aP4', new THREE.BufferAttribute(p4, 3));
-  geo.setAttribute('aIride', new THREE.BufferAttribute(iride, 1));
+  geo.setAttribute('aOcchio', new THREE.BufferAttribute(occ, 4));
   geo.setAttribute('aT', new THREE.BufferAttribute(tt, 1));
   geo.setAttribute('aRand', new THREE.BufferAttribute(ra, 1));
 
@@ -290,6 +391,7 @@ export function avviaScena(canvas) {
     uTime: { value: 0 }, uForma: { value: 0 }, uSize: { value: mobile ? 30 : 34 }, uPR: { value: pr },
     uVel: { value: 0 }, uBattito: { value: 0 }, uOpacity: { value: 0 }, uAspect: { value: 1 },
     uMouse: { value: new THREE.Vector2(9, 9) }, uSguardo: { value: new THREE.Vector2() },
+    uPalpebra: { value: 0 }, uPupilla: { value: 0.22 }, uApertura: { value: 0 },
     uColA: { value: COLORI.A.map((c) => new THREE.Color(c)) },
     uColB: { value: COLORI.B.map((c) => new THREE.Color(c)) },
   };
@@ -340,29 +442,81 @@ export function avviaScena(canvas) {
     const spost = mobile ? 0 : larghezzaMondo * 0.24;
     obiettivo.forma = Number(scelta.dataset.forma) || 0;
     obiettivo.x = lato === 'destra' ? spost : lato === 'sinistra' ? -spost : 0;
-    obiettivo.y = mobile ? 0 : (Number(scelta.dataset.y) || 0) * altezzaMondo;
+    obiettivo.y = (mobile ? Number(scelta.dataset.yMobile) || 0 : Number(scelta.dataset.y) || 0) * altezzaMondo;
     obiettivo.luce = scelta.dataset.luce != null ? Number(scelta.dataset.luce) : 1;
     // su telefono la forma sta dietro al testo: più tenue, per lasciarlo leggibile
     if (mobile) obiettivo.luce *= scelta.dataset.luceMobile != null ? Number(scelta.dataset.luceMobile) : lato !== 'centro' ? 0.45 : 1;
-    obiettivo.scala = (Number(scelta.dataset.scala) || 1) * (mobile ? 0.82 : 1);
+    obiettivo.scala = mobile && scelta.dataset.scalaMobile ? Number(scelta.dataset.scalaMobile) : (Number(scelta.dataset.scala) || 1) * (mobile ? 0.82 : 1);
   }
 
   // ---------- Interazione ----------
-  const mouse = new THREE.Vector2(9, 9), sguardo = new THREE.Vector2();
+  const mouse = new THREE.Vector2(9, 9);
   window.addEventListener('pointermove', (e) => {
     if (e.pointerType === 'touch') return;
     mouse.set((e.clientX / W) * 2 - 1, -(e.clientY / H) * 2 + 1);
   }, { passive: true });
   document.addEventListener('pointerleave', () => mouse.set(9, 9));
-  // su telefono l'occhio segue l'inclinazione (dove il browser lo permette senza chiedere)
-  window.addEventListener('deviceorientation', (e) => {
-    if (e.gamma == null) return;
-    sguardo.set(THREE.MathUtils.clamp(e.gamma / 30, -1, 1), THREE.MathUtils.clamp((e.beta - 45) / -30, -1, 1));
-    mouse.set(9, 9);
+
+  // ---------- Dove guarda l'occhio ----------
+  // Segue il mouse, il punto in cui clicchi e il dito su touch. Se non fai niente
+  // guarda il bottone del preventivo ([data-sguardo-meta]): le persone guardano
+  // istintivamente dove guarda un volto (gaze cueing).
+  const html = document.documentElement;
+  const bersaglio = { x: W * 0.5, y: H * 0.5 };
+  let ultimoInput = -1e9, toccoAttivo = false, dita = false;
+  const ora = () => performance.now();
+  const segnali = { battito: 0 };
+  let dilata = 0, restringi = 0;
+  function guarda(x, y, touch) {
+    bersaglio.x = x; bersaglio.y = y; ultimoInput = ora(); dita = touch;
+    if (!html.classList.contains('sguardo-usato')) html.classList.add('sguardo-usato');
+  }
+  window.addEventListener('pointermove', (e) => { if (e.pointerType !== 'touch') guarda(e.clientX, e.clientY, false); }, { passive: true });
+  window.addEventListener('pointerdown', (e) => {
+    guarda(e.clientX, e.clientY, e.pointerType === 'touch');
+    restringi = 1; // un clic è come un lampo di luce: la pupilla si stringe
+    if (e.target.closest?.('[data-azione], .btn-azione')) segnali.battito = 1;
   }, { passive: true });
+  window.addEventListener('pointerup', (e) => { if (e.pointerType === 'touch') setTimeout(() => { segnali.battito = 0; }, 900); }, { passive: true });
+  window.addEventListener('touchstart', (e) => { const t = e.touches[0]; if (t) { toccoAttivo = true; guarda(t.clientX, t.clientY, true); } }, { passive: true });
+  window.addEventListener('touchmove', (e) => { const t = e.touches[0]; if (t) guarda(t.clientX, t.clientY, true); }, { passive: true });
+  window.addEventListener('touchend', () => { toccoAttivo = false; ultimoInput = ora(); }, { passive: true });
+
+  // a riposo: piccoli movimenti a scatti (saccadi) attorno al bottone o al centro
+  let saccade = { x: 0, y: 0 }, prossimaSaccade = 0;
+  function bersaglioARiposo(tempo) {
+    if (tempo > prossimaSaccade) {
+      prossimaSaccade = tempo + rnd(0.9, 2.6);
+      saccade = Math.random() < 0.2 ? { x: rnd(-260, 260), y: rnd(-140, 80) } : { x: rnd(-40, 40), y: rnd(-18, 18) };
+    }
+    const meta = document.querySelector('[data-sguardo-meta]');
+    if (meta) {
+      const r = meta.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < H) return { x: r.left + r.width / 2 + saccade.x, y: r.top + r.height / 2 + saccade.y };
+    }
+    return { x: W * 0.5 + saccade.x, y: H * 0.55 + saccade.y };
+  }
+
+  // battito di ciglia naturale, ogni tanto doppio
+  let prossimoBlink = 2.5, inizioBlink = -1, doppio = false;
+  function palpebra(tempo) {
+    if (ridotto) return 0;
+    if (inizioBlink < 0 && tempo > prossimoBlink) { inizioBlink = tempo; doppio = Math.random() < 0.15; }
+    if (inizioBlink < 0) return 0;
+    const f = (tempo - inizioBlink) / 0.17;
+    if (f >= 1) {
+      if (doppio) { doppio = false; inizioBlink = tempo + 0.08; return 0; }
+      inizioBlink = -1; prossimoBlink = tempo + rnd(2.5, 6);
+      return 0;
+    }
+    if (f < 0) return 0;
+    return f < 0.4 ? f / 0.4 : 1 - (f - 0.4) / 0.6;
+  }
+
+  const centro = new THREE.Vector3();
+  const sguardo = new THREE.Vector2();
 
   let ultimoScroll = window.scrollY, vel = 0;
-  const segnali = { battito: 0 };
 
   // ---------- Ciclo ----------
   const orologio = new THREE.Clock();
@@ -373,7 +527,8 @@ export function avviaScena(canvas) {
     if (!attivo) return;
     requestAnimationFrame(loop);
     const dt = Math.min(orologio.getDelta(), 0.05);
-    const t = ridotto ? 0 : orologio.elapsedTime;
+    const tReale = orologio.elapsedTime;
+    const t = ridotto ? 0 : tReale;
     if (frame++ % 4 === 0) leggiStato();
 
     const sy = window.scrollY;
@@ -386,19 +541,38 @@ export function avviaScena(canvas) {
     uniforms.uOpacity.value = morbido(uniforms.uOpacity.value, obiettivo.luce, 2.5);
     uniforms.uVel.value = ridotto ? 0 : THREE.MathUtils.clamp(vel, -1.5, 1.5);
     uniforms.uBattito.value = morbido(uniforms.uBattito.value, segnali.battito, 6);
-
     uniforms.uMouse.value.lerp(mouse, 1 - Math.exp(-8 * dt));
-    if (mouse.x < 5) sguardo.set(mouse.x, mouse.y);
-    uniforms.uSguardo.value.lerp(sguardo, 1 - Math.exp(-5 * dt));
+
+    // sguardo: dal punto sullo schermo alla rotazione del bulbo
+    const fermo = !toccoAttivo && ora() - ultimoInput > (dita ? 1600 : 2800);
+    const b = fermo && !ridotto ? bersaglioARiposo(tReale) : bersaglio;
+    centro.copy(gruppo.position).project(camera);
+    const ex = (centro.x + 1) * 0.5 * W, ey = (1 - centro.y) * 0.5 * H;
+    const D = H * 0.75;
+    let yaw = THREE.MathUtils.clamp(Math.atan((b.x - ex) / D), -0.5, 0.5);
+    let pitch = THREE.MathUtils.clamp(Math.atan(-(b.y - ey) / D), -0.36, 0.36);
+    if (!Number.isFinite(yaw) || !Number.isFinite(pitch)) { yaw = 0; pitch = 0; }
+    // movimento rapido come i veri movimenti oculari, più un tremolio quasi invisibile
+    sguardo.x = morbido(sguardo.x, yaw, ridotto ? 6 : 16);
+    sguardo.y = morbido(sguardo.y, pitch, ridotto ? 6 : 16);
+    uniforms.uSguardo.value.set(sguardo.x + Math.sin(t * 37) * 0.003, sguardo.y + Math.cos(t * 41) * 0.003);
+
+    // pupilla: si allarga quando qualcosa interessa (bottoni), si stringe a un clic
+    dilata = morbido(dilata, segnali.battito, 4);
+    restringi = morbido(restringi, 0, 3);
+    uniforms.uPupilla.value = 0.22 + 0.09 * dilata - 0.07 * restringi + Math.sin(t * 0.7) * 0.006;
+    uniforms.uApertura.value = dilata;
+    uniforms.uPalpebra.value = palpebra(tReale);
 
     gruppo.position.x = morbido(gruppo.position.x, obiettivo.x, 2.2);
     gruppo.position.y = morbido(gruppo.position.y, obiettivo.y, 2.2);
     const sc = morbido(gruppo.scale.x, obiettivo.scala, 2.2);
     gruppo.scale.setScalar(sc);
-    // leggera rotazione verso il mouse: profondità
+    // leggera rotazione verso il mouse per dare profondità (non sull'occhio: guarda già lui)
+    const peso = Math.min(uniforms.uForma.value, 1);
     const mx = mouse.x < 5 ? mouse.x : 0, my = mouse.y < 5 ? mouse.y : 0;
-    gruppo.rotation.y = morbido(gruppo.rotation.y, mx * 0.25, 3);
-    gruppo.rotation.x = morbido(gruppo.rotation.x, -my * 0.15, 3);
+    gruppo.rotation.y = morbido(gruppo.rotation.y, mx * 0.25 * peso, 3);
+    gruppo.rotation.x = morbido(gruppo.rotation.x, -my * 0.15 * peso, 3);
     stelle.position.y = (sy / H) * 0.6;
     stelle.rotation.z = t * 0.005;
 

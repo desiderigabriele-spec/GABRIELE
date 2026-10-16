@@ -201,7 +201,7 @@ let scena = null;
 const canvas = document.querySelector('[data-scena]');
 function caricaScena() {
   if (!canvas || scena) return;
-  import('./scena.js').then((m) => { scena = m.avviaScena(canvas) || null; }).catch(() => {});
+  import('./scena.js').then((m) => { scena = m.avviaScena(canvas) || null; if (scena) html.classList.add('scena-on'); }).catch(() => {});
 }
 
 function avvio() {
