@@ -1,0 +1,225 @@
+---
+import Base from '../layouts/Base.astro';
+import Icona from '../components/Icona.astro';
+import { categorie, tempi } from '../data/listino.js';
+import { contatti } from '../data/sito.js';
+import '../styles/preventivo.css';
+import { euro } from '../data/formato.js';
+const icone: Record<string, string> = { sito: 'finestra', ecommerce: 'borsa', software: 'chip', integrazioni: 'nodi', ads: 'onda', cura: 'scudo' };
+const prezzoLivello = (l: { una?: number; mese?: number }) =>
+  [l.una ? euro(l.una) : '', l.mese ? `${euro(l.mese)}/mese` : ''].filter(Boolean).join(' + ');
+const passi = ['Cosa ti serve', 'Personalizza', 'Tempi', 'I tuoi contatti'];
+---
+<Base
+  title="Calcola il tuo preventivo · Gabriele Desideri"
+  description="Componi il tuo progetto: sito web, negozio online, software con AI, pubblicità. Vedi subito il prezzo e invia la richiesta in 2 minuti."
+  path="/preventivo"
+  barra={false}
+>
+  <section class="pv" data-forma="4" data-lato="destra" data-luce="0.22" data-scala="1.3">
+    <div class="wrap">
+      <header class="pv-testa">
+        <span class="capitolo">Preventivo automatico</span>
+        <h1 data-righe>
+          <span class="riga"><span>Componi il tuo</span></span>
+          <span class="riga"><span><span class="em em-firma">progetto.</span></span></span>
+        </h1>
+        <p class="lead">Scegli quello che ti serve, aggiungi i dettagli e guarda il prezzo aggiornarsi in tempo reale. Ci vogliono 2 minuti. Nessun impegno.</p>
+      </header>
+
+      <noscript>
+        <p class="pv-noscript">Per usare il preventivo automatico serve JavaScript. Puoi scrivermi direttamente su <a href={`https://wa.me/${contatti.whatsapp}`}>WhatsApp</a> o a <a href={`mailto:${contatti.email}`}>{contatti.email}</a>.</p>
+      </noscript>
+
+      <ol class="pv-passi" data-passi aria-label="Passaggi">
+        {passi.map((p, i) => <li data-passo-ind={i + 1} class={i === 0 ? 'attivo' : ''}><span>{i + 1}</span>{p}</li>)}
+      </ol>
+      <div class="pv-barra" aria-hidden="true"><span data-barra-progresso></span></div>
+
+      <div class="pv-griglia">
+        <form class="pv-form" data-preventivo novalidate>
+          <!-- PASSO 1 -->
+          <fieldset class="pv-passo" data-passo="1">
+            <legend><span class="mono">Passo 1 di 4</span>Cosa ti serve?</legend>
+            <p class="pv-aiuto">Puoi sceglierne più di uno. Più servizi scegli, più risparmi: con 2 servizi hai il 5% di sconto, con 3 o più il 10%.</p>
+            <div class="pv-cat">
+              {categorie.map((c) => (
+                <label class="pv-cat-card">
+                  <input type="checkbox" name="cat" value={c.id} />
+                  <span class="pv-cat-icona"><Icona nome={icone[c.id]} /></span>
+                  <span class="pv-cat-nome">{c.nome}</span>
+                  <span class="pv-cat-riga">{c.riga}</span>
+                  <span class="pv-cat-da">da {prezzoLivello(c.livelli[0])}</span>
+                  <span class="pv-spunta" aria-hidden="true"></span>
+                </label>
+              ))}
+            </div>
+            <p class="pv-errore" data-errore="1" hidden>Scegli almeno un servizio per continuare.</p>
+            <div class="pv-nav">
+              <span></span>
+              <button class="btn btn-azione" type="button" data-avanti>Continua <span class="freccia" aria-hidden="true">→</span></button>
+            </div>
+          </fieldset>
+
+          <!-- PASSO 2 -->
+          <fieldset class="pv-passo" data-passo="2" hidden>
+            <legend><span class="mono">Passo 2 di 4</span>Personalizza</legend>
+            <p class="pv-aiuto">Per ogni servizio scegli il livello e aggiungi gli extra. Tocca <em>Cosa vuol dire?</em> se qualcosa non è chiaro.</p>
+            {categorie.map((c) => (
+              <div class="pv-blocco" data-blocco={c.id} hidden>
+                <div class="pv-blocco-testa">
+                  <span class="pv-cat-icona"><Icona nome={icone[c.id]} /></span>
+                  <h2>{c.nome}</h2>
+                </div>
+                <div class="pv-livelli" role="radiogroup" aria-label={`Livello ${c.nome}`}>
+                  {c.livelli.map((l, i) => (
+                    <label class={`pv-livello${l.top ? ' top' : ''}`}>
+                      <input type="radio" name={`liv-${c.id}`} value={l.id} checked={l.top || (i === 0 && !c.livelli.some((x) => x.top))} />
+                      {l.top && <span class="pv-badge">Il più scelto</span>}
+                      <span class="pv-livello-nome">{l.nome}</span>
+                      <span class="pv-livello-prezzo">{prezzoLivello(l)}</span>
+                      <span class="pv-livello-spiega">{l.spiega}</span>
+                      <ul>{l.include.map((x) => <li>{x}</li>)}</ul>
+                    </label>
+                  ))}
+                </div>
+                {c.extra.length > 0 && (
+                  <div class="pv-extra">
+                    <h3 class="mono">Aggiungi</h3>
+                    {c.extra.map((e) => (
+                      <div class="pv-extra-riga" data-extra={`${c.id}.${e.id}`} data-max={e.max || 1}>
+                        <div class="pv-extra-testo">
+                          <span class="pv-extra-nome">{e.nome}</span>
+                          <span class="pv-extra-prezzo">{prezzoLivello(e)}{e.max ? ' cad.' : ''}</span>
+                          <details class="pv-spiega"><summary>Cosa vuol dire?</summary><p>{e.spiega}</p></details>
+                        </div>
+                        {e.max ? (
+                          <div class="pv-stepper">
+                            <button type="button" data-meno aria-label={`Togli ${e.nome}`}>−</button>
+                            <output data-q>0</output>
+                            <button type="button" data-piu aria-label={`Aggiungi ${e.nome}`}>+</button>
+                          </div>
+                        ) : (
+                          <label class="pv-interruttore">
+                            <input type="checkbox" data-toggle aria-label={`Aggiungi ${e.nome}`} />
+                            <span></span>
+                          </label>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {c.nota && <p class="pv-nota">{c.nota}</p>}
+              </div>
+            ))}
+            <div class="pv-nav">
+              <button class="btn btn-vetro" type="button" data-indietro>← Indietro</button>
+              <button class="btn btn-azione" type="button" data-avanti>Continua <span class="freccia" aria-hidden="true">→</span></button>
+            </div>
+          </fieldset>
+
+          <!-- PASSO 3 -->
+          <fieldset class="pv-passo" data-passo="3" hidden>
+            <legend><span class="mono">Passo 3 di 4</span>Quando ti serve?</legend>
+            <div class="pv-tempi">
+              {tempi.map((t, i) => (
+                <label class="pv-livello">
+                  <input type="radio" name="tempi" value={t.id} checked={i === 0} />
+                  <span class="pv-livello-nome">{t.nome}</span>
+                  <span class="pv-livello-spiega">{t.riga}</span>
+                </label>
+              ))}
+            </div>
+            <div class="pv-campo" style="margin-top:1.6rem">
+              <label for="pv-sito-attuale">Hai già un sito o una pagina social? <span class="facolt">(facoltativo)</span></label>
+              <input id="pv-sito-attuale" name="sito_attuale" type="text" placeholder="es. www.tuosito.it o @tuapagina" autocomplete="url" />
+            </div>
+            <div class="pv-nav">
+              <button class="btn btn-vetro" type="button" data-indietro>← Indietro</button>
+              <button class="btn btn-azione" type="button" data-avanti>Ultimo passo <span class="freccia" aria-hidden="true">→</span></button>
+            </div>
+          </fieldset>
+
+          <!-- PASSO 4 -->
+          <fieldset class="pv-passo" data-passo="4" hidden>
+            <legend><span class="mono">Passo 4 di 4</span>A chi mando il preventivo?</legend>
+            <p class="pv-aiuto">Ti rispondo entro 24 ore con il preventivo definitivo e una proposta per una chiamata di 20 minuti.</p>
+            <div class="pv-campi">
+              <div class="pv-campo"><label for="pv-nome">Nome e cognome</label><input id="pv-nome" name="nome" required autocomplete="name" /></div>
+              <div class="pv-campo"><label for="pv-azienda">Azienda o attività <span class="facolt">(facoltativo)</span></label><input id="pv-azienda" name="azienda" autocomplete="organization" /></div>
+              <div class="pv-campo"><label for="pv-email">Email</label><input id="pv-email" name="email" type="email" required autocomplete="email" /></div>
+              <div class="pv-campo"><label for="pv-tel">Telefono</label><input id="pv-tel" name="telefono" type="tel" required autocomplete="tel" inputmode="tel" /></div>
+              <div class="pv-campo pv-largo">
+                <label for="pv-settore">Di cosa ti occupi?</label>
+                <select id="pv-settore" name="settore">
+                  <option value="">Scegli…</option>
+                  <option>Professionista (medico, psicologo, avvocato, consulente…)</option>
+                  <option>Artigiano o servizi a domicilio</option>
+                  <option>Negozio, ristorante o attività locale</option>
+                  <option>Immobiliare</option>
+                  <option>E-commerce o vendita di prodotti</option>
+                  <option>Azienda / PMI</option>
+                  <option>Startup</option>
+                  <option>Altro</option>
+                </select>
+              </div>
+              <div class="pv-campo pv-largo"><label for="pv-msg">Raccontami il tuo obiettivo <span class="facolt">(facoltativo)</span></label><textarea id="pv-msg" name="messaggio" rows="4" placeholder="es. Vorrei ricevere più richieste di preventivo per i miei lavori a Milano"></textarea></div>
+              <fieldset class="pv-campo pv-largo pv-canale">
+                <legend>Come preferisci essere ricontattato?</legend>
+                <label><input type="radio" name="canale" value="WhatsApp" checked /> WhatsApp</label>
+                <label><input type="radio" name="canale" value="Chiamata" /> Chiamata</label>
+                <label><input type="radio" name="canale" value="Email" /> Email</label>
+              </fieldset>
+              <input class="pv-trappola" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <label class="pv-privacy pv-largo"><input type="checkbox" name="privacy" required /> Ho letto l'<a href="/privacy" target="_blank">informativa privacy</a> e acconsento a essere ricontattato per questa richiesta.</label>
+            </div>
+            <p class="pv-errore" data-errore="4" hidden>Controlla i campi evidenziati: nome, email, telefono e consenso privacy sono necessari.</p>
+            <div class="pv-nav">
+              <button class="btn btn-vetro" type="button" data-indietro>← Indietro</button>
+              <div class="pv-invio">
+                <button class="btn btn-azione btn-grande" type="submit" data-invia>Invia la richiesta <span class="freccia" aria-hidden="true">→</span></button>
+              </div>
+            </div>
+            <p class="pv-rassicura">Nessun impegno · I tuoi dati servono solo per risponderti · Ti rispondo entro 24 ore</p>
+          </fieldset>
+
+          <!-- FATTO -->
+          <div class="pv-passo pv-fatto" data-passo="5" hidden tabindex="-1">
+            <span class="pv-fatto-icona" aria-hidden="true">✦</span>
+            <h2>Ricevuto. <span class="em em-firma">Grazie!</span></h2>
+            <p class="lead" data-fatto-testo>Ho ricevuto il tuo progetto. Ti scrivo entro 24 ore con il preventivo definitivo.</p>
+            <div class="hero-azioni" data-fatto-azioni></div>
+            <a class="link-freccia" href="/">Torna alla home <span class="freccia" aria-hidden="true">→</span></a>
+          </div>
+        </form>
+
+        <!-- RIEPILOGO -->
+        <aside class="pv-riepilogo" data-riepilogo aria-label="Riepilogo del progetto">
+          <button class="pv-riep-mobile" type="button" data-riep-toggle aria-expanded="false">
+            <span><span class="mono">Il tuo progetto</span><strong data-tot-breve>0 €</strong></span>
+            <span class="pv-riep-freccia" aria-hidden="true">▴</span>
+          </button>
+          <div class="pv-riep-corpo">
+            <h2 class="mono">Il tuo progetto</h2>
+            <ul class="pv-righe" data-righe-riep><li class="pv-vuoto">Scegli un servizio per iniziare.</li></ul>
+            <div class="pv-sconto" data-sconto>
+              <div class="pv-sconto-testo"><span data-sconto-testo>Aggiungi un secondo servizio: sblocchi il 5% di sconto</span></div>
+              <div class="pv-sconto-barra"><span data-sconto-barra></span></div>
+            </div>
+            <dl class="pv-totali">
+              <div><dt>Una tantum</dt><dd data-tot-una>0 €</dd></div>
+              <div><dt>Al mese</dt><dd data-tot-mese>0 €</dd></div>
+            </dl>
+            <p class="pv-voucher" data-voucher hidden></p>
+            <p class="pv-nota-tot">Prezzi indicativi, IVA esclusa. Il preventivo definitivo arriva dopo una chiamata di 20 minuti.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { avviaPreventivo } from '../scripts/preventivo.js';
+  avviaPreventivo();
+</script>

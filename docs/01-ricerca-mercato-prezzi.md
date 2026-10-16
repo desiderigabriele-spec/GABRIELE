@@ -18,6 +18,8 @@
 | Chatbot / assistente AI | 500 – 5.000 € + 30 – 250 €/mese | 4.000 – 15.000 € + 300 – 1.000 €/mese | **2.400 € + 149 €/mese** |
 | Agente AI su un processo | 2.000 – 8.000 € + 100 – 300 €/mese | 5.000 – 25.000 € + 200 – 1.500 €/mese | **da 4.900 € + 249 €/mese** |
 | Web app / gestionale (MVP) | 3.500 – 8.000 € | 5.000 – 30.000 € | **da 7.900 €** |
+| Software AI per velocizzare il lavoro | 2.000 – 8.000 € | 5.000 – 25.000 € | **2.900 – 24.000 €** secondo la portata |
+| Integrazione AI nei sistemi esistenti | 400 – 2.000 € | 2.000 – 15.000 € | **1.200 – 9.900 €** |
 | Gestione Ads (fee, budget escluso) | 150 – 1.000 €/mese | 800 – 2.000 €/mese · 8–20% del budget | **590 / 990 / 12% (min. 1.490 €)** |
 | Manutenzione e cura del sito | 200 – 600 €/anno (WordPress) | 99 – 500 $/mese (managed) | **59 / 149 / 390 €/mese** |
 
@@ -68,6 +70,10 @@ I fatti a supporto che hai già:
 1. **Portfolio con due livelli diversi.**
    - *Luigi Montini (luigi-idraulico.it)*: sito per un artigiano locale con pagine servizio SEO e un sistema di contatti che porta le richieste su Google Fogli e Telegram, con anti-spam e limite richieste. È un **sistema per trovare clienti**, non solo un sito.
    - *Lorenzo Baldassarri (lorenzobaldassarri.it)*: personal brand premium in Astro, scena 3D a particelle in three.js, GSAP e Lenis, guida interattiva, chat verso WhatsApp, dossier e strategia. È il livello degli studi immersivi.
+   - **Valore di listino dei due progetti** (sono stati fatti a prezzo di favore in cambio di recensione):
+     - *Montini*: sito Presenza su una pagina lunga + sistema contatti automatico (Fogli + Telegram + email di riserva) + popup + cookie → **3.800 €** (2.900 € + 900 € di automazione).
+     - *Lorenzo*: sito Signature multipagina (metodo, psicoterapia, chi sono, contatti, 5 pagine "porta") + scena 3D + guida interattiva + chat + logo e monogramma + dossier strategico → **circa 9.800 €** (7.500 € + 5 pagine × 290 € + identità visiva ~850 €).
+     - **Come usarli:** sul sito non scrivere il prezzo dei clienti. Indica il **livello del pacchetto** ("Progetto Presenza", "Progetto Signature"): è un'ancora senza esporre i clienti. Nel contratto con loro puoi scrivere "valore 3.800 € / 9.800 €, sconto riservato in cambio di caso studio e recensione". Così lo sconto è chiaro e non diventa il tuo prezzo.
 2. **Doppia competenza marketing + vendita:** campagne Meta, Google, LinkedIn e TikTok dal 2022, agente di commercio e team leader, consulente Tecnocasa (telemarketing, qualificazione lead). Pochi web designer sanno davvero vendere.
 3. **Certificazioni:** Social Media Manager e AI per il Digital Marketing (UNID, ISO 9001 – MIUR – Google), più Impresa e Startup (Ikigai Hub) e Ready to Start Up (Confesercenti).
 4. **Produttività con l'AI (Claude, ChatGPT):** consegni in giorni quello che un'agenzia consegna in settimane. **Non devi trasformarlo in uno sconto:** vendi il risultato e la velocità, non le ore.
@@ -131,6 +137,25 @@ Abbonamento Shopify, app e commissioni sono a carico del cliente: Shopify costa 
 | **Agente AI su un processo** | Gestisce email e richieste, scrive preventivi, fa follow-up commerciale; si integra con gestionale o CRM; include un cruscotto | **4.900 – 8.900 € + 249 €/mese** |
 | **Web app / gestionale MVP** | Utenti e ruoli, dashboard, 1-3 moduli, funzioni AI integrate | **da 7.900 €** (MVP), **15.000 – 30.000 €** completo |
 | **Formazione AI per team** | Mezza giornata o giornata in azienda (Claude, ChatGPT, prompt, automazioni) | **650 € / 1.200 €** |
+
+#### Software AI per velocizzare il lavoro in azienda
+Strumenti su misura che tolgono alle persone il lavoro ripetitivo. In parole semplici: **"quello che oggi fate a mano in un'ora, il software lo fa in un minuto e voi controllate"**.
+
+| Servizio | Esempi concreti | **Prezzo** |
+|---|---|---|
+| **Strumento AI singolo** | Generatore di preventivi da una mail o da una telefonata trascritta; lettura automatica di fatture e documenti (i dati finiscono nel gestionale); risposte alle email già scritte, da approvare con un clic | **2.900 – 4.900 €** + 99 €/mese |
+| **Copilota aziendale** | Un assistente che conosce i documenti dell'azienda (listini, procedure, schede tecniche) e risponde al team in chat, su Teams o su Slack | **3.900 €** + 199 €/mese |
+| **Software AI su misura** | Piattaforma interna con più funzioni AI, utenti e ruoli, cruscotto con i risultati (es. ufficio commerciale o customer care automatizzati) | **9.900 – 24.000 €** + canone |
+
+#### Integrazioni AI nei sistemi che l'azienda usa già
+Si collega l'AI (Claude, ChatGPT o altri modelli) a quello che c'è già, senza cambiare gestionale.
+
+| Servizio | Esempi concreti | **Prezzo** |
+|---|---|---|
+| **Integrazione singola** | AI collegata a CRM, Google Workspace, Microsoft 365, WhatsApp Business, Shopify o gestionale con API | **1.200 – 2.900 €** |
+| **Sistema integrato** | Più strumenti collegati tra loro: per esempio lead da sito e Ads → AI che qualifica → CRM → preventivo → follow-up automatico | **4.900 – 9.900 €** + 149 – 390 €/mese |
+
+La regola di prezzo per entrambe le famiglie è la stessa: **stima delle ore risparmiate × costo orario del personale × 12 mesi**. Il prezzo deve stare tra il 25% e il 50% del risparmio del primo anno, così il cliente rientra della spesa in 3-6 mesi. Esempio: 3 impiegati risparmiano 4 ore a settimana a testa = circa 600 ore l'anno; a 25 €/ora sono 15.000 € l'anno. Un software da 4.900 € si ripaga in 4 mesi.
 
 Il canone mensile copre hosting, monitoraggio, aggiornamenti dei modelli e piccole modifiche. I costi API oltre una soglia concordata (es. 30 €/mese) si fatturano a parte, al costo reale.
 
@@ -206,7 +231,7 @@ Un pacchetto integrato si vende meglio dei singoli servizi: il cliente compra **
 
 ## 9. Prossimi passi
 
-1. **Conferma o correggi il listino.** Se mi dici quanto hai fatto pagare Montini e Lorenzo, calibro i prezzi di lancio.
+1. **Conferma o correggi il listino.** Montini e Lorenzo sono valutati sopra (3.800 € e circa 9.800 € di listino).
 2. **Scegli 1-2 nicchie** da mettere in evidenza nella home (consiglio: professionisti + servizi locali, con l'immobiliare come terza).
 3. **Raccogli le prove:** numeri reali (richieste al mese generate dal sito di Montini, tempo di caricamento, recensioni dei clienti) da usare nei casi studio.
 4. **Verifica il voucher** sul sito della Camera di Commercio di Milano Monza Brianza Lodi, prima di usarlo nel copy.

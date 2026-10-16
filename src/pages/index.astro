@@ -1,0 +1,406 @@
+---
+import Base from '../layouts/Base.astro';
+import Icona from '../components/Icona.astro';
+import { servizi, metodo, lavori, faq, contatti } from '../data/sito.js';
+import { categorie } from '../data/listino.js';
+import { euro } from '../data/formato.js';
+const sito = categorie.find((c) => c.id === 'sito')!;
+const piani = ['signature', 'presenza', 'impulso'].map((id) => sito.livelli.find((l) => l.id === id)!);
+const perChi: Record<string, string> = {
+  signature: 'Per professionisti e brand che vogliono essere ricordati.',
+  presenza: 'Per attività e professionisti che vogliono richieste ogni settimana.',
+  impulso: 'Per partire subito o lanciare una promozione.',
+};
+const altri = ['ecommerce', 'software', 'integrazioni', 'ads', 'cura'].map((id) => {
+  const c = categorie.find((x) => x.id === id)!;
+  const l = c.livelli[0];
+  return { nome: c.nome, prezzo: l.una ? euro(l.una) : euro(l.mese!) + '/mese', mese: !l.una && !!l.mese };
+});
+const parole = ['Siti web', 'Negozi online', 'Software con AI', 'Collegamenti AI', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Neuromarketing', 'Copy che vende', 'Esperienze 3D'];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Gabriele Desideri',
+  description: 'Siti web, e-commerce, software con intelligenza artificiale e pubblicità online progettati con psicologia e neuromarketing.',
+  url: 'https://www.gabrieledesideri.it',
+  email: contatti.email,
+  telephone: contatti.telefono,
+  areaServed: 'IT',
+  address: { '@type': 'PostalAddress', addressLocality: 'Milano', addressCountry: 'IT' },
+  sameAs: [contatti.linkedin],
+};
+---
+<Base
+  title="Gabriele Desideri · Siti web, software AI e pubblicità che portano clienti"
+  description="Siti web, e-commerce, software con intelligenza artificiale e pubblicità online, progettati con la psicologia per portare le persone dal primo sguardo al «sì». Milano e tutta Italia."
+  jsonLd={jsonLd}
+>
+  <!-- 01 · ATTENZIONE -->
+  <section class="hero" id="inizio" data-forma="0" data-lato="destra">
+    <div class="wrap">
+      <div class="hero-testo">
+        <span class="capitolo" data-appare>Capitolo 01 · Attenzione</span>
+        <h1 data-righe>
+          <span class="riga"><span>Trasformo</span></span>
+          <span class="riga"><span>chi ti guarda</span></span>
+          <span class="riga"><span>in chi ti <span class="em em-firma">sceglie.</span></span></span>
+        </h1>
+        <p class="lead" data-appare="0.25">
+          Siti web, negozi online, software con intelligenza artificiale e pubblicità.
+          Progettati con la psicologia per portare le persone <strong style="color:var(--latte);font-weight:600">dal primo sguardo al «sì»</strong>.
+        </p>
+        <div class="hero-azioni" data-appare="0.4">
+          <a class="btn btn-azione btn-grande" href="/preventivo" data-azione>Calcola il tuo preventivo <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="btn btn-vetro btn-grande" href="#metodo">Guarda come funziona</a>
+        </div>
+        <ul class="rassicura" data-appare="0.55">
+          <li>Preventivo in 2 minuti</li>
+          <li>Risposta entro 24 ore</li>
+          <li>{contatti.zona}</li>
+        </ul>
+      </div>
+    </div>
+    <a class="scorri" href="#problema" aria-label="Scorri">
+      <span class="mono">Scorri</span>
+      <span class="scorri-linea"></span>
+    </a>
+  </section>
+
+  <div class="nastro" aria-hidden="true">
+    <div class="nastro-traccia">
+      {[0, 1].map(() => (
+        <div class="nastro-gruppo">
+          {parole.map((p) => <span>{p}<i>✦</i></span>)}
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- IL PROBLEMA -->
+  <section class="sezione" id="problema" data-forma="0" data-luce="0.32" data-scala="1.5">
+    <div class="wrap">
+      <div class="testa-sezione">
+        <span class="capitolo" data-appare>Il problema</span>
+        <h2 data-righe>
+          <span class="riga"><span>Un sito bello non basta.</span></span>
+          <span class="riga"><span>Deve far venire <span class="em">voglia</span></span></span>
+          <span class="riga"><span>di sceglierti.</span></span>
+        </h2>
+      </div>
+      <div class="dolori" data-sequenza>
+        <div class="dolore">
+          <span class="dolore-num">01 — Nessuno ti trova</span>
+          <h3>Sei bravo, ma online sei invisibile.</h3>
+          <p>I clienti cercano proprio quello che fai. Solo che trovano prima gli altri.</p>
+        </div>
+        <div class="dolore">
+          <span class="dolore-num">02 — Ti trovano, ma se ne vanno</span>
+          <h3>Pochi secondi e chiudono la pagina.</h3>
+          <p>Il sito è lento, confuso o uguale a mille altri. Il cervello decide in fretta e passa oltre.</p>
+        </div>
+        <div class="dolore">
+          <span class="dolore-num">03 — Ti guardano, ma non ti scrivono</span>
+          <h3>Visite tante, richieste poche.</h3>
+          <p>Manca il percorso che porta dalla curiosità alla fiducia, e dalla fiducia al «ti scrivo».</p>
+        </div>
+      </div>
+      <p class="svolta" data-appare>
+        Io costruisco quel percorso. <span class="em em-firma">Dal primo sguardo al sì.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- 02 · INTERESSE -->
+  <section class="sezione" id="servizi" data-forma="1" data-luce="0.4" data-scala="1.55">
+    <div class="wrap">
+      <div class="testa-sezione">
+        <span class="capitolo" data-appare>Capitolo 02 · Interesse</span>
+        <h2 data-righe>
+          <span class="riga"><span>Cosa faccio,</span></span>
+          <span class="riga"><span><span class="em">detto semplice.</span></span></span>
+        </h2>
+        <p class="lead" data-appare>Sei servizi che lavorano insieme. Puoi sceglierne uno solo o farli parlare tra loro: è lì che i risultati si moltiplicano.</p>
+      </div>
+      <div class="servizi-griglia" data-sequenza>
+        {servizi.map((s) => (
+          <article class="card servizio">
+            <div class="servizio-top">
+              <span class="servizio-icona"><Icona nome={s.icona} /></span>
+              <span class="mono">{s.numero}</span>
+            </div>
+            <h3>{s.titolo}</h3>
+            <div style="display:grid;gap:1rem;align-content:start">
+              <p>{s.semplice}</p>
+              <p class="esempio">{s.esempio}</p>
+            </div>
+            <div class="servizio-piede">
+              <span class="prezzo-da">A partire da<strong>{euro(s.da)}{s.mese && <small> /mese</small>}</strong></span>
+              <a class="link-freccia" href={`/preventivo?s=${s.id}`}>Aggiungi <span class="freccia" aria-hidden="true">→</span></a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCOLATORE DEL TEMPO RISPARMIATO -->
+  <section class="sezione" id="risparmio" data-forma="1" data-lato="sinistra" data-luce="0.75" data-scala="0.9">
+    <div class="wrap risparmio">
+      <div class="testa-sezione" style="margin-bottom:0">
+        <span class="capitolo" data-appare>Software con AI</span>
+        <h2 data-righe>
+          <span class="riga"><span>Quanto tempo</span></span>
+          <span class="riga"><span>perdi in lavori</span></span>
+          <span class="riga"><span class="em">che una macchina</span></span>
+          <span class="riga"><span class="em">farebbe meglio?</span></span>
+        </h2>
+        <p class="lead" data-appare>Copiare dati, rispondere sempre alle stesse email, preparare preventivi, cercare documenti. Muovi i cursori e guarda quanto vale il tempo che ti restituisco.</p>
+      </div>
+      <div class="risparmio-pannello" data-risparmio data-appare>
+        <div class="cursore-campo">
+          <label for="r-ore">Ore a settimana in lavori ripetitivi, a persona <output data-out="ore">8</output></label>
+          <input id="r-ore" type="range" min="1" max="30" value="8" data-in="ore" />
+        </div>
+        <div class="cursore-campo">
+          <label for="r-persone">Persone che li fanno <output data-out="persone">3</output></label>
+          <input id="r-persone" type="range" min="1" max="30" value="3" data-in="persone" />
+        </div>
+        <div class="cursore-campo">
+          <label for="r-costo">Costo di un'ora di lavoro <output data-out="costo">25 €</output></label>
+          <input id="r-costo" type="range" min="12" max="80" value="25" data-in="costo" />
+        </div>
+        <div class="risultati" aria-live="polite">
+          <div class="risultato"><strong data-ris="ore">662</strong><span>ore restituite in un anno</span></div>
+          <div class="risultato caldo"><strong data-ris="euro">16.550 €</strong><span>di lavoro risparmiato ogni anno</span></div>
+        </div>
+        <a class="btn btn-azione" href="/preventivo?s=software" data-azione>Voglio recuperare questo tempo <span class="freccia" aria-hidden="true">→</span></a>
+        <p class="nota">Stima prudente: calcolo 46 settimane lavorative e considero automatizzabile il 60% di quelle ore. Il numero vero lo misuriamo insieme nella Diagnosi AI.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · FIDUCIA: IL METODO -->
+  <section class="sezione" id="metodo">
+    <div class="wrap metodo">
+      <div class="metodo-fisso">
+        <span class="capitolo">Capitolo 03 · Il metodo</span>
+        <h2 data-righe>
+          <span class="riga"><span>Cinque passi</span></span>
+          <span class="riga"><span>nella testa</span></span>
+          <span class="riga"><span>del <span class="em em-firma">tuo cliente.</span></span></span>
+        </h2>
+        <p class="metodo-sotto">Le cinque tappe che ogni persona attraversa prima di comprare. Per ognuna uso tecniche studiate dalla psicologia e provate sul campo.</p>
+        <ol class="metodo-indice" data-indice>
+          {metodo.map((m, i) => <li class={i === 0 ? 'attivo' : ''}>{String(i + 1).padStart(2, '0')} {m.passo}</li>)}
+        </ol>
+      </div>
+      <div class="passi">
+        {metodo.map((m, i) => (
+          <article class="passo" data-passo data-forma={m.forma} data-lato="sinistra" data-y="-0.31" data-scala="0.44">
+            <span class="passo-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span class="capitolo">{m.passo}</span>
+            <h3>{m.titolo}</h3>
+            <p class="passo-testa">{m.testa}</p>
+            <div class="passo-tecnica">
+              <span class="mono">Tecnica · {m.tecnica}</span>
+              <p>{m.spiega}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- LAVORI -->
+  <section class="sezione" id="lavori" data-forma="2" data-luce="0.28" data-scala="1.6">
+    <div class="wrap">
+      <div class="testa-sezione">
+        <span class="capitolo" data-appare>Lavori</span>
+        <h2 data-righe>
+          <span class="riga"><span>Non te lo racconto.</span></span>
+          <span class="riga"><span><span class="em">Te lo mostro.</span></span></span>
+        </h2>
+        <p class="lead" data-appare>Due progetti molto diversi, con lo stesso obiettivo: far scegliere il mio cliente invece della concorrenza.</p>
+      </div>
+      <div class="lavori">
+        {lavori.map((l) => (
+          <article class="lavoro">
+            <a class="lavoro-media" href={l.url} target="_blank" rel="noopener" aria-label={`Apri il sito di ${l.cliente}`} data-appare>
+              <span class="browser" aria-hidden="true"><i></i><i></i><i></i></span>
+              <img src={l.img} alt={`La home del sito di ${l.cliente}`} width="1440" height="900" loading="lazy" decoding="async" />
+            </a>
+            <div class="lavoro-testo" data-appare="0.1">
+              <span class="pacchetto-tag">{l.pacchetto}</span>
+              <h3 style="font-size:clamp(1.8rem,3vw,2.6rem)">{l.cliente}</h3>
+              <p class="settore">{l.settore}</p>
+              <p class="sfida">{l.sfida}</p>
+              <ul class="lista-check">{l.fatto.map((f) => <li>{f}</li>)}</ul>
+              <div class="tags">{l.tag.map((t) => <span>{t}</span>)}</div>
+              {l.recensione
+                ? <blockquote class="recensione">{l.recensione}</blockquote>
+                : <p class="recensione-attesa">Recensione del cliente in arrivo.</p>}
+              <a class="link-freccia" href={l.url} target="_blank" rel="noopener">Visita il sito <span class="freccia" aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CHI SONO -->
+  <section class="sezione" id="chi-sono" data-forma="2" data-lato="destra" data-luce="0.35" data-scala="0.9">
+    <div class="wrap chi">
+      <div class="chi-testo">
+        <span class="capitolo" data-appare>Chi sono</span>
+        <h2 data-righe>
+          <span class="riga"><span>Di cognome</span></span>
+          <span class="riga"><span>faccio <span class="em em-firma">Desideri.</span></span></span>
+          <span class="riga"><span>Di lavoro, li creo.</span></span>
+        </h2>
+        <p data-appare>Sono <strong>Gabriele</strong>. Ho iniziato a vendere <strong>faccia a faccia</strong>, porta a porta e al telefono. Lì ho imparato la lezione più importante: <strong>le persone non comprano un prodotto, comprano come si sentono quando lo scelgono.</strong></p>
+        <p data-appare>Poi ho portato quella lezione online. Ho lanciato negozi online miei e per aziende, gestito pubblicità su Meta, Google, LinkedIn e TikTok, costruito siti e software. Ho studiato psicologia, marketing, neuromarketing e intelligenza artificiale, e ho provato ogni tecnica sul campo prima di usarla per un cliente.</p>
+        <p data-appare>Quello che amo è tutto il viaggio: <strong>dal primo sguardo alla conversione.</strong> Ogni colore, ogni parola e ogni movimento di un mio progetto ha un motivo preciso.</p>
+        <div class="certificati" data-appare>
+          <span>Social Media Manager · certificato ISO 9001 – MIUR – Google</span>
+          <span>AI per il Digital Marketing</span>
+          <span>Impresa e Startup · Ikigai Hub</span>
+          <span>Creazione d'impresa · Confesercenti</span>
+        </div>
+      </div>
+      <ol class="percorso" data-sequenza>
+        <li><span class="anno">2021 — 2022</span><strong>Agente di commercio e team leader</strong><span>Vendita diretta ai clienti, ricerca di nuovi contatti, formazione di nuovi venditori.</span></li>
+        <li><span class="anno">2022 — oggi</span><strong>Freelance: siti, social, e-commerce, pubblicità</strong><span>Siti ed e-commerce dall'idea alla gestione quotidiana, campagne pubblicitarie, funnel di vendita, analisi dei dati.</span></li>
+        <li><span class="anno">2023 — 2024</span><strong>Co-founder di una startup</strong><span>Business plan, strategia di crescita e marketing di un prodotto nuovo, da zero.</span></li>
+        <li><span class="anno">2025 — oggi</span><strong>Vendita immobiliare a Milano</strong><span>Trattative vere, ogni giorno: telefonate, valutazioni, appuntamenti. La palestra migliore per capire come decide una persona.</span></li>
+        <li><span class="anno">Adesso</span><strong>Software e sistemi con AI</strong><span>Unisco tutto: design, vendita e intelligenza artificiale, per far crescere le aziende e togliere loro il lavoro inutile.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 04 · DESIDERIO: PREZZI -->
+  <section class="sezione" id="prezzi" data-forma="3" data-luce="0.3" data-scala="1.5">
+    <div class="wrap">
+      <div class="testa-sezione centro">
+        <span class="capitolo" data-appare>Capitolo 04 · Desiderio</span>
+        <h2 data-righe>
+          <span class="riga"><span>Prezzi chiari.</span></span>
+          <span class="riga"><span><span class="em">Prima</span> di iniziare.</span></span>
+        </h2>
+        <p class="lead" data-appare>Niente «dipende», niente sorprese. Questi sono i prezzi dei siti. Per tutto il resto c'è il preventivo automatico: componi il tuo progetto e vedi subito quanto costa.</p>
+      </div>
+      <div class="prezzi" data-sequenza>
+        {piani.map((p) => (
+          <article class={`card piano${p.top ? ' top' : ''}`}>
+            {p.top && <span class="piano-badge">Il più scelto</span>}
+            <span class="piano-nome">{p.nome}</span>
+            <p class="piano-per">{perChi[p.id]}</p>
+            <span class="piano-prezzo">{p.id === 'signature' ? 'da ' : ''}{euro(p.una!)}<small>una tantum · IVA esclusa</small></span>
+            <ul class="lista-check">{p.include.map((i) => <li>{i}</li>)}</ul>
+            <a class={`btn ${p.top ? 'btn-azione' : 'btn-vetro'}`} href={`/preventivo?s=sito:${p.id}`} data-azione={p.top ? '' : undefined}>Scegli {p.nome} <span class="freccia" aria-hidden="true">→</span></a>
+          </article>
+        ))}
+      </div>
+      <div class="altri-prezzi" data-appare>
+        {altri.map((a) => <div><span>{a.nome}</span><strong>da {a.prezzo}</strong></div>)}
+      </div>
+      <p class="prezzi-nota">Pagamento in due parti: metà alla firma, metà alla consegna. Il sito, una volta saldato, è tuo al 100%.</p>
+    </div>
+  </section>
+
+  <!-- GARANZIE -->
+  <section class="sezione" id="garanzie" data-forma="3" data-luce="0.22" data-scala="1.6" style="padding-top:0">
+    <div class="wrap">
+      <div class="garanzie" data-sequenza>
+        <div class="card garanzia">
+          <span class="garanzia-icona"><Icona nome="revisioni" /></span>
+          <h3>Ritocchi finché non ti convince</h3>
+          <p>Prima di andare online lavoriamo sul design finché non ti piace davvero. Il sito deve rappresentarti.</p>
+        </div>
+        <div class="card garanzia">
+          <span class="garanzia-icona"><Icona nome="chiave" /></span>
+          <h3>Tutto è tuo</h3>
+          <p>Codice, dominio, contenuti e account pubblicitari restano tuoi. Niente vincoli e niente ostaggi.</p>
+        </div>
+        <div class="card garanzia">
+          <span class="garanzia-icona"><Icona nome="prezzo" /></span>
+          <h3>Il prezzo è quello</h3>
+          <p>Firmi un preventivo chiaro, voce per voce. Se qualcosa cambia, lo decidiamo insieme prima.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOMANDE -->
+  <section class="sezione" id="domande" data-forma="3" data-luce="0.12" data-scala="1.7">
+    <div class="wrap">
+      <div class="testa-sezione centro">
+        <span class="capitolo" data-appare>Domande frequenti</span>
+        <h2 data-righe><span class="riga"><span>Quello che <span class="em">tutti</span> mi chiedono.</span></span></h2>
+      </div>
+      <div class="faq">
+        {faq.map((f) => (
+          <details>
+            <summary>{f.d}<span class="piu" aria-hidden="true"></span></summary>
+            <p class="risposta">{f.r}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · AZIONE -->
+  <section class="sezione finale" id="azione" data-forma="4" data-luce="0.7" data-luce-mobile="0.55" data-scala="1.1">
+    <div class="wrap finale-testo">
+      <span class="capitolo" data-appare>Capitolo 05 · Azione</span>
+      <h2 data-righe>
+        <span class="riga"><span>Il tuo prossimo cliente</span></span>
+        <span class="riga"><span>ti sta <span class="em em-firma">già cercando.</span></span></span>
+      </h2>
+      <p class="lead" data-appare>Componi il tuo progetto in 2 minuti: scegli quello che ti serve, vedi subito il prezzo e mandami la richiesta. Ti rispondo entro 24 ore.</p>
+      <div class="hero-azioni" data-appare style="justify-content:center">
+        <a class="btn btn-azione btn-grande" href="/preventivo" data-azione>Componi il tuo progetto <span class="freccia" aria-hidden="true">→</span></a>
+        <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent('Ciao Gabriele, ho visto il tuo sito e vorrei parlarti di un progetto.')}`} target="_blank" rel="noopener">Scrivimi su WhatsApp</a>
+      </div>
+      <ul class="rassicura" data-appare style="justify-content:center">
+        <li>Preventivo gratuito</li>
+        <li>Nessun impegno</li>
+        <li>Chiamata conoscitiva di 20 minuti</li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nastro { position: relative; z-index: 2; border-block: 1px solid var(--linea); background: rgba(7,7,12,.55); overflow: hidden; padding: 1.1rem 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+  .nastro-traccia { display: flex; width: max-content; animation: nastro 38s linear infinite; }
+  .nastro-gruppo { display: flex; }
+  .nastro span { display: inline-flex; align-items: center; gap: 2.2rem; padding-right: 2.2rem; font-family: var(--f-titolo); font-size: clamp(1.1rem, 2vw, 1.6rem); font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; color: var(--nebbia); }
+  .nastro i { font-style: normal; color: var(--viola); font-size: .8em; }
+  @keyframes nastro { to { transform: translateX(-50%); } }
+  .recensione { margin: 0; padding: 1rem 1.2rem; border-left: 2px solid var(--ambra); font-family: var(--f-emozione); font-style: italic; font-size: 1.2rem; }
+</style>
+
+<script>
+  // Calcolatore del tempo risparmiato
+  const box = document.querySelector('[data-risparmio]');
+  if (box) {
+    const fmt = { format: (n: number) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.') };
+    const val = (k: string) => Number((box.querySelector(`[data-in="${k}"]`) as HTMLInputElement).value);
+    const aggiorna = () => {
+      box.querySelectorAll<HTMLInputElement>('input[type="range"]').forEach((i) => {
+        const p = ((Number(i.value) - Number(i.min)) / (Number(i.max) - Number(i.min))) * 100;
+        i.style.setProperty('--p', `${p}%`);
+      });
+      const ore = val('ore'), persone = val('persone'), costo = val('costo');
+      const anno = Math.round(ore * persone * 46 * 0.6);
+      box.querySelector('[data-out="ore"]')!.textContent = String(ore);
+      box.querySelector('[data-out="persone"]')!.textContent = String(persone);
+      box.querySelector('[data-out="costo"]')!.textContent = `${costo} €`;
+      box.querySelector('[data-ris="ore"]')!.textContent = fmt.format(anno);
+      box.querySelector('[data-ris="euro"]')!.textContent = `${fmt.format(anno * costo)} €`;
+    };
+    box.addEventListener('input', aggiorna);
+    aggiorna();
+  }
+</script>
