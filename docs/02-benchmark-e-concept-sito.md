@@ -48,20 +48,17 @@ Tutto il sito è il percorso AIDA reso visibile: un **campo di migliaia di parti
 Il visitatore vive sulla propria pelle quello che Gabriele farà per i suoi clienti: **il sito è la prova del metodo**.
 
 ### L'occhio del primo capitolo
-Un bulbo oculare fatto di particelle, costruito come un occhio vero:
-- **iride su una sfera**: quando guarda di lato si schiaccia in prospettiva e scivola sotto le palpebre;
-- **fibre dell'iride, collaretto, anello scuro esterno, pupilla, riflesso della luce sulla cornea, ciglia a ciuffi, piega della palpebra**;
-- **battito di ciglia naturale** ogni 2,5-6 secondi (a volte doppio), disattivato con "riduci movimento".
-
-Cosa guarda:
-- il **puntatore del mouse**, il **punto in cui clicchi** e il **dito** su telefono e tablet (anche mentre scorri);
-- quando la persona sta ferma, **guarda il bottone "Calcola il tuo preventivo"**, con piccoli movimenti a scatti come un occhio vero. È il *gaze cueing*: guardiamo istintivamente dove guarda un volto, quindi l'occhio porta l'attenzione sul punto di conversione;
-- la **pupilla si dilata** quando passi sopra un bottone d'azione (la pupilla si allarga davanti a ciò che ci interessa, studi di Eckhard Hess) e **si stringe a ogni clic**, come davanti a un lampo di luce.
-
-Tre comportamenti in più:
+Una **sfera di luce** che fluttua nello spazio e ruota tutta verso ciò che guardi (le palpebre a puntini sono state tolte: dal vivo sembravano un contorno disegnato).
+- **Profondità:** i bordi della sfera brillano, i punti sul retro quasi spariscono.
+- **Davanti:** iride con fibre, collaretto e anello scuro, pupilla, riflesso della luce fisso in alto a sinistra.
+- **Cosa guarda:** il mouse, il punto in cui clicchi, il dito su telefono (anche mentre scorri). Se la persona sta ferma, la sfera resta dove l'ha lasciata e dopo qualche secondo gira **con calma, in un solo movimento**, verso il bottone "Calcola il tuo preventivo" (*gaze cueing*: guardiamo dove guarda un volto).
+- **Pupilla:** si allarga sui bottoni d'azione (Eckhard Hess: la pupilla si dilata davanti a ciò che ci interessa), si stringe a ogni clic e "respira" piano.
 - **Iride che cambia colore** secondo il servizio su cui passi (parole del titolo, card dei servizi, card del preventivo): ambra per i siti, rosa per i negozi online, viola per software e collegamenti AI, ciano per la pubblicità, verde acqua per la cura. Anche le altre forme di particelle prendono quel colore.
-- **Sorpresa all'uscita:** se il mouse esce dalla finestra verso l'alto (o su telefono, dopo metà pagina, con una risalita veloce), la pagina si spegne, le particelle tornano occhio al centro, spalancato, e lo guardano: «Aspetta, ti ho visto». Una sola volta per visita, mai nei primi 6 secondi, mai nella pagina del preventivo. Si chiude con Esc, con il bottone o cliccando fuori.
-- **Occhiolino a chi torna** (più di 30 minuti dopo l'ultima visita): l'occhio fa l'occhiolino e compare «Bentornato!». Se c'era un preventivo iniziato, il link porta a riprenderlo.
+- **Sorpresa all'uscita:** se il mouse esce dalla finestra verso l'alto (o su telefono, dopo metà pagina, con una risalita veloce), la pagina si spegne, la sfera torna al centro, si avvicina, la pupilla si allarga: «Aspetta, ti ho visto». Una sola volta per visita, mai nei primi 6 secondi, mai nella pagina del preventivo.
+- **Chi torna** (più di 30 minuti dopo l'ultima visita): la pupilla diventa un **cuore** per un paio di secondi e compare «Bentornato!». Se c'era un preventivo iniziato, il link porta a riprenderlo.
+
+### Il testo resta sempre leggibile
+La scena misura le righe di testo visibili (titoli, paragrafi, bottoni, etichette, header e finestre in primo piano) e **spegne le particelle che ci passano sopra**, con un bordo sfumato. Vale per tutte le forme (sfera, rete neurale, spirale, cuore, stella), anche durante le trasformazioni e mentre si scorre: le forme si aprono attorno alle parole invece di coprirle.
 
 Su telefono l'occhio sta sopra il titolo, a piena luce. Una piccola scritta ("Muovi il mouse: ti sto guardando" / "Tocca lo schermo: ti sto guardando") invita a provarlo e sparisce dopo il primo gesto.
 

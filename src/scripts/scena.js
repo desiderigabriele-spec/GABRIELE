@@ -36,7 +36,10 @@ float snoise(vec3 v){
 const vertexShader = /* glsl */ `
 uniform float uTime, uForma, uSize, uPR, uVel, uBattito;
 uniform vec2 uMouse, uSguardo;      // uSguardo = rotazione del bulbo (destra/sinistra, su/giù) in radianti
-uniform float uPalpebra, uPupilla, uApertura, uSpalanca, uSorriso, uTintaForza;
+uniform float uPupilla, uCuore, uTintaForza;
+uniform vec2 uRis;              // risoluzione dello schermo in pixel CSS
+uniform vec4 uTesto[32];        // rettangoli del testo visibile (sinistra, alto, destra, basso)
+uniform int uNTesto;
 uniform vec3 uTinta;
 uniform float uAspect;
 uniform vec3 uColA[5];
@@ -49,27 +52,25 @@ varying float vLuce, vVis;
 ${NOISE}
 
 // ---------- L'OCCHIO ----------
-// Un bulbo vero: l'iride sta su una sfera che ruota verso ciò che guardi
-// e scompare sotto le palpebre quando guarda di lato. Le palpebre sbattono.
-const float LARG = 1.75;  // metà larghezza della fessura
-const float RS = 1.25;    // raggio del bulbo
-const float RI = 0.64;    // raggio dell'iride (la palpebra ne copre un filo in alto, come nell'occhio vero)
-float hAp(float x){ float u = clamp(x / LARG, -1.0, 1.0); return 0.66 * pow(max(1.0 - u * u, 0.0), 0.85); }
-// palpebra superiore più alta verso l'interno, come in un occhio vero
-// uSpalanca = sorpresa (palpebre spalancate), uSorriso = la guancia alza la palpebra di sotto (occhiolino)
-float yUp(float x){ float u = clamp(x / LARG, -1.0, 1.0); return hAp(x) * (1.0 + 0.1 * u) * (1.0 + uApertura * 0.14 + uSpalanca * 0.5 - uSorriso * 0.12) * (1.0 - 1.95 * uPalpebra) - 0.05; }
-float yLo(float x){ return -hAp(x) * (0.92 + uSpalanca * 0.18 - uSorriso * 0.45) - 0.02 + 0.03 * uPalpebra; }
-vec3 bulbo(vec2 d){
-  vec3 p = vec3(d, sqrt(max(RS * RS - dot(d, d), 0.0)));
+// Una sfera fatta di luce che ruota tutta verso ciò che guardi.
+// Davanti l'iride e la pupilla; i punti sul retro quasi spariscono, i bordi brillano (profondità).
+const float RS = 1.25;    // raggio della sfera
+const float RI = 0.6;     // raggio dell'iride
+vec3 ruotaSguardo(vec3 p){
   float cp = cos(uSguardo.y), sp = sin(uSguardo.y);
   p = vec3(p.x, p.y * cp + p.z * sp, -p.y * sp + p.z * cp);
   float cy = cos(uSguardo.x), sy = sin(uSguardo.x);
-  p = vec3(p.x * cy + p.z * sy, p.y, -p.x * sy + p.z * cy);
-  p.z -= RS - 0.25;
-  return p;
+  return vec3(p.x * cy + p.z * sy, p.y, -p.x * sy + p.z * cy);
 }
-float dentro(vec2 q){
-  return smoothstep(-0.02, 0.02, yUp(q.x) - q.y) * smoothstep(-0.02, 0.02, q.y - yLo(q.x)) * (1.0 - smoothstep(LARG - 0.1, LARG, abs(q.x)));
+// punto sulla superficie, davanti, a distanza d dal centro dell'iride
+vec3 superficie(vec2 d){ return ruotaSguardo(vec3(d, sqrt(max(RS * RS - dot(d, d), 0.0)))); }
+// bordo della pupilla: cerchio che può diventare un cuore (chi torna sul sito)
+vec2 bordoPupilla(float a, float r){
+  vec2 cerchio = vec2(cos(a), sin(a)) * r;
+  float t = 1.5707963 - a;
+  float st = sin(t);
+  vec2 cuore = vec2(16.0 * st * st * st, 13.0 * cos(t) - 5.0 * cos(2.0 * t) - 2.0 * cos(3.0 * t) - cos(4.0 * t)) / 17.0 * r * 1.35 + vec2(0.0, r * 0.12);
+  return mix(cerchio, cuore, uCuore);
 }
 vec3 colIride0(float b);
 // l'iride prende il colore del servizio che stai guardando
@@ -87,61 +88,39 @@ vec3 colIride0(float b){
 vec3 eCol; float eVis; float eSize;
 vec3 occhio(){
   float tipo = aOcchio.x, a = aOcchio.y, b = aOcchio.z;
-  float u = clamp(a / LARG, -1.0, 1.0);
   eVis = 1.0; eSize = aOcchio.w;
   vec3 p;
-  if (tipo < 0.5) {            // sclera: più scura vicino alle palpebre
-    p = vec3(a, mix(yLo(a), yUp(a), b), 0.18 * sqrt(max(1.0 - u * u, 0.0)) - 0.05);
-    eCol = vec3(0.8, 0.76, 0.98) * (0.2 + 0.32 * sin(b * 3.14159)) * (0.75 + 0.25 * sqrt(max(1.0 - u * u, 0.0)));
-    eVis = 1.0 - uPalpebra * 0.85;
-  } else if (tipo < 1.5) {     // palpebra superiore
-    p = vec3(a, yUp(a) + 0.014 + b * 0.03, 0.22);
-    eCol = mix(vec3(1.0, 0.97, 0.94), vec3(0.75, 0.65, 1.0), aRand) * 1.1;
-  } else if (tipo < 2.5) {     // piega della palpebra
-    p = vec3(a * 0.95, hAp(a) * 1.25 * (1.0 - 0.4 * uPalpebra) + 0.2 + b * 0.02, 0.18);
-    eCol = vec3(0.55, 0.45, 0.95) * 0.5;
-  } else if (tipo < 3.5) {     // palpebra inferiore
-    p = vec3(a, yLo(a) - 0.012 + b * 0.018, 0.2);
-    eCol = mix(vec3(0.9, 0.86, 0.95), vec3(0.6, 0.5, 1.0), aRand) * 0.75;
-  } else if (tipo < 4.5) {     // ciglia superiori: si piegano in basso quando l'occhio si chiude
-    vec2 base = vec2(a, yUp(a) + 0.025);
-    vec2 dir = normalize(vec2(u * 0.9 + 0.15 * sign(u), 1.0));
-    dir.y = mix(dir.y, -0.6, uPalpebra);
-    float len = (0.14 + 0.2 * (1.0 - abs(u - 0.2) * 0.6)) * (1.0 - smoothstep(0.78, 1.0, abs(u)));
-    p = vec3(base + dir * len * b + vec2(sign(u) * 0.07, 0.05 * (1.0 - 2.0 * uPalpebra)) * b * b, 0.26);
-    eCol = mix(vec3(0.95, 0.9, 1.0), vec3(0.6, 0.48, 1.0), b) * (1.15 - b * 0.45);
-    eSize *= 1.0 - 0.4 * b;
-  } else if (tipo < 5.5) {     // ciglia inferiori
-    vec2 base = vec2(a, yLo(a) - 0.025);
-    float len = 0.065 * (1.0 - smoothstep(0.7, 1.0, abs(u)));
-    p = vec3(base + normalize(vec2(u * 0.7, -1.0)) * len * b, 0.22);
-    eCol = vec3(0.6, 0.5, 1.0) * 0.6;
+  if (tipo < 0.5) {            // superficie della sfera
+    float ct = b, st = sqrt(max(1.0 - ct * ct, 0.0));
+    p = ruotaSguardo(vec3(cos(a) * st, sin(a) * st, ct) * RS);
+    float z = p.z / RS;                       // 1 davanti, -1 dietro
+    float bordo = pow(1.0 - abs(z), 2.2);     // i bordi brillano: effetto sfera
+    eCol = vec3(0.8, 0.74, 1.0) * (0.16 + 0.95 * bordo);
+    eVis = mix(0.12, 1.0, smoothstep(-0.35, 0.15, z));
+    // niente puntini sopra l'iride: lì si vede solo l'iride
+    vec3 dav = ruotaSguardo(vec3(0.0, 0.0, 1.0));
+    eVis *= smoothstep(0.82, 0.78, dot(normalize(p), dav));
   } else if (tipo < 6.5) {     // iride: fibre radiali leggermente ondulate, la pupilla le comprime
     float ang = a + 0.05 * sin(b * 9.0 + a * 5.0);
-    float r = mix(uPupilla + 0.012, RI - 0.02, b);
-    p = bulbo(vec2(cos(ang), sin(ang)) * r);
+    vec2 interno = bordoPupilla(ang, uPupilla + 0.012);
+    p = superficie(mix(interno, vec2(cos(ang), sin(ang)) * (RI - 0.02), b));
     eCol = colIride(b) * (0.45 + 0.6 * aRand) * (b > 0.25 && b < 0.38 ? 1.25 : 1.0);
-    eVis = dentro(p.xy);
   } else if (tipo < 7.5) {     // anello scuro attorno all'iride
-    p = bulbo(vec2(cos(a), sin(a)) * (RI + b * 0.025));
+    p = superficie(vec2(cos(a), sin(a)) * (RI + b * 0.025));
     eCol = vec3(0.42, 0.3, 0.95);
-    eVis = dentro(p.xy);
   } else if (tipo < 8.5) {     // bordo della pupilla
-    p = bulbo(vec2(cos(a), sin(a)) * (uPupilla + b * 0.012));
+    p = superficie(bordoPupilla(a, uPupilla + b * 0.012));
     eCol = vec3(1.0, 0.75, 0.42);
-    eVis = dentro(p.xy);
-  } else if (tipo < 9.5) {     // riflesso della luce sulla cornea: si sposta meno dell'iride
-    vec3 c = bulbo(vec2(0.0));
-    p = vec3(c.xy * 0.55 + vec2(-0.2, 0.21) + vec2(a, b), 0.45);
+  } else if (tipo < 9.5) {     // riflesso della luce: resta fermo, la luce viene da in alto a sinistra
+    p = vec3(-0.34 + a, 0.38 + b, RS + 0.02);
     eCol = vec3(1.0);
-    eVis = dentro(p.xy) * (1.0 - uPalpebra);
-  } else {                     // alone di polvere attorno
-    p = vec3(cos(a) * b * 1.15, sin(a) * b * 0.6, (aRand - 0.5) * 0.8);
-    eCol = vec3(0.55, 0.45, 1.0) * 0.5;
+  } else {                     // polvere attorno
+    p = vec3(cos(a) * b, sin(a) * b, (aRand - 0.5) * 0.8);
+    eCol = vec3(0.55, 0.45, 1.0) * 0.45;
   }
+  p.z -= RS - 0.25;
   return p;
 }
-
 vec3 eye;
 vec3 forma(int i){
   if (i == 0) return eye;
@@ -163,6 +142,7 @@ mat2 ruota(float a){ float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
 
 // Animazioni proprie di ogni forma
 vec3 vivi(vec3 p, int i){
+  if (i == 0) return p;
   if (i == 1) {
     p.xz = ruota(uTime * 0.08) * p.xz;
   } else if (i == 2) {
@@ -219,6 +199,16 @@ void main(){
   vLuce = 0.55 + aRand * 0.45 + pulse * 2.0 + spinta * 6.0;
   vCol = mix(colore(i0), colore(i1), t);
   float vis = i0 == 0 ? mix(eVis, 1.0, t) : 1.0;
+  // dove c'è testo le particelle si spengono: la lettura non viene mai disturbata
+  vec2 px = vec2((ndc.x * 0.5 + 0.5) * uRis.x, (0.5 - ndc.y * 0.5) * uRis.y);
+  float libero = 1.0;
+  for (int j = 0; j < 32; j++) {
+    if (j >= uNTesto) break;
+    vec4 r = uTesto[j];
+    float sd = max(max(r.x - px.x, px.x - r.z), max(r.y - px.y, px.y - r.w));
+    libero = min(libero, smoothstep(-4.0, 22.0, sd));
+  }
+  vis *= mix(0.06, 1.0, libero);
   float dim = i0 == 0 ? mix(eSize, 1.0, t) : 1.0;
   vVis = vis;
   gl_PointSize = vis < 0.01 ? 0.0 : uSize * uPR * dim * (0.45 + aRand * 0.9) * (1.0 + pulse * 1.4) / -mv.z;
@@ -240,21 +230,16 @@ void main(){
 const rnd = (a = -1, b = 1) => a + Math.random() * (b - a);
 function gauss() { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
 
-// tipi: 0 sclera · 1 palpebra sup · 2 piega · 3 palpebra inf · 4 ciglia sup · 5 ciglia inf
-//       6 iride · 7 anello · 8 bordo pupilla · 9 riflesso · 10 alone
-const QUOTE = [[0, 0.13, 0.75], [1, 0.13, 0.9], [2, 0.03, 0.7], [3, 0.07, 0.8], [4, 0.1, 0.75], [5, 0.03, 0.6],
-  [6, 0.385, 0.72], [7, 0.05, 0.85], [8, 0.04, 0.75], [9, 0.006, 1.15], [10, 0.03, 0.8]];
+// tipi: 0 superficie della sfera · 6 iride · 7 anello · 8 bordo pupilla · 9 riflesso · 10 polvere
+const QUOTE = [[0, 0.42, 0.7], [6, 0.42, 0.72], [7, 0.05, 0.85], [8, 0.04, 0.75], [9, 0.006, 1.15], [10, 0.064, 0.8]];
 const hash = (n) => { const x = Math.sin(n * 127.1) * 43758.5453; return x - Math.floor(x); };
 function occhio(N, out, attr) {
-  const L = 1.75, h = (x) => 0.86 * Math.pow(Math.max(1 - (x / L) ** 2, 0), 0.9);
   let i = 0;
   for (const [tipo, quota, dim] of QUOTE) {
     const n = tipo === 10 ? N - i : Math.round(N * quota);
     for (let k = 0; k < n && i < N; k++, i++) {
       let a = 0, b = 0;
-      if (tipo === 0) { do { a = rnd(-L, L); } while (Math.random() > h(a) / 0.86 + 0.15); b = Math.random(); }
-      else if (tipo <= 3) { a = L * Math.sin(rnd(-1, 1) * Math.PI / 2); b = gauss() * 0.5; }
-      else if (tipo <= 5) { const fili = tipo === 4 ? 78 : 46; a = L * (((Math.random() * fili) | 0) / (fili - 1) * 1.84 - 0.92) + gauss() * 0.004; b = Math.pow(Math.random(), 0.8); }
+      if (tipo === 0) { a = Math.random() * Math.PI * 2; b = rnd(-1, 1); }
       else if (tipo === 6) {
         // fibre radiali + collaretto + piccole "cripte" vuote
         for (let tent = 0; tent < 6; tent++) {
@@ -267,11 +252,10 @@ function occhio(N, out, attr) {
         }
       }
       else if (tipo === 7 || tipo === 8) { a = Math.random() * Math.PI * 2; b = gauss(); }
-      else if (tipo === 9) { const g = Math.random() < 0.75; a = g ? rnd(-0.045, 0.045) : 0.1 + gauss() * 0.01; b = g ? rnd(-0.035, 0.035) : -0.09 + gauss() * 0.01; }
-      else { a = Math.random() * Math.PI * 2; b = 1.75 + Math.random() * 1.1; }
+      else if (tipo === 9) { const g = Math.random() < 0.75; a = g ? rnd(-0.05, 0.05) : 0.11 + gauss() * 0.01; b = g ? rnd(-0.04, 0.04) : -0.1 + gauss() * 0.01; }
+      else { a = Math.random() * Math.PI * 2; b = 1.5 + Math.random() * 1.3; }
       attr[i * 4] = tipo; attr[i * 4 + 1] = a; attr[i * 4 + 2] = b; attr[i * 4 + 3] = dim;
-      // posizione indicativa (serve solo come riferimento della geometria)
-      out[i * 3] = tipo <= 5 ? a : 0; out[i * 3 + 1] = 0; out[i * 3 + 2] = 0;
+      out[i * 3] = 0; out[i * 3 + 1] = 0; out[i * 3 + 2] = 0;
     }
   }
 }
@@ -399,7 +383,8 @@ export function avviaScena(canvas) {
     uTime: { value: 0 }, uForma: { value: 0 }, uSize: { value: mobile ? 30 : 34 }, uPR: { value: pr },
     uVel: { value: 0 }, uBattito: { value: 0 }, uOpacity: { value: 0 }, uAspect: { value: 1 },
     uMouse: { value: new THREE.Vector2(9, 9) }, uSguardo: { value: new THREE.Vector2() },
-    uPalpebra: { value: 0 }, uPupilla: { value: 0.22 }, uApertura: { value: 0 }, uSpalanca: { value: 0 }, uSorriso: { value: 0 },
+    uPupilla: { value: 0.2 }, uCuore: { value: 0 },
+    uRis: { value: new THREE.Vector2(1, 1) }, uTesto: { value: Array.from({ length: 32 }, () => new THREE.Vector4()) }, uNTesto: { value: 0 },
     uTinta: { value: new THREE.Color('#8B6CFF') }, uTintaForza: { value: 0 },
     uColA: { value: COLORI.A.map((c) => new THREE.Color(c)) },
     uColB: { value: COLORI.B.map((c) => new THREE.Color(c)) },
@@ -460,8 +445,8 @@ export function avviaScena(canvas) {
     if (segnali.sorpresa) {
       // chi sta per andarsene: le particelle tornano occhio, al centro, e lo guardano
       obiettivo.forma = 0; obiettivo.x = 0; obiettivo.luce = 1;
-      obiettivo.y = altezzaMondo * (mobile ? 0.2 : 0.16);
-      obiettivo.scala = mobile ? 0.5 : 0.72;
+      obiettivo.y = altezzaMondo * (mobile ? 0.17 : 0.13);
+      obiettivo.scala = mobile ? 0.62 : 0.85;
     }
   }
 
@@ -482,8 +467,9 @@ export function avviaScena(canvas) {
   let ultimoInput = -1e9, toccoAttivo = false, dita = false;
   const ora = () => performance.now();
   // segnali dall'esterno (site.js): battito = interesse, sorpresa = sta per uscire, tinta = colore del servizio
-  const segnali = { battito: 0, sorpresa: false, tinta: null, occhiolino: () => { inizioOcchiolino = orologio.elapsedTime; } };
-  let inizioOcchiolino = -1;
+  // occhiolino = per chi torna: la pupilla diventa un cuore
+  const segnali = { battito: 0, sorpresa: false, tinta: null, occhiolino: () => { inizioCuore = orologio.elapsedTime; } };
+  let inizioCuore = -1;
   let dilata = 0, restringi = 0;
   function guarda(x, y, touch) {
     bersaglio.x = x; bersaglio.y = y; ultimoInput = ora(); dita = touch;
@@ -500,36 +486,73 @@ export function avviaScena(canvas) {
   window.addEventListener('touchmove', (e) => { const t = e.touches[0]; if (t) guarda(t.clientX, t.clientY, true); }, { passive: true });
   window.addEventListener('touchend', () => { toccoAttivo = false; ultimoInput = ora(); }, { passive: true });
 
-  // a riposo: piccoli movimenti a scatti (saccadi) attorno al bottone o al centro
-  let saccade = { x: 0, y: 0 }, prossimaSaccade = 0;
-  function bersaglioARiposo(tempo) {
-    if (tempo > prossimaSaccade) {
-      prossimaSaccade = tempo + rnd(0.9, 2.6);
-      saccade = Math.random() < 0.2 ? { x: rnd(-260, 260), y: rnd(-140, 80) } : { x: rnd(-40, 40), y: rnd(-18, 18) };
-    }
+  // a riposo: resta dove l'hai lasciato, poi gira con calma verso il bottone del preventivo
+  function bersaglioARiposo() {
     const meta = document.querySelector('[data-sguardo-meta]');
     if (meta) {
       const r = meta.getBoundingClientRect();
-      if (r.bottom > 0 && r.top < H) return { x: r.left + r.width / 2 + saccade.x, y: r.top + r.height / 2 + saccade.y };
+      if (r.bottom > 0 && r.top < H) return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
     }
-    return { x: W * 0.5 + saccade.x, y: H * 0.55 + saccade.y };
+    return bersaglio;
   }
 
-  // battito di ciglia naturale, ogni tanto doppio
-  let prossimoBlink = 2.5, inizioBlink = -1, doppio = false;
-  function palpebra(tempo) {
-    if (ridotto) return 0;
-    if (inizioBlink < 0 && tempo > prossimoBlink) { inizioBlink = tempo; doppio = Math.random() < 0.15; }
-    if (inizioBlink < 0) return 0;
-    const f = (tempo - inizioBlink) / 0.17;
-    if (f >= 1) {
-      if (doppio) { doppio = false; inizioBlink = tempo + 0.08; return 0; }
-      inizioBlink = -1; prossimoBlink = tempo + rnd(2.5, 6);
-      return 0;
+  // ---------- Il testo resta pulito ----------
+  // Misuro le righe di testo della pagina: le particelle che ci passano sopra si spengono.
+  const SEL_TESTO = 'main :is(h1, h2, h3, p, li, summary, label, dt, dd, blockquote, output, .btn, .capitolo, .mono, .piano-prezzo, .piano-nome, .pacchetto-tag, .tags span, .certificati span)';
+  const SEL_FISSO = '.site-header .brand, .site-header .nav, .site-header .header-cta, .uscita:not([hidden]) :is(h2, p, .btn, .capitolo), .ritorno.visibile';
+  let righe = [];
+  function misuraTesto() {
+    righe = [];
+    const sy = window.scrollY;
+    const rng = document.createRange();
+    const visti = new Set();
+    for (const el of document.querySelectorAll(SEL_TESTO)) {
+      const r = el.getBoundingClientRect();
+      if (!r.width || !r.height || r.bottom < -H || r.top > H * 2) continue;
+      // i bottoni e le etichette contano per intero, non solo le lettere
+      if (el.matches('.btn, .pacchetto-tag, .tags span, .certificati span')) { righe.push([r.left, r.top + sy, r.right, r.bottom + sy]); continue; }
+      // solo le righe di testo vere (non i blocchi interi, che sono larghi quanto la colonna)
+      const giro = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      for (let n = giro.nextNode(); n; n = giro.nextNode()) {
+        if (visti.has(n) || !n.textContent.trim()) continue;
+        visti.add(n);
+        rng.selectNodeContents(n);
+        for (const q of rng.getClientRects()) if (q.width > 2 && q.height > 2) righe.push([q.left, q.top + sy, q.right, q.bottom + sy]);
+      }
     }
-    if (f < 0) return 0;
-    return f < 0.4 ? f / 0.4 : 1 - (f - 0.4) / 0.6;
   }
+  function unisci(a, b) { return [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.max(a[2], b[2]), Math.max(a[3], b[3])]; }
+  const area = (r) => (r[2] - r[0]) * (r[3] - r[1]);
+  function rettangoliVisibili() {
+    const sy = window.scrollY;
+    let v = [];
+    for (const r of righe) { const t = r[1] - sy, bt = r[3] - sy; if (bt > -20 && t < H + 20) v.push([r[0], t, r[2], bt]); }
+    for (const el of document.querySelectorAll(SEL_FISSO)) {
+      const q = el.getBoundingClientRect();
+      if (q.width && q.height && q.bottom > 0 && q.top < H) v.push([q.left, q.top, q.right, q.bottom]);
+    }
+    // stessa riga e vicini: un solo rettangolo
+    v.sort((a, b) => a[1] - b[1] || a[0] - b[0]);
+    const righeUnite = [];
+    for (const r of v) {
+      const u = righeUnite[righeUnite.length - 1];
+      if (u && Math.min(u[3], r[3]) - Math.max(u[1], r[1]) > (r[3] - r[1]) * 0.5 && r[0] - u[2] < 40 && u[0] - r[2] < 40) righeUnite[righeUnite.length - 1] = unisci(u, r);
+      else righeUnite.push(r);
+    }
+    // al massimo 32: unisco le coppie che aggiungono meno area vuota
+    while (righeUnite.length > 32) {
+      let migliore = 0, costo = Infinity;
+      for (let i = 0; i < righeUnite.length - 1; i++) {
+        const c = area(unisci(righeUnite[i], righeUnite[i + 1])) - area(righeUnite[i]) - area(righeUnite[i + 1]);
+        if (c < costo) { costo = c; migliore = i; }
+      }
+      righeUnite.splice(migliore, 2, unisci(righeUnite[migliore], righeUnite[migliore + 1]));
+    }
+    return righeUnite;
+  }
+  misuraTesto();
+  window.addEventListener('resize', () => setTimeout(misuraTesto, 100));
+  document.addEventListener('toggle', () => setTimeout(misuraTesto, 50), true); // domande che si aprono
 
   const centro = new THREE.Vector3();
   const colTinta = new THREE.Color();
@@ -549,6 +572,7 @@ export function avviaScena(canvas) {
     const tReale = orologio.elapsedTime;
     const t = ridotto ? 0 : tReale;
     if (frame++ % 4 === 0) leggiStato();
+    if (frame % 45 === 0) misuraTesto();
 
     const sy = window.scrollY;
     vel += ((sy - ultimoScroll) / Math.max(dt, 0.001) / 4000 - vel) * 0.1;
@@ -563,35 +587,32 @@ export function avviaScena(canvas) {
     uniforms.uMouse.value.lerp(mouse, 1 - Math.exp(-8 * dt));
 
     // sguardo: dal punto sullo schermo alla rotazione del bulbo
-    const fermo = !toccoAttivo && ora() - ultimoInput > (dita ? 1600 : 2800);
+    const fermo = !toccoAttivo && ora() - ultimoInput > (dita ? 2500 : 4500);
     centro.copy(gruppo.position).project(camera);
     const ex = (centro.x + 1) * 0.5 * W, ey = (1 - centro.y) * 0.5 * H;
-    const b = segnali.sorpresa ? { x: ex + Math.sin(tReale * 0.9) * 30, y: ey + 40 } : fermo && !ridotto ? bersaglioARiposo(tReale) : bersaglio;
+    const b = segnali.sorpresa ? { x: ex, y: ey + 30 } : fermo ? bersaglioARiposo() : bersaglio;
     const D = H * 0.75;
     let yaw = THREE.MathUtils.clamp(Math.atan((b.x - ex) / D), -0.5, 0.5);
     let pitch = THREE.MathUtils.clamp(Math.atan(-(b.y - ey) / D), -0.36, 0.36);
     if (!Number.isFinite(yaw) || !Number.isFinite(pitch)) { yaw = 0; pitch = 0; }
-    // movimento rapido come i veri movimenti oculari, più un tremolio quasi invisibile
-    sguardo.x = morbido(sguardo.x, yaw, ridotto ? 6 : 16);
-    sguardo.y = morbido(sguardo.y, pitch, ridotto ? 6 : 16);
-    uniforms.uSguardo.value.set(sguardo.x + Math.sin(t * 37) * 0.003, sguardo.y + Math.cos(t * 41) * 0.003);
+    // segue il puntatore in modo deciso; quando torna da solo verso il bottone lo fa con calma
+    const kSguardo = fermo ? 2.5 : 9;
+    sguardo.x = morbido(sguardo.x, yaw, kSguardo);
+    sguardo.y = morbido(sguardo.y, pitch, kSguardo);
+    uniforms.uSguardo.value.set(sguardo.x, sguardo.y);
 
     // pupilla: si allarga quando qualcosa interessa (bottoni), si stringe a un clic
     dilata = morbido(dilata, Math.max(segnali.battito, segnali.sorpresa ? 1 : 0), 4);
     restringi = morbido(restringi, 0, 3);
-    uniforms.uPupilla.value = 0.22 + 0.09 * dilata - 0.07 * restringi + Math.sin(t * 0.7) * 0.006;
-    uniforms.uApertura.value = dilata;
-    uniforms.uSpalanca.value = morbido(uniforms.uSpalanca.value, segnali.sorpresa ? 1 : 0, segnali.sorpresa ? 9 : 3);
-    // occhiolino: chiusura lenta, guancia che sale, riapertura
-    let wink = 0, sorriso = 0;
-    if (inizioOcchiolino >= 0) {
-      const w = tReale - inizioOcchiolino;
-      wink = w < 0.14 ? w / 0.14 : w < 0.5 ? 1 : w < 0.8 ? 1 - (w - 0.5) / 0.3 : 0;
-      sorriso = w < 0.25 ? w / 0.25 : w < 1.1 ? 1 : w < 1.7 ? 1 - (w - 1.1) / 0.6 : 0;
-      if (w > 1.7) inizioOcchiolino = -1;
+    uniforms.uPupilla.value = 0.2 + 0.08 * dilata + (segnali.sorpresa ? 0.06 : 0) - 0.06 * restringi + Math.sin(t * 0.8) * 0.008;
+    // pupilla a cuore per chi torna: si forma, resta un attimo, torna rotonda
+    let cuore = 0;
+    if (inizioCuore >= 0) {
+      const w = tReale - inizioCuore;
+      cuore = w < 0.4 ? w / 0.4 : w < 2.2 ? 1 : w < 2.8 ? 1 - (w - 2.2) / 0.6 : 0;
+      if (w > 2.8) inizioCuore = -1;
     }
-    uniforms.uSorriso.value = sorriso;
-    uniforms.uPalpebra.value = Math.max(palpebra(tReale), wink);
+    uniforms.uCuore.value = cuore * cuore * (3 - 2 * cuore);
     if (segnali.tinta) uniforms.uTinta.value.lerp(colTinta.set(segnali.tinta), 1 - Math.exp(-8 * dt));
     uniforms.uTintaForza.value = morbido(uniforms.uTintaForza.value, segnali.tinta ? 1 : 0, 5);
 
@@ -607,6 +628,12 @@ export function avviaScena(canvas) {
     gruppo.rotation.x = morbido(gruppo.rotation.x, -my * 0.15 * peso, 3);
     stelle.position.y = (sy / H) * 0.6;
     stelle.rotation.z = t * 0.005;
+
+    // rettangoli del testo visibile
+    const rett = rettangoliVisibili();
+    uniforms.uNTesto.value = rett.length;
+    rett.forEach((r, i) => uniforms.uTesto.value[i].set(r[0], r[1], r[2], r[3]));
+    uniforms.uRis.value.set(W, H);
 
     renderer.render(scene, camera);
   }
