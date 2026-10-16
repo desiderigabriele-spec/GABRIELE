@@ -526,7 +526,8 @@ export function avviaScena(canvas) {
   function rettangoliVisibili() {
     const sy = window.scrollY;
     let v = [];
-    for (const r of righe) { const t = r[1] - sy, bt = r[3] - sy; if (bt > -20 && t < H + 20) v.push([r[0], t, r[2], bt]); }
+    // con la finestra di uscita aperta la pagina è spenta: conta solo il testo in primo piano
+    if (!html.classList.contains('uscita-aperta')) for (const r of righe) { const t = r[1] - sy, bt = r[3] - sy; if (bt > -20 && t < H + 20) v.push([r[0], t, r[2], bt]); }
     for (const el of document.querySelectorAll(SEL_FISSO)) {
       const q = el.getBoundingClientRect();
       if (q.width && q.height && q.bottom > 0 && q.top < H) v.push([q.left, q.top, q.right, q.bottom]);
@@ -551,6 +552,7 @@ export function avviaScena(canvas) {
     return righeUnite;
   }
   misuraTesto();
+  setTimeout(misuraTesto, 1600); // dopo le animazioni d'ingresso dei titoli
   window.addEventListener('resize', () => setTimeout(misuraTesto, 100));
   document.addEventListener('toggle', () => setTimeout(misuraTesto, 50), true); // domande che si aprono
 
