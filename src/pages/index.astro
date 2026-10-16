@@ -48,7 +48,7 @@ const jsonLd = {
           <span class="riga"><span>in chi ti <span class="em em-firma">sceglie.</span></span></span>
         </h1>
         <p class="lead" data-appare="0.25">
-          Siti web, negozi online, software con intelligenza artificiale e pubblicità.
+          <a class="parola-iride" href="#servizi" data-iride="sito">Siti web</a>, <a class="parola-iride" href="#servizi" data-iride="ecommerce">negozi online</a>, <a class="parola-iride" href="#servizi" data-iride="software">software con intelligenza artificiale</a> e <a class="parola-iride" href="#servizi" data-iride="ads">pubblicità</a>.
           Progettati con la psicologia per portare le persone <strong style="color:var(--latte);font-weight:600">dal primo sguardo al «sì»</strong>.
         </p>
         <div class="hero-azioni" data-appare="0.4">
@@ -129,7 +129,7 @@ const jsonLd = {
       </div>
       <div class="servizi-griglia" data-sequenza>
         {servizi.map((s) => (
-          <article class="card servizio">
+          <article class="card servizio" data-iride={s.id}>
             <div class="servizio-top">
               <span class="servizio-icona"><Icona nome={s.icona} /></span>
               <span class="mono">{s.numero}</span>

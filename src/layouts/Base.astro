@@ -13,10 +13,11 @@ interface Props {
   path?: string;
   scena?: boolean;
   barra?: boolean;
+  uscita?: boolean;
   jsonLd?: Record<string, unknown> | null;
 }
 
-const { title, description, path = '/', scena = true, barra = true, jsonLd = null } = Astro.props;
+const { title, description, path = '/', scena = true, barra = true, uscita = true, jsonLd = null } = Astro.props;
 const canonical = new URL(path, Astro.site).toString();
 const current = Astro.url.pathname.replace(/\.html$/, '');
 const isCurrent = (href: string) => (current === href ? 'page' : undefined);
@@ -177,6 +178,27 @@ const voci = [
         <button class="btn btn-vetro btn-piccolo" type="button" data-cookie-no>No, grazie</button>
         <button class="btn btn-vetro btn-piccolo" type="button" data-cookie-si>Va bene</button>
       </div>
+    </div>
+
+    {uscita && (
+      <div class="uscita" data-uscita hidden role="dialog" aria-modal="true" aria-labelledby="uscita-titolo">
+        <div class="uscita-box">
+          <span class="capitolo">Un attimo</span>
+          <h2 id="uscita-titolo">Aspetta, <span class="em em-firma">ti ho visto.</span></h2>
+          <p>Prima di andare: in 2 minuti vedi quanto costa il tuo progetto. Gratis, senza impegno, senza lasciare l'email per forza.</p>
+          <div class="uscita-azioni">
+            <a class="btn btn-azione btn-grande" href="/preventivo" data-azione data-uscita-si>Fammi vedere quanto costa <span class="freccia" aria-hidden="true">→</span></a>
+            <button class="btn btn-vetro" type="button" data-uscita-chiudi>No grazie, ci penso</button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <div class="ritorno" data-ritorno hidden role="status">
+      <span class="ritorno-occhio" aria-hidden="true">◉</span>
+      <p><strong>Bentornato!</strong> <span data-ritorno-testo>Ti stavo aspettando.</span></p>
+      <a class="link-freccia" href="/preventivo" data-ritorno-link>Calcola il preventivo <span class="freccia" aria-hidden="true">→</span></a>
+      <button class="ritorno-chiudi" type="button" aria-label="Chiudi" data-ritorno-chiudi>×</button>
     </div>
 
     <div class="cursore" aria-hidden="true"></div>

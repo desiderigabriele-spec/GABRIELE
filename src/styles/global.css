@@ -403,3 +403,34 @@ html.js:not(.ridotto) [data-appare] { opacity: 0; transform: translateY(28px); }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .grana { display: none; }
 }
+
+/* ---------- Parole che colorano l'iride ---------- */
+.parola-iride { text-decoration: none; color: var(--latte); background-image: linear-gradient(90deg, var(--c, var(--viola)), var(--c, var(--viola))); background-size: 100% 1px; background-position: 0 100%; background-repeat: no-repeat; transition: background-size .4s var(--ease), color .3s; padding-bottom: 1px; }
+.parola-iride[data-iride='sito'] { --c: #ffb547; }
+.parola-iride[data-iride='ecommerce'] { --c: #ff6b8a; }
+.parola-iride[data-iride='software'] { --c: #8b6cff; }
+.parola-iride[data-iride='ads'] { --c: #5ce1e6; }
+.parola-iride:hover { color: var(--c); background-size: 100% 2px; }
+
+/* ---------- Uscita: la pagina si spegne, resta l'occhio che ti guarda ---------- */
+main, .site-footer, .site-header, .barra-pollice, .nastro { transition: opacity .7s var(--ease), filter .7s var(--ease); }
+html.uscita-aperta main, html.uscita-aperta .site-footer, html.uscita-aperta .site-header, html.uscita-aperta .barra-pollice, html.uscita-aperta .cookie, html.uscita-aperta .ritorno { opacity: .05; filter: blur(6px); pointer-events: none; }
+.uscita { position: fixed; inset: 0; z-index: 80; display: flex; align-items: flex-end; justify-content: center; padding: 0 var(--gutter) 9vh; }
+.uscita[hidden] { display: none; }
+.uscita-box { width: 100%; max-width: 640px; display: grid; gap: 1.1rem; justify-items: center; text-align: center; opacity: 0; transform: translateY(24px); transition: opacity .6s var(--ease) .25s, transform .8s var(--ease) .25s; }
+html.uscita-aperta .uscita-box { opacity: 1; transform: none; }
+.uscita-box h2 { font-size: clamp(2.2rem, 5vw, 3.8rem); }
+.uscita-box p { color: var(--nebbia); font-size: 1.08rem; max-width: 30em; }
+.uscita-azioni { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; margin-top: .6rem; }
+@media (max-width: 600px) { .uscita { padding-bottom: calc(5vh + env(safe-area-inset-bottom)); } .uscita-azioni .btn { width: 100%; } }
+
+/* ---------- Bentornato ---------- */
+.ritorno { position: fixed; z-index: 55; left: 16px; bottom: 16px; max-width: 380px; display: grid; grid-template-columns: auto 1fr auto; gap: .3rem .9rem; align-items: center; padding: 1rem 1.1rem; border-radius: var(--r); background: rgba(15,15,24,.94); border: 1px solid rgba(255,181,71,.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 20px 60px -20px rgba(255,94,58,.45); transform: translateY(20px); opacity: 0; transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.ritorno[hidden] { display: none; }
+.ritorno.visibile { opacity: 1; transform: none; }
+.ritorno-occhio { grid-row: span 2; font-size: 1.6rem; background: var(--caldo); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.ritorno p { margin: 0; font-size: .92rem; color: var(--nebbia); }
+.ritorno p strong { color: var(--latte); }
+.ritorno .link-freccia { font-size: .88rem; }
+.ritorno-chiudi { grid-row: 1 / span 2; grid-column: 3; align-self: start; background: none; border: 0; color: var(--nebbia); font-size: 1.3rem; line-height: 1; cursor: pointer; padding: .2rem; }
+@media (max-width: 900px) { .ritorno { left: 12px; right: 12px; max-width: none; bottom: calc(86px + env(safe-area-inset-bottom)); } }

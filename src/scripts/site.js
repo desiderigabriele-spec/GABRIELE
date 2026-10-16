@@ -219,3 +219,110 @@ document.addEventListener('click', (e) => {
   const tipo = a.href.includes('wa.me') ? 'whatsapp' : a.href.startsWith('tel:') ? 'telefono' : a.href.startsWith('mailto:') ? 'email' : 'preventivo';
   window.gdTrack('clic_contatto', { tipo, posizione: a.closest('section')?.id || 'header' });
 });
+
+// ==========================================================================
+// L'occhio: colore dell'iride per servizio, sorpresa all'uscita, occhiolino a chi torna
+// ==========================================================================
+const COLORI_SERVIZIO = { sito: '#FFB547', ecommerce: '#FF6B8A', software: '#8B6CFF', integrazioni: '#A98BFF', ads: '#5CE1E6', cura: '#4BE3A5' };
+const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} } };
+const ls = { get: (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} } };
+
+// ---------- 1. L'iride prende il colore del servizio che guardi ----------
+let tintaTimer = 0;
+function tinta(id) {
+  clearTimeout(tintaTimer);
+  if (scena) scena.tinta = id ? COLORI_SERVIZIO[id] || null : null;
+}
+document.querySelectorAll('[data-iride]').forEach((el) => {
+  el.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') tinta(el.dataset.iride); });
+  el.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'touch') tinta(null); });
+  el.addEventListener('focus', () => tinta(el.dataset.iride));
+  el.addEventListener('blur', () => tinta(null));
+  // su touch il colore resta qualche secondo dopo il tocco
+  el.addEventListener('touchstart', () => { tinta(el.dataset.iride); tintaTimer = setTimeout(() => tinta(null), 2600); }, { passive: true });
+});
+
+// ---------- 2. Sta per andarsene: l'occhio si spalanca e lo ferma ----------
+const uscita = document.querySelector('[data-uscita]');
+const caricata = Date.now();
+let uscitaAperta = false, focusPrima = null;
+function apriUscita(motivo) {
+  if (!uscita || uscitaAperta || ss.get('gd-uscita') || html.classList.contains('menu-aperto')) return;
+  if (Date.now() - caricata < 6000) return; // non disturbare chi è appena arrivato
+  uscitaAperta = true;
+  ss.set('gd-uscita', '1');
+  focusPrima = document.activeElement;
+  uscita.hidden = false;
+  requestAnimationFrame(() => html.classList.add('uscita-aperta'));
+  if (scena) scena.sorpresa = true;
+  lenis?.stop();
+  setTimeout(() => uscita.querySelector('[data-uscita-si]')?.focus({ preventScroll: true }), 400);
+  window.gdTrack('uscita_mostrata', { motivo });
+}
+function chiudiUscita() {
+  if (!uscitaAperta) return;
+  uscitaAperta = false;
+  html.classList.remove('uscita-aperta');
+  if (scena) scena.sorpresa = false;
+  lenis?.start();
+  setTimeout(() => { uscita.hidden = true; }, 500);
+  focusPrima?.focus?.({ preventScroll: true });
+}
+if (uscita) {
+  // desktop: il mouse esce dalla finestra verso l'alto (verso la X o le schede)
+  document.addEventListener('mouseout', (e) => { if (!e.relatedTarget && e.clientY <= 8) apriUscita('mouse'); });
+  // touch: dopo aver letto metà pagina, una risalita veloce verso l'alto
+  let yPrima = window.scrollY, tPrima = performance.now(), maxLetto = 0;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY, t = performance.now();
+    const doc = document.documentElement.scrollHeight - window.innerHeight;
+    maxLetto = Math.max(maxLetto, doc > 0 ? y / doc : 0);
+    const v = (y - yPrima) / Math.max(t - tPrima, 1); // px/ms
+    if (!finePointer && maxLetto > 0.5 && v < -3.2 && Date.now() - caricata > 20000) apriUscita('risalita');
+    yPrima = y; tPrima = t;
+  }, { passive: true });
+  uscita.querySelector('[data-uscita-chiudi]').addEventListener('click', chiudiUscita);
+  uscita.addEventListener('click', (e) => { if (e.target === uscita) chiudiUscita(); });
+  uscita.querySelector('[data-uscita-si]').addEventListener('click', () => window.gdTrack('uscita_clic'));
+  document.addEventListener('keydown', (e) => {
+    if (!uscitaAperta) return;
+    if (e.key === 'Escape') chiudiUscita();
+    if (e.key === 'Tab') {
+      const f = [...uscita.querySelectorAll('a, button')];
+      const i = f.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+}
+
+// ---------- 3. Chi torna riceve un occhiolino ----------
+(function bentornato() {
+  if (ss.get('gd-sessione') || location.pathname.startsWith('/preventivo')) return; // una volta per visita, non nel preventivo
+  ss.set('gd-sessione', '1');
+  const ultima = Number(ls.get('gd-ultima') || 0);
+  ls.set('gd-ultima', String(Date.now()));
+  if (!ultima || Date.now() - ultima < 30 * 60 * 1000) return; // prima visita, o appena uscito
+  const box = document.querySelector('[data-ritorno]');
+  if (!box) return;
+  let progetto = null;
+  try { progetto = JSON.parse(ls.get('gd-preventivo') || 'null'); } catch (_) {}
+  if (progetto && Object.keys(progetto.cat || {}).length) {
+    box.querySelector('[data-ritorno-testo]').textContent = 'Il tuo progetto è ancora qui, come l\'avevi lasciato.';
+    box.querySelector('[data-ritorno-link]').firstChild.textContent = 'Riprendi il preventivo ';
+  }
+  const mostra = () => {
+    setTimeout(() => {
+      scena?.occhiolino?.();
+      box.hidden = false;
+      requestAnimationFrame(() => box.classList.add('visibile'));
+      window.gdTrack('bentornato');
+      setTimeout(() => chiudi(), 10000);
+    }, 1400);
+  };
+  const chiudi = () => { box.classList.remove('visibile'); setTimeout(() => { box.hidden = true; }, 600); };
+  box.querySelector('[data-ritorno-chiudi]').addEventListener('click', chiudi);
+  // aspetta che la scena sia pronta, così l'occhiolino si vede
+  const prova = (n = 0) => { if (scena || n > 25) mostra(); else setTimeout(() => prova(n + 1), 200); };
+  if (html.classList.contains('intro-attiva')) window.addEventListener('gd-intro-fine', () => prova(), { once: true }); else prova();
+})();

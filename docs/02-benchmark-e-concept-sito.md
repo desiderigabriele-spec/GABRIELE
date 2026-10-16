@@ -58,6 +58,11 @@ Cosa guarda:
 - quando la persona sta ferma, **guarda il bottone "Calcola il tuo preventivo"**, con piccoli movimenti a scatti come un occhio vero. È il *gaze cueing*: guardiamo istintivamente dove guarda un volto, quindi l'occhio porta l'attenzione sul punto di conversione;
 - la **pupilla si dilata** quando passi sopra un bottone d'azione (la pupilla si allarga davanti a ciò che ci interessa, studi di Eckhard Hess) e **si stringe a ogni clic**, come davanti a un lampo di luce.
 
+Tre comportamenti in più:
+- **Iride che cambia colore** secondo il servizio su cui passi (parole del titolo, card dei servizi, card del preventivo): ambra per i siti, rosa per i negozi online, viola per software e collegamenti AI, ciano per la pubblicità, verde acqua per la cura. Anche le altre forme di particelle prendono quel colore.
+- **Sorpresa all'uscita:** se il mouse esce dalla finestra verso l'alto (o su telefono, dopo metà pagina, con una risalita veloce), la pagina si spegne, le particelle tornano occhio al centro, spalancato, e lo guardano: «Aspetta, ti ho visto». Una sola volta per visita, mai nei primi 6 secondi, mai nella pagina del preventivo. Si chiude con Esc, con il bottone o cliccando fuori.
+- **Occhiolino a chi torna** (più di 30 minuti dopo l'ultima visita): l'occhio fa l'occhiolino e compare «Bentornato!». Se c'era un preventivo iniziato, il link porta a riprenderlo.
+
 Su telefono l'occhio sta sopra il titolo, a piena luce. Una piccola scritta ("Muovi il mouse: ti sto guardando" / "Tocca lo schermo: ti sto guardando") invita a provarlo e sparisce dopo il primo gesto.
 
 ### Tono di voce

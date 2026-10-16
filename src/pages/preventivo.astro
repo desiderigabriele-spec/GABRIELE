@@ -15,6 +15,7 @@ const passi = ['Cosa ti serve', 'Personalizza', 'Tempi', 'I tuoi contatti'];
   description="Componi il tuo progetto: sito web, negozio online, software con AI, pubblicità. Vedi subito il prezzo e invia la richiesta in 2 minuti."
   path="/preventivo"
   barra={false}
+  uscita={false}
 >
   <section class="pv" data-forma="4" data-lato="destra" data-luce="0.22" data-scala="1.3">
     <div class="wrap">
@@ -44,7 +45,7 @@ const passi = ['Cosa ti serve', 'Personalizza', 'Tempi', 'I tuoi contatti'];
             <p class="pv-aiuto">Puoi sceglierne più di uno. Più servizi scegli, più risparmi: con 2 servizi hai il 5% di sconto, con 3 o più il 10%.</p>
             <div class="pv-cat">
               {categorie.map((c) => (
-                <label class="pv-cat-card">
+                <label class="pv-cat-card" data-iride={c.id}>
                   <input type="checkbox" name="cat" value={c.id} />
                   <span class="pv-cat-icona"><Icona nome={icone[c.id]} /></span>
                   <span class="pv-cat-nome">{c.nome}</span>

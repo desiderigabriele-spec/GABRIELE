@@ -36,7 +36,8 @@ float snoise(vec3 v){
 const vertexShader = /* glsl */ `
 uniform float uTime, uForma, uSize, uPR, uVel, uBattito;
 uniform vec2 uMouse, uSguardo;      // uSguardo = rotazione del bulbo (destra/sinistra, su/giù) in radianti
-uniform float uPalpebra, uPupilla, uApertura;
+uniform float uPalpebra, uPupilla, uApertura, uSpalanca, uSorriso, uTintaForza;
+uniform vec3 uTinta;
 uniform float uAspect;
 uniform vec3 uColA[5];
 uniform vec3 uColB[5];
@@ -55,8 +56,9 @@ const float RS = 1.25;    // raggio del bulbo
 const float RI = 0.64;    // raggio dell'iride (la palpebra ne copre un filo in alto, come nell'occhio vero)
 float hAp(float x){ float u = clamp(x / LARG, -1.0, 1.0); return 0.66 * pow(max(1.0 - u * u, 0.0), 0.85); }
 // palpebra superiore più alta verso l'interno, come in un occhio vero
-float yUp(float x){ float u = clamp(x / LARG, -1.0, 1.0); return hAp(x) * (1.0 + 0.1 * u) * (1.0 + uApertura * 0.14) * (1.0 - 1.95 * uPalpebra) - 0.05; }
-float yLo(float x){ return -hAp(x) * 0.92 - 0.02 + 0.03 * uPalpebra; }
+// uSpalanca = sorpresa (palpebre spalancate), uSorriso = la guancia alza la palpebra di sotto (occhiolino)
+float yUp(float x){ float u = clamp(x / LARG, -1.0, 1.0); return hAp(x) * (1.0 + 0.1 * u) * (1.0 + uApertura * 0.14 + uSpalanca * 0.5 - uSorriso * 0.12) * (1.0 - 1.95 * uPalpebra) - 0.05; }
+float yLo(float x){ return -hAp(x) * (0.92 + uSpalanca * 0.18 - uSorriso * 0.45) - 0.02 + 0.03 * uPalpebra; }
 vec3 bulbo(vec2 d){
   vec3 p = vec3(d, sqrt(max(RS * RS - dot(d, d), 0.0)));
   float cp = cos(uSguardo.y), sp = sin(uSguardo.y);
@@ -69,7 +71,13 @@ vec3 bulbo(vec2 d){
 float dentro(vec2 q){
   return smoothstep(-0.02, 0.02, yUp(q.x) - q.y) * smoothstep(-0.02, 0.02, q.y - yLo(q.x)) * (1.0 - smoothstep(LARG - 0.1, LARG, abs(q.x)));
 }
+vec3 colIride0(float b);
+// l'iride prende il colore del servizio che stai guardando
 vec3 colIride(float b){
+  vec3 tinta = mix(uTinta * 1.25 + 0.12, uTinta * 0.85, smoothstep(0.1, 1.0, b));
+  return mix(colIride0(b), tinta, uTintaForza);
+}
+vec3 colIride0(float b){
   vec3 ambra = vec3(1.0, 0.71, 0.28), fuoco = vec3(1.0, 0.37, 0.23), magenta = vec3(0.82, 0.42, 0.84), viola = vec3(0.55, 0.42, 1.0), ciano = vec3(0.36, 0.88, 0.9);
   if (b < 0.12) return mix(ambra, fuoco, b / 0.12);
   if (b < 0.3) return mix(fuoco, magenta, (b - 0.12) / 0.18);
@@ -149,7 +157,7 @@ vec3 colore(int i){
   else if (i == 2) { a = uColA[2]; b = uColB[2]; }
   else if (i == 3) { a = uColA[3]; b = uColB[3]; }
   else if (i == 4) { a = uColA[4]; b = uColB[4]; }
-  return mix(a, b, aRand);
+  return mix(mix(a, b, aRand), uTinta * (0.8 + 0.4 * aRand), uTintaForza * 0.65);
 }
 mat2 ruota(float a){ float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
 
@@ -391,7 +399,8 @@ export function avviaScena(canvas) {
     uTime: { value: 0 }, uForma: { value: 0 }, uSize: { value: mobile ? 30 : 34 }, uPR: { value: pr },
     uVel: { value: 0 }, uBattito: { value: 0 }, uOpacity: { value: 0 }, uAspect: { value: 1 },
     uMouse: { value: new THREE.Vector2(9, 9) }, uSguardo: { value: new THREE.Vector2() },
-    uPalpebra: { value: 0 }, uPupilla: { value: 0.22 }, uApertura: { value: 0 },
+    uPalpebra: { value: 0 }, uPupilla: { value: 0.22 }, uApertura: { value: 0 }, uSpalanca: { value: 0 }, uSorriso: { value: 0 },
+    uTinta: { value: new THREE.Color('#8B6CFF') }, uTintaForza: { value: 0 },
     uColA: { value: COLORI.A.map((c) => new THREE.Color(c)) },
     uColB: { value: COLORI.B.map((c) => new THREE.Color(c)) },
   };
@@ -435,7 +444,8 @@ export function avviaScena(canvas) {
       const r = s.getBoundingClientRect();
       if (r.top <= c && r.bottom >= c) scelta = s;
     }
-    if (!scelta) return;
+    if (!scelta && !segnali.sorpresa) return;
+    if (!scelta) scelta = sezioni[0] || document.body;
     const altezzaMondo = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     const larghezzaMondo = altezzaMondo * camera.aspect;
     const lato = scelta.dataset.lato || 'centro';
@@ -447,6 +457,12 @@ export function avviaScena(canvas) {
     // su telefono la forma sta dietro al testo: più tenue, per lasciarlo leggibile
     if (mobile) obiettivo.luce *= scelta.dataset.luceMobile != null ? Number(scelta.dataset.luceMobile) : lato !== 'centro' ? 0.45 : 1;
     obiettivo.scala = mobile && scelta.dataset.scalaMobile ? Number(scelta.dataset.scalaMobile) : (Number(scelta.dataset.scala) || 1) * (mobile ? 0.82 : 1);
+    if (segnali.sorpresa) {
+      // chi sta per andarsene: le particelle tornano occhio, al centro, e lo guardano
+      obiettivo.forma = 0; obiettivo.x = 0; obiettivo.luce = 1;
+      obiettivo.y = altezzaMondo * (mobile ? 0.2 : 0.16);
+      obiettivo.scala = mobile ? 0.5 : 0.72;
+    }
   }
 
   // ---------- Interazione ----------
@@ -465,7 +481,9 @@ export function avviaScena(canvas) {
   const bersaglio = { x: W * 0.5, y: H * 0.5 };
   let ultimoInput = -1e9, toccoAttivo = false, dita = false;
   const ora = () => performance.now();
-  const segnali = { battito: 0 };
+  // segnali dall'esterno (site.js): battito = interesse, sorpresa = sta per uscire, tinta = colore del servizio
+  const segnali = { battito: 0, sorpresa: false, tinta: null, occhiolino: () => { inizioOcchiolino = orologio.elapsedTime; } };
+  let inizioOcchiolino = -1;
   let dilata = 0, restringi = 0;
   function guarda(x, y, touch) {
     bersaglio.x = x; bersaglio.y = y; ultimoInput = ora(); dita = touch;
@@ -514,6 +532,7 @@ export function avviaScena(canvas) {
   }
 
   const centro = new THREE.Vector3();
+  const colTinta = new THREE.Color();
   const sguardo = new THREE.Vector2();
 
   let ultimoScroll = window.scrollY, vel = 0;
@@ -537,7 +556,7 @@ export function avviaScena(canvas) {
 
     const morbido = (a, b, k) => a + (b - a) * (1 - Math.exp(-k * dt));
     uniforms.uTime.value = t;
-    uniforms.uForma.value = ridotto ? obiettivo.forma : morbido(uniforms.uForma.value, obiettivo.forma, 2.2);
+    uniforms.uForma.value = ridotto ? obiettivo.forma : morbido(uniforms.uForma.value, obiettivo.forma, segnali.sorpresa ? 7 : 2.2);
     uniforms.uOpacity.value = morbido(uniforms.uOpacity.value, obiettivo.luce, 2.5);
     uniforms.uVel.value = ridotto ? 0 : THREE.MathUtils.clamp(vel, -1.5, 1.5);
     uniforms.uBattito.value = morbido(uniforms.uBattito.value, segnali.battito, 6);
@@ -545,9 +564,9 @@ export function avviaScena(canvas) {
 
     // sguardo: dal punto sullo schermo alla rotazione del bulbo
     const fermo = !toccoAttivo && ora() - ultimoInput > (dita ? 1600 : 2800);
-    const b = fermo && !ridotto ? bersaglioARiposo(tReale) : bersaglio;
     centro.copy(gruppo.position).project(camera);
     const ex = (centro.x + 1) * 0.5 * W, ey = (1 - centro.y) * 0.5 * H;
+    const b = segnali.sorpresa ? { x: ex + Math.sin(tReale * 0.9) * 30, y: ey + 40 } : fermo && !ridotto ? bersaglioARiposo(tReale) : bersaglio;
     const D = H * 0.75;
     let yaw = THREE.MathUtils.clamp(Math.atan((b.x - ex) / D), -0.5, 0.5);
     let pitch = THREE.MathUtils.clamp(Math.atan(-(b.y - ey) / D), -0.36, 0.36);
@@ -558,15 +577,28 @@ export function avviaScena(canvas) {
     uniforms.uSguardo.value.set(sguardo.x + Math.sin(t * 37) * 0.003, sguardo.y + Math.cos(t * 41) * 0.003);
 
     // pupilla: si allarga quando qualcosa interessa (bottoni), si stringe a un clic
-    dilata = morbido(dilata, segnali.battito, 4);
+    dilata = morbido(dilata, Math.max(segnali.battito, segnali.sorpresa ? 1 : 0), 4);
     restringi = morbido(restringi, 0, 3);
     uniforms.uPupilla.value = 0.22 + 0.09 * dilata - 0.07 * restringi + Math.sin(t * 0.7) * 0.006;
     uniforms.uApertura.value = dilata;
-    uniforms.uPalpebra.value = palpebra(tReale);
+    uniforms.uSpalanca.value = morbido(uniforms.uSpalanca.value, segnali.sorpresa ? 1 : 0, segnali.sorpresa ? 9 : 3);
+    // occhiolino: chiusura lenta, guancia che sale, riapertura
+    let wink = 0, sorriso = 0;
+    if (inizioOcchiolino >= 0) {
+      const w = tReale - inizioOcchiolino;
+      wink = w < 0.14 ? w / 0.14 : w < 0.5 ? 1 : w < 0.8 ? 1 - (w - 0.5) / 0.3 : 0;
+      sorriso = w < 0.25 ? w / 0.25 : w < 1.1 ? 1 : w < 1.7 ? 1 - (w - 1.1) / 0.6 : 0;
+      if (w > 1.7) inizioOcchiolino = -1;
+    }
+    uniforms.uSorriso.value = sorriso;
+    uniforms.uPalpebra.value = Math.max(palpebra(tReale), wink);
+    if (segnali.tinta) uniforms.uTinta.value.lerp(colTinta.set(segnali.tinta), 1 - Math.exp(-8 * dt));
+    uniforms.uTintaForza.value = morbido(uniforms.uTintaForza.value, segnali.tinta ? 1 : 0, 5);
 
-    gruppo.position.x = morbido(gruppo.position.x, obiettivo.x, 2.2);
-    gruppo.position.y = morbido(gruppo.position.y, obiettivo.y, 2.2);
-    const sc = morbido(gruppo.scale.x, obiettivo.scala, 2.2);
+    const kPos = segnali.sorpresa ? 6 : 2.2;
+    gruppo.position.x = morbido(gruppo.position.x, obiettivo.x, kPos);
+    gruppo.position.y = morbido(gruppo.position.y, obiettivo.y, kPos);
+    const sc = morbido(gruppo.scale.x, obiettivo.scala, kPos);
     gruppo.scale.setScalar(sc);
     // leggera rotazione verso il mouse per dare profondità (non sull'occhio: guarda già lui)
     const peso = Math.min(uniforms.uForma.value, 1);
