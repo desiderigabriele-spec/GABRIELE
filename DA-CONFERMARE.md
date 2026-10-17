@@ -4,8 +4,8 @@
 - [ ] **Telefono e WhatsApp pubblici**: oggi `+39 338 342 4098` (dal CV). Va bene mostrarlo?
 - [ ] **Email**: oggi `desiderigabriele@gmail.com`. Meglio un'email col dominio (es. `ciao@gabrieledesideri.it`).
 - [ ] **Partita IVA** da mostrare nel footer (`contatti.piva` in `src/data/sito.js`).
-- [ ] **Dominio**: oggi `gabrieledesideri.it` in `astro.config.mjs`, `robots.txt` e dati strutturati. Con il nome «Desideri Studio» valuta `desideristudio.it` (e il .com), e tieni gabrieledesideri.it come reindirizzamento.
-- [ ] **Nome «Desideri Studio»**: controllare che il marchio sia libero (UIBM, EUIPO) e che Instagram e LinkedIn siano liberi. In fattura: «Desideri Studio di Gabriele Desideri».
+- [ ] **Dominio**: oggi `gabrieledesideri.it` in `astro.config.mjs`, `robots.txt` e dati strutturati. Con il nome «Studio Desideri» i domini `studiodesideri.it` e `.com` sono già presi: liberi `studio-desideri.it`, `studio-desideri.com`, `studiodesiderimilano.it`, `studiodesideri.ch`. Tieni gabrieledesideri.it come reindirizzamento.
+- [ ] **Nome «Studio Desideri»**: controllare che il marchio sia libero (UIBM, EUIPO) e che Instagram e LinkedIn siano liberi. In fattura: «Studio Desideri di Gabriele Desideri».
 - [ ] **Foto tua** per la sezione "Chi sono" (oggi c'è solo il testo con il percorso).
 
 ## Contenuti

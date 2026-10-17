@@ -110,7 +110,7 @@ Italiano predefinito (`/`), inglese su pagine vere (`/en`, `/en/quote`, `/en/pri
 Direzione **Aggancio**: un occhio che non guarda chi lo osserva, ma un **punto rosso** accanto a sé, lo stimolo che ha catturato la sua attenzione. È il messaggio del brand in un segno: chi cattura l'attenzione vince.
 - Versione definitiva **Eclisse flat**: sfera avorio `#F2F4F8`, palpebra blu `#3D7BFF`, iride ambra `#FFB547` con la pupilla rivolta verso il punto. Solo colori pieni, leggibile fino a 32 px. Pupilla e fessure sono trasparenti, così il logo prende il fondo di ogni tema.
 - **Punto rosso** (`--segnale`, `#FF3347`): il colore universale del segnale d'attenzione (spia "REC", diretta, notifiche). Sul sito pulsa piano ogni 2,4 secondi, mai con lampeggi veloci; fermo con "riduci movimento".
-- Nome: **Desideri Studio**. «STUDIO» piccolo e spaziato sopra «Desideri», con la D maiuscola. «Studio» comprende siti, AI e pubblicità e suona curato senza far credere a una grande agenzia. Nei titoli delle pagine si aggiunge «Siti web, AI e pubblicità». In fattura: «Desideri Studio di Gabriele Desideri».
+- Nome: **Studio Desideri**. Nel logo si legge dall'alto: «STUDIO» piccolo e spaziato sopra «Desideri», con la D maiuscola. «Studio» comprende siti, AI e pubblicità e suona curato senza far credere a una grande agenzia. Nei titoli delle pagine si aggiunge «Siti web, AI e pubblicità». In fattura: «Studio Desideri di Gabriele Desideri».
 - File: `public/brand/` (marchio, logo orizzontale, logo per fondi chiari, simbolo quadrato), `src/assets/marchio.svg` (header e footer, senza id), `public/favicon.svg`, `public/img/icona-512.png` e `apple-touch-icon.png`.
 
 ### Tipografia

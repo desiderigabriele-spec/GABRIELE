@@ -16,7 +16,7 @@ export const ui = {
   it: {
     lang: 'it', locale: 'it_IT', vaiContenuto: 'Vai al contenuto', menu: 'Menu',
     nav: [['servizi', 'Servizi'], ['metodo', 'Metodo'], ['lavori', 'Lavori'], ['prezzi', 'Prezzi'], ['chi-sono', 'Chi sono']],
-    navEtichetta: 'Principale', home: 'Desideri Studio, home', tagline: 'Dal primo sguardo al sì', ruolo: 'Siti web · AI · Pubblicità',
+    navEtichetta: 'Principale', home: 'Studio Desideri, home', tagline: 'Dal primo sguardo al sì', ruolo: 'Siti web · AI · Pubblicità',
     ctaPreventivo: 'Calcola il preventivo', whatsapp: 'Scrivimi su WhatsApp', personalizza: 'Personalizza',
     zona: 'Milano, Italia e Svizzera',
     footerClaim: 'Di cognome faccio Desideri. Di lavoro, li creo.',
@@ -36,7 +36,7 @@ export const ui = {
   en: {
     lang: 'en', locale: 'en_GB', vaiContenuto: 'Skip to content', menu: 'Menu',
     nav: [['servizi', 'Services'], ['metodo', 'Method'], ['lavori', 'Work'], ['prezzi', 'Pricing'], ['chi-sono', 'About']],
-    navEtichetta: 'Main', home: 'Desideri Studio, home', tagline: 'From first glance to yes', ruolo: 'Websites · AI · Advertising',
+    navEtichetta: 'Main', home: 'Studio Desideri, home', tagline: 'From first glance to yes', ruolo: 'Websites · AI · Advertising',
     ctaPreventivo: 'Get a quote', whatsapp: 'Message me on WhatsApp', personalizza: 'Personalise',
     zona: 'Milan · Italy and Switzerland',
     footerClaim: 'My surname means "desires". Creating them is my job.',
