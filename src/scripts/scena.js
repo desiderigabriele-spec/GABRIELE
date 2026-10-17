@@ -44,6 +44,8 @@ uniform vec3 uTinta;
 uniform float uAspect;
 uniform vec3 uColA[5];
 uniform vec3 uColB[5];
+uniform vec3 uIride[5];          // colori dell'iride dal centro al bordo (cambiano con il tema)
+uniform vec3 uPelle, uAnello, uAlone;
 attribute vec3 aP1, aP2, aP3, aP4;
 attribute float aRand, aT;
 attribute vec4 aOcchio;             // tipo di punto dell'occhio, due parametri, dimensione
@@ -79,11 +81,10 @@ vec3 colIride(float b){
   return mix(colIride0(b), tinta, uTintaForza);
 }
 vec3 colIride0(float b){
-  vec3 ambra = vec3(1.0, 0.82, 0.48), fuoco = vec3(1.0, 0.71, 0.28), magenta = vec3(1.0, 0.42, 0.24), viola = vec3(1.0, 0.3, 0.36), ciano = vec3(0.85, 0.2, 0.26);
-  if (b < 0.12) return mix(ambra, fuoco, b / 0.12);
-  if (b < 0.3) return mix(fuoco, magenta, (b - 0.12) / 0.18);
-  if (b < 0.62) return mix(magenta, viola, (b - 0.3) / 0.32) * 1.2;
-  return mix(viola, ciano, (b - 0.62) / 0.38) * 1.35;
+  if (b < 0.12) return mix(uIride[0], uIride[1], b / 0.12);
+  if (b < 0.3) return mix(uIride[1], uIride[2], (b - 0.12) / 0.18);
+  if (b < 0.62) return mix(uIride[2], uIride[3], (b - 0.3) / 0.32) * 1.15;
+  return mix(uIride[3], uIride[4], (b - 0.62) / 0.38) * 1.3;
 }
 vec3 eCol; float eVis; float eSize;
 vec3 occhio(){
@@ -95,7 +96,7 @@ vec3 occhio(){
     p = ruotaSguardo(vec3(cos(a) * st, sin(a) * st, ct) * RS);
     float z = p.z / RS;                       // 1 davanti, -1 dietro
     float bordo = pow(1.0 - abs(z), 2.2);     // i bordi brillano: effetto sfera
-    eCol = vec3(1.0, 0.84, 0.72) * (0.18 + 1.0 * bordo);
+    eCol = uPelle * (0.18 + 1.0 * bordo);
     eVis = mix(0.12, 1.0, smoothstep(-0.35, 0.15, z));
     // niente puntini sopra l'iride: lì si vede solo l'iride
     vec3 dav = ruotaSguardo(vec3(0.0, 0.0, 1.0));
@@ -107,7 +108,7 @@ vec3 occhio(){
     eCol = colIride(b) * (0.6 + 0.65 * aRand) * (b > 0.25 && b < 0.38 ? 1.25 : 1.0);
   } else if (tipo < 7.5) {     // anello scuro attorno all'iride
     p = superficie(vec2(cos(a), sin(a)) * (RI + b * 0.025));
-    eCol = vec3(0.75, 0.12, 0.18);
+    eCol = uAnello;
   } else if (tipo < 8.5) {     // bordo della pupilla
     p = superficie(bordoPupilla(a, uPupilla + b * 0.012));
     eCol = vec3(1.0, 0.75, 0.42);
@@ -116,7 +117,7 @@ vec3 occhio(){
     eCol = vec3(1.0);
   } else {                     // polvere attorno
     p = vec3(cos(a) * b, sin(a) * b, (aRand - 0.5) * 0.8);
-    eCol = vec3(1.0, 0.45, 0.32) * 0.4;
+    eCol = uAlone * 0.4;
   }
   p.z -= RS - 0.25;
   return p;
@@ -337,10 +338,27 @@ function stella(N, out) {
   }
 }
 
-const COLORI = {
-  A: ['#FF3347', '#FF6A3D', '#FF3347', '#FF3347', '#FFB547'],
-  B: ['#FFB547', '#FFD27A', '#FFB547', '#FF6A3D', '#FFE2B0'],
+// Colori delle particelle per tema: A/B = le due tinte di ogni forma (occhio, rete, spirale, cuore, stella)
+export const TEMI = {
+  blu: {
+    A: ['#3D7BFF', '#3D7BFF', '#3D7BFF', '#FF3347', '#FFB547'], B: ['#5CC8FF', '#5CC8FF', '#9FE8FF', '#FF6A8A', '#FFE2B0'],
+    iride: ['#FFD27A', '#FFB547', '#FF5A4A', '#3D7BFF', '#5CC8FF'], pelle: '#A8C8FF', anello: '#2448C8', alone: '#5C8DFF', stelle: '#9CC0FF',
+  },
+  rosso: {
+    A: ['#FF3347', '#FF6A3D', '#FF3347', '#FF3347', '#FFB547'], B: ['#FFB547', '#FFD27A', '#FFB547', '#FF6A3D', '#FFE2B0'],
+    iride: ['#FFD27A', '#FFB547', '#FF6A3D', '#FF4D5C', '#D9333F'], pelle: '#FFD6B8', anello: '#BF1F2E', alone: '#FF7352', stelle: '#FFCFAE',
+  },
+  viola: {
+    A: ['#8B6CFF', '#8B6CFF', '#8B6CFF', '#FF5E3A', '#FFB547'], B: ['#5CE1E6', '#5CE1E6', '#FF7A59', '#FF4D8D', '#FFE2B0'],
+    iride: ['#FFB547', '#FF5E3A', '#D16BD6', '#8B6CFF', '#5CE1E6'], pelle: '#CCBDFF', anello: '#6B4CF2', alone: '#8B73FF', stelle: '#B6A3FF',
+  },
+  verde: {
+    A: ['#22D47E', '#22D47E', '#22D47E', '#FF5E3A', '#FFB547'], B: ['#C6F36B', '#8FF0B4', '#C6F36B', '#FF7A59', '#FFE2B0'],
+    iride: ['#FFD27A', '#FFB547', '#C6F36B', '#22D47E', '#14A86A'], pelle: '#B5F2CF', anello: '#12925A', alone: '#3DDB8F', stelle: '#9EF0C2',
+  },
 };
+const temaIniziale = () => TEMI[document.documentElement.dataset.tema] ? document.documentElement.dataset.tema : 'blu';
+const COLORI = TEMI[temaIniziale()];
 
 export function avviaScena(canvas) {
   const ridotto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -388,6 +406,8 @@ export function avviaScena(canvas) {
     uTinta: { value: new THREE.Color('#FF3347') }, uTintaForza: { value: 0 },
     uColA: { value: COLORI.A.map((c) => new THREE.Color(c)) },
     uColB: { value: COLORI.B.map((c) => new THREE.Color(c)) },
+    uIride: { value: COLORI.iride.map((c) => new THREE.Color(c)) },
+    uPelle: { value: new THREE.Color(COLORI.pelle) }, uAnello: { value: new THREE.Color(COLORI.anello) }, uAlone: { value: new THREE.Color(COLORI.alone) },
   };
   const mat = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
   const punti = new THREE.Points(geo, mat);
@@ -402,7 +422,7 @@ export function avviaScena(canvas) {
   for (let i = 0; i < S; i++) { sp[i * 3] = rnd(-14, 14); sp[i * 3 + 1] = rnd(-9, 9); sp[i * 3 + 2] = rnd(-20, -4); }
   const sgeo = new THREE.BufferGeometry();
   sgeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
-  const smat = new THREE.PointsMaterial({ color: 0xffcfae, size: 0.035, transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending });
+  const smat = new THREE.PointsMaterial({ color: new THREE.Color(COLORI.stelle), size: 0.035, transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending });
   const stelle = new THREE.Points(sgeo, smat);
   scene.add(stelle);
 
@@ -569,6 +589,26 @@ export function avviaScena(canvas) {
 
   let ultimoScroll = window.scrollY, vel = 0;
 
+  // ---------- Cambio di tema: i colori sfumano verso quelli nuovi ----------
+  let temaObiettivo = null;
+  function preparaTema(nome) {
+    const t = TEMI[nome] || TEMI.blu;
+    temaObiettivo = {
+      A: t.A.map((c) => new THREE.Color(c)), B: t.B.map((c) => new THREE.Color(c)), iride: t.iride.map((c) => new THREE.Color(c)),
+      pelle: new THREE.Color(t.pelle), anello: new THREE.Color(t.anello), alone: new THREE.Color(t.alone), stelle: new THREE.Color(t.stelle),
+    };
+  }
+  window.addEventListener('gd-tema', (e) => preparaTema(e.detail));
+  function sfumaTema(k) {
+    if (!temaObiettivo) return;
+    const o = temaObiettivo;
+    uniforms.uColA.value.forEach((c, i) => c.lerp(o.A[i], k));
+    uniforms.uColB.value.forEach((c, i) => c.lerp(o.B[i], k));
+    uniforms.uIride.value.forEach((c, i) => c.lerp(o.iride[i], k));
+    uniforms.uPelle.value.lerp(o.pelle, k); uniforms.uAnello.value.lerp(o.anello, k); uniforms.uAlone.value.lerp(o.alone, k);
+    smat.color.lerp(o.stelle, k);
+  }
+
   // ---------- Ciclo ----------
   const orologio = new THREE.Clock();
   let attivo = true, frame = 0;
@@ -594,6 +634,7 @@ export function avviaScena(canvas) {
     uniforms.uVel.value = ridotto ? 0 : THREE.MathUtils.clamp(vel, -1.5, 1.5);
     uniforms.uBattito.value = morbido(uniforms.uBattito.value, segnali.battito, 6);
     uniforms.uMouse.value.lerp(mouse, 1 - Math.exp(-8 * dt));
+    sfumaTema(1 - Math.exp(-4 * dt));
 
     // sguardo: dal punto sullo schermo alla rotazione del bulbo
     const fermo = !toccoAttivo && ora() - ultimoInput > (dita ? 2500 : 4500);

@@ -223,7 +223,8 @@ document.addEventListener('click', (e) => {
 // ==========================================================================
 // L'occhio: colore dell'iride per servizio, sorpresa all'uscita, occhiolino a chi torna
 // ==========================================================================
-const COLORI_SERVIZIO = { sito: '#FFB547', ecommerce: '#FF6A3D', software: '#FF3347', integrazioni: '#FF8A5C', ads: '#FFD27A', cura: '#FFE6C4' };
+// colori fissi per servizio, uguali in ogni tema
+const COLORI_SERVIZIO = { sito: '#FFB547', ecommerce: '#FF6B8A', software: '#A98BFF', integrazioni: '#B9A2FF', ads: '#5CE1E6', cura: '#4BE3A5' };
 const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} } };
 const ls = { get: (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} } };
 
