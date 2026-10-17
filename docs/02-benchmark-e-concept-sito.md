@@ -39,7 +39,7 @@ Tutto il sito è il percorso AIDA reso visibile: un **campo di migliaia di parti
 
 | Capitolo | Forma delle particelle | Messaggio |
 |---|---|---|
-| 01 · Attenzione | **Un occhio** che segue il mouse | "Ti ho visto. Anche i tuoi clienti ti vedranno." |
+| 01 · Attenzione | **Un occhio** che va dove c'è uno stimolo | "L'attenzione è la moneta più preziosa di oggi. Chi la cattura, vince." |
 | 02 · Interesse | **Una rete neurale** che pulsa | Cosa faccio, spiegato semplice: siti, e-commerce, AI, pubblicità |
 | 03 · Fiducia | **Un percorso a spirale** (il funnel) | Il metodo, i lavori, chi sono |
 | 04 · Desiderio | **Un cuore** che batte | Prezzi chiari, risultati, garanzie |
@@ -51,16 +51,16 @@ Il visitatore vive sulla propria pelle quello che Gabriele farà per i suoi clie
 Una **sfera di luce** che fluttua nello spazio e ruota tutta verso ciò che guardi (le palpebre a puntini sono state tolte: dal vivo sembravano un contorno disegnato).
 - **Profondità:** i bordi della sfera brillano, i punti sul retro quasi spariscono.
 - **Davanti:** iride con fibre, collaretto e anello scuro, pupilla, riflesso della luce fisso in alto a sinistra.
-- **Cosa guarda:** il mouse, il punto in cui clicchi, il dito su telefono (anche mentre scorri). Se la persona sta ferma, la sfera resta dove l'ha lasciata e dopo qualche secondo gira **con calma, in un solo movimento**, verso il bottone "Calcola il tuo preventivo" (*gaze cueing*: guardiamo dove guarda un volto).
-- **Pupilla:** si allarga sui bottoni d'azione (Eckhard Hess: la pupilla si dilata davanti a ciò che ci interessa), si stringe a ogni clic e "respira" piano.
+- **Cosa rappresenta:** non osserva chi visita il sito. È **l'attenzione del pubblico**, e mostra come la si cattura: va verso ciò che si muove (segue il puntatore e il dito) e si **aggancia a ciò che spicca** (bottoni, parole colorate, «sceglie.»). Quando la persona sta ferma, gira con calma verso lo stimolo più forte della pagina, il bottone "Calcola il tuo preventivo": chi guarda segue lo sguardo e arriva lì anche lui (*gaze cueing*).
+- **Pupilla:** si allarga quando l'attenzione viene catturata (bottoni, parole), ancora di più sui bottoni d'azione (Eckhard Hess: la pupilla si dilata davanti a ciò che ci interessa), si stringe a ogni clic e "respira" piano.
 - **Iride che cambia colore** secondo il servizio su cui passi (parole del titolo, card dei servizi, card del preventivo): ambra per i siti, rosa per i negozi online, viola per software e collegamenti AI, ciano per la pubblicità, verde acqua per la cura. Anche le altre forme di particelle prendono quel colore.
-- **Sorpresa all'uscita:** se il mouse esce dalla finestra verso l'alto (o su telefono, dopo metà pagina, con una risalita veloce), la pagina si spegne, la sfera torna al centro, si avvicina, la pupilla si allarga: «Aspetta, ti ho visto». Una sola volta per visita, mai nei primi 6 secondi, mai nella pagina del preventivo.
+- **Sorpresa all'uscita:** se il mouse esce dalla finestra verso l'alto (o su telefono, dopo metà pagina, con una risalita veloce), la pagina si spegne, la sfera torna al centro, si avvicina e guarda il bottone dell'offerta: «Prima di andare, guarda qui». Una sola volta per visita, mai nei primi 6 secondi, mai nella pagina del preventivo.
 - **Chi torna** (più di 30 minuti dopo l'ultima visita): la pupilla diventa un **cuore** per un paio di secondi e compare «Bentornato!». Se c'era un preventivo iniziato, il link porta a riprenderlo.
 
 ### Il testo resta sempre leggibile
 La scena misura le righe di testo visibili (titoli, paragrafi, bottoni, etichette, header e finestre in primo piano) e **spegne le particelle che ci passano sopra**, con un bordo sfumato. Vale per tutte le forme (sfera, rete neurale, spirale, cuore, stella), anche durante le trasformazioni e mentre si scorre: le forme si aprono attorno alle parole invece di coprirle.
 
-Su telefono l'occhio sta sopra il titolo, a piena luce. Una piccola scritta ("Muovi il mouse: ti sto guardando" / "Tocca lo schermo: ti sto guardando") invita a provarlo e sparisce dopo il primo gesto.
+Su telefono l'occhio sta sopra il titolo, a piena luce. Sotto l'occhio c'è la sua didascalia: «L'attenzione è la moneta più preziosa di oggi. Chi la cattura, vince.», con l'invito «Passa sulle parole e guarda dove va l'attenzione» (sparisce dopo il primo gesto).
 
 ### Tono di voce
 - Frasi corte. Parole di tutti i giorni. Niente inglese inutile (se serve una parola tecnica, la si spiega subito: *"funnel, cioè il percorso che porta un visitatore a comprare"*).

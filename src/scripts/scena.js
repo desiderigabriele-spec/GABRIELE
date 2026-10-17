@@ -458,10 +458,14 @@ export function avviaScena(canvas) {
   }, { passive: true });
   document.addEventListener('pointerleave', () => mouse.set(9, 9));
 
-  // ---------- Dove guarda l'occhio ----------
-  // Segue il mouse, il punto in cui clicchi e il dito su touch. Se non fai niente
-  // guarda il bottone del preventivo ([data-sguardo-meta]): le persone guardano
-  // istintivamente dove guarda un volto (gaze cueing).
+  // ---------- Dove va l'attenzione ----------
+  // L'occhio non guarda chi visita: è l'attenzione del pubblico, e va dove c'è uno stimolo.
+  // Il movimento la attira (segue il puntatore), ciò che spicca la cattura (bottoni, parole
+  // colorate: lì si aggancia e la pupilla si allarga). A riposo torna sullo stimolo più forte
+  // della pagina, il bottone del preventivo ([data-sguardo-meta]): chi guarda il sito segue
+  // lo sguardo e arriva lì anche lui (gaze cueing).
+  const STIMOLI = '[data-stimolo], .btn, .parola-iride, .em-firma, .link-freccia, summary, .pv-cat-card, .pv-livello';
+  let catturato = null, catturatoFino = 0;
   const html = document.documentElement;
   const bersaglio = { x: W * 0.5, y: H * 0.5 };
   let ultimoInput = -1e9, toccoAttivo = false, dita = false;
@@ -476,8 +480,10 @@ export function avviaScena(canvas) {
     if (!html.classList.contains('sguardo-usato')) html.classList.add('sguardo-usato');
   }
   window.addEventListener('pointermove', (e) => { if (e.pointerType !== 'touch') guarda(e.clientX, e.clientY, false); }, { passive: true });
+  window.addEventListener('pointerover', (e) => { if (e.pointerType !== 'touch') catturato = e.target.closest?.(STIMOLI) || null; }, { passive: true });
   window.addEventListener('pointerdown', (e) => {
     guarda(e.clientX, e.clientY, e.pointerType === 'touch');
+    if (e.pointerType === 'touch') { catturato = e.target.closest?.(STIMOLI) || null; catturatoFino = ora() + 2500; }
     restringi = 1; // un clic è come un lampo di luce: la pupilla si stringe
     if (e.target.closest?.('[data-azione], .btn-azione')) segnali.battito = 1;
   }, { passive: true });
@@ -592,7 +598,13 @@ export function avviaScena(canvas) {
     const fermo = !toccoAttivo && ora() - ultimoInput > (dita ? 2500 : 4500);
     centro.copy(gruppo.position).project(camera);
     const ex = (centro.x + 1) * 0.5 * W, ey = (1 - centro.y) * 0.5 * H;
-    const b = segnali.sorpresa ? { x: ex, y: ey + 30 } : fermo ? bersaglioARiposo() : bersaglio;
+    // su touch lo stimolo toccato resta "agganciato" qualche secondo
+    if (catturato && dita && ora() > catturatoFino) catturato = null;
+    const centroDi = (el) => { const r = el?.getBoundingClientRect?.(); return r && r.width ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null; };
+    const offerta = segnali.sorpresa ? centroDi(document.querySelector('[data-uscita-si]')) : null;
+    const b = segnali.sorpresa ? offerta || { x: ex, y: ey + 200 }
+      : catturato && catturato.isConnected ? centroDi(catturato) || bersaglio
+      : fermo ? bersaglioARiposo() : bersaglio;
     const D = H * 0.75;
     let yaw = THREE.MathUtils.clamp(Math.atan((b.x - ex) / D), -0.5, 0.5);
     let pitch = THREE.MathUtils.clamp(Math.atan(-(b.y - ey) / D), -0.36, 0.36);
@@ -604,7 +616,7 @@ export function avviaScena(canvas) {
     uniforms.uSguardo.value.set(sguardo.x, sguardo.y);
 
     // pupilla: si allarga quando qualcosa interessa (bottoni), si stringe a un clic
-    dilata = morbido(dilata, Math.max(segnali.battito, segnali.sorpresa ? 1 : 0), 4);
+    dilata = morbido(dilata, Math.max(segnali.battito, segnali.sorpresa ? 1 : 0, catturato ? 0.6 : 0), 4);
     restringi = morbido(restringi, 0, 3);
     uniforms.uPupilla.value = 0.2 + 0.08 * dilata + (segnali.sorpresa ? 0.06 : 0) - 0.06 * restringi + Math.sin(t * 0.8) * 0.008;
     // pupilla a cuore per chi torna: si forma, resta un attimo, torna rotonda
