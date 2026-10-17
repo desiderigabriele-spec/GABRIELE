@@ -76,17 +76,21 @@ Su telefono l'occhio sta sopra il titolo, a piena luce. Sotto l'occhio c'è la s
 ## 3. Identità visiva
 
 ### Colori (ruolo prima del gusto)
-| Token | Colore | Ruolo | Perché |
-|---|---|---|---|
-| `--notte` | `#07070C` | Sfondo | Il nero profondo fa risaltare la luce e comunica premium. Lo spazio infinito |
-| `--superficie` | `#0F0F18` | Card, pannelli | Profondità senza contrasti duri |
-| `--latte` | `#F4F1EA` | Testo principale | Bianco caldo, meno freddo e stancante del bianco puro |
-| `--nebbia` | `#A9A6B8` | Testo secondario | Gerarchia senza aggiungere colori |
-| `--viola` | `#8B6CFF` | Intelligenza, AI, creatività | Viola = raffinatezza (Labrecque & Milne) e il colore che oggi tutti associano all'AI |
-| `--ciano` | `#5CE1E6` | Dati, numeri, dettagli tecnici | Piccoli accenti "da laboratorio" |
-| `--fuoco` → `--ambra` | `#FF5E3A` → `#FFB547` | **Solo azione**: bottoni, prezzi, punti di conversione | Caldo = desiderio e azione. Sono gli unici elementi caldi della pagina, quindi l'occhio ci va da solo (effetto Von Restorff) |
+Palette **B · Rosso e ambra protagonisti**, scelta dopo il confronto in «Palette Desideri a confronto». È la più coerente con il concetto di attenzione e con il punto rosso del logo.
 
-**Regola:** i colori freddi servono a capire, quelli caldi ad agire. Il gradiente viola → fuoco è la firma: il passaggio dalla ragione all'emozione, cioè dall'interesse al desiderio.
+| Token | Colore | Ruolo |
+|---|---|---|
+| `--notte` | `#0B0807` | Sfondo: nero caldo |
+| `--superficie` | `#16100E` | Card, pannelli |
+| `--latte` | `#F6EFE6` | Testo principale (avorio) |
+| `--nebbia` | `#B5A99D` | Testo secondario |
+| `--viola` (nome storico) | `#FF3347` | **Rosso segnale**: il colore del brand e dell'attenzione (punto del logo, parole in evidenza, dettagli) |
+| `--viola-chiaro` | `#FFB08F` | Etichette, capitoli |
+| `--ciano` (nome storico) | `#FFCF8A` | Dati, numeri, spunte |
+| `--fuoco` | `#FF6A3D` | Brace: sfumature |
+| `--ambra` / `--caldo` | `#FFB547` | **Azione**: bottoni pieni in ambra con testo scuro, la cosa più luminosa della pagina |
+
+**Regola:** il rosso cattura l'attenzione, l'ambra fa agire. Il gradiente rosso → brace → ambra (le parole come *sceglie.*) è la firma: dallo stimolo all'azione. Le forme di particelle usano gli stessi colori: iride ambra con anello rosso, sfera color pesca.
 
 ### Logo
 Direzione **Aggancio**: un occhio che non guarda chi lo osserva, ma un **punto rosso** accanto a sé, lo stimolo che ha catturato la sua attenzione. È il messaggio del brand in un segno: chi cattura l'attenzione vince.

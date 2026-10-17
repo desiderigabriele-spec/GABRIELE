@@ -79,7 +79,7 @@ vec3 colIride(float b){
   return mix(colIride0(b), tinta, uTintaForza);
 }
 vec3 colIride0(float b){
-  vec3 ambra = vec3(1.0, 0.71, 0.28), fuoco = vec3(1.0, 0.37, 0.23), magenta = vec3(0.82, 0.42, 0.84), viola = vec3(0.55, 0.42, 1.0), ciano = vec3(0.36, 0.88, 0.9);
+  vec3 ambra = vec3(1.0, 0.82, 0.48), fuoco = vec3(1.0, 0.71, 0.28), magenta = vec3(1.0, 0.42, 0.24), viola = vec3(1.0, 0.3, 0.36), ciano = vec3(0.85, 0.2, 0.26);
   if (b < 0.12) return mix(ambra, fuoco, b / 0.12);
   if (b < 0.3) return mix(fuoco, magenta, (b - 0.12) / 0.18);
   if (b < 0.62) return mix(magenta, viola, (b - 0.3) / 0.32) * 1.2;
@@ -95,7 +95,7 @@ vec3 occhio(){
     p = ruotaSguardo(vec3(cos(a) * st, sin(a) * st, ct) * RS);
     float z = p.z / RS;                       // 1 davanti, -1 dietro
     float bordo = pow(1.0 - abs(z), 2.2);     // i bordi brillano: effetto sfera
-    eCol = vec3(0.8, 0.74, 1.0) * (0.16 + 0.95 * bordo);
+    eCol = vec3(1.0, 0.84, 0.72) * (0.18 + 1.0 * bordo);
     eVis = mix(0.12, 1.0, smoothstep(-0.35, 0.15, z));
     // niente puntini sopra l'iride: lì si vede solo l'iride
     vec3 dav = ruotaSguardo(vec3(0.0, 0.0, 1.0));
@@ -104,10 +104,10 @@ vec3 occhio(){
     float ang = a + 0.05 * sin(b * 9.0 + a * 5.0);
     vec2 interno = bordoPupilla(ang, uPupilla + 0.012);
     p = superficie(mix(interno, vec2(cos(ang), sin(ang)) * (RI - 0.02), b));
-    eCol = colIride(b) * (0.45 + 0.6 * aRand) * (b > 0.25 && b < 0.38 ? 1.25 : 1.0);
+    eCol = colIride(b) * (0.6 + 0.65 * aRand) * (b > 0.25 && b < 0.38 ? 1.25 : 1.0);
   } else if (tipo < 7.5) {     // anello scuro attorno all'iride
     p = superficie(vec2(cos(a), sin(a)) * (RI + b * 0.025));
-    eCol = vec3(0.42, 0.3, 0.95);
+    eCol = vec3(0.75, 0.12, 0.18);
   } else if (tipo < 8.5) {     // bordo della pupilla
     p = superficie(bordoPupilla(a, uPupilla + b * 0.012));
     eCol = vec3(1.0, 0.75, 0.42);
@@ -116,7 +116,7 @@ vec3 occhio(){
     eCol = vec3(1.0);
   } else {                     // polvere attorno
     p = vec3(cos(a) * b, sin(a) * b, (aRand - 0.5) * 0.8);
-    eCol = vec3(0.55, 0.45, 1.0) * 0.45;
+    eCol = vec3(1.0, 0.45, 0.32) * 0.4;
   }
   p.z -= RS - 0.25;
   return p;
@@ -338,8 +338,8 @@ function stella(N, out) {
 }
 
 const COLORI = {
-  A: ['#8B6CFF', '#8B6CFF', '#8B6CFF', '#FF5E3A', '#FFB547'],
-  B: ['#5CE1E6', '#5CE1E6', '#FF7A59', '#FF4D8D', '#FFE2B0'],
+  A: ['#FF3347', '#FF6A3D', '#FF3347', '#FF3347', '#FFB547'],
+  B: ['#FFB547', '#FFD27A', '#FFB547', '#FF6A3D', '#FFE2B0'],
 };
 
 export function avviaScena(canvas) {
@@ -385,7 +385,7 @@ export function avviaScena(canvas) {
     uMouse: { value: new THREE.Vector2(9, 9) }, uSguardo: { value: new THREE.Vector2() },
     uPupilla: { value: 0.2 }, uCuore: { value: 0 },
     uRis: { value: new THREE.Vector2(1, 1) }, uTesto: { value: Array.from({ length: 32 }, () => new THREE.Vector4()) }, uNTesto: { value: 0 },
-    uTinta: { value: new THREE.Color('#8B6CFF') }, uTintaForza: { value: 0 },
+    uTinta: { value: new THREE.Color('#FF3347') }, uTintaForza: { value: 0 },
     uColA: { value: COLORI.A.map((c) => new THREE.Color(c)) },
     uColB: { value: COLORI.B.map((c) => new THREE.Color(c)) },
   };
@@ -402,7 +402,7 @@ export function avviaScena(canvas) {
   for (let i = 0; i < S; i++) { sp[i * 3] = rnd(-14, 14); sp[i * 3 + 1] = rnd(-9, 9); sp[i * 3 + 2] = rnd(-20, -4); }
   const sgeo = new THREE.BufferGeometry();
   sgeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
-  const smat = new THREE.PointsMaterial({ color: 0xb6a3ff, size: 0.035, transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending });
+  const smat = new THREE.PointsMaterial({ color: 0xffcfae, size: 0.035, transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending });
   const stelle = new THREE.Points(sgeo, smat);
   scene.add(stelle);
 
