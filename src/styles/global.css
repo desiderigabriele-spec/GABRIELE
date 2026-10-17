@@ -104,7 +104,7 @@ h1 { font-size: clamp(2.4rem, 5.8vw, 5.4rem); font-weight: 700; letter-spacing: 
 h2 { font-size: clamp(2.1rem, 5vw, 4.4rem); letter-spacing: -0.03em; }
 h3 { font-size: clamp(1.3rem, 1.8vw, 1.7rem); letter-spacing: -0.015em; line-height: 1.15; }
 p { margin: 0; text-wrap: pretty; }
-.em { font-family: var(--f-emozione); font-style: italic; font-weight: 400; letter-spacing: -0.01em; font-size: 1.06em; }
+.em { font-family: var(--f-emozione); font-style: italic; font-weight: 400; letter-spacing: .012em; font-size: 1.22em; }
 .em-firma { background: var(--firma); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .08em; }
 .mono { font-family: var(--f-mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--nebbia); }
 .capitolo { display: inline-flex; align-items: center; gap: .75rem; font-family: var(--f-mono); font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--viola-chiaro); }
@@ -249,7 +249,9 @@ html.intro-fine .intro-punto { animation: intro-esplodi .7s var(--ease) forwards
 @media (max-width: 900px) { .scorri { display: none; } }
 .didascalia { position: absolute; right: var(--gutter); bottom: 11vh; width: min(360px, 34vw); display: grid; gap: .7rem; justify-items: start; }
 .didascalia-testo { margin: 0; font-size: .98rem; line-height: 1.45; color: var(--nebbia); padding-left: 1rem; border-left: 1px solid rgba(255,181,71,.5); }
-.didascalia-testo .em { font-size: 1.15em; }
+.didascalia-testo .em { font-size: 1.32em; line-height: 1.25; }
+/* nelle frasi piccole la sfumatura si schiarisce, così si stacca meglio dal fondo scuro */
+.didascalia-testo .em-firma { filter: brightness(1.35) saturate(.9); }
 .sguardo-hint { margin: 0; padding-left: 1rem; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--nebbia); display: flex; align-items: center; gap: .7rem; opacity: 0; transition: opacity 1s var(--ease); pointer-events: none; }
 .sguardo-hint::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--ambra); box-shadow: 0 0 12px var(--ambra); animation: hint-pulsa 1.6s ease-in-out infinite; }
 html.scena-on .sguardo-hint { opacity: 1; transition-delay: 1.2s; }
@@ -327,7 +329,7 @@ input[type='range']::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .passo { min-height: 78vh; display: grid; align-content: center; gap: 1.2rem; padding-block: 8vh; }
 .passo-num { font-family: var(--f-titolo); font-size: clamp(4rem, 9vw, 8rem); line-height: .9; font-weight: 800; letter-spacing: -0.05em; color: transparent; -webkit-text-stroke: 1px rgba(var(--latte-rgb),.25); }
 .passo h3 { font-size: clamp(1.8rem, 3.2vw, 2.8rem); }
-.passo-testa { font-family: var(--f-emozione); font-style: italic; font-size: clamp(1.25rem, 1.6vw, 1.55rem); color: var(--viola-chiaro); line-height: 1.35; }
+.passo-testa { font-family: var(--f-emozione); font-style: italic; letter-spacing: .012em; font-size: clamp(1.45rem, 1.85vw, 1.78rem); color: var(--viola-chiaro); line-height: 1.35; }
 .passo-tecnica { display: grid; gap: .5rem; padding: 1.2rem 1.3rem; border-radius: var(--r); background: rgba(var(--sup-rgb),.8); border: 1px solid var(--linea); max-width: 34em; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .passo-tecnica .mono { color: var(--ciano); }
 .passo-tecnica p { color: var(--nebbia); font-size: .97rem; }
@@ -428,7 +430,7 @@ input[type='range']::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .footer-grid ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
 .footer-grid a { text-decoration: none; color: var(--nebbia); }
 .footer-grid a:hover { color: var(--latte); }
-.footer-claim { font-family: var(--f-emozione); font-style: italic; font-size: 1.8rem; line-height: 1.15; margin-top: 1rem; max-width: 14em; }
+.footer-claim { font-family: var(--f-emozione); font-style: italic; letter-spacing: .012em; font-size: 2.07rem; line-height: 1.15; margin-top: 1rem; max-width: 14em; }
 .footer-legale { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--linea); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; font-size: .82rem; color: var(--nebbia-2); }
 .footer-legale a { color: inherit; }
 @media (max-width: 820px) { .footer-grid { grid-template-columns: 1fr; } }
