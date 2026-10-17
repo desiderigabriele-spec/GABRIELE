@@ -24,5 +24,6 @@ export function dati(lang = 'it') {
     faq: en.faq,
     categorie: categorieEn(),
     tempi: perId(listino.tempi, en.tempi),
+    incontri: perId(listino.incontri, en.incontri),
   };
 }

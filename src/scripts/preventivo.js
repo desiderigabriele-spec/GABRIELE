@@ -2,7 +2,7 @@
 // salva il progetto nel browser e invia la richiesta.
 import gsap from 'gsap';
 import { dati as datiLingua } from '../i18n/dati.js';
-import { euro as euroIn } from '../data/formato.js';
+import { euro as euroIn, franchi } from '../data/formato.js';
 import { leggiProfilo } from './profilo.js';
 
 const ENDPOINT = import.meta.env.PUBLIC_PREVENTIVO_ENDPOINT || '';
@@ -27,6 +27,7 @@ const TESTI = {
     grazieModulo: (n, c) => `Grazie ${n}, ho ricevuto il tuo progetto. Ti ricontatto entro 24 ore${c ? ` via ${c.toLowerCase()}` : ''} con il preventivo definitivo.`,
     grazieApp: (n, email) => `Grazie ${n}! Si è aperto ${email ? 'il programma di posta' : 'WhatsApp'} con il tuo progetto già scritto: premi invia e ti rispondo entro 24 ore.`,
     riapriMail: "Apri di nuovo l'email", riapriWa: 'Apri di nuovo WhatsApp',
+    incontri: 'Incontri di persona', circa: 'circa',
   },
   en: {
     mese: '/month', vuoto: 'Choose a service to get started.',
@@ -45,6 +46,7 @@ const TESTI = {
     grazieModulo: (n, c) => `Thank you ${n}, I've received your project. I'll get back to you within 24 hours${c ? ` by ${c.toLowerCase()}` : ''} with the final quote.`,
     grazieApp: (n, email) => `Thank you ${n}! ${email ? 'Your email app' : 'WhatsApp'} has opened with your project already written: press send and I'll reply within 24 hours.`,
     riapriMail: 'Open the email again', riapriWa: 'Open WhatsApp again',
+    incontri: 'In-person meetings', circa: 'approx.',
   },
 };
 
@@ -53,8 +55,11 @@ export function avviaPreventivo() {
   if (!form) return;
   const lang = form.dataset.lang === 'en' ? 'en' : 'it';
   const t = TESTI[lang];
-  const { categorie, tempi, scontoPacchetto, voucher, contatti } = datiLingua(lang);
-  const euro = (n) => euroIn(n, lang);
+  const { categorie, tempi, incontri, cambio, scontoPacchetto, voucher, contatti } = datiLingua(lang);
+  // Stessi prezzi per tutti: chi vuole li vede convertiti in franchi (scelta sua, mai automatica)
+  let valuta = 'EUR';
+  try { if (localStorage.getItem('gd-valuta') === 'CHF') valuta = 'CHF'; } catch (_) {}
+  const euro = (n) => (valuta === 'CHF' ? franchi(n * cambio.CHF) : euroIn(n, lang));
   const ridotto = document.documentElement.classList.contains('ridotto');
   const passi = [...form.querySelectorAll('[data-passo]')];
   const indicatori = [...document.querySelectorAll('[data-passo-ind]')];
@@ -74,6 +79,11 @@ export function avviaPreventivo() {
         if (q > 0) extra[r.dataset.extra.split('.')[1]] = q;
       });
       stato.cat[id] = { liv, extra };
+    });
+    stato.incontri = {};
+    form.querySelectorAll('[data-incontro]').forEach((r) => {
+      const q = Number(r.dataset.q || 0);
+      if (q > 0) stato.incontri[r.dataset.incontro] = q;
     });
     return stato;
   }
@@ -101,10 +111,19 @@ export function avviaPreventivo() {
     const sconto = scontoPacchetto(nServizi);
     const lordo = una * t.fattore;
     const scontoEuro = lordo * sconto;
-    const unaFinale = lordo - scontoEuro;
+    // gli incontri di persona sono spese di viaggio: niente sconto pacchetto né corsia veloce
+    const dettIncontri = [];
+    let incontriEuro = 0;
+    for (const [id, q] of Object.entries(stato.incontri || {})) {
+      const e = incontri.find((x) => x.id === id);
+      if (!e) continue;
+      incontriEuro += e.una * q;
+      dettIncontri.push(`${e.nome} × ${q}`);
+    }
+    const unaFinale = lordo - scontoEuro + incontriEuro;
     const aiFinale = unaAI * t.fattore * (1 - sconto);
     const risparmioVoucher = aiFinale >= voucher.soglia ? Math.min(aiFinale * voucher.percentuale, voucher.massimo) : 0;
-    return { righe, una: unaFinale, mese, sconto, scontoEuro, tempi: t, nServizi, risparmioVoucher, maggiorazione: lordo - una };
+    return { righe, una: unaFinale, mese, sconto, scontoEuro, tempi: t, nServizi, risparmioVoucher, maggiorazione: lordo - una, incontriEuro, dettIncontri };
   }
 
   // ---------- Riepilogo ----------
@@ -144,6 +163,7 @@ export function avviaPreventivo() {
     if (r.maggiorazione > 0) aggiungiRiga(t.veloce, `+ ${euro(r.maggiorazione)}`);
     if (r.maggiorazione < 0) aggiungiRiga(t.calma, `− ${euro(-r.maggiorazione)}`, true);
     if (r.scontoEuro > 0) aggiungiRiga(t.sconto(r.sconto * 100), `− ${euro(r.scontoEuro)}`, true);
+    if (r.incontriEuro > 0) aggiungiRiga(t.incontri, `+ ${euro(r.incontriEuro)}`);
 
     animaNumero(elUna, 'una', r.una);
     animaNumero(elMese, 'mese', r.mese);
@@ -179,7 +199,7 @@ export function avviaPreventivo() {
   }
 
   // ---------- Extra: + / − e interruttori ----------
-  form.querySelectorAll('[data-extra]').forEach((r) => {
+  form.querySelectorAll('[data-extra], [data-incontro]').forEach((r) => {
     const max = Number(r.dataset.max || 1);
     const out = r.querySelector('[data-q]');
     const imposta = (q) => {
@@ -271,7 +291,11 @@ export function avviaPreventivo() {
     }
     righe.push('', `${t.tempi}: ${r.tempi.nome}`);
     if (r.sconto) righe.push(`${t.scontoRiga}: −${r.sconto * 100}%`);
-    righe.push(`${t.totale}: ${euro(r.una)} ${t.una}${r.mese ? ` + ${euro(r.mese)}${t.mese}` : ''} (${t.iva})`);
+    if (r.dettIncontri.length) righe.push(`${t.incontri}: ${r.dettIncontri.join(', ')}`);
+    // nel messaggio il totale resta in euro; se il cliente guarda i franchi, aggiungo la conversione
+    const inEuro = (n) => euroIn(n, lang);
+    const chf = valuta === 'CHF' ? ` (${t.circa} ${franchi(r.una * cambio.CHF)}${r.mese ? ` + ${franchi(r.mese * cambio.CHF)}${t.mese}` : ''})` : '';
+    righe.push(`${t.totale}: ${inEuro(r.una)} ${t.una}${r.mese ? ` + ${inEuro(r.mese)}${t.mese}` : ''}${chf} (${t.iva})`);
     if (d) {
       righe.push('', `${t.nome}: ${d.nome}`);
       if (d.azienda) righe.push(`${t.attivita}: ${d.azienda}`);
@@ -385,7 +409,41 @@ export function avviaPreventivo() {
     }
     const t = stato.tempi && form.querySelector(`input[name="tempi"][value="${stato.tempi}"]`);
     if (t) t.checked = true;
+    for (const [id, q] of Object.entries(stato.incontri || {})) {
+      form.querySelector(`[data-incontro="${id}"]`)?._imposta?.(q);
+    }
   }
+
+  // ---------- € / CHF ----------
+  function mostraValuta() {
+    document.querySelectorAll('[data-prezzo]').forEach((el) => {
+      const una = Number(el.dataset.una), mese = Number(el.dataset.mese);
+      el.textContent = [una ? euro(una) : '', mese ? `${euro(mese)}${t.mese}` : ''].filter(Boolean).join(' + ');
+    });
+    document.querySelectorAll('[data-valuta-scegli]').forEach((b) => {
+      if (b.closest('.pv-valuta')) b.setAttribute('aria-pressed', String(b.dataset.valutaScegli === valuta));
+    });
+    const nota = document.querySelector('[data-valuta-nota]');
+    if (nota) nota.hidden = valuta !== 'CHF';
+    const svizzera = document.querySelector('[data-svizzera]');
+    if (svizzera && valuta === 'CHF') svizzera.hidden = true;
+  }
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-valuta-scegli]');
+    if (!b) return;
+    valuta = b.dataset.valutaScegli === 'CHF' ? 'CHF' : 'EUR';
+    try { localStorage.setItem('gd-valuta', valuta); } catch (_) {}
+    traccia('valuta', { valuta });
+    mostraValuta();
+    aggiorna();
+  });
+  // chi ha il fuso orario svizzero riceve solo un suggerimento: decide lui se vedere i franchi
+  try {
+    const fuso = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const box = document.querySelector('[data-svizzera]');
+    if (box && fuso === 'Europe/Zurich' && valuta !== 'CHF') box.hidden = false;
+  } catch (_) {}
+  mostraValuta();
 
   // ---------- Avvio: progetto salvato o servizio arrivato dal link (?s=sito:presenza) ----------
   let salvato = null;

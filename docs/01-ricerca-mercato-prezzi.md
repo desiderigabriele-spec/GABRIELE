@@ -227,6 +227,15 @@ Un pacchetto integrato si vende meglio dei singoli servizi: il cliente compra **
 - **IVA:** nel forfettario non applichi l'IVA. Per chi **non può detrarla** (privati, medici, psicologi, molti professionisti) sei di fatto **22% più conveniente** di un'agenzia. Per chi la detrae non cambia niente.
 - **Capacità di esempio, già oltre la soglia:** 6 siti Presenza (17.400 €) + 3 Signature (22.500 €) + 3 progetti AI (15.000 €) + 4 clienti Ads × 990 € × 10 mesi (39.600 €) ≈ **94.500 €/anno**. Vuol dire che a questi prezzi superi il forfettario con un carico ragionevole. Pianifica con il commercialista quando conviene uscirne, o se a un certo punto conviene aprire una SRL.
 
+### 8.1 Clienti in Svizzera (dall'Italia, con il forfettario)
+
+- **Stessi prezzi per tutti.** Dal 2022 la legge svizzera (art. 3a LCSl, divieto di geoblocking) vieta di far pagare di più chi è in Svizzera per lo stesso servizio online solo perché è in Svizzera, anche tra aziende, e vieta di reindirizzarlo in automatico senza consenso. Nel preventivo i prezzi sono quindi uguali; chi vuole li vede **convertiti** in franchi (1 € ≈ 0,92 CHF, da aggiornare ogni tanto in `src/data/listino.js`).
+- **Cosa costa di più, per motivi oggettivi:**
+  - **Incontri di persona**, in base alla sola distanza da Milano, uguale in Italia e Svizzera: **190 €** entro 100 km (Como, Bergamo, Lugano, Mendrisio, Chiasso), **490 €** oltre (Torino, Bologna, Bellinzona, Zurigo, Ginevra). Videochiamate sempre incluse, Milano città gratis. Niente sconto pacchetto né corsia veloce sui viaggi.
+  - **SEO locale per la Svizzera: 590 €** (Google Business svizzero, local.ch, search.ch, pagine per Ticino e città).
+  - **Lingue in più** (tedesco, francese): stesso prezzo di ogni altra lingua, 490 € sul sito e 590 € sul negozio.
+- **IVA:** nel forfettario la fattura non ha IVA. Alle aziende svizzere aggiungi "operazione non soggetta art. 7-ter". Sotto gli 85.000 € resti anche sotto i 100.000 CHF di fatturato mondiale oltre i quali la Svizzera chiede l'iscrizione all'IVA. Marca da bollo da 2 € sopra 77,47 €. Da confermare con il commercialista.
+
 ---
 
 ## 9. Prossimi passi

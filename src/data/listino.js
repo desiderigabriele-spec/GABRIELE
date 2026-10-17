@@ -13,7 +13,8 @@ export const categorie = [
     ],
     extra: [
       { id: 'pagina', nome: 'Pagina in più', una: 290, max: 20, spiega: 'Una pagina aggiuntiva, per esempio un servizio o una zona.' },
-      { id: 'lingua', nome: 'Lingua in più', una: 490, max: 5, spiega: 'Tutto il sito tradotto e adattato in un\'altra lingua.' },
+      { id: 'lingua', nome: 'Lingua in più', una: 490, max: 5, spiega: 'Tutto il sito tradotto e adattato in un\'altra lingua (per esempio inglese, oppure tedesco o francese per la Svizzera).' },
+      { id: 'seoch', nome: 'SEO locale per la Svizzera', una: 590, spiega: 'Per farti trovare anche in Svizzera: Google Business Profile svizzero, iscrizione a local.ch e search.ch, pagine per Ticino e città e le parole che usano gli svizzeri quando cercano.' },
       { id: 'seo', nome: 'Testo SEO per una pagina servizio', una: 190, max: 20, spiega: 'Un testo scritto per comparire su Google quando cercano proprio quel servizio.' },
       { id: 'logo', nome: 'Logo e identità visiva', una: 850, spiega: 'Logo, colori e caratteri che ti rendono riconoscibile ovunque.' },
       { id: 'media', nome: 'Foto e video creati con l\'AI', una: 390, spiega: 'Immagini e brevi video originali per il sito, quando non hai materiale tuo.' },
@@ -96,6 +97,16 @@ export const categorie = [
     extra: [],
   },
 ];
+
+// Incontri di persona: il prezzo dipende solo dalla distanza da Milano, uguale per Italia e Svizzera.
+// Videochiamate sempre incluse; a Milano città gli incontri sono inclusi.
+export const incontri = [
+  { id: 'vicino', nome: 'Incontro di persona entro 100 km da Milano', una: 190, max: 10, spiega: 'Per esempio Monza, Como, Bergamo, Varese, Lugano, Mendrisio, Chiasso. Viaggio incluso, fino a 2 ore insieme.' },
+  { id: 'lontano', nome: 'Incontro di persona oltre 100 km da Milano', una: 490, max: 10, spiega: 'Per esempio Torino, Bologna, Verona, Bellinzona, Zurigo, Berna, Ginevra. Una giornata: viaggio incluso.' },
+];
+
+// Cambio indicativo per mostrare i prezzi anche in franchi (stessi prezzi, solo convertiti). Da aggiornare ogni tanto.
+export const cambio = { CHF: 0.92, aggiornato: '2026-10' };
 
 export const tempi = [
   { id: 'normale', nome: 'Normale', riga: 'I tempi giusti per fare le cose bene', fattore: 1 },

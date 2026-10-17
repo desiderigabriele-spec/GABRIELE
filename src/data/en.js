@@ -2,7 +2,7 @@
 export const en = {
   contatti: {
     ruolo: 'Websites · AI software · Online advertising',
-    zona: 'Milan, Italy · working worldwide',
+    zona: 'Milan · Italy and Switzerland',
   },
 
   servizi: {
@@ -133,7 +133,7 @@ export const en = {
     },
     {
       d: 'Do you only work in Milan?',
-      r: 'I\'m based in Milan, but I work with clients all over Italy and abroad. We meet on video call or, if you\'re nearby, in person.',
+      r: 'I\'m based in Milan, but I work with clients all over Italy, in Switzerland (Ticino included) and abroad. Video calls are always included and meetings in Milan city are free. Outside Milan an in-person meeting costs €190 within 100 km (for example Como, Bergamo or Lugano) and €490 beyond. Prices are the same for everyone: if you\'re in Switzerland you can also see them in Swiss francs in the quote.',
     },
   ],
 
@@ -148,7 +148,8 @@ export const en = {
       },
       extra: {
         pagina: { nome: 'Extra page', spiega: 'One more page, for example a service or an area.' },
-        lingua: { nome: 'Extra language', spiega: 'The whole site translated and adapted into another language.' },
+        lingua: { nome: 'Extra language', spiega: 'The whole site translated and adapted into another language (for example German or French for Switzerland).' },
+        seoch: { nome: 'Local SEO for Switzerland', spiega: 'To be found in Switzerland too: Swiss Google Business Profile, listings on local.ch and search.ch, pages for Ticino and cities, and the words Swiss people actually search for.' },
         seo: { nome: 'SEO copy for a service page', spiega: 'Copy written to show up on Google when people search for exactly that service.' },
         logo: { nome: 'Logo and visual identity', spiega: 'Logo, colours and typefaces that make you recognisable everywhere.' },
         media: { nome: 'AI-generated photos and videos', spiega: 'Original images and short videos for the site, when you don\'t have your own.' },
@@ -222,6 +223,11 @@ export const en = {
         crescita: { nome: 'Growth', spiega: 'Every month we improve the site to bring you more enquiries: testing, SEO and new content.', include: ['Everything in Care+', 'Tests to increase enquiries', 'Ongoing SEO', '2 pieces of content a month'] },
       },
     },
+  },
+
+  incontri: {
+    vicino: { nome: 'In-person meeting within 100 km of Milan', spiega: 'For example Monza, Como, Bergamo, Varese, Lugano, Mendrisio, Chiasso. Travel included, up to 2 hours together.' },
+    lontano: { nome: 'In-person meeting over 100 km from Milan', spiega: 'For example Turin, Bologna, Verona, Bellinzona, Zurich, Bern, Geneva. A full day, travel included.' },
   },
 
   tempi: {

@@ -11,10 +11,13 @@ interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
 const it = lang === 'it';
 const T = (a: string, b: string) => (it ? a : b);
-const { categorie, tempi, contatti } = dati(lang);
+const { categorie, tempi, incontri, cambio, contatti } = dati(lang);
+const tasso = it ? String(cambio.CHF).replace('.', ',') : String(cambio.CHF);
 const icone: Record<string, string> = { sito: 'finestra', ecommerce: 'borsa', software: 'chip', integrazioni: 'nodi', ads: 'onda', cura: 'scudo' };
 const prezzoLivello = (l: { una?: number; mese?: number }) =>
   [l.una ? euro(l.una, lang) : '', l.mese ? `${euro(l.mese, lang)}${T('/mese', '/month')}` : ''].filter(Boolean).join(' + ');
+// prezzi con gli importi negli attributi: lo script li riscrive in franchi se il visitatore lo chiede
+const attrPrezzo = (l: { una?: number; mese?: number }) => ({ 'data-prezzo': '', 'data-una': l.una || 0, 'data-mese': l.mese || 0 });
 const passi = it ? ['Cosa ti serve', 'Personalizza', 'Tempi', 'I tuoi contatti'] : ['What you need', 'Customise', 'Timing', 'Your details'];
 const passoDi = (n: number) => T(`Passo ${n} di 4`, `Step ${n} of 4`);
 const settori = it
@@ -45,6 +48,9 @@ const settori = it
           'Scegli quello che ti serve, aggiungi i dettagli e guarda il prezzo aggiornarsi in tempo reale. Ci vogliono 2 minuti. Nessun impegno.',
           'Choose what you need, add the details and watch the price update in real time. It takes 2 minutes. No commitment.',
         )}</p>
+        <p class="pv-svizzera" data-svizzera hidden>
+          {T('Sei in Svizzera?', 'Are you in Switzerland?')} <button type="button" data-valuta-scegli="CHF">{T('Mostra i prezzi anche in franchi', 'Show prices in Swiss francs too')}</button>
+        </p>
       </header>
 
       <noscript>
@@ -74,7 +80,7 @@ const settori = it
                   <span class="pv-cat-icona"><Icona nome={icone[c.id]} /></span>
                   <span class="pv-cat-nome">{c.nome}</span>
                   <span class="pv-cat-riga">{c.riga}</span>
-                  <span class="pv-cat-da">{T('da', 'from')} {prezzoLivello(c.livelli[0])}</span>
+                  <span class="pv-cat-da">{T('da', 'from')} <span {...attrPrezzo(c.livelli[0])}>{prezzoLivello(c.livelli[0])}</span></span>
                   <span class="pv-spunta" aria-hidden="true"></span>
                 </label>
               ))}
@@ -104,7 +110,7 @@ const settori = it
                       <input type="radio" name={`liv-${c.id}`} value={l.id} checked={l.top || (i === 0 && !c.livelli.some((x) => x.top))} />
                       {l.top && <span class="pv-badge">{T('Il più scelto', 'Most popular')}</span>}
                       <span class="pv-livello-nome">{l.nome}</span>
-                      <span class="pv-livello-prezzo">{prezzoLivello(l)}</span>
+                      <span class="pv-livello-prezzo" {...attrPrezzo(l)}>{prezzoLivello(l)}</span>
                       <span class="pv-livello-spiega">{l.spiega}</span>
                       <ul>{l.include.map((x) => <li>{x}</li>)}</ul>
                     </label>
@@ -117,7 +123,7 @@ const settori = it
                       <div class="pv-extra-riga" data-extra={`${c.id}.${e.id}`} data-max={e.max || 1}>
                         <div class="pv-extra-testo">
                           <span class="pv-extra-nome">{e.nome}</span>
-                          <span class="pv-extra-prezzo">{prezzoLivello(e)}{e.max ? T(' cad.', ' each') : ''}</span>
+                          <span class="pv-extra-prezzo"><span {...attrPrezzo(e)}>{prezzoLivello(e)}</span>{e.max ? T(' cad.', ' each') : ''}</span>
                           <details class="pv-spiega"><summary>{T('Cosa vuol dire?', 'What does it mean?')}</summary><p>{e.spiega}</p></details>
                         </div>
                         {e.max ? (
@@ -155,6 +161,27 @@ const settori = it
                   <span class="pv-livello-nome">{t.nome}</span>
                   <span class="pv-livello-spiega">{t.riga}</span>
                 </label>
+              ))}
+            </div>
+            <div class="pv-extra pv-incontri">
+              <h3 class="mono">{T('Ci vediamo di persona?', 'Shall we meet in person?')}</h3>
+              <p class="pv-aiuto">{T(
+                'Le videochiamate sono sempre incluse e a Milano città gli incontri sono gratuiti. Fuori Milano il prezzo dipende solo dalla distanza, in Italia come in Svizzera.',
+                'Video calls are always included and meetings in Milan city are free. Outside Milan the price depends only on distance, in Italy and Switzerland alike.',
+              )}</p>
+              {incontri.map((e) => (
+                <div class="pv-extra-riga" data-incontro={e.id} data-max={e.max}>
+                  <div class="pv-extra-testo">
+                    <span class="pv-extra-nome">{e.nome}</span>
+                    <span class="pv-extra-prezzo"><span {...attrPrezzo(e)}>{prezzoLivello(e)}</span>{T(' a incontro', ' per meeting')}</span>
+                    <details class="pv-spiega"><summary>{T('Quali zone?', 'Which areas?')}</summary><p>{e.spiega}</p></details>
+                  </div>
+                  <div class="pv-stepper">
+                    <button type="button" data-meno aria-label={`${T('Togli', 'Remove')} ${e.nome}`}>−</button>
+                    <output data-q>0</output>
+                    <button type="button" data-piu aria-label={`${T('Aggiungi', 'Add')} ${e.nome}`}>+</button>
+                  </div>
+                </div>
               ))}
             </div>
             <div class="pv-campo" style="margin-top:1.6rem">
@@ -234,7 +261,13 @@ const settori = it
             <span class="pv-riep-freccia" aria-hidden="true">▴</span>
           </button>
           <div class="pv-riep-corpo">
-            <h2 class="mono">{T('Il tuo progetto', 'Your project')}</h2>
+            <div class="pv-riep-testa">
+              <h2 class="mono">{T('Il tuo progetto', 'Your project')}</h2>
+              <div class="pv-valuta" role="group" aria-label={T('Valuta', 'Currency')}>
+                <button type="button" data-valuta-scegli="EUR" aria-pressed="true">€</button>
+                <button type="button" data-valuta-scegli="CHF" aria-pressed="false">CHF</button>
+              </div>
+            </div>
             <ul class="pv-righe" data-righe-riep><li class="pv-vuoto">{T('Scegli un servizio per iniziare.', 'Choose a service to get started.')}</li></ul>
             <div class="pv-sconto" data-sconto>
               <div class="pv-sconto-testo"><span data-sconto-testo></span></div>
@@ -245,6 +278,10 @@ const settori = it
               <div><dt>{T('Al mese', 'Per month')}</dt><dd data-tot-mese>{euro(0, lang)}</dd></div>
             </dl>
             <p class="pv-voucher" data-voucher hidden></p>
+            <p class="pv-nota-tot" data-valuta-nota hidden>{T(
+              `Stessi prezzi per tutti, convertiti in franchi al cambio indicativo di 1 € = ${tasso} CHF. In fattura vale l’importo concordato.`,
+              `Same prices for everyone, converted to Swiss francs at an indicative rate of €1 = CHF ${tasso}. The invoice shows the agreed amount.`,
+            )}</p>
             <p class="pv-nota-tot">{T(
               'Prezzi indicativi, IVA esclusa. Il preventivo definitivo arriva dopo una chiamata di 20 minuti.',
               'Indicative prices, excluding VAT. The final quote follows a 20-minute call.',

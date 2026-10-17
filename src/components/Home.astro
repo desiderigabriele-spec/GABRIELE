@@ -59,7 +59,7 @@ const jsonLd = {
   url: new URL(url('home', lang), Astro.site).toString(),
   email: contatti.email,
   telephone: contatti.telefono,
-  areaServed: it ? 'IT' : ['IT', 'EU'],
+  areaServed: ['IT', 'CH'],
   inLanguage: lang,
   address: { '@type': 'PostalAddress', addressLocality: 'Milano', addressCountry: 'IT' },
   sameAs: [contatti.linkedin],
@@ -71,8 +71,8 @@ const jsonLd = {
   alt={url('home', it ? 'en' : 'it')}
   title={T('Gabriele Desideri · Siti web, software AI e pubblicità che portano clienti', 'Gabriele Desideri · Websites, AI software and ads that bring clients')}
   description={T(
-    'Siti web, e-commerce, software con intelligenza artificiale e pubblicità online, progettati con la psicologia per portare le persone dal primo sguardo al «sì». Milano e tutta Italia.',
-    'Websites, e-commerce, AI software and online advertising, designed with psychology to take people from first glance to "yes". Based in Milan, working worldwide.',
+    'Siti web, e-commerce, software con intelligenza artificiale e pubblicità online, progettati con la psicologia per portare le persone dal primo sguardo al «sì». Milano, Italia e Svizzera.',
+    'Websites, e-commerce, AI software and online advertising, designed with psychology to take people from first glance to "yes". Based in Milan, working across Italy and Switzerland.',
   )}
   jsonLd={jsonLd}
 >

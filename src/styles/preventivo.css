@@ -152,5 +152,17 @@
   .pv-riepilogo.aperto .pv-riep-freccia { transform: rotate(180deg); }
   .pv-riep-corpo { display: none; padding-top: 0; }
   .pv-riepilogo.aperto .pv-riep-corpo { display: grid; }
-  .pv-riep-corpo > h2 { display: none; }
+  .pv-riep-corpo > h2, .pv-riep-testa h2 { display: none; }
+  .pv-riep-testa { justify-content: flex-end; }
 }
+
+/* € / CHF: stessi prezzi, solo convertiti */
+.pv-riep-testa { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.pv-valuta { display: inline-flex; padding: 3px; border-radius: 99px; border: 1px solid var(--linea-forte); }
+.pv-valuta button { min-width: 44px; padding: .35rem .7rem; border: 0; border-radius: 99px; background: none; color: var(--nebbia); font-family: var(--f-mono); font-size: .74rem; cursor: pointer; transition: background .25s, color .25s; }
+.pv-valuta button[aria-pressed='true'] { background: rgba(var(--brand-rgb),.22); color: var(--latte); }
+.pv-svizzera { margin: .4rem 0 0; font-size: .92rem; color: var(--nebbia); }
+.pv-svizzera[hidden] { display: none; }
+.pv-svizzera button { background: none; border: 0; padding: 0; color: var(--latte); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.pv-incontri { margin-top: 1.8rem; }
+.pv-incontri .pv-aiuto { margin: 0 0 .4rem; }

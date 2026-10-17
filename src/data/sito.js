@@ -7,7 +7,7 @@ export const contatti = {
   whatsapp: '393383424098',
   linkedin: 'https://www.linkedin.com/in/gabrieledesideri',
   citta: 'Milano',
-  zona: 'Milano e tutta Italia',
+  zona: 'Milano, Italia e Svizzera',
   piva: '', // da confermare
 };
 
@@ -180,6 +180,6 @@ export const faq = [
   },
   {
     d: 'Lavori solo a Milano?',
-    r: 'Sono a Milano, ma lavoro con clienti in tutta Italia. Ci vediamo in videochiamata o, se sei vicino, di persona.',
+    r: 'Sono a Milano, ma lavoro con clienti in tutta Italia e in Svizzera, Ticino compreso. Le videochiamate sono sempre incluse e a Milano città ci vediamo di persona gratis. Fuori Milano un incontro costa 190 € entro 100 km (per esempio Como, Bergamo o Lugano) e 490 € oltre. I prezzi sono uguali per tutti: chi è in Svizzera può vederli anche in franchi nel preventivo.',
   },
 ];
