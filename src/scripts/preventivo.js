@@ -136,11 +136,26 @@ export function avviaPreventivo() {
   const elScontoBarra = riep.querySelector('[data-sconto-barra]');
   const mostrati = { una: 0, mese: 0 };
 
-  function animaNumero(el, chiave, valore, suffisso = '') {
-    if (ridotto) { el.textContent = euro(valore) + suffisso; mostrati[chiave] = valore; return; }
-    const o = { v: mostrati[chiave] };
-    gsap.to(o, { v: valore, duration: 0.6, ease: 'power3.out', onUpdate: () => { el.textContent = euro(o.v) + suffisso; } });
+  // i totali girano come un contachilometri: ogni cifra scorre fino al valore nuovo, con un bagliore
+  function animaNumero(el, chiave, valore) {
+    const testo = euro(valore);
+    const cambiato = mostrati[chiave] !== valore;
     mostrati[chiave] = valore;
+    el.setAttribute('aria-label', testo);
+    if (ridotto) { el.textContent = testo; return; }
+    const forma = testo.replace(/\d/g, '0');
+    if (el.dataset.forma !== forma) {
+      el.dataset.forma = forma;
+      el.innerHTML = '<span class="odo" aria-hidden="true">' + [...testo].map((ch) => (/\d/.test(ch)
+        ? `<span class="odo-col"><span>${[...'0123456789'].map((d) => `<i>${d}</i>`).join('')}</span></span>`
+        : `<span>${ch === ' ' ? '&nbsp;' : ch}</span>`)).join('') + '</span>';
+    }
+    const colonne = el.querySelectorAll('.odo-col > span');
+    let k = 0;
+    requestAnimationFrame(() => {
+      for (const ch of testo) if (/\d/.test(ch)) colonne[k++].style.transform = `translateY(-${Number(ch) * 1.1}em)`;
+    });
+    if (cambiato) { el.classList.add('lampo'); clearTimeout(el._lampo); el._lampo = setTimeout(() => el.classList.remove('lampo'), 500); }
   }
 
   function aggiorna() {

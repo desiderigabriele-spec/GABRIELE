@@ -75,35 +75,46 @@ const hrefEn = lang === 'en' ? path : alt;
         } catch (e) {}
         // Intro col punto di luce: solo alla prima pagina della visita
         try { if (!sessionStorage.getItem('gd-intro')) h.classList.add('intro-attiva'); } catch (e) {}
+        try { if (!sessionStorage.getItem('gd-stelle') && !h.classList.contains('ridotto')) h.classList.add('stelle-titolo'); } catch (e) {}
       })();
     </script>
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body>
     <div class="intro" aria-hidden="true">
-      <div class="intro-punto"></div>
-      <div class="intro-testo"><span class="intro-num" data-intro-num>000</span></div>
+      <Occhio espressione="curioso" apertura class="intro-occhio" />
     </div>
     <script is:inline>
+      // Intro della prima visita: l'occhio si apre, sbatte le palpebre, ti guarda e si gira verso il titolo
       (function () {
         var h = document.documentElement;
         if (!h.classList.contains('intro-attiva')) return;
-        var t0 = Date.now(), chiusa = false, num = document.querySelector('[data-intro-num]');
-        var ridotto = h.classList.contains('ridotto'), minimo = ridotto ? 200 : 1100;
-        var conta = setInterval(function () {
-          var p = Math.min(100, Math.round(((Date.now() - t0) / minimo) * 100));
-          if (num) num.textContent = ('00' + p).slice(-3);
-        }, 40);
+        var t0 = performance.now(), chiusa = false;
+        var ridotto = h.classList.contains('ridotto'), minimo = ridotto ? 200 : 2000;
+        var svg = document.querySelector('.intro-occhio');
+        var ap = svg && svg.querySelector('.m-apertura'), pup = svg && svg.querySelector('.m-pupilla'), palp = svg && svg.querySelectorAll('.m-palpebra');
+        var liscia = function (x) { return x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x); };
+        function anima(ora) {
+          if (chiusa || !ap) return;
+          var t = (ora - t0) / 1000;
+          var a = ridotto ? 1 : liscia((t - 0.25) / 0.6);
+          if (!ridotto && t > 1.05 && t < 1.33) a *= Math.abs(Math.cos(((t - 1.05) / 0.28) * Math.PI));
+          ap.setAttribute('ry', (0.5 + a * 33).toFixed(2));
+          for (var i = 0; i < palp.length; i++) palp[i].setAttribute('transform', 'translate(' + ((1 - a) * -3).toFixed(2) + ' ' + ((1 - a) * 9).toFixed(2) + ')');
+          var g = liscia((t - 1.45) / 0.45);
+          if (pup) pup.setAttribute('transform', 'translate(' + (-3 - g * 6).toFixed(2) + ' ' + (4 + g * 1).toFixed(2) + ')');
+          requestAnimationFrame(anima);
+        }
+        requestAnimationFrame(anima);
         function chiudi() {
-          if (chiusa) return; chiusa = true; clearInterval(conta);
-          if (num) num.textContent = '100';
+          if (chiusa) return; chiusa = true;
           h.classList.add('intro-fine');
           try { sessionStorage.setItem('gd-intro', '1'); } catch (e) {}
           setTimeout(function () { h.classList.remove('intro-attiva', 'intro-fine'); window.dispatchEvent(new Event('gd-intro-fine')); }, ridotto ? 30 : 700);
         }
-        function pronta() { setTimeout(chiudi, Math.max(0, minimo - (Date.now() - t0))); }
+        function pronta() { setTimeout(chiudi, Math.max(0, minimo - (performance.now() - t0))); }
         if (document.readyState === 'complete') pronta(); else window.addEventListener('load', pronta);
-        setTimeout(chiudi, 3000); // mai bloccare chi ha una connessione lenta
+        setTimeout(chiudi, 3500); // mai bloccare chi ha una connessione lenta
       })();
     </script>
 
@@ -194,6 +205,7 @@ const hrefEn = lang === 'en' ? path : alt;
             </ul>
           </div>
         </div>
+        <p class="firma-footer" aria-hidden="true">Desideri</p>
         <div class="footer-legale">
           <span>© {new Date().getFullYear()} {contatti.studio} di {contatti.nome}{contatti.piva ? ` · P.IVA ${contatti.piva}` : ''}</span>
           <span><a href={url('privacy', lang)}>{t.privacy}</a> · <button type="button" data-cookie-apri style="background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font-size:inherit">{t.preferenzeCookie}</button>{alt && <> · <a href={alt} hreflang={altLang} lang={altLang}>{t.altraLingua}</a></>}</span>

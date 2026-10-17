@@ -78,6 +78,15 @@ const jsonLd = {
   )}
   jsonLd={jsonLd}
 >
+  <!-- il percorso: linea di luce che collega i cinque capitoli (solo schermi larghi) -->
+  <nav class="guida" aria-label={T('Capitoli', 'Chapters')} data-percorso>
+    <span class="guida-luce" aria-hidden="true"></span>
+    {(it
+      ? [['inizio', 'Attenzione'], ['servizi', 'Interesse'], ['metodo', 'Fiducia'], ['prezzi', 'Desiderio'], ['azione', 'Azione']]
+      : [['inizio', 'Attention'], ['servizi', 'Interest'], ['metodo', 'Trust'], ['prezzi', 'Desire'], ['azione', 'Action']]
+    ).map(([id, nome], i) => <a href={`#${id}`} data-capitolo={id}><span>{String(i + 1).padStart(2, '0')} · {nome}</span></a>)}
+  </nav>
+
   <!-- 01 · ATTENZIONE -->
   <section class="hero" id="inizio" data-forma="0" data-lato="destra" data-x="1.13" data-scala="0.86" data-y-mobile="0.2" data-scala-mobile="0.6" data-luce-mobile="1">
     <div class="wrap">
@@ -89,14 +98,14 @@ const jsonLd = {
             <span class="riga riga-nome" data-riga-nome hidden><span><span data-saluto></span><span data-nome></span>,</span></span>
             <span class="riga"><span data-minuscola>Trasformo</span></span>
             <span class="riga"><span>chi ti guarda</span></span>
-            <span class="riga"><span>in chi ti <span class="em em-firma">sceglie.</span></span></span>
+            <span class="riga"><span>in chi ti <span class="em em-firma" data-stelle>sceglie.</span></span></span>
           </h1>
         ) : (
           <h1 data-righe>
             <span class="riga riga-nome" data-riga-nome hidden><span><span data-saluto></span><span data-nome></span>,</span></span>
             <span class="riga"><span>I turn</span></span>
             <span class="riga"><span>attention</span></span>
-            <span class="riga"><span>into <span class="em em-firma">clients.</span></span></span>
+            <span class="riga"><span>into <span class="em em-firma" data-stelle>clients.</span></span></span>
           </h1>
         )}
         {it ? (
@@ -111,7 +120,7 @@ const jsonLd = {
           </p>
         )}
         <div class="hero-azioni" data-appare="0.4">
-          <a class="btn btn-azione btn-grande" href={preventivo} data-azione data-sguardo-meta>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="btn btn-azione btn-grande" href={preventivo} data-azione data-sguardo-meta><span class="scia" aria-hidden="true"></span>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
           <a class="btn btn-vetro btn-grande" href="#metodo">{T('Guarda come funziona', 'See how it works')}</a>
         </div>
         <ul class="rassicura" data-appare="0.55">
@@ -483,6 +492,7 @@ const jsonLd = {
       <div class="prezzi" data-sequenza>
         {piani.map((p) => (
           <article class={`card piano${p.top ? ' top' : ''}`}>
+            {p.top && <span class="scia" aria-hidden="true"></span>}
             {p.top && <span class="piano-badge">{T('Il più scelto', 'Most popular')}</span>}
             <span class="piano-nome">{p.nome}</span>
             <p class="piano-per">{perChi[p.id]}</p>

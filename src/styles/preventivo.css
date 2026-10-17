@@ -179,3 +179,12 @@
 .pv-attesa { display: none; }
 .pv-attesa .mascotte { width: 46px; height: 46px; }
 .invio-in-corso .pv-attesa { display: block; }
+
+/* 9 · totali che girano come un contachilometri, con un bagliore quando cambiano */
+.pv-totali dd { font-variant-numeric: tabular-nums; transition: text-shadow .4s; }
+.pv-totali div:first-child dd { background: none; color: #ff6a3d; }
+.pv-totali dd.lampo { text-shadow: 0 0 18px rgba(255, 120, 60, .85); }
+.odo { display: inline-flex; }
+.odo-col { display: inline-block; height: 1.1em; line-height: 1.1; overflow: hidden; vertical-align: bottom; }
+.odo-col > span { display: block; transition: transform .9s cubic-bezier(.22, 1, .36, 1); }
+.odo-col > span > i { display: block; height: 1.1em; font-style: normal; }

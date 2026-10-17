@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { numero } from '../data/formato.js';
 import { avviaBenvenuto } from './benvenuto.js';
+import { avviaEffetti } from './effetti.js';
 import { leggiProfilo, lang } from './profilo.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -210,6 +211,7 @@ function caricaScena() {
 
 function avvio() {
   animaIngressi();
+  avviaEffetti();
   ScrollTrigger.refresh();
   if ('requestIdleCallback' in window) requestIdleCallback(caricaScena, { timeout: 800 }); else setTimeout(caricaScena, 200);
 }

@@ -613,3 +613,84 @@ html.ridotto .mascotte *, html.ridotto .ico * { animation: none !important; }
 .bv-fatto { grid-template-columns: auto 1fr; align-items: center; gap: .8rem; }
 .bv-fatto .mascotte { width: 40px; height: 40px; }
 .pagina-404 .mascotte { width: min(46vw, 200px); height: auto; margin: 0 auto; }
+
+/* ==========================================================================
+   Effetti (prova «Effetti Studio Desideri»): 1-13
+   ========================================================================== */
+@property --ang { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+
+/* 1 · scia luminosa: una cometa gira lungo il bordo, solo sugli elementi chiave (<span class="scia">) */
+.scia { position: absolute; inset: 0; border-radius: inherit; padding: 2px; pointer-events: none; z-index: 2;
+  background: conic-gradient(from var(--ang), transparent 0 68%, rgba(var(--brand-rgb), 0) 70%, rgb(var(--brand-rgb)) 82%, #9fe8ff 92%, var(--segnale) 97%, transparent 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: scia-giro 3.6s linear infinite; }
+@keyframes scia-giro { to { --ang: 360deg; } }
+
+/* 2 · torcia: sulle card si accende solo il tratto di bordo vicino al mouse (--mx/--my da site.js) */
+.card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none; opacity: 0; transition: opacity .4s;
+  background: radial-gradient(180px circle at var(--mx) var(--my), #9fe8ff, rgba(var(--brand-rgb), .65) 35%, transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+.card:hover::after { opacity: 1; }
+
+/* 3 · corona d'eclisse attorno all'occhio di particelle (posizione da scena.js) */
+.corona-eclisse { position: absolute; left: 0; top: 0; width: 100px; height: 100px; border-radius: 50%; pointer-events: none; opacity: 0; will-change: transform, opacity;
+  -webkit-mask: radial-gradient(circle, transparent 50%, #000 59%, #000 63%, transparent 71%); mask: radial-gradient(circle, transparent 50%, #000 59%, #000 63%, transparent 71%);
+  background: conic-gradient(from 0deg, rgba(159,232,255,0), rgba(159,232,255,.9), rgba(var(--brand-rgb),.25), rgba(255,181,71,.8), rgba(92,200,255,.1), rgba(159,232,255,.9), rgba(255,51,71,.5), rgba(159,232,255,0));
+  filter: blur(12px); animation: corona-giro 9s linear infinite; }
+@keyframes corona-giro { to { rotate: 360deg; } }
+
+/* 5 · il percorso: linea di luce sul bordo sinistro che collega i cinque capitoli */
+.guida { position: fixed; z-index: 30; left: max(14px, env(safe-area-inset-left, 0px)); top: 28vh; height: 44vh; width: 22px; display: none; }
+@media (min-width: 1180px) { .guida { display: block; } }
+.guida::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 1.5px; background: rgba(var(--latte-rgb), .12); }
+.guida-luce { position: absolute; left: 10px; top: 0; width: 1.5px; height: 0; background: linear-gradient(rgb(var(--brand-rgb)), #9fe8ff); box-shadow: 0 0 10px rgb(var(--dati-rgb)); }
+.guida a { position: absolute; left: 5px; width: 12px; height: 12px; margin-top: -6px; border-radius: 50%; background: var(--superficie-2); border: 1.5px solid rgba(var(--latte-rgb), .3); transition: background .3s, border-color .3s, box-shadow .3s, transform .3s var(--ease); }
+.guida a:nth-of-type(1) { top: 0%; } .guida a:nth-of-type(2) { top: 25%; } .guida a:nth-of-type(3) { top: 50%; } .guida a:nth-of-type(4) { top: 75%; } .guida a:nth-of-type(5) { top: 100%; }
+.guida a.fatto { background: rgb(var(--dati-rgb)); border-color: rgb(var(--dati-rgb)); }
+.guida a.qui { background: var(--segnale); border-color: var(--segnale); box-shadow: 0 0 12px var(--segnale); transform: scale(1.15); }
+.guida a span { position: absolute; left: 20px; top: 50%; transform: translate(-6px, -50%); white-space: nowrap; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--nebbia); opacity: 0; transition: opacity .3s, transform .3s var(--ease); pointer-events: none; }
+.guida a:hover span, .guida a:focus-visible span { opacity: 1; transform: translate(0, -50%); }
+html.uscita-aperta .guida, html.menu-aperto .guida { opacity: 0; pointer-events: none; }
+
+/* 6 · la parola firma del titolo nasce dalle stelle (una volta per visita) */
+html.stelle-titolo [data-stelle] { opacity: 0; }
+[data-stelle] { transition: opacity .6s var(--ease); }
+.stelle-tela { position: absolute; pointer-events: none; z-index: 5; }
+
+/* 7 + 8 · stelline al clic e polvere dietro il cursore */
+.tela-effetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 95; }
+
+/* 10 · sottolineatura a cometa sulle parole colorate */
+.parola-iride { position: relative; }
+.parola-iride::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 3px; border-radius: 3px; pointer-events: none; opacity: 0;
+  background: linear-gradient(90deg, transparent 0 40%, #fff 50%, var(--c, var(--viola)) 56%, transparent 66%) 0 0 / 300% 100% no-repeat; background-position: 100% 0;
+  filter: drop-shadow(0 0 4px var(--c, var(--viola))); }
+.parola-iride:hover::after, .parola-iride:focus-visible::after { opacity: 1; animation: cometa .9s ease-out forwards; }
+@keyframes cometa { from { background-position: 100% 0; } to { background-position: 0 0; opacity: .2; } }
+
+/* 11 · passaggio tra le pagine: la pagina si dissolve e la nuova arriva dal cielo */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: pagina-via .45s cubic-bezier(.4, 0, .2, 1) both; }
+::view-transition-new(root) { animation: pagina-arriva .6s cubic-bezier(.22, 1, .36, 1) both; }
+@keyframes pagina-via { to { opacity: 0; transform: scale(.97); filter: blur(8px); } }
+@keyframes pagina-arriva { from { opacity: 0; transform: scale(1.03); filter: blur(8px); } }
+
+/* 12 · intro: l'occhio si sveglia, ti guarda e si gira verso il titolo */
+.intro-occhio { width: min(38vw, 180px); height: auto; overflow: visible; }
+.intro-occhio .m-fondo { fill: var(--notte); }
+.intro-occhio .m-palpebra { stroke: var(--viola); }
+html.intro-fine .intro-occhio { animation: intro-occhio-via .7s var(--ease) forwards; }
+@keyframes intro-occhio-via { to { transform: scale(1.6); opacity: 0; } }
+
+/* 13 · firma nel footer: «Desideri» con un cielo che scorre dentro le lettere */
+.firma-footer { margin: 3rem 0 0; font-family: var(--f-titolo); font-weight: 800; font-size: clamp(4.2rem, 17vw, 15rem); letter-spacing: -.055em; line-height: .82; text-align: center; color: transparent; user-select: none;
+  background-color: rgba(var(--sup2-rgb), 1);
+  background-image: radial-gradient(1.6px 1.6px at 12% 30%, #fff, transparent), radial-gradient(1.2px 1.2px at 40% 70%, #cfe8ff, transparent), radial-gradient(1.8px 1.8px at 72% 22%, #fff, transparent), radial-gradient(1.2px 1.2px at 88% 64%, rgb(var(--dati-rgb)), transparent), radial-gradient(1px 1px at 55% 45%, #fff, transparent), radial-gradient(1.4px 1.4px at 25% 85%, #ffd9a8, transparent), linear-gradient(100deg, rgba(var(--brand-rgb), .6), rgba(var(--dati-rgb), .3) 50%, rgba(255, 51, 71, .35));
+  background-size: 90px 70px, 110px 80px, 130px 90px, 70px 60px, 50px 50px, 120px 100px, 100% 100%;
+  -webkit-background-clip: text; background-clip: text; animation: firma-deriva 30s linear infinite; }
+@keyframes firma-deriva { to { background-position: -360px 0, -440px 0, -520px 0, -280px 0, -200px 0, -480px 0, 0 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .scia, .corona-eclisse, .firma-footer { animation: none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}

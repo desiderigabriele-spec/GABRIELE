@@ -490,15 +490,16 @@ export function avviaScena(canvas) {
     uParallasse: { value: new THREE.Vector2() }, uColore: { value: new THREE.Color(COLORI.stelle) },
     uAspect: { value: 1 }, uRis: { value: new THREE.Vector2(1, 1) },
     uOcchio: { value: new THREE.Vector4(0, 0, 0, 0) },      // centro e raggio dell'occhio in pixel, quanto è occhio
+    uWarp: { value: 0 },                                     // 0 fermo · 1 scroll velocissimo: le stelle diventano strisce
   };
   const smat = new THREE.ShaderMaterial({
     uniforms: suni, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
     vertexShader: /* glsl */ `
-      uniform float uTime, uScroll, uPR, uAspect;
+      uniform float uTime, uScroll, uPR, uAspect, uWarp;
       uniform vec2 uParallasse, uRis;
       uniform vec4 uOcchio;
       attribute vec4 aSeme;
-      varying float vLuce, vTinta;
+      varying float vLuce, vTinta, vStira;
       void main(){
         float v = aSeme.z;
         // deriva lenta verso sinistra e salita con lo scroll: le stelle vicine si muovono di più (profondità)
@@ -521,16 +522,22 @@ export function avviaScena(canvas) {
           vLuce *= mix(1.0, smoothstep(uOcchio.z * 0.9, uOcchio.z * 1.04, distance(px, uOcchio.xy)), uOcchio.w);
         }
         vTinta = aSeme.w;
-        gl_PointSize = (davanti ? 3.6 + (v - 1.15) * 5.0 : 1.5 + v * 3.2) * uPR * (0.85 + 0.35 * s);
+        float base = (davanti ? 3.6 + (v - 1.15) * 5.0 : 1.5 + v * 3.2) * uPR * (0.85 + 0.35 * s);
+        // velocità della luce: scorrendo forte la stella si allunga in verticale (più quelle vicine)
+        vStira = 1.0 + uWarp * 6.0 * (0.25 + min(v, 1.3));
+        vLuce *= 1.0 + uWarp * 0.6;
+        gl_PointSize = base * vStira;
       }`,
     fragmentShader: /* glsl */ `
       uniform vec3 uColore;
       uniform float uOpacita;
-      varying float vLuce, vTinta;
+      varying float vLuce, vTinta, vStira;
       void main(){
-        float d = length(gl_PointCoord - 0.5);
+        vec2 q = gl_PointCoord - 0.5;
+        q.x *= vStira;                                   // la larghezza resta quella della stella, cresce solo l'altezza
+        float d = length(q);
         if (d > 0.5) discard;
-        float a = pow(smoothstep(0.5, 0.0, d), 1.8);
+        float a = pow(smoothstep(0.5, 0.0, d), 1.8) * (vStira > 1.05 ? smoothstep(0.5, 0.15, abs(q.y)) : 1.0);
         vec3 c = uColore;
         if (vTinta > 0.86) c = mix(c, vec3(1.0, 0.85, 0.65), 0.6);      // stelle calde
         else if (vTinta < 0.2) c = mix(c, vec3(1.0), 0.55);              // stelle bianche
@@ -752,7 +759,11 @@ export function avviaScena(canvas) {
   document.addEventListener('toggle', () => setTimeout(misuraTesto, 50), true); // domande che si aprono
 
   const centro = new THREE.Vector3();
-  const bordoOcchio = new THREE.Vector3(), asseX = new THREE.Vector3();
+  const bordoOcchio = new THREE.Vector3(), asseX = new THREE.Vector3(), centroSfera = new THREE.Vector3();
+  const corona = { el: document.createElement('div'), k: 0 };
+  corona.el.className = 'corona-eclisse';
+  corona.el.setAttribute('aria-hidden', 'true');
+  canvas.parentElement?.appendChild(corona.el);
   const colTinta = new THREE.Color();
   const sguardo = new THREE.Vector2();
 
@@ -863,12 +874,28 @@ export function avviaScena(canvas) {
     suni.uTime.value = t;
     {
       // dove sta l'occhio sullo schermo, per nascondere le stelle che gli passano dietro
+      // il centro vero della sfera è un po' dietro il centro del gruppo (vedi occhio() nello shader)
       const raggio = 1.25 * gruppo.scale.x;
-      bordoOcchio.copy(gruppo.position).add(asseX.set(raggio, 0, 0)).project(camera);
-      const r = Math.abs(bordoOcchio.x - centro.x) * 0.5 * W;
+      centroSfera.copy(gruppo.position); centroSfera.z -= 1.0 * gruppo.scale.x;
+      bordoOcchio.copy(centroSfera).add(asseX.set(raggio, 0, 0)).project(camera);
+      centroSfera.project(camera);
+      const sx = (centroSfera.x + 1) * 0.5 * W, sy2 = (1 - centroSfera.y) * 0.5 * H;
+      const r = Math.abs(bordoOcchio.x - centroSfera.x) * 0.5 * W;
       const quanto = Math.max(0, 1 - uniforms.uForma.value) * (1 - uniforms.uScritta.value) * Math.min(uniforms.uOpacity.value * 1.5, 1);
-      suni.uOcchio.value.set(ex, ey, r, quanto);
+      suni.uOcchio.value.set(sx, sy2, r, quanto);
+      // corona d'eclisse: si accende attorno all'occhio quando l'attenzione va sul bottone d'azione
+      corona.k = morbido(corona.k, segnali.battito > 0.5 && quanto > 0.3 && !segnali.sorpresa ? 1 : 0, 4);
+      if (corona.k > 0.01) {
+        const lato = r * 2 * (1.16 + 0.05 * corona.k);
+        corona.el.style.width = corona.el.style.height = `${lato}px`;
+        // left/top e non transform: la corona ruota su se stessa e la rotazione non deve spostarla
+        corona.el.style.left = `${sx - lato / 2}px`;
+        corona.el.style.top = `${sy2 - lato / 2}px`;
+      }
+      corona.el.style.opacity = (corona.k * 0.7).toFixed(3);
     }
+    // velocità della luce
+    suni.uWarp.value = morbido(suni.uWarp.value, ridotto ? 0 : THREE.MathUtils.smoothstep(Math.abs(vel), 0.18, 1.3), 6);
     suni.uScroll.value = (sy / H) * 0.6;
     suni.uParallasse.value.set(mouse.x < 5 ? -mouse.x * 0.25 : 0, mouse.y < 5 ? -mouse.y * 0.15 : 0);
     // una stella cadente ogni 10-25 secondi (mai con «riduci movimento»)

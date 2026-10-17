@@ -131,6 +131,21 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
 - Cursore personalizzato (desktop) che diventa una lente sui bottoni e "aspira" verso le call to action (effetto magnetico).
 - Card con inclinazione 3D e bagliore che segue il mouse.
 - Contatori che salgono quando entrano nello schermo.
+- **Effetti** (scelti dalla prova «Effetti Studio Desideri», codice in `src/scripts/effetti.js`, `scena.js`, `global.css`):
+  1. scia luminosa che gira sul bordo del bottone dell'hero, del piano "Il più scelto" e del riepilogo del preventivo;
+  2. sulle card si accende il tratto di bordo vicino al mouse;
+  3. corona d'eclisse attorno all'occhio quando l'attenzione va su un bottone d'azione;
+  4. velocità della luce: scorrendo forte le stelle si allungano in strisce;
+  5. linea dei capitoli sul bordo sinistro (schermi larghi), con il capitolo attuale in rosso; i punti portano alle sezioni;
+  6. «sceglie.» nasce dalle stelle alla prima visita;
+  7. stelline al clic sui bottoni d'azione (se il bottone apre un'altra pagina, si aspettano 0,2 s per vederle);
+  8. polvere di stelle dietro il cursore, solo su computer;
+  9. totali del preventivo che girano come un contachilometri;
+  10. cometa lungo la sottolineatura delle parole colorate;
+  11. passaggio sfumato tra le pagine (View Transitions, nei browser che le supportano);
+  12. intro: l'occhio si apre, sbatte le palpebre, ti guarda e si gira verso il titolo;
+  13. «Desideri» grande nel footer con le stelle che scorrono dentro le lettere.
+  Tutto fermo o spento con «riduci movimento».
 - **Cielo stellato** sullo sfondo: ogni stella brilla col suo ritmo, scorre piano verso sinistra (le vicine più veloci, effetto profondità), sale quando si scorre la pagina e si sposta appena col mouse. Ogni 10-25 secondi una stella cadente discreta nella parte alta. Tutto fermo con «riduci movimento».
 - Aberrazione cromatica sulle particelle quando scorri veloce.
 - **Accessibilità:** con "riduci movimento" attivo tutto diventa statico e leggibile. Contrasto AA, navigazione da tastiera, testo vero (non immagini).
