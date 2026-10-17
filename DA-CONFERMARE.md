@@ -13,7 +13,7 @@
 - [ ] **Numeri reali** per i casi studio (richieste al mese, tempi di caricamento): aggiungili a `fatto` quando li hai.
 - [ ] **"Vendita immobiliare a Milano"** nel percorso: va bene mostrarlo? (È un punto di forza sulla vendita, ma decidi tu.)
 - [ ] **Testi in inglese** (`src/data/en.js`, `src/i18n/ui.js`, pagine `/en`): rileggili o falli rileggere da un madrelingua prima di fare pubblicità all'estero.
-- [ ] **Logo definitivo**: sostituire `src/assets/marchio.svg` e `public/favicon.svg` con l'SVG finale (il cerchio del punto con `class="punto-segnale"` per farlo pulsare).
+- [x] **Logo definitivo** «Eclisse flat» nel sito (`public/brand/`).
 - [ ] **E-commerce lanciati**: se puoi nominarne uno o due (anche tuoi), diventano un terzo caso studio.
 
 ## Tecnica

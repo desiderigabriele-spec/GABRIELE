@@ -108,10 +108,10 @@ Italiano predefinito (`/`), inglese su pagine vere (`/en`, `/en/quote`, `/en/pri
 
 ### Logo
 Direzione **Aggancio**: un occhio che non guarda chi lo osserva, ma un **punto rosso** accanto a sé, lo stimolo che ha catturato la sua attenzione. È il messaggio del brand in un segno: chi cattura l'attenzione vince.
-- Palpebra con il gradiente viola → ciano, iride ambra, pupilla rivolta verso il punto.
+- Versione definitiva **Eclisse flat**: sfera avorio `#F2F4F8`, palpebra blu `#3D7BFF`, iride ambra `#FFB547` con la pupilla rivolta verso il punto. Solo colori pieni, leggibile fino a 32 px. Pupilla e fessure sono trasparenti, così il logo prende il fondo di ogni tema.
 - **Punto rosso** (`--segnale`, `#FF3347`): il colore universale del segnale d'attenzione (spia "REC", diretta, notifiche). Sul sito pulsa piano ogni 2,4 secondi, mai con lampeggi veloci; fermo con "riduci movimento".
-- Nome: «GABRIELE» piccolo e spaziato sopra «desideri» in Bricolage Grotesque.
-- File: `src/assets/marchio.svg` (header e footer), `public/favicon.svg`.
+- Nome: «GABRIELE» piccolo e spaziato sopra «Desideri», con la D maiuscola.
+- File: `public/brand/` (marchio, logo orizzontale, logo per fondi chiari, simbolo quadrato), `src/assets/marchio.svg` (header e footer, senza id), `public/favicon.svg`, `public/img/icona-512.png` e `apple-touch-icon.png`.
 
 ### Tipografia
 - **Bricolage Grotesque** (titoli): ha personalità ma è compatta e leggibile; i dettagli delle lettere la rendono riconoscibile senza «urlare» (scelta dopo il confronto in «Prove hero Desideri»).

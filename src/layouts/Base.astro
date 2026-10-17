@@ -45,6 +45,8 @@ const hrefEn = lang === 'en' ? path : alt;
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#05070F" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/img/icona-512.png" type="image/png" sizes="512x512" />
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={t.locale} />
     {alt && hrefIt && hrefEn && (
@@ -116,7 +118,7 @@ const hrefEn = lang === 'en' ? path : alt;
           <span class="brand-mark" set:html={marchio} />
           <span class="brand-testo">
             <span class="brand-nome-piccolo">Gabriele</span>
-            <span class="brand-nome">desideri</span>
+            <span class="brand-nome">Desideri</span>
           </span>
         </a>
         <nav class="nav" aria-label={t.navEtichetta}>
@@ -167,7 +169,7 @@ const hrefEn = lang === 'en' ? path : alt;
               <span class="brand-mark" set:html={marchio} />
               <span class="brand-testo">
                 <span class="brand-nome-piccolo">Gabriele</span>
-                <span class="brand-nome">desideri</span>
+                <span class="brand-nome">Desideri</span>
               </span>
             </a>
             <p class="footer-claim">{t.footerClaim}</p>
