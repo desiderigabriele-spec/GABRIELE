@@ -2,6 +2,7 @@
 // La home in italiano (/) e in inglese (/en/): stessa struttura, testi nella lingua della pagina.
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
+import Occhio from './Occhio.astro';
 import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -122,7 +123,7 @@ const jsonLd = {
         <!-- Benvenuto: tre domande facoltative che rendono il sito suo -->
         <div class="benvenuto" id="personalizza" data-benvenuto data-appare="0.7">
           <div class="bv-testa">
-            <span class="bv-punto" aria-hidden="true"></span>
+            <Occhio espressione="curioso" />
             <span class="mono">{T('Rendi tuo questo sito', 'Make this site yours')}</span>
             <span class="bv-passi" aria-hidden="true"><i class="attivo"></i><i></i><i></i></span>
             <button class="bv-chiudi" type="button" data-bv-chiudi aria-label={T('Chiudi la personalizzazione', 'Close personalisation')}>×</button>
@@ -158,6 +159,7 @@ const jsonLd = {
           </div>
 
           <div class="bv-passo bv-fatto" data-bv-passo="4" hidden>
+            <Occhio espressione="occhiolino" />
             <p><span data-bv-fatto></span> <button class="bv-salta" type="button" data-bv-modifica>{T('Modifica', 'Edit')}</button></p>
           </div>
           <p class="bv-nota">{T('Resta solo sul tuo dispositivo.', 'Stays on your device only.')}</p>
@@ -322,6 +324,7 @@ const jsonLd = {
   <section class="sezione" id="metodo">
     <div class="wrap metodo">
       <div class="metodo-fisso">
+        <span class="icona-titolo"><Icona nome="sguardo" /></span>
         <span class="capitolo">{T('Capitolo 03 · Il metodo', 'Chapter 03 · The method')}</span>
         {it ? (
           <h2 data-righe>

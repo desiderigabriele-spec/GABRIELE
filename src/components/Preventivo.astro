@@ -2,6 +2,7 @@
 // Il preventivo automatico in italiano (/preventivo) e in inglese (/en/quote).
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
+import Occhio from './Occhio.astro';
 import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
 import '../styles/preventivo.css';
@@ -39,6 +40,7 @@ const settori = it
   <section class="pv" data-forma="4" data-lato="destra" data-luce="0.22" data-scala="1.3">
     <div class="wrap">
       <header class="pv-testa">
+        <span class="icona-titolo"><Icona nome="preventivo" /></span>
         <span class="capitolo">{T('Preventivo automatico', 'Instant quote')}</span>
         <h1 data-righe>
           <span class="riga"><span>{T('Componi il tuo', 'Build your')}</span></span>
@@ -153,7 +155,7 @@ const settori = it
 
           <!-- PASSO 3 -->
           <fieldset class="pv-passo" data-passo="3" hidden>
-            <legend><span class="mono">{passoDi(3)}</span>{T('Quando ti serve?', 'When do you need it?')}</legend>
+            <legend><span class="mono">{passoDi(3)}</span><span class="pv-legend-ico"><Icona nome="tempi" /></span>{T('Quando ti serve?', 'When do you need it?')}</legend>
             <div class="pv-tempi">
               {tempi.map((t, i) => (
                 <label class="pv-livello">
@@ -231,6 +233,7 @@ const settori = it
             )}</p>
             <div class="pv-nav">
               <button class="btn btn-vetro" type="button" data-indietro>← {T('Indietro', 'Back')}</button>
+              <span class="pv-attesa" aria-hidden="true"><Occhio espressione="pensieroso" /></span>
               <div class="pv-invio">
                 <button class="btn btn-azione btn-grande" type="submit" data-invia>{T('Invia la richiesta', 'Send request')} <span class="freccia" aria-hidden="true">→</span></button>
               </div>
@@ -243,7 +246,7 @@ const settori = it
 
           <!-- FATTO -->
           <div class="pv-passo pv-fatto" data-passo="5" hidden tabindex="-1">
-            <span class="pv-fatto-icona" aria-hidden="true">✦</span>
+            <Occhio espressione="festa" class="pv-fatto-occhio" />
             <h2>{T('Ricevuto.', 'Received.')} <span class="em em-firma">{T('Grazie!', 'Thank you!')}</span></h2>
             <p class="lead" data-fatto-testo>{T(
               'Ho ricevuto il tuo progetto. Ti scrivo entro 24 ore con il preventivo definitivo.',
@@ -270,7 +273,7 @@ const settori = it
             </div>
             <ul class="pv-righe" data-righe-riep><li class="pv-vuoto">{T('Scegli un servizio per iniziare.', 'Choose a service to get started.')}</li></ul>
             <div class="pv-sconto" data-sconto>
-              <div class="pv-sconto-testo"><span data-sconto-testo></span></div>
+              <div class="pv-sconto-testo"><Occhio espressione="ok" class="pv-sconto-occhio" /><span data-sconto-testo></span></div>
               <div class="pv-sconto-barra"><span data-sconto-barra></span></div>
             </div>
             <dl class="pv-totali">

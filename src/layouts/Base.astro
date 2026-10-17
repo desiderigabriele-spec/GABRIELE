@@ -7,6 +7,7 @@ import '../styles/global.css';
 import { dati } from '../i18n/dati.js';
 import { ui, url } from '../i18n/ui.js';
 import marchio from '../assets/marchio.svg?raw';
+import Occhio from '../components/Occhio.astro';
 
 interface Props {
   title: string;
@@ -220,6 +221,7 @@ const hrefEn = lang === 'en' ? path : alt;
     {uscita && (
       <div class="uscita" data-uscita hidden role="dialog" aria-modal="true" aria-labelledby="uscita-titolo">
         <div class="uscita-box">
+          <Occhio espressione="sorpreso" />
           <span class="capitolo">{t.uscitaCapitolo}</span>
           <h2 id="uscita-titolo"><span data-nome-prefisso></span><span data-minuscola>{t.uscitaTitolo}</span><span class="em em-firma">{t.uscitaTitoloEm}</span></h2>
           <p>{t.uscitaTesto}</p>
@@ -232,7 +234,7 @@ const hrefEn = lang === 'en' ? path : alt;
     )}
 
     <div class="ritorno" data-ritorno hidden role="status">
-      <span class="ritorno-occhio" aria-hidden="true">◉</span>
+      <Occhio espressione="innamorato" />
       <p><strong data-ritorno-titolo>{t.bentornato}!</strong> <span data-ritorno-testo>{t.bentornatoTesto}</span></p>
       <a class="link-freccia" href={preventivo} data-ritorno-link>{t.ctaPreventivo} <span class="freccia" aria-hidden="true">→</span></a>
       <button class="ritorno-chiudi" type="button" aria-label={t.chiudi} data-ritorno-chiudi>×</button>

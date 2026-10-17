@@ -31,7 +31,7 @@
 .pv-cat-card:has(input:checked) { border-color: var(--ambra); background: linear-gradient(180deg, rgba(var(--top-rgb),.9), rgba(var(--sup-rgb),.9)); box-shadow: 0 20px 60px -30px rgba(var(--azione-rgb),.6); }
 .pv-cat-card:has(input:focus-visible) { outline: 2px solid var(--ambra); outline-offset: 3px; }
 .pv-cat-icona { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: rgba(var(--brand-rgb),.12); border: 1px solid rgba(var(--brand-rgb),.28); color: var(--viola-chiaro); margin-bottom: .4rem; }
-.pv-cat-icona svg { width: 22px; height: 22px; }
+.pv-cat-icona svg { width: 27px; height: 27px; }
 .pv-cat-nome { font-family: var(--f-titolo); font-weight: 700; font-size: 1.2rem; letter-spacing: -0.01em; }
 .pv-cat-riga { color: var(--nebbia); font-size: .9rem; }
 .pv-cat-da { font-family: var(--f-mono); font-size: .72rem; color: var(--nebbia-2); margin-top: .3rem; }
@@ -166,3 +166,16 @@
 .pv-svizzera button { background: none; border: 0; padding: 0; color: var(--latte); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .pv-incontri { margin-top: 1.8rem; }
 .pv-incontri .pv-aiuto { margin: 0 0 .4rem; }
+
+/* icone e Occhio nel preventivo */
+.pv-legend-ico { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: rgba(var(--brand-rgb), .12); border: 1px solid rgba(var(--brand-rgb), .28); color: var(--viola-chiaro); }
+.pv-legend-ico .ico { width: 26px; height: 26px; }
+.pv-testa .icona-titolo { margin-bottom: -.4rem; }
+.pv-fatto-occhio { width: 120px; height: 120px; margin: 0 auto; }
+.pv-sconto-testo { display: flex; align-items: center; gap: .55rem; }
+.pv-sconto-occhio { width: 0; height: 26px; opacity: 0; transition: width .4s var(--ease), opacity .4s var(--ease); flex: none; }
+.pv-sconto.attivo .pv-sconto-occhio { width: 26px; opacity: 1; }
+/* mentre la richiesta parte, l'Occhio ci pensa */
+.pv-attesa { display: none; }
+.pv-attesa .mascotte { width: 46px; height: 46px; }
+.invio-in-corso .pv-attesa { display: block; }

@@ -113,6 +113,10 @@ Direzione **Aggancio**: un occhio che non guarda chi lo osserva, ma un **punto r
 - Nome: **Studio Desideri**. Nel logo si legge dall'alto: «STUDIO» piccolo e spaziato sopra «Desideri», con la D maiuscola. «Studio» comprende siti, AI e pubblicità e suona curato senza far credere a una grande agenzia. Nei titoli delle pagine si aggiunge «Siti web, AI e pubblicità». In fattura: «Studio Desideri di Gabriele Desideri».
 - File: `public/brand/` (marchio, logo orizzontale, logo per fondi chiari, simbolo quadrato), `src/assets/marchio.svg` (header e footer, senza id), `public/favicon.svg`, `public/img/icona-512.png` e `apple-touch-icon.png`.
 
+### Icone e mascotte
+- **Icone «Eclisse»** (`src/components/Icona.astro`): tratto pulito, riempimento leggero nel colore del tema e in ognuna il **punto rosso** del logo, che pulsa. Al passaggio sulla card si muovono (onde, flussi, frecce che girano, lancetta, pupilla). Servizi, garanzie, metodo e preventivo.
+- **Occhio, la mascotte** (`src/components/Occhio.astro`): le forme del logo con otto espressioni. Curioso (benvenuto), occhiolino (personalizzazione fatta), innamorato (Rieccoti), sorpreso (finestra d'uscita), pensieroso (invio in corso), festa (richiesta ricevuta), ok (sconto sbloccato), perso (404). Le stesse espressioni possono diventare sticker per WhatsApp e Instagram.
+
 ### Tipografia
 - **Bricolage Grotesque** (titoli): ha personalità ma è compatta e leggibile; i dettagli delle lettere la rendono riconoscibile senza «urlare» (scelta dopo il confronto in «Prove hero Desideri»).
 - **Instrument Serif corsivo** (parole emotive: *desideri*, *sì*, *clienti*): il tocco umano ed elegante dentro la tecnologia.

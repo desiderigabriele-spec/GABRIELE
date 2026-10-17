@@ -286,7 +286,7 @@ html.scena-on.sguardo-usato .sguardo-hint { opacity: 0; transition-delay: 2.5s; 
 .servizio { display: grid; gap: 1.1rem; min-height: 380px; grid-template-rows: auto auto 1fr auto; }
 .servizio-top { display: flex; justify-content: space-between; align-items: center; }
 .servizio-icona { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; background: rgba(var(--brand-rgb),.12); border: 1px solid rgba(var(--brand-rgb),.28); color: var(--viola-chiaro); }
-.servizio-icona svg { width: 26px; height: 26px; }
+.servizio-icona svg { width: 30px; height: 30px; }
 .servizio p { color: var(--nebbia); }
 .servizio .esempio { font-size: .92rem; color: var(--nebbia-2); border-left: 2px solid var(--viola); padding-left: .9rem; align-self: start; }
 .servizio-piede { display: flex; justify-content: space-between; align-items: end; gap: 1rem; padding-top: 1.2rem; border-top: 1px solid var(--linea); }
@@ -402,7 +402,7 @@ input[type='range']::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .garanzie { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .garanzia { display: grid; gap: .9rem; }
 .garanzia-icona { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; background: rgba(var(--dati-rgb),.08); border: 1px solid rgba(var(--dati-rgb),.3); color: var(--ciano); }
-.garanzia-icona svg { width: 22px; height: 22px; }
+.garanzia-icona svg { width: 27px; height: 27px; }
 .garanzia p { color: var(--nebbia); }
 @media (max-width: 900px) { .garanzie { grid-template-columns: 1fr; } }
 
@@ -562,3 +562,54 @@ html:not(.js) .benvenuto { display: none; }
 .badge-consiglio { position: absolute; top: -10px; right: 16px; padding: .28rem .65rem; border-radius: 999px; background: var(--viola-chiaro); color: var(--notte); font-weight: 700; font-family: var(--f-mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; box-shadow: 0 6px 20px -6px rgba(var(--brand-rgb),.8); }
 .servizio { position: relative; }
 .servizio .badge-consiglio { top: clamp(26px, 2.6vw, 36px); right: calc(clamp(26px, 2.6vw, 36px) + 2.4rem); }
+
+/* ---------- Icone «Eclisse»: tratto, riempimento nel colore del tema, punto rosso ---------- */
+.ico { fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.ico .riempi { fill: rgba(var(--brand-rgb), .24); }
+.ico .ico-pieno { fill: currentColor; stroke: none; }
+.ico .punto { fill: var(--segnale); stroke: none; transform-box: fill-box; transform-origin: center; animation: segnale-ico 2.4s ease-in-out infinite; }
+@keyframes segnale-ico { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(.8); } }
+/* al passaggio sulla card l'icona si anima */
+:is(.card, .pv-cat-card, .pv-blocco, a, .garanzia):hover .ico .punto { animation: segnale-ico-forte .9s ease-in-out infinite; }
+@keyframes segnale-ico-forte { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.45); } }
+:is(.card, .pv-cat-card):hover .ico-onda path { animation: ico-onda 1.2s ease-out infinite; }
+:is(.card, .pv-cat-card):hover .ico-onda path:nth-child(2) { animation-delay: .15s; }
+:is(.card, .pv-cat-card):hover .ico-onda path:nth-child(3) { animation-delay: .3s; }
+@keyframes ico-onda { 0% { opacity: .2; } 40% { opacity: 1; } 100% { opacity: .2; } }
+:is(.card, .pv-cat-card):hover .ico-flusso { stroke-dasharray: 3 4; animation: ico-flusso .8s linear infinite; }
+@keyframes ico-flusso { to { stroke-dashoffset: -14; } }
+:is(.card, .pv-cat-card):hover .ico-gira { transform-box: view-box; transform-origin: 24px 24px; animation: ico-gira 1.6s cubic-bezier(.6, 0, .4, 1) infinite; }
+:is(.card, .pv-cat-card, .pv-passo):hover .ico-lancetta { transform-box: view-box; transform-origin: 24px 26px; animation: ico-gira 2.4s linear infinite; }
+@keyframes ico-gira { to { transform: rotate(360deg); } }
+:is(.card, .pv-cat-card, .metodo-fisso):hover .ico-sguardo { animation: ico-guarda 1.8s ease-in-out infinite; }
+@keyframes ico-guarda { 0%, 100% { transform: translate(0, 0); } 30% { transform: translate(2px, -2px); } 65% { transform: translate(-1.5px, 1px); } }
+.icona-titolo { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: rgba(var(--brand-rgb), .12); border: 1px solid rgba(var(--brand-rgb), .28); color: var(--viola-chiaro); }
+.icona-titolo .ico { width: 26px; height: 26px; }
+
+/* ---------- Occhio, la mascotte ---------- */
+.mascotte { display: block; overflow: visible; }
+.mascotte .m-fondo { fill: var(--notte); }
+.mascotte .m-fondo-tratto { stroke: var(--notte); }
+.mascotte .m-palpebra { stroke: var(--viola); }
+.mascotte .m-punto { transform-box: fill-box; transform-origin: center; animation: segnale 2.4s ease-in-out infinite; }
+.mascotte .m-battito { transform-box: fill-box; transform-origin: center; animation: m-battito 1.1s ease-in-out infinite; }
+@keyframes m-battito { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.18); } 30% { transform: scale(1); } 45% { transform: scale(1.1); } }
+.mascotte .m-sale { animation: m-sale 2.6s ease-in-out infinite; }
+.mascotte .m-sale:last-of-type { animation-delay: .9s; }
+@keyframes m-sale { 0% { transform: translateY(4px); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(-10px); opacity: 0; } }
+.mascotte .m-brilla { transform-box: fill-box; transform-origin: center; animation: m-brilla 1.8s ease-in-out infinite; }
+@keyframes m-brilla { 0%, 100% { transform: scale(.7) rotate(0); opacity: .6; } 50% { transform: scale(1.1) rotate(20deg); opacity: 1; } }
+.mascotte .m-pensa { animation: m-pensa 1.5s ease-in-out infinite; }
+.mascotte .m-pensa:nth-of-type(2) { animation-delay: .2s; }
+.mascotte .m-pensa:nth-of-type(3) { animation-delay: .4s; }
+@keyframes m-pensa { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+.mascotte .m-vivace { animation: ico-guarda 3.2s ease-in-out infinite; }
+html.ridotto .mascotte *, html.ridotto .ico * { animation: none !important; }
+
+/* dove compare */
+.ritorno .mascotte { grid-row: span 2; width: 52px; height: 52px; }
+.uscita-box .mascotte { width: 92px; height: 92px; margin: 0 auto -.4rem; }
+.bv-testa .mascotte { width: 26px; height: 26px; flex: none; }
+.bv-fatto { grid-template-columns: auto 1fr; align-items: center; gap: .8rem; }
+.bv-fatto .mascotte { width: 40px; height: 40px; }
+.pagina-404 .mascotte { width: min(46vw, 200px); height: auto; margin: 0 auto; }

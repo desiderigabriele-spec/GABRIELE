@@ -349,6 +349,7 @@ export function avviaPreventivo() {
     const btn = form.querySelector('[data-invia]');
     btn.disabled = true;
     btn.textContent = t.invio;
+    form.classList.add('invio-in-corso');
     try {
       // text/plain: richiesta "semplice", niente preflight CORS verso Google Apps Script
       const res = await fetch(ENDPOINT, {
@@ -363,6 +364,7 @@ export function avviaPreventivo() {
       if (!res.ok || j.success === false) throw new Error('invio');
       fatto(d, 'modulo');
     } catch (_) {
+      form.classList.remove('invio-in-corso');
       btn.disabled = false;
       btn.innerHTML = `${t.riprova} <span class="freccia" aria-hidden="true">→</span>`;
       const err = form.querySelector('[data-errore="4"]');
@@ -372,6 +374,7 @@ export function avviaPreventivo() {
   });
 
   function fatto(d, via) {
+    form.classList.remove('invio-in-corso');
     traccia('preventivo_invio', { via });
     const r = calcola(leggi());
     const testo = testoProgetto(r, d);
