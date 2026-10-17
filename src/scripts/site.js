@@ -304,7 +304,7 @@ if (uscita) {
 
 // ---------- 3. Chi torna riceve un occhiolino ----------
 const RITORNO = {
-  it: { bentornato: 'Bentornato', progetto: "Il tuo progetto è ancora qui, come l'avevi lasciato.", riprendi: 'Riprendi il preventivo' },
+  it: { bentornato: 'Rieccoti', progetto: "Il tuo progetto è ancora qui, come l'avevi lasciato.", riprendi: 'Riprendi il preventivo' },
   en: { bentornato: 'Welcome back', progetto: 'Your project is still here, just as you left it.', riprendi: 'Resume your quote' },
 };
 (function bentornato() {
@@ -318,7 +318,7 @@ const RITORNO = {
   let progetto = null;
   try { progetto = JSON.parse(ls.get('gd-preventivo') || 'null'); } catch (_) {}
   const t = RITORNO[lang], nome = leggiProfilo().nome;
-  if (nome) box.querySelector('[data-ritorno-titolo]').textContent = `${t.bentornato} ${nome}!`;
+  if (nome) box.querySelector('[data-ritorno-titolo]').textContent = `${t.bentornato}, ${nome}!`;
   if (progetto && Object.keys(progetto.cat || {}).length) {
     box.querySelector('[data-ritorno-testo]').textContent = t.progetto;
     box.querySelector('[data-ritorno-link]').firstChild.textContent = `${t.riprendi} `;

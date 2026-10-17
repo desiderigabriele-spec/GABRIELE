@@ -28,7 +28,7 @@ export const ui = {
     uscitaCapitolo: "Un'ultima cosa", uscitaTitolo: 'Prima di andare, ', uscitaTitoloEm: 'guarda qui.',
     uscitaTesto: "In 2 minuti vedi quanto costa il tuo progetto. Gratis, senza impegno, senza lasciare l'email per forza.",
     uscitaSi: 'Fammi vedere quanto costa', uscitaNo: 'No grazie, ci penso',
-    bentornato: 'Bentornato', bentornatoTesto: 'Riprendiamo da dove eravamo?', bentornatoProgetto: "Il tuo progetto è ancora qui, come l'avevi lasciato.",
+    bentornato: 'Rieccoti', bentornatoTesto: 'Riprendiamo da dove eravamo?', bentornatoProgetto: "Il tuo progetto è ancora qui, come l'avevi lasciato.",
     riprendi: 'Riprendi il preventivo', chiudi: 'Chiudi',
     altraLingua: 'English', altraLinguaBreve: 'EN', questaLinguaBreve: 'IT', cambiaLingua: 'Read this site in English',
     avvisoLingua: 'Prefer English?', avvisoLinguaLink: 'Switch to English',

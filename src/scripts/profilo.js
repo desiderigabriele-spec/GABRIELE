@@ -20,10 +20,13 @@ const TESTI = {
   it: {
     wa: (n) => `Ciao Gabriele, sono ${n}. Ho visto il tuo sito e vorrei parlarti di un progetto.`,
     consigliato: 'Consigliato per te',
+    // saluti senza genere: vanno bene per Marco e per Giulia
+    saluto: (h) => (h >= 5 && h < 14 ? 'Buongiorno ' : h >= 14 && h < 18 ? 'Ciao ' : 'Buonasera '),
   },
   en: {
     wa: (n) => `Hi Gabriele, I'm ${n}. I saw your website and I'd like to talk about a project.`,
     consigliato: 'Recommended for you',
+    saluto: (h) => (h >= 5 && h < 12 ? 'Good morning, ' : h >= 12 && h < 18 ? 'Good afternoon, ' : 'Good evening, '),
   },
 }[lang];
 
@@ -52,6 +55,9 @@ export function applicaProfilo(p = leggiProfilo()) {
   const nome = p.nome || '';
   html.classList.toggle('ha-nome', !!nome);
   document.querySelectorAll('[data-nome]').forEach((el) => { el.textContent = nome; });
+  // nell'hero il nome arriva con il saluto dell'ora: Buongiorno, Ciao (pomeriggio), Buonasera
+  const saluto = TESTI.saluto(new Date().getHours());
+  document.querySelectorAll('[data-saluto]').forEach((el) => { el.textContent = nome ? saluto : ''; });
   document.querySelectorAll('[data-riga-nome]').forEach((el) => { el.hidden = !nome; });
   document.querySelectorAll('[data-nome-prefisso]').forEach((el) => { el.textContent = nome ? `${nome}, ` : ''; });
   // dopo il nome la frase prosegue in minuscolo («Marco, trasformo…»)

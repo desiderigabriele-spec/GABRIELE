@@ -97,7 +97,7 @@ Nel benvenuto chi visita sceglie l'atmosfera: **blu** (fiducia, predefinito), **
 
 ### Personalizzazione (benvenuto nell'hero)
 Tre domande facoltative, ognuna saltabile, sotto i bottoni dell'hero:
-1. **Come ti chiami?** Il nome compare sopra il titolo («Marco, trasformo…»), nel titolo finale, nel messaggio WhatsApp, nel «Bentornato» e nel campo nome del preventivo. Le particelle dell'occhio scrivono il nome per qualche secondo, poi tornano occhio.
+1. **Come ti chiami?** Il nome apre il titolo, grande come il titolo, con il saluto dell'ora (Buongiorno 5-14, Ciao 14-18, Buonasera 18-5: «Buonasera Marco, trasformo…»), nel titolo finale, nel messaggio WhatsApp, nel «Rieccoti» e nel campo nome del preventivo. Le particelle dell'occhio scrivono il nome per qualche secondo, poi tornano occhio.
 2. **Di cosa ti occupi?** Segna «Consigliato per te» sui servizi giusti (anche nel preventivo), mette per primo il lavoro più vicino (artigiani e negozi vedono prima Montini) e precompila il settore nel preventivo.
 3. **Che colore ti somiglia?** Anteprima dal vivo passandoci sopra, scelta con un clic.
 

@@ -549,7 +549,7 @@ html:not(.js) .benvenuto { display: none; }
 
 /* il nome del visitatore sopra il titolo */
 .riga-nome[hidden] { display: none; }
-.riga-nome > span { font-size: .5em; letter-spacing: -0.02em; padding-bottom: .1em; }
+.riga-nome > span { padding-bottom: .06em; }
 .riga-nome [data-nome] { background: var(--firma); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
 /* servizi consigliati in base al settore */
