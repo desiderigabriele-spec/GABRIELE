@@ -117,7 +117,7 @@ const hrefEn = lang === 'en' ? path : alt;
         <a class="brand" href={home} aria-label={t.home}>
           <span class="brand-mark" set:html={marchio} />
           <span class="brand-testo">
-            <span class="brand-nome-piccolo">Gabriele</span>
+            <span class="brand-nome-piccolo">Studio</span>
             <span class="brand-nome">Desideri</span>
           </span>
         </a>
@@ -168,10 +168,11 @@ const hrefEn = lang === 'en' ? path : alt;
             <a class="brand" href={home} aria-label={t.home}>
               <span class="brand-mark" set:html={marchio} />
               <span class="brand-testo">
-                <span class="brand-nome-piccolo">Gabriele</span>
+                <span class="brand-nome-piccolo">Studio</span>
                 <span class="brand-nome">Desideri</span>
               </span>
             </a>
+            <span class="brand-ruolo">{t.ruolo}</span>
             <p class="footer-claim">{t.footerClaim}</p>
           </div>
           <div>
@@ -193,7 +194,7 @@ const hrefEn = lang === 'en' ? path : alt;
           </div>
         </div>
         <div class="footer-legale">
-          <span>© {new Date().getFullYear()} {contatti.nome}{contatti.piva ? ` · P.IVA ${contatti.piva}` : ''}</span>
+          <span>© {new Date().getFullYear()} {contatti.studio} di {contatti.nome}{contatti.piva ? ` · P.IVA ${contatti.piva}` : ''}</span>
           <span><a href={url('privacy', lang)}>{t.privacy}</a> · <button type="button" data-cookie-apri style="background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font-size:inherit">{t.preferenzeCookie}</button>{alt && <> · <a href={alt} hreflang={altLang} lang={altLang}>{t.altraLingua}</a></>}</span>
         </div>
       </div>

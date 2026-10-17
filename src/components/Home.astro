@@ -54,7 +54,8 @@ const descrizione = T(
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  name: 'Gabriele Desideri',
+  name: contatti.studio,
+  founder: { '@type': 'Person', name: contatti.nome, jobTitle: T('Fondatore', 'Founder') },
   description: descrizione,
   url: new URL(url('home', lang), Astro.site).toString(),
   email: contatti.email,
@@ -69,7 +70,7 @@ const jsonLd = {
   lang={lang}
   path={url('home', lang)}
   alt={url('home', it ? 'en' : 'it')}
-  title={T('Gabriele Desideri · Siti web, software AI e pubblicità che portano clienti', 'Gabriele Desideri · Websites, AI software and ads that bring clients')}
+  title={T('Desideri Studio · Siti web, AI e pubblicità che portano clienti', 'Desideri Studio · Websites, AI and ads that bring clients')}
   description={T(
     'Siti web, e-commerce, software con intelligenza artificiale e pubblicità online, progettati con la psicologia per portare le persone dal primo sguardo al «sì». Milano, Italia e Svizzera.',
     'Websites, e-commerce, AI software and online advertising, designed with psychology to take people from first glance to "yes". Based in Milan, working across Italy and Switzerland.',
@@ -419,13 +420,13 @@ const jsonLd = {
         )}
         {it ? (
           <>
-            <p data-appare>Sono <strong>Gabriele</strong>. Ho iniziato a vendere <strong>faccia a faccia</strong>, porta a porta e al telefono. Lì ho imparato la lezione più importante: <strong>le persone non comprano un prodotto, comprano come si sentono quando lo scelgono.</strong></p>
+            <p data-appare>Sono <strong>Gabriele</strong>, fondatore di Desideri Studio. Ho iniziato a vendere <strong>faccia a faccia</strong>, porta a porta e al telefono. Lì ho imparato la lezione più importante: <strong>le persone non comprano un prodotto, comprano come si sentono quando lo scelgono.</strong></p>
             <p data-appare>Poi ho portato quella lezione online. Ho lanciato negozi online miei e per aziende, gestito pubblicità su Meta, Google, LinkedIn e TikTok, costruito siti e software. Ho studiato psicologia, marketing, neuromarketing e intelligenza artificiale, e ho provato ogni tecnica sul campo prima di usarla per un cliente.</p>
             <p data-appare>Quello che amo è tutto il viaggio: <strong>dal primo sguardo alla conversione.</strong> Ogni colore, ogni parola e ogni movimento di un mio progetto ha un motivo preciso.</p>
           </>
         ) : (
           <>
-            <p data-appare>I'm <strong>Gabriele</strong>. I started out selling <strong>face to face</strong>, door to door and on the phone. That's where I learned the most important lesson: <strong>people don't buy a product, they buy how they feel when they choose it.</strong></p>
+            <p data-appare>I'm <strong>Gabriele</strong>, founder of Desideri Studio. I started out selling <strong>face to face</strong>, door to door and on the phone. That's where I learned the most important lesson: <strong>people don't buy a product, they buy how they feel when they choose it.</strong></p>
             <p data-appare>Then I took that lesson online. I launched online stores of my own and for companies, ran ads on Meta, Google, LinkedIn and TikTok, and built websites and software. I studied psychology, marketing, neuromarketing and artificial intelligence, and tested every technique in the field before using it for a client.</p>
             <p data-appare>What I love is the whole journey: <strong>from first glance to conversion.</strong> Every colour, every word and every movement in my projects is there for a reason.</p>
           </>

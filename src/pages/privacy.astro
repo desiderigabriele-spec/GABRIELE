@@ -2,14 +2,14 @@
 import Base from '../layouts/Base.astro';
 import { contatti } from '../data/sito.js';
 ---
-<Base title="Privacy e cookie · Gabriele Desideri" description="Come tratto i tuoi dati quando visiti il sito o chiedi un preventivo." path="/privacy" alt="/en/privacy" scena={false}>
+<Base title="Privacy e cookie · Desideri Studio" description="Come tratto i tuoi dati quando visiti il sito o chiedi un preventivo." path="/privacy" alt="/en/privacy" scena={false}>
   <section class="pagina">
     <div class="wrap prosa">
       <span class="capitolo">Privacy e cookie</span>
       <h1>I tuoi dati, detto semplice.</h1>
       <p><em>Bozza da completare con il commercialista o il consulente privacy prima della pubblicazione.</em></p>
       <h2>Chi tratta i dati</h2>
-      <p>{contatti.nome}{contatti.piva ? `, P.IVA ${contatti.piva}` : ''}, {contatti.citta}. Email: <a href={`mailto:${contatti.email}`}>{contatti.email}</a>.</p>
+      <p>{contatti.nome} ({contatti.studio}){contatti.piva ? `, P.IVA ${contatti.piva}` : ''}, {contatti.citta}. Email: <a href={`mailto:${contatti.email}`}>{contatti.email}</a>.</p>
       <h2>Quali dati raccolgo e perché</h2>
       <p>Quando compili il preventivo raccolgo nome, email, telefono, attività e le scelte del tuo progetto. Li uso solo per risponderti e prepararti il preventivo (base giuridica: misure precontrattuali richieste da te). Non li vendo e non li cedo a nessuno.</p>
       <p>Le richieste vengono salvate in un foglio Google e notificate su Telegram (servizi di Google LLC e Telegram, che possono trattare dati anche fuori dall'UE con le garanzie previste dal GDPR). Se scegli di inviare il progetto con WhatsApp o email, il messaggio passa dal tuo account su quei servizi.</p>

@@ -2,14 +2,14 @@
 import Base from '../../layouts/Base.astro';
 import { contatti } from '../../data/sito.js';
 ---
-<Base lang="en" title="Privacy and cookies · Gabriele Desideri" description="How I handle your data when you visit the site or request a quote." path="/en/privacy" alt="/privacy" scena={false}>
+<Base lang="en" title="Privacy and cookies · Desideri Studio" description="How I handle your data when you visit the site or request a quote." path="/en/privacy" alt="/privacy" scena={false}>
   <section class="pagina">
     <div class="wrap prosa">
       <span class="capitolo">Privacy and cookies</span>
       <h1>Your data, in plain words.</h1>
       <p><em>Draft to be completed with an accountant or privacy consultant before publication. The Italian version is the legally binding one.</em></p>
       <h2>Who handles the data</h2>
-      <p>{contatti.nome}{contatti.piva ? `, VAT no. ${contatti.piva}` : ''}, Milan, Italy. Email: <a href={`mailto:${contatti.email}`}>{contatti.email}</a>.</p>
+      <p>{contatti.nome} ({contatti.studio}){contatti.piva ? `, VAT no. ${contatti.piva}` : ''}, Milan, Italy. Email: <a href={`mailto:${contatti.email}`}>{contatti.email}</a>.</p>
       <h2>What I collect and why</h2>
       <p>When you fill in the quote form I collect your name, email, phone number, business and the choices you made for your project. I use them only to reply to you and prepare your quote (legal basis: pre-contractual steps you requested). I never sell or share them.</p>
       <p>Requests are saved in a Google spreadsheet and notified on Telegram (services of Google LLC and Telegram, which may process data outside the EU with the safeguards required by the GDPR). If you choose to send your project via WhatsApp or email, the message goes through your own account on those services.</p>

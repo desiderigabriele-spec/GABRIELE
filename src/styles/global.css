@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Gabriele Desideri — stile globale
+   Desideri Studio — stile globale
    Regola dei colori: i freddi servono a capire, i caldi ad agire.
    Il caldo (fuoco → ambra) compare SOLO sui punti di conversione.
    ========================================================================== */
@@ -183,6 +183,7 @@ html.intro-fine .intro-punto { animation: intro-esplodi .7s var(--ease) forwards
 .punto-segnale { transform-box: fill-box; transform-origin: center; animation: segnale 2.4s ease-in-out infinite; }
 @keyframes segnale { 0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 3px rgba(255, 51, 71, .9)); } 50% { opacity: .35; transform: scale(.82); filter: drop-shadow(0 0 0 rgba(255, 51, 71, 0)); } }
 .footer-grid a.brand { color: var(--latte); }
+.footer-grid .brand-ruolo { margin-top: .9rem; font-size: .68rem; }
 .footer-grid .brand-mark { width: 60px; height: 48px; }
 .footer-grid .brand-nome { font-size: 1.9rem; }
 .footer-grid .brand-nome-piccolo { font-size: .66rem; }
