@@ -468,15 +468,100 @@ export function avviaScena(canvas) {
   gruppo.add(punti);
   scene.add(gruppo);
 
-  // ---------- Stelle lontane (profondità, effetto spazio) ----------
-  const S = mobile ? 700 : 1600;
-  const sp = new Float32Array(S * 3);
-  for (let i = 0; i < S; i++) { sp[i * 3] = rnd(-14, 14); sp[i * 3 + 1] = rnd(-9, 9); sp[i * 3 + 2] = rnd(-20, -4); }
+  // ---------- Cielo stellato: stelle che brillano e scorrono piano, a profondità diverse ----------
+  const S = mobile ? 1100 : 2600;
+  const sp = new Float32Array(S * 3), seme = new Float32Array(S * 4);
+  for (let i = 0; i < S; i++) {
+    const vicina = Math.pow(Math.random(), 2.2);            // poche stelle vicine, tante lontane
+    sp[i * 3] = rnd(-15, 15); sp[i * 3 + 1] = rnd(-9.5, 9.5); sp[i * 3 + 2] = -20 + vicina * 16;
+    seme[i * 4] = Math.random() * 6.283;                    // fase dello scintillio
+    seme[i * 4 + 1] = 0.6 + Math.random() * 2.2;            // velocità dello scintillio
+    seme[i * 4 + 2] = vicina;                               // 0 lontana · 1 vicina
+    seme[i * 4 + 3] = Math.random();                        // tinta: qualche stella più calda, qualche più fredda
+  }
   const sgeo = new THREE.BufferGeometry();
   sgeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
-  const smat = new THREE.PointsMaterial({ color: new THREE.Color(COLORI.stelle), size: 0.035, transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending });
+  sgeo.setAttribute('aSeme', new THREE.BufferAttribute(seme, 4));
+  const suni = {
+    uTime: { value: 0 }, uScroll: { value: 0 }, uPR: { value: pr }, uOpacita: { value: 0.9 },
+    uParallasse: { value: new THREE.Vector2() }, uColore: { value: new THREE.Color(COLORI.stelle) },
+  };
+  const smat = new THREE.ShaderMaterial({
+    uniforms: suni, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    vertexShader: /* glsl */ `
+      uniform float uTime, uScroll, uPR;
+      uniform vec2 uParallasse;
+      attribute vec4 aSeme;
+      varying float vLuce, vTinta;
+      void main(){
+        vec3 p = position;
+        float v = aSeme.z;
+        // deriva lenta verso sinistra: le stelle vicine scorrono più veloci (profondità)
+        p.x = mod(p.x - uTime * (0.03 + v * 0.16) + 15.0, 30.0) - 15.0;
+        // scorrendo la pagina il cielo sale, più in fretta da vicino
+        p.y = mod(p.y + uScroll * (0.35 + v * 1.1) + 9.5, 19.0) - 9.5;
+        p.xy += uParallasse * (0.15 + v * 0.6);
+        vec4 mv = modelViewMatrix * vec4(p, 1.0);
+        gl_Position = projectionMatrix * mv;
+        // scintillio: ognuna col suo ritmo; ogni tanto un lampo più forte
+        float s = 0.5 + 0.5 * sin(uTime * aSeme.y + aSeme.x);
+        vLuce = (0.3 + 0.9 * s * s) * (0.7 + v * 0.9);
+        vTinta = aSeme.w;
+        gl_PointSize = (1.5 + v * 3.2) * uPR * (0.85 + 0.35 * s);
+      }`,
+    fragmentShader: /* glsl */ `
+      uniform vec3 uColore;
+      uniform float uOpacita;
+      varying float vLuce, vTinta;
+      void main(){
+        float d = length(gl_PointCoord - 0.5);
+        if (d > 0.5) discard;
+        float a = pow(smoothstep(0.5, 0.0, d), 1.8);
+        vec3 c = uColore;
+        if (vTinta > 0.86) c = mix(c, vec3(1.0, 0.85, 0.65), 0.6);      // stelle calde
+        else if (vTinta < 0.2) c = mix(c, vec3(1.0), 0.55);              // stelle bianche
+        gl_FragColor = vec4(c * vLuce, a * uOpacita);
+      }`,
+  });
   const stelle = new THREE.Points(sgeo, smat);
+  stelle.frustumCulled = false;
   scene.add(stelle);
+
+  // ---------- Stella cadente: rara e discreta, solo nella parte alta del cielo ----------
+  const SC = 48;
+  const scT = new Float32Array(SC), scPos = new Float32Array(SC * 3);
+  for (let i = 0; i < SC; i++) scT[i] = i / (SC - 1);
+  const scgeo = new THREE.BufferGeometry();
+  scgeo.setAttribute('position', new THREE.BufferAttribute(scPos, 3));
+  scgeo.setAttribute('aT', new THREE.BufferAttribute(scT, 1));
+  const scuni = { uInizio: { value: new THREE.Vector3() }, uDir: { value: new THREE.Vector3(-1, -0.4, 0) }, uProg: { value: -1 }, uPR: { value: pr }, uColore: suni.uColore };
+  const scmat = new THREE.ShaderMaterial({
+    uniforms: scuni, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    vertexShader: /* glsl */ `
+      uniform vec3 uInizio, uDir;
+      uniform float uProg, uPR;
+      attribute float aT;
+      varying float vA;
+      void main(){
+        vec3 p = uInizio + uDir * (uProg * 9.0 - aT * 1.6);   // la testa avanza, la coda la segue
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+        float vita = smoothstep(0.0, 0.15, uProg) * (1.0 - smoothstep(0.7, 1.0, uProg));
+        vA = (1.0 - aT) * (1.0 - aT) * vita * step(0.0, uProg);
+        gl_PointSize = (2.6 - aT * 1.8) * uPR;
+      }`,
+    fragmentShader: /* glsl */ `
+      uniform vec3 uColore;
+      varying float vA;
+      void main(){
+        float d = length(gl_PointCoord - 0.5);
+        if (d > 0.5) discard;
+        gl_FragColor = vec4(mix(uColore, vec3(1.0), 0.6), smoothstep(0.5, 0.0, d) * vA);
+      }`,
+  });
+  const cadente = new THREE.Points(scgeo, scmat);
+  cadente.frustumCulled = false;
+  scene.add(cadente);
+  let prossimaCadente = 6 + Math.random() * 6, inizioCadente = -1;
 
   // ---------- Dimensioni ----------
   let W = 0, H = 0;
@@ -668,7 +753,7 @@ export function avviaScena(canvas) {
     uniforms.uColB.value.forEach((c, i) => c.lerp(o.B[i], k));
     uniforms.uIride.value.forEach((c, i) => c.lerp(o.iride[i], k));
     uniforms.uPelle.value.lerp(o.pelle, k); uniforms.uAnello.value.lerp(o.anello, k); uniforms.uAlone.value.lerp(o.alone, k);
-    smat.color.lerp(o.stelle, k);
+    suni.uColore.value.lerp(o.stelle, k);
   }
 
   // ---------- Ciclo ----------
@@ -752,8 +837,24 @@ export function avviaScena(canvas) {
     const mx = mouse.x < 5 ? mouse.x : 0, my = mouse.y < 5 ? mouse.y : 0;
     gruppo.rotation.y = morbido(gruppo.rotation.y, mx * 0.25 * peso, 3);
     gruppo.rotation.x = morbido(gruppo.rotation.x, -my * 0.15 * peso, 3);
-    stelle.position.y = (sy / H) * 0.6;
-    stelle.rotation.z = t * 0.005;
+    // cielo stellato: scintillio, deriva, salita con lo scroll e un filo di parallasse col mouse
+    suni.uTime.value = t;
+    suni.uScroll.value = (sy / H) * 0.6;
+    suni.uParallasse.value.set(mouse.x < 5 ? -mouse.x * 0.25 : 0, mouse.y < 5 ? -mouse.y * 0.15 : 0);
+    // una stella cadente ogni 10-25 secondi (mai con «riduci movimento»)
+    if (!ridotto) {
+      if (inizioCadente < 0 && tReale > prossimaCadente) {
+        inizioCadente = tReale;
+        const verso = Math.random() < 0.5 ? -1 : 1;
+        scuni.uInizio.value.set(verso * rnd(1, 9), rnd(3.5, 7), -10);
+        scuni.uDir.value.set(-verso * rnd(0.8, 1), -rnd(0.3, 0.55), 0).normalize();
+      }
+      if (inizioCadente >= 0) {
+        const pr0 = (tReale - inizioCadente) / 1.4;
+        scuni.uProg.value = pr0;
+        if (pr0 > 1) { inizioCadente = -1; scuni.uProg.value = -1; prossimaCadente = tReale + 10 + Math.random() * 15; }
+      }
+    }
 
     // rettangoli del testo visibile
     const rett = rettangoliVisibili();

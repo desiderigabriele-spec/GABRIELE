@@ -127,6 +127,7 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
 - Cursore personalizzato (desktop) che diventa una lente sui bottoni e "aspira" verso le call to action (effetto magnetico).
 - Card con inclinazione 3D e bagliore che segue il mouse.
 - Contatori che salgono quando entrano nello schermo.
+- **Cielo stellato** sullo sfondo: ogni stella brilla col suo ritmo, scorre piano verso sinistra (le vicine più veloci, effetto profondità), sale quando si scorre la pagina e si sposta appena col mouse. Ogni 10-25 secondi una stella cadente discreta nella parte alta. Tutto fermo con «riduci movimento».
 - Aberrazione cromatica sulle particelle quando scorri veloce.
 - **Accessibilità:** con "riduci movimento" attivo tutto diventa statico e leggibile. Contrasto AA, navigazione da tastiera, testo vero (non immagini).
 
