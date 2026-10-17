@@ -56,10 +56,11 @@ varying float vLuce, vVis;
 ${NOISE}
 
 // ---------- L'OCCHIO ----------
-// Una sfera fatta di luce che ruota tutta verso ciò che guardi.
-// Davanti l'iride e la pupilla; i punti sul retro quasi spariscono, i bordi brillano (profondità).
+// Il logo «Eclisse» fatto di luce: sfera avorio, iride ambra con la pupilla grande,
+// palpebra a mezzaluna e una fessura scura attorno. Ruota tutto insieme verso ciò che guarda.
 const float RS = 1.25;    // raggio della sfera
-const float RI = 0.6;     // raggio dell'iride
+const float RI = 0.74;    // raggio dell'iride (nel logo è grande, più di metà della sfera)
+const float RV = 0.88;    // fessura scura: attorno all'iride la sfera non si vede
 vec3 ruotaSguardo(vec3 p){
   float cp = cos(uSguardo.y), sp = sin(uSguardo.y);
   p = vec3(p.x, p.y * cp + p.z * sp, -p.y * sp + p.z * cp);
@@ -93,33 +94,35 @@ vec3 occhio(){
   float tipo = aOcchio.x, a = aOcchio.y, b = aOcchio.z;
   eVis = 1.0; eSize = aOcchio.w;
   vec3 p;
-  if (tipo < 0.5) {            // superficie della sfera
+  if (tipo < 0.5) {            // sfera avorio, piena come nel logo
     float ct = b, st = sqrt(max(1.0 - ct * ct, 0.0));
-    p = ruotaSguardo(vec3(cos(a) * st, sin(a) * st, ct) * RS);
+    vec3 q = vec3(cos(a) * st, sin(a) * st, ct) * RS;   // posizione prima della rotazione
+    p = ruotaSguardo(q);
     float z = p.z / RS;                       // 1 davanti, -1 dietro
-    float bordo = pow(1.0 - abs(z), 2.2);     // i bordi brillano: effetto sfera
-    eCol = uPelle * (0.18 + 1.0 * bordo);
-    eVis = mix(0.12, 1.0, smoothstep(-0.35, 0.15, z));
-    // niente puntini sopra l'iride: lì si vede solo l'iride
-    vec3 dav = ruotaSguardo(vec3(0.0, 0.0, 1.0));
-    eVis *= smoothstep(0.82, 0.78, dot(normalize(p), dav));
-  } else if (tipo < 6.5) {     // iride: fibre radiali leggermente ondulate, la pupilla le comprime
+    eCol = uPelle * (0.5 + 0.22 * smoothstep(-0.3, 1.0, z));
+    eVis = mix(0.04, 1.0, smoothstep(-0.25, 0.2, z));
+    // fessura scura: attorno all'iride la sfera sparisce, così l'occhio si stacca come nel logo
+    if (q.z > 0.0) eVis *= smoothstep(RV, RV + 0.05, length(q.xy));
+  } else if (tipo < 6.5) {     // iride ambra: fibre radiali leggermente ondulate, la pupilla le comprime
     float ang = a + 0.05 * sin(b * 9.0 + a * 5.0);
     vec2 interno = bordoPupilla(ang, uPupilla + 0.012);
     p = superficie(mix(interno, vec2(cos(ang), sin(ang)) * (RI - 0.02), b));
-    eCol = colIride(b) * (0.6 + 0.65 * aRand) * (b > 0.25 && b < 0.38 ? 1.25 : 1.0);
-  } else if (tipo < 7.5) {     // anello scuro attorno all'iride
-    p = superficie(vec2(cos(a), sin(a)) * (RI + b * 0.025));
-    eCol = uAnello;
+    eCol = colIride(b) * (0.5 + 0.4 * aRand);
+  } else if (tipo < 7.5) {     // palpebra: mezzaluna sopra l'iride, verso l'alto a destra
+    float ang = 0.95 + a * 1.15;
+    float spessore = 0.17 * (1.0 - a * a);  // si assottiglia alle punte
+    p = superficie(vec2(cos(ang), sin(ang)) * (RI + 0.035 + b * spessore));
+    eCol = uAnello * (0.75 + 0.4 * aRand);
   } else if (tipo < 8.5) {     // bordo della pupilla
     p = superficie(bordoPupilla(a, uPupilla + b * 0.012));
     eCol = vec3(1.0, 0.75, 0.42);
-  } else if (tipo < 9.5) {     // riflesso della luce: resta fermo, la luce viene da in alto a sinistra
-    p = vec3(-0.34 + a, 0.38 + b, RS + 0.02);
+  } else if (tipo < 9.5) {     // riflesso: un puntino bianco sul bordo della pupilla, come nel logo
+    p = superficie(vec2(0.42, 0.62) * uPupilla + vec2(a, b) * 0.35);
+    p.z += 0.02;
     eCol = vec3(1.0);
-  } else {                     // polvere attorno
+  } else {                     // polvere attorno, appena accennata
     p = vec3(cos(a) * b, sin(a) * b, (aRand - 0.5) * 0.8);
-    eCol = uAlone * 0.4;
+    eCol = uAlone * 0.25;
   }
   p.z -= RS - 0.25;
   return p;
@@ -241,8 +244,8 @@ void main(){
 const rnd = (a = -1, b = 1) => a + Math.random() * (b - a);
 function gauss() { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
 
-// tipi: 0 superficie della sfera · 6 iride · 7 anello · 8 bordo pupilla · 9 riflesso · 10 polvere
-const QUOTE = [[0, 0.42, 0.7], [6, 0.42, 0.72], [7, 0.05, 0.85], [8, 0.04, 0.75], [9, 0.006, 1.15], [10, 0.064, 0.8]];
+// tipi: 0 sfera · 6 iride · 7 palpebra · 8 bordo pupilla · 9 riflesso · 10 polvere
+const QUOTE = [[0, 0.48, 1.9], [6, 0.33, 1.25], [7, 0.1, 1.2], [8, 0.04, 0.75], [9, 0.004, 0.9], [10, 0.046, 0.7]];
 const hash = (n) => { const x = Math.sin(n * 127.1) * 43758.5453; return x - Math.floor(x); };
 function occhio(N, out, attr) {
   let i = 0;
@@ -250,19 +253,25 @@ function occhio(N, out, attr) {
     const n = tipo === 10 ? N - i : Math.round(N * quota);
     for (let k = 0; k < n && i < N; k++, i++) {
       let a = 0, b = 0;
-      if (tipo === 0) { a = Math.random() * Math.PI * 2; b = rnd(-1, 1); }
+      if (tipo === 0) {
+        // sfera piena: quasi tutti i punti uniformi sul disco che si vede davanti, gli altri sul resto della sfera
+        a = Math.random() * Math.PI * 2;
+        b = Math.random() < 0.85 ? Math.sqrt(1 - Math.random()) : rnd(-1, 1);
+      }
       else if (tipo === 6) {
         // fibre radiali + collaretto + piccole "cripte" vuote
         for (let tent = 0; tent < 6; tent++) {
           a = Math.random() < 0.72 ? (((Math.random() * 260) | 0) / 260) * Math.PI * 2 + gauss() * 0.003 : Math.random() * Math.PI * 2;
           const r = Math.random();
-          b = r < 0.22 ? 0.32 + gauss() * 0.035 : r < 0.4 ? Math.pow(Math.random(), 2) * 0.28 : Math.random();
+          // densità uniforme su tutta l'iride (ambra piena come nel logo), con un collaretto appena più fitto
+          b = r < 0.12 ? 0.32 + gauss() * 0.035 : Math.sqrt(Math.random());
           b = Math.min(Math.max(b, 0), 1);
           const cella = Math.floor((a / (Math.PI * 2)) * 40) * 7 + Math.floor(b * 7);
-          if (!(b > 0.4 && hash(cella) < 0.3 && Math.random() < 0.85)) break;
+          if (!(b > 0.4 && hash(cella) < 0.15 && Math.random() < 0.6)) break;
         }
       }
-      else if (tipo === 7 || tipo === 8) { a = Math.random() * Math.PI * 2; b = gauss(); }
+      else if (tipo === 7) { a = rnd(-1, 1); b = Math.random(); }
+      else if (tipo === 8) { a = Math.random() * Math.PI * 2; b = gauss(); }
       else if (tipo === 9) { const g = Math.random() < 0.75; a = g ? rnd(-0.05, 0.05) : 0.11 + gauss() * 0.01; b = g ? rnd(-0.04, 0.04) : -0.1 + gauss() * 0.01; }
       else { a = Math.random() * Math.PI * 2; b = 1.5 + Math.random() * 1.3; }
       attr[i * 4] = tipo; attr[i * 4 + 1] = a; attr[i * 4 + 2] = b; attr[i * 4 + 3] = dim;
@@ -377,23 +386,25 @@ function scritta(nome, N, out, larghezza, quota) {
   }
 }
 
+// Iride ambra uguale in ogni tema, come nel logo (dal centro al bordo)
+const IRIDE = ['#FFE6A8', '#FFD27A', '#FFC25E', '#FFB547', '#F5A23A'];
 // Colori delle particelle per tema: A/B = le due tinte di ogni forma (occhio, rete, spirale, cuore, stella)
 export const TEMI = {
   blu: {
     A: ['#3D7BFF', '#3D7BFF', '#3D7BFF', '#FF3347', '#FFB547'], B: ['#5CC8FF', '#5CC8FF', '#9FE8FF', '#FF6A8A', '#FFE2B0'],
-    iride: ['#FFD27A', '#FFB547', '#FF5A4A', '#3D7BFF', '#5CC8FF'], pelle: '#A8C8FF', anello: '#2448C8', alone: '#5C8DFF', stelle: '#9CC0FF',
+    iride: IRIDE, pelle: '#F2F4F8', anello: '#3D7BFF', alone: '#5C8DFF', stelle: '#9CC0FF',
   },
   rosso: {
     A: ['#FF3347', '#FF6A3D', '#FF3347', '#FF3347', '#FFB547'], B: ['#FFB547', '#FFD27A', '#FFB547', '#FF6A3D', '#FFE2B0'],
-    iride: ['#FFD27A', '#FFB547', '#FF6A3D', '#FF4D5C', '#D9333F'], pelle: '#FFD6B8', anello: '#BF1F2E', alone: '#FF7352', stelle: '#FFCFAE',
+    iride: IRIDE, pelle: '#F6EFE6', anello: '#FF3347', alone: '#FF7352', stelle: '#FFCFAE',
   },
   viola: {
     A: ['#8B6CFF', '#8B6CFF', '#8B6CFF', '#FF5E3A', '#FFB547'], B: ['#5CE1E6', '#5CE1E6', '#FF7A59', '#FF4D8D', '#FFE2B0'],
-    iride: ['#FFB547', '#FF5E3A', '#D16BD6', '#8B6CFF', '#5CE1E6'], pelle: '#CCBDFF', anello: '#6B4CF2', alone: '#8B73FF', stelle: '#B6A3FF',
+    iride: IRIDE, pelle: '#F4F1EA', anello: '#8B6CFF', alone: '#8B73FF', stelle: '#B6A3FF',
   },
   verde: {
     A: ['#22D47E', '#22D47E', '#22D47E', '#FF5E3A', '#FFB547'], B: ['#C6F36B', '#8FF0B4', '#C6F36B', '#FF7A59', '#FFE2B0'],
-    iride: ['#FFD27A', '#FFB547', '#C6F36B', '#22D47E', '#14A86A'], pelle: '#B5F2CF', anello: '#12925A', alone: '#3DDB8F', stelle: '#9EF0C2',
+    iride: IRIDE, pelle: '#EEF5F0', anello: '#22D47E', alone: '#3DDB8F', stelle: '#9EF0C2',
   },
 };
 const temaIniziale = () => TEMI[document.documentElement.dataset.tema] ? document.documentElement.dataset.tema : 'blu';
@@ -442,7 +453,7 @@ export function avviaScena(canvas) {
     uTime: { value: 0 }, uForma: { value: 0 }, uSize: { value: mobile ? 30 : 34 }, uPR: { value: pr },
     uVel: { value: 0 }, uBattito: { value: 0 }, uOpacity: { value: 0 }, uAspect: { value: 1 },
     uMouse: { value: new THREE.Vector2(9, 9) }, uSguardo: { value: new THREE.Vector2() },
-    uPupilla: { value: 0.2 }, uCuore: { value: 0 }, uScritta: { value: 0 },
+    uPupilla: { value: 0.3 }, uCuore: { value: 0 }, uScritta: { value: 0 },
     uRis: { value: new THREE.Vector2(1, 1) }, uTesto: { value: Array.from({ length: 32 }, () => new THREE.Vector4()) }, uNTesto: { value: 0 },
     uTinta: { value: new THREE.Color('#FF3347') }, uTintaForza: { value: 0 },
     uColA: { value: COLORI.A.map((c) => new THREE.Color(c)) },
@@ -711,7 +722,7 @@ export function avviaScena(canvas) {
     // pupilla: si allarga quando qualcosa interessa (bottoni), si stringe a un clic
     dilata = morbido(dilata, Math.max(segnali.battito, segnali.sorpresa ? 1 : 0, catturato ? 0.6 : 0), 4);
     restringi = morbido(restringi, 0, 3);
-    uniforms.uPupilla.value = 0.2 + 0.08 * dilata + (segnali.sorpresa ? 0.06 : 0) - 0.06 * restringi + Math.sin(t * 0.8) * 0.008;
+    uniforms.uPupilla.value = 0.3 + 0.1 * dilata + (segnali.sorpresa ? 0.07 : 0) - 0.08 * restringi + Math.sin(t * 0.8) * 0.01;
     // pupilla a cuore per chi torna: si forma, resta un attimo, torna rotonda
     let cuore = 0;
     if (inizioCuore >= 0) {

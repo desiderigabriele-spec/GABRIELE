@@ -48,14 +48,14 @@ Tutto il sito è il percorso AIDA reso visibile: un **campo di migliaia di parti
 Il visitatore vive sulla propria pelle quello che Gabriele farà per i suoi clienti: **il sito è la prova del metodo**.
 
 ### L'occhio del primo capitolo
-Una **sfera di luce** che fluttua nello spazio e ruota tutta verso ciò che guardi (le palpebre a puntini sono state tolte: dal vivo sembravano un contorno disegnato).
-- **Profondità:** i bordi della sfera brillano, i punti sul retro quasi spariscono.
-- **Davanti:** iride con fibre, collaretto e anello scuro, pupilla, riflesso della luce fisso in alto a sinistra.
+Il **logo «Eclisse» fatto di particelle**, che fluttua nello spazio e ruota tutto verso ciò che guarda.
+- **Come il logo:** sfera avorio piena, iride ambra grande, pupilla scura con un riflesso bianco sul bordo, palpebra a mezzaluna sopra l'iride e una fessura scura attorno all'occhio.
+- **Colori:** sfera e iride restano uguali in ogni tema, come il logo. La palpebra prende il colore del tema scelto: blu, rosso, viola o verde.
 - **Cosa rappresenta:** non osserva chi visita il sito. È **l'attenzione del pubblico**, e mostra come la si cattura: va verso ciò che si muove (segue il puntatore e il dito) e si **aggancia a ciò che spicca** (bottoni, parole colorate, «sceglie.»). Quando la persona sta ferma, gira con calma verso lo stimolo più forte della pagina, il bottone "Calcola il tuo preventivo": chi guarda segue lo sguardo e arriva lì anche lui (*gaze cueing*).
 - **Pupilla:** si allarga quando l'attenzione viene catturata (bottoni, parole), ancora di più sui bottoni d'azione (Eckhard Hess: la pupilla si dilata davanti a ciò che ci interessa), si stringe a ogni clic e "respira" piano.
 - **Iride che cambia colore** secondo il servizio su cui passi (parole del titolo, card dei servizi, card del preventivo): ambra per i siti, rosa per i negozi online, viola per software e collegamenti AI, ciano per la pubblicità, verde acqua per la cura. Anche le altre forme di particelle prendono quel colore.
 - **Sorpresa all'uscita:** se il mouse esce dalla finestra verso l'alto (o su telefono, dopo metà pagina, con una risalita veloce), la pagina si spegne, la sfera torna al centro, si avvicina e guarda il bottone dell'offerta: «Prima di andare, guarda qui». Una sola volta per visita, mai nei primi 6 secondi, mai nella pagina del preventivo.
-- **Chi torna** (più di 30 minuti dopo l'ultima visita): la pupilla diventa un **cuore** per un paio di secondi e compare «Bentornato!». Se c'era un preventivo iniziato, il link porta a riprenderlo.
+- **Chi torna** (più di 30 minuti dopo l'ultima visita): la pupilla diventa un **cuore** per un paio di secondi e compare «Rieccoti!». Se c'era un preventivo iniziato, il link porta a riprenderlo.
 
 ### Il testo resta sempre leggibile
 Niente ritagli attorno alle lettere. Le regole sono tre:
