@@ -469,14 +469,17 @@ export function avviaScena(canvas) {
   scene.add(gruppo);
 
   // ---------- Cielo stellato: stelle che brillano e scorrono piano, a profondità diverse ----------
+  // position = posizione sullo schermo (-1..1) e profondità: dietro l'occhio (z < 0) o davanti (z > 0)
   const S = mobile ? 1100 : 2600;
   const sp = new Float32Array(S * 3), seme = new Float32Array(S * 4);
   for (let i = 0; i < S; i++) {
-    const vicina = Math.pow(Math.random(), 2.2);            // poche stelle vicine, tante lontane
-    sp[i * 3] = rnd(-15, 15); sp[i * 3 + 1] = rnd(-9.5, 9.5); sp[i * 3 + 2] = -20 + vicina * 16;
+    const davanti = Math.random() < 0.07;                   // poche stelle tra l'occhio e chi guarda
+    const vicina = davanti ? 1.15 + Math.random() * 0.45 : Math.pow(Math.random(), 2.2);
+    sp[i * 3] = rnd(-1, 1); sp[i * 3 + 1] = rnd(-1, 1);
+    sp[i * 3 + 2] = davanti ? 1.5 + (vicina - 1.15) * 6.5 : -20 + vicina * 16;
     seme[i * 4] = Math.random() * 6.283;                    // fase dello scintillio
     seme[i * 4 + 1] = 0.6 + Math.random() * 2.2;            // velocità dello scintillio
-    seme[i * 4 + 2] = vicina;                               // 0 lontana · 1 vicina
+    seme[i * 4 + 2] = vicina;                               // 0 lontana · 1 vicina · oltre 1 davanti all'occhio
     seme[i * 4 + 3] = Math.random();                        // tinta: qualche stella più calda, qualche più fredda
   }
   const sgeo = new THREE.BufferGeometry();
@@ -485,29 +488,40 @@ export function avviaScena(canvas) {
   const suni = {
     uTime: { value: 0 }, uScroll: { value: 0 }, uPR: { value: pr }, uOpacita: { value: 0.9 },
     uParallasse: { value: new THREE.Vector2() }, uColore: { value: new THREE.Color(COLORI.stelle) },
+    uAspect: { value: 1 }, uRis: { value: new THREE.Vector2(1, 1) },
+    uOcchio: { value: new THREE.Vector4(0, 0, 0, 0) },      // centro e raggio dell'occhio in pixel, quanto è occhio
   };
   const smat = new THREE.ShaderMaterial({
     uniforms: suni, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
     vertexShader: /* glsl */ `
-      uniform float uTime, uScroll, uPR;
-      uniform vec2 uParallasse;
+      uniform float uTime, uScroll, uPR, uAspect;
+      uniform vec2 uParallasse, uRis;
+      uniform vec4 uOcchio;
       attribute vec4 aSeme;
       varying float vLuce, vTinta;
       void main(){
-        vec3 p = position;
         float v = aSeme.z;
-        // deriva lenta verso sinistra: le stelle vicine scorrono più veloci (profondità)
-        p.x = mod(p.x - uTime * (0.03 + v * 0.16) + 15.0, 30.0) - 15.0;
-        // scorrendo la pagina il cielo sale, più in fretta da vicino
-        p.y = mod(p.y + uScroll * (0.35 + v * 1.1) + 9.5, 19.0) - 9.5;
+        // deriva lenta verso sinistra e salita con lo scroll: le stelle vicine si muovono di più (profondità)
+        float u = fract(position.x * 0.5 + 0.5 - uTime * (0.002 + v * 0.008)) * 2.0 - 1.0;
+        float w = fract(position.y * 0.5 + 0.5 + uScroll * (0.03 + v * 0.12)) * 2.0 - 1.0;
+        // dallo schermo al cielo: a ogni profondità le stelle coprono tutta la finestra, qualunque sia la forma
+        float meta = (7.0 - position.z) * 0.3153 * 1.04;
+        vec3 p = vec3(u * meta * uAspect, w * meta, position.z);
         p.xy += uParallasse * (0.15 + v * 0.6);
         vec4 mv = modelViewMatrix * vec4(p, 1.0);
         gl_Position = projectionMatrix * mv;
-        // scintillio: ognuna col suo ritmo; ogni tanto un lampo più forte
+        // scintillio: ognuna col suo ritmo
         float s = 0.5 + 0.5 * sin(uTime * aSeme.y + aSeme.x);
-        vLuce = (0.3 + 0.9 * s * s) * (0.7 + v * 0.9);
+        bool davanti = v > 1.0;
+        vLuce = (0.3 + 0.9 * s * s) * (davanti ? 0.55 : 0.7 + v * 0.9);
+        // le stelle dietro l'occhio spariscono dietro la sfera: l'occhio sta nel mezzo del cielo
+        if (!davanti && uOcchio.w > 0.0) {
+          vec2 ndc = gl_Position.xy / gl_Position.w;
+          vec2 px = vec2((ndc.x * 0.5 + 0.5) * uRis.x, (0.5 - ndc.y * 0.5) * uRis.y);
+          vLuce *= mix(1.0, smoothstep(uOcchio.z * 0.9, uOcchio.z * 1.04, distance(px, uOcchio.xy)), uOcchio.w);
+        }
         vTinta = aSeme.w;
-        gl_PointSize = (1.5 + v * 3.2) * uPR * (0.85 + 0.35 * s);
+        gl_PointSize = (davanti ? 3.6 + (v - 1.15) * 5.0 : 1.5 + v * 3.2) * uPR * (0.85 + 0.35 * s);
       }`,
     fragmentShader: /* glsl */ `
       uniform vec3 uColore;
@@ -565,12 +579,19 @@ export function avviaScena(canvas) {
 
   // ---------- Dimensioni ----------
   let W = 0, H = 0;
+  // le misure vengono dalla tela stessa (fissa a tutto schermo): con lo zoom a due dita non cambiano,
+  // così l'occhio non si allunga e non si sfoca quando si torna alla grandezza normale
   function ridimensiona() {
-    W = window.innerWidth; H = window.innerHeight;
+    const w = canvas.clientWidth || document.documentElement.clientWidth;
+    const h = canvas.clientHeight || document.documentElement.clientHeight;
+    if (w === W && h === H) return;
+    W = w; H = h;
     renderer.setSize(W, H, false);
     camera.aspect = W / H;
     camera.updateProjectionMatrix();
     uniforms.uAspect.value = W / H;
+    suni.uAspect.value = W / H;
+    suni.uRis.value.set(W, H);
   }
   ridimensiona();
   window.addEventListener('resize', ridimensiona);
@@ -731,6 +752,7 @@ export function avviaScena(canvas) {
   document.addEventListener('toggle', () => setTimeout(misuraTesto, 50), true); // domande che si aprono
 
   const centro = new THREE.Vector3();
+  const bordoOcchio = new THREE.Vector3(), asseX = new THREE.Vector3();
   const colTinta = new THREE.Color();
   const sguardo = new THREE.Vector2();
 
@@ -839,6 +861,14 @@ export function avviaScena(canvas) {
     gruppo.rotation.x = morbido(gruppo.rotation.x, -my * 0.15 * peso, 3);
     // cielo stellato: scintillio, deriva, salita con lo scroll e un filo di parallasse col mouse
     suni.uTime.value = t;
+    {
+      // dove sta l'occhio sullo schermo, per nascondere le stelle che gli passano dietro
+      const raggio = 1.25 * gruppo.scale.x;
+      bordoOcchio.copy(gruppo.position).add(asseX.set(raggio, 0, 0)).project(camera);
+      const r = Math.abs(bordoOcchio.x - centro.x) * 0.5 * W;
+      const quanto = Math.max(0, 1 - uniforms.uForma.value) * (1 - uniforms.uScritta.value) * Math.min(uniforms.uOpacity.value * 1.5, 1);
+      suni.uOcchio.value.set(ex, ey, r, quanto);
+    }
     suni.uScroll.value = (sy / H) * 0.6;
     suni.uParallasse.value.set(mouse.x < 5 ? -mouse.x * 0.25 : 0, mouse.y < 5 ? -mouse.y * 0.15 : 0);
     // una stella cadente ogni 10-25 secondi (mai con «riduci movimento»)
