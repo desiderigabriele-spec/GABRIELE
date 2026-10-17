@@ -3,7 +3,7 @@ export const LINGUE = ['it', 'en'];
 
 // Percorsi equivalenti nelle due lingue
 const PERCORSI = {
-  home: { it: '/', en: '/en/' },
+  home: { it: '/', en: '/en' },
   preventivo: { it: '/preventivo', en: '/en/quote' },
   privacy: { it: '/privacy', en: '/en/privacy' },
 };

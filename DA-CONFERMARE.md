@@ -12,11 +12,13 @@
 - [ ] **Consenso dei clienti** a mostrare nome, screenshot e link del loro sito.
 - [ ] **Numeri reali** per i casi studio (richieste al mese, tempi di caricamento): aggiungili a `fatto` quando li hai.
 - [ ] **"Vendita immobiliare a Milano"** nel percorso: va bene mostrarlo? (È un punto di forza sulla vendita, ma decidi tu.)
+- [ ] **Testi in inglese** (`src/data/en.js`, `src/i18n/ui.js`, pagine `/en`): rileggili o falli rileggere da un madrelingua prima di fare pubblicità all'estero.
+- [ ] **Logo definitivo**: sostituire `src/assets/marchio.svg` e `public/favicon.svg` con l'SVG finale (il cerchio del punto con `class="punto-segnale"` per farlo pulsare).
 - [ ] **E-commerce lanciati**: se puoi nominarne uno o due (anche tuoi), diventano un terzo caso studio.
 
 ## Tecnica
 - [ ] Creare il foglio "Preventivi", incollare `apps-script/Code.gs`, pubblicarlo come app web e impostare `PUBLIC_PREVENTIVO_ENDPOINT` su Vercel. Senza, il preventivo si invia su WhatsApp o per email.
 - [ ] Bot Telegram (`BOT_TOKEN`, `CHAT_ID`) nelle proprietà dello script.
-- [ ] Google Analytics 4 / Meta Pixel: da collegare solo dopo il consenso (gli eventi `preventivo_inizio`, `preventivo_passo`, `preventivo_invio`, `clic_contatto` sono già pronti in `dataLayer`).
-- [ ] **Privacy**: la pagina `/privacy` è una bozza da far controllare.
+- [ ] Google Analytics 4 / Meta Pixel: da collegare solo dopo il consenso (gli eventi `preventivo_inizio`, `preventivo_passo`, `preventivo_invio`, `clic_contatto`, `personalizza_nome`, `personalizza_settore`, `personalizza_colore`, `lingua` sono già pronti in `dataLayer`).
+- [ ] **Privacy**: le pagine `/privacy` e `/en/privacy` sono bozze da far controllare.
 - [ ] **Voucher Lombardia**: verificare che lo sportello 2026 sia ancora aperto prima di citarlo nelle campagne.

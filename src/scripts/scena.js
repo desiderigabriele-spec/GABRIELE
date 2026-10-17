@@ -46,7 +46,9 @@ uniform vec3 uColA[5];
 uniform vec3 uColB[5];
 uniform vec3 uIride[5];          // colori dell'iride dal centro al bordo (cambiano con il tema)
 uniform vec3 uPelle, uAnello, uAlone;
+uniform float uScritta;            // 0 = forme normali, 1 = i punti scrivono il nome del visitatore
 attribute vec3 aP1, aP2, aP3, aP4;
+attribute vec4 aP5;                // punto della scritta (w = 1 se fa parte delle lettere)
 attribute float aRand, aT;
 attribute vec4 aOcchio;             // tipo di punto dell'occhio, due parametri, dimensione
 varying vec3 vCol;
@@ -172,8 +174,13 @@ void main(){
   vec3 b = vivi(forma(i1), i1);
   vec3 p = mix(a, b, t);
 
+  // il nome: i punti lasciano la forma e compongono le lettere, gli altri restano polvere tenue
+  float s = smoothstep(0.0, 1.0, clamp((uScritta - aRand * 0.3) / 0.7, 0.0, 1.0));
+  bool lettera = aP5.w > 0.5;
+  p = mix(p, lettera ? aP5.xyz : p * (1.15 + 0.5 * aRand), s);
+
   // a metà trasformazione i punti si sparpagliano come polvere di stelle
-  float volo = sin(t * 3.14159);
+  float volo = max(sin(t * 3.14159), sin(s * 3.14159) * 0.7);
   vec3 n = vec3(snoise(p * 0.8 + aRand * 10.0), snoise(p * 0.8 + 31.0), snoise(p * 0.8 + 57.0));
   p += n * volo * 0.55;
   // respiro continuo
@@ -199,7 +206,9 @@ void main(){
   if (i0 == 1 || i1 == 1) pulse = pow(fract(aT - uTime * 0.35), 18.0) * (i0 == 1 ? 1.0 - t : t);
   vLuce = 0.55 + aRand * 0.45 + pulse * 2.0 + spinta * 6.0;
   vCol = mix(colore(i0), colore(i1), t);
+  vCol = mix(vCol, mix(uColB[0], vec3(1.0), 0.45) * (0.75 + 0.5 * aRand), s);
   float vis = i0 == 0 ? mix(eVis, 1.0, t) : 1.0;
+  vis = mix(vis, lettera ? 1.0 : 0.1, s);
   // dietro ai blocchi di testo la luce cala con una sfumatura ampia (velo morbido, nessun contorno)
   vec2 px = vec2((ndc.x * 0.5 + 0.5) * uRis.x, (0.5 - ndc.y * 0.5) * uRis.y);
   float libero = 1.0;
@@ -211,6 +220,7 @@ void main(){
   }
   vis *= mix(0.24, 1.0, libero);
   float dim = i0 == 0 ? mix(eSize, 1.0, t) : 1.0;
+  dim = mix(dim, 0.75, s);
   vVis = vis;
   gl_PointSize = vis < 0.01 ? 0.0 : uSize * uPR * dim * (0.45 + aRand * 0.9) * (1.0 + pulse * 1.4) / -mv.z;
 }`;
@@ -338,6 +348,35 @@ function stella(N, out) {
   }
 }
 
+// Il nome del visitatore scritto con i punti: disegno il testo su una tela e prendo i pixel pieni.
+// larghezza = spazio massimo in unità locali, quota = parte dei punti che diventa lettera
+function scritta(nome, N, out, larghezza, quota) {
+  const tela = document.createElement('canvas');
+  const ctx = tela.getContext('2d', { willReadFrequently: true });
+  const font = (px) => `800 ${px}px 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif`;
+  const alto = 140;
+  ctx.font = font(alto);
+  const w = Math.ceil(ctx.measureText(nome).width) + 20;
+  tela.width = w; tela.height = alto * 1.3;
+  ctx.font = font(alto);
+  ctx.textBaseline = 'middle'; ctx.fillStyle = '#fff';
+  ctx.fillText(nome, 10, tela.height / 2);
+  const dati = ctx.getImageData(0, 0, tela.width, tela.height).data;
+  const pieni = [];
+  for (let y = 0; y < tela.height; y += 2) for (let x = 0; x < tela.width; x += 2) if (dati[(y * tela.width + x) * 4 + 3] > 140) pieni.push(x, y);
+  // le lettere stanno in "larghezza", ma non diventano più alte di 1.1
+  const k = Math.min(larghezza / tela.width, 1.1 / alto);
+  const n = pieni.length / 2;
+  for (let i = 0; i < N; i++) {
+    if (!n || Math.random() > quota) { out[i * 4 + 3] = 0; continue; }
+    const j = ((Math.random() * n) | 0) * 2;
+    out[i * 4] = (pieni[j] + Math.random() * 2 - tela.width / 2) * k;
+    out[i * 4 + 1] = -(pieni[j + 1] + Math.random() * 2 - tela.height / 2) * k;
+    out[i * 4 + 2] = gauss() * 0.04;
+    out[i * 4 + 3] = 1;
+  }
+}
+
 // Colori delle particelle per tema: A/B = le due tinte di ogni forma (occhio, rete, spirale, cuore, stella)
 export const TEMI = {
   blu: {
@@ -396,12 +435,14 @@ export function avviaScena(canvas) {
   geo.setAttribute('aOcchio', new THREE.BufferAttribute(occ, 4));
   geo.setAttribute('aT', new THREE.BufferAttribute(tt, 1));
   geo.setAttribute('aRand', new THREE.BufferAttribute(ra, 1));
+  const p5 = new Float32Array(N * 4);
+  geo.setAttribute('aP5', new THREE.BufferAttribute(p5, 4));
 
   const uniforms = {
     uTime: { value: 0 }, uForma: { value: 0 }, uSize: { value: mobile ? 30 : 34 }, uPR: { value: pr },
     uVel: { value: 0 }, uBattito: { value: 0 }, uOpacity: { value: 0 }, uAspect: { value: 1 },
     uMouse: { value: new THREE.Vector2(9, 9) }, uSguardo: { value: new THREE.Vector2() },
-    uPupilla: { value: 0.2 }, uCuore: { value: 0 },
+    uPupilla: { value: 0.2 }, uCuore: { value: 0 }, uScritta: { value: 0 },
     uRis: { value: new THREE.Vector2(1, 1) }, uTesto: { value: Array.from({ length: 32 }, () => new THREE.Vector4()) }, uNTesto: { value: 0 },
     uTinta: { value: new THREE.Color('#FF3347') }, uTintaForza: { value: 0 },
     uColA: { value: COLORI.A.map((c) => new THREE.Color(c)) },
@@ -493,8 +534,18 @@ export function avviaScena(canvas) {
   const ora = () => performance.now();
   // segnali dall'esterno (site.js): battito = interesse, sorpresa = sta per uscire, tinta = colore del servizio
   // occhiolino = per chi torna: la pupilla diventa un cuore
-  const segnali = { battito: 0, sorpresa: false, tinta: null, occhiolino: () => { inizioCuore = orologio.elapsedTime; } };
-  let inizioCuore = -1;
+  const segnali = {
+    battito: 0, sorpresa: false, tinta: null,
+    occhiolino: () => { inizioCuore = orologio.elapsedTime; },
+    // il nome appena scritto nel benvenuto prende forma dove c'è l'occhio, poi torna occhio
+    scrivi: (nome) => {
+      if (ridotto || !nome || obiettivo.forma !== 0) return;
+      scritta(nome.slice(0, 18), N, p5, mobile ? 3.1 : 3.4, mobile ? 0.7 : 0.55);
+      geo.attributes.aP5.needsUpdate = true;
+      inizioScritta = orologio.elapsedTime;
+    },
+  };
+  let inizioCuore = -1, inizioScritta = -1;
   let dilata = 0, restringi = 0;
   function guarda(x, y, touch) {
     bersaglio.x = x; bersaglio.y = y; ultimoInput = ora(); dita = touch;
@@ -669,6 +720,14 @@ export function avviaScena(canvas) {
       if (w > 2.8) inizioCuore = -1;
     }
     uniforms.uCuore.value = cuore * cuore * (3 - 2 * cuore);
+    // scritta del nome: si compone in 1,4 s, resta 2,6 s, torna occhio in 1,6 s
+    let sc0 = 0;
+    if (inizioScritta >= 0) {
+      const w = tReale - inizioScritta;
+      sc0 = w < 1.4 ? w / 1.4 : w < 4 ? 1 : w < 5.6 ? 1 - (w - 4) / 1.6 : 0;
+      if (w > 5.6) inizioScritta = -1;
+    }
+    uniforms.uScritta.value = sc0 * sc0 * (3 - 2 * sc0);
     if (segnali.tinta) uniforms.uTinta.value.lerp(colTinta.set(segnali.tinta), 1 - Math.exp(-8 * dt));
     uniforms.uTintaForza.value = morbido(uniforms.uTintaForza.value, segnali.tinta ? 1 : 0, 5);
 

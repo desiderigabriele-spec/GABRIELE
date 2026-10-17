@@ -4,6 +4,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { numero } from '../data/formato.js';
+import { avviaBenvenuto } from './benvenuto.js';
+import { leggiProfilo, lang } from './profilo.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -110,7 +112,7 @@ function animaIngressi() {
 }
 
 // ---------- Contatori ----------
-const fmt = { format: numero };
+const fmt = { format: (n) => numero(n, lang) };
 document.querySelectorAll('[data-conta]').forEach((el) => {
   const fine = Number(el.dataset.conta);
   if (ridotto) { el.textContent = fmt.format(fine); return; }
@@ -199,6 +201,8 @@ if (banner) {
 // ---------- Scena 3D: si carica dopo il testo, solo se serve ----------
 let scena = null;
 const canvas = document.querySelector('[data-scena]');
+// profilo del visitatore (nome, settore, colore) e benvenuto nell'hero
+avviaBenvenuto(() => scena);
 function caricaScena() {
   if (!canvas || scena) return;
   import('./scena.js').then((m) => { scena = m.avviaScena(canvas) || null; if (scena) html.classList.add('scena-on'); }).catch(() => {});
@@ -214,7 +218,7 @@ else avvio();
 
 // tracciamento dei clic sui bottoni di conversione
 document.addEventListener('click', (e) => {
-  const a = e.target.closest('a[href="/preventivo"], a[href^="https://wa.me"], a[href^="tel:"], a[href^="mailto:"]');
+  const a = e.target.closest('a[href^="/preventivo"], a[href^="/en/quote"], a[href^="https://wa.me"], a[href^="tel:"], a[href^="mailto:"]');
   if (!a) return;
   const tipo = a.href.includes('wa.me') ? 'whatsapp' : a.href.startsWith('tel:') ? 'telefono' : a.href.startsWith('mailto:') ? 'email' : 'preventivo';
   window.gdTrack('clic_contatto', { tipo, posizione: a.closest('section')?.id || 'header' });
@@ -248,7 +252,8 @@ const uscita = document.querySelector('[data-uscita]');
 const caricata = Date.now();
 let uscitaAperta = false, focusPrima = null;
 function apriUscita(motivo) {
-  if (!uscita || uscitaAperta || ss.get('gd-uscita') || html.classList.contains('menu-aperto')) return;
+  // al massimo una finestra per visita: chi ha appena personalizzato il sito non la vede
+  if (!uscita || uscitaAperta || ss.get('gd-uscita') || ss.get('gd-personalizzato') || html.classList.contains('menu-aperto')) return;
   if (Date.now() - caricata < 6000) return; // non disturbare chi è appena arrivato
   uscitaAperta = true;
   ss.set('gd-uscita', '1');
@@ -298,8 +303,12 @@ if (uscita) {
 }
 
 // ---------- 3. Chi torna riceve un occhiolino ----------
+const RITORNO = {
+  it: { bentornato: 'Bentornato', progetto: "Il tuo progetto è ancora qui, come l'avevi lasciato.", riprendi: 'Riprendi il preventivo' },
+  en: { bentornato: 'Welcome back', progetto: 'Your project is still here, just as you left it.', riprendi: 'Resume your quote' },
+};
 (function bentornato() {
-  if (ss.get('gd-sessione') || location.pathname.startsWith('/preventivo')) return; // una volta per visita, non nel preventivo
+  if (ss.get('gd-sessione') || /^\/(preventivo|en\/quote)/.test(location.pathname)) return; // una volta per visita, non nel preventivo
   ss.set('gd-sessione', '1');
   const ultima = Number(ls.get('gd-ultima') || 0);
   ls.set('gd-ultima', String(Date.now()));
@@ -308,9 +317,11 @@ if (uscita) {
   if (!box) return;
   let progetto = null;
   try { progetto = JSON.parse(ls.get('gd-preventivo') || 'null'); } catch (_) {}
+  const t = RITORNO[lang], nome = leggiProfilo().nome;
+  if (nome) box.querySelector('[data-ritorno-titolo]').textContent = `${t.bentornato} ${nome}!`;
   if (progetto && Object.keys(progetto.cat || {}).length) {
-    box.querySelector('[data-ritorno-testo]').textContent = 'Il tuo progetto è ancora qui, come l\'avevi lasciato.';
-    box.querySelector('[data-ritorno-link]').firstChild.textContent = 'Riprendi il preventivo ';
+    box.querySelector('[data-ritorno-testo]').textContent = t.progetto;
+    box.querySelector('[data-ritorno-link]').firstChild.textContent = `${t.riprendi} `;
   }
   const mostra = () => {
     setTimeout(() => {
@@ -326,4 +337,28 @@ if (uscita) {
   // aspetta che la scena sia pronta, così l'occhiolino si vede
   const prova = (n = 0) => { if (scena || n > 25) mostra(); else setTimeout(() => prova(n + 1), 200); };
   if (html.classList.contains('intro-attiva')) window.addEventListener('gd-intro-fine', () => prova(), { once: true }); else prova();
+})();
+
+// ---------- 4. Lingua: chi ha il browser in un'altra lingua riceve un avviso discreto ----------
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[data-lingua]');
+  if (!a) return;
+  ls.set('gd-lingua', a.dataset.lingua);
+  window.gdTrack('lingua', { lingua: a.dataset.lingua });
+});
+(function avvisoLingua() {
+  const box = document.querySelector('[data-avviso-lingua]');
+  if (!box || ls.get('gd-lingua') || ss.get('gd-avviso-lingua')) return;
+  const browser = (navigator.languages?.[0] || navigator.language || 'it').toLowerCase();
+  const vuoleItaliano = browser.startsWith('it');
+  // sulla pagina italiana l'avviso propone l'inglese a chi non ha il browser in italiano, e viceversa
+  if ((box.dataset.per === 'en') === vuoleItaliano) return;
+  ss.set('gd-avviso-lingua', '1');
+  const chiudi = () => { box.classList.remove('visibile'); setTimeout(() => { box.hidden = true; }, 500); };
+  box.querySelector('[data-avviso-chiudi]').addEventListener('click', () => { ls.set('gd-lingua', lang); chiudi(); });
+  setTimeout(() => {
+    box.hidden = false;
+    requestAnimationFrame(() => box.classList.add('visibile'));
+    setTimeout(chiudi, 12000);
+  }, html.classList.contains('intro-attiva') ? 3200 : 1500);
 })();

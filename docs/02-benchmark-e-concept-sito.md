@@ -76,21 +76,35 @@ Su telefono l'occhio sta sopra il titolo, a piena luce. Sotto l'occhio c'è la s
 ## 3. Identità visiva
 
 ### Colori (ruolo prima del gusto)
-Palette **B · Rosso e ambra protagonisti**, scelta dopo il confronto in «Palette Desideri a confronto». È la più coerente con il concetto di attenzione e con il punto rosso del logo.
+Palette d'apertura **C · Blu**, scelta dopo il confronto in «Palette Desideri a confronto». Il blu è freddo e calmo: fa da sfondo, e così il punto rosso del logo e i bottoni caldi spiccano ancora di più (effetto Von Restorff).
 
 | Token | Colore | Ruolo |
 |---|---|---|
-| `--notte` | `#0B0807` | Sfondo: nero caldo |
-| `--superficie` | `#16100E` | Card, pannelli |
-| `--latte` | `#F6EFE6` | Testo principale (avorio) |
-| `--nebbia` | `#B5A99D` | Testo secondario |
-| `--viola` (nome storico) | `#FF3347` | **Rosso segnale**: il colore del brand e dell'attenzione (punto del logo, parole in evidenza, dettagli) |
-| `--viola-chiaro` | `#FFB08F` | Etichette, capitoli |
-| `--ciano` (nome storico) | `#FFCF8A` | Dati, numeri, spunte |
-| `--fuoco` | `#FF6A3D` | Brace: sfumature |
-| `--ambra` / `--caldo` | `#FFB547` | **Azione**: bottoni pieni in ambra con testo scuro, la cosa più luminosa della pagina |
+| `--notte` | `#05070F` | Sfondo: notte blu |
+| `--superficie` | `#0D111C` | Card, pannelli |
+| `--latte` | `#F2F4F8` | Testo principale |
+| `--nebbia` | `#9FA8BD` | Testo secondario |
+| `--viola` (nome storico) | `#3D7BFF` | **Blu del brand**: accenti, parole in evidenza, dettagli |
+| `--viola-chiaro` | `#9CC0FF` | Etichette, capitoli |
+| `--ciano` (nome storico) | `#5CC8FF` | Dati, numeri, spunte |
+| `--segnale` | `#FF3347` | **Fisso**: il punto rosso del logo che pulsa |
+| `--caldo` | `#FF3347 → #FF8A3D` | **Fisso**: bottoni d'azione, la cosa più calda della pagina |
 
-**Regola:** il rosso cattura l'attenzione, l'ambra fa agire. Il gradiente rosso → brace → ambra (le parole come *sceglie.*) è la firma: dallo stimolo all'azione. Le forme di particelle usano gli stessi colori: iride ambra con anello rosso, sfera color pesca.
+**Regola:** i freddi servono a capire, i caldi ad agire. Il gradiente blu → azzurro (le parole come *sceglie.*) è la firma; il caldo compare solo dove si clicca.
+
+### Temi scelti dal visitatore
+Nel benvenuto chi visita sceglie l'atmosfera: **blu** (fiducia, predefinito), **rosso** (energia), **viola** (creatività), **verde** (crescita). Cambiano sfondo, accenti e particelle dell'occhio (`html[data-tema]` in `global.css`, `TEMI` in `scena.js`). Restano sempre uguali il punto rosso del logo e i bottoni d'azione: il marchio resta riconoscibile e il punto di conversione resta il più caldo della pagina.
+
+### Personalizzazione (benvenuto nell'hero)
+Tre domande facoltative, ognuna saltabile, sotto i bottoni dell'hero:
+1. **Come ti chiami?** Il nome compare sopra il titolo («Marco, trasformo…»), nel titolo finale, nel messaggio WhatsApp, nel «Bentornato» e nel campo nome del preventivo. Le particelle dell'occhio scrivono il nome per qualche secondo, poi tornano occhio.
+2. **Di cosa ti occupi?** Segna «Consigliato per te» sui servizi giusti (anche nel preventivo), mette per primo il lavoro più vicino (artigiani e negozi vedono prima Montini) e precompila il settore nel preventivo.
+3. **Che colore ti somiglia?** Anteprima dal vivo passandoci sopra, scelta con un clic.
+
+Tutto resta nel browser (`localStorage gd-profilo`), niente viene inviato. Chi ha appena personalizzato non vede la finestra d'uscita: al massimo una finestra per visita. Il bottone con i quattro puntini nell'header riapre il benvenuto.
+
+### Lingue
+Italiano predefinito (`/`), inglese su pagine vere (`/en`, `/en/quote`, `/en/privacy`) con `hreflang`, così Google mostra la versione giusta. Il selettore IT / EN è nell'header; chi ha il browser in un'altra lingua riceve un avviso discreto («Prefer English?»). Testi dell'interfaccia in `src/i18n/ui.js`, testi dei dati in `src/data/en.js`.
 
 ### Logo
 Direzione **Aggancio**: un occhio che non guarda chi lo osserva, ma un **punto rosso** accanto a sé, lo stimolo che ha catturato la sua attenzione. È il messaggio del brand in un segno: chi cattura l'attenzione vince.

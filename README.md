@@ -21,10 +21,12 @@ Stack: Astro (statico) · three.js (shader scritti a mano) · GSAP + ScrollTrigg
 |---|---|
 | Contatti, servizi, metodo, lavori, domande frequenti | `src/data/sito.js` |
 | **Prezzi del preventivo automatico** (livelli, extra, sconti, voucher) | `src/data/listino.js` |
-| Home | `src/pages/index.astro` |
-| Preventivo automatico | `src/pages/preventivo.astro` · `src/scripts/preventivo.js` · `src/styles/preventivo.css` |
+| Home (italiano e inglese) | `src/components/Home.astro` · pagine `src/pages/index.astro`, `src/pages/en/index.astro` |
+| Testi in inglese | interfaccia `src/i18n/ui.js` · dati (servizi, listino, FAQ) `src/data/en.js` |
+| Benvenuto e personalizzazione (nome, settore, colore) | `src/scripts/benvenuto.js` · `src/scripts/profilo.js` |
+| Preventivo automatico | `src/components/Preventivo.astro` (pagine `/preventivo`, `/en/quote`) · `src/scripts/preventivo.js` · `src/styles/preventivo.css` |
 | Scena 3D a particelle | `src/scripts/scena.js` (forma per sezione: attributo `data-forma` 0-4, `data-lato`, `data-luce`, `data-scala`) |
-| Colori, tipografia, componenti | `src/styles/global.css` |
+| Colori, temi (blu, rosso, viola, verde), tipografia, componenti | `src/styles/global.css` |
 | Invio preventivi su Google Fogli + Telegram | `apps-script/Code.gs` + variabile `PUBLIC_PREVENTIVO_ENDPOINT` (vedi `.env.example`) |
 
 ## Documenti

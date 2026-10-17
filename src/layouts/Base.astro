@@ -4,7 +4,8 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import '@fontsource/instrument-serif/400-italic.css';
 import '../styles/global.css';
-import { contatti } from '../data/sito.js';
+import { dati } from '../i18n/dati.js';
+import { ui, url } from '../i18n/ui.js';
 import marchio from '../assets/marchio.svg?raw';
 
 interface Props {
@@ -15,22 +16,27 @@ interface Props {
   barra?: boolean;
   uscita?: boolean;
   jsonLd?: Record<string, unknown> | null;
+  lang?: 'it' | 'en';
+  // la stessa pagina nell'altra lingua (null = non esiste)
+  alt?: string | null;
 }
 
-const { title, description, path = '/', scena = true, barra = true, uscita = true, jsonLd = null } = Astro.props;
+const { title, description, path = '/', scena = true, barra = true, uscita = true, jsonLd = null, lang = 'it' } = Astro.props;
+const t = ui[lang];
+const altLang = lang === 'it' ? 'en' : 'it';
+const alt = Astro.props.alt === undefined ? url('home', altLang) : Astro.props.alt;
+const { contatti } = dati(lang);
+const home = url('home', lang);
+const preventivo = url('preventivo', lang);
 const canonical = new URL(path, Astro.site).toString();
 const current = Astro.url.pathname.replace(/\.html$/, '');
 const isCurrent = (href: string) => (current === href ? 'page' : undefined);
-const voci = [
-  { href: '/#servizi', testo: 'Servizi' },
-  { href: '/#metodo', testo: 'Metodo' },
-  { href: '/#lavori', testo: 'Lavori' },
-  { href: '/#prezzi', testo: 'Prezzi' },
-  { href: '/#chi-sono', testo: 'Chi sono' },
-];
+const voci = t.nav.map(([id, testo]) => ({ href: `${home}#${id}`, testo }));
+const hrefIt = lang === 'it' ? path : alt;
+const hrefEn = lang === 'en' ? path : alt;
 ---
 <!doctype html>
-<html lang="it">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -40,17 +46,30 @@ const voci = [
     <meta name="theme-color" content="#05070F" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="it_IT" />
+    <meta property="og:locale" content={t.locale} />
+    {alt && hrefIt && hrefEn && (
+      <>
+        <link rel="alternate" hreflang="it" href={new URL(hrefIt, Astro.site).toString()} />
+        <link rel="alternate" hreflang="en" href={new URL(hrefEn, Astro.site).toString()} />
+        <link rel="alternate" hreflang="x-default" href={new URL(hrefIt, Astro.site).toString()} />
+      </>
+    )}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL('/img/og.jpg', Astro.site).toString()} />
+    <meta property="og:image" content={new URL(lang === 'en' ? '/img/og-en.jpg' : '/img/og.jpg', Astro.site).toString()} />
     <meta name="twitter:card" content="summary_large_image" />
     <script is:inline>
       (function () {
         var h = document.documentElement;
         h.classList.add('js');
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) h.classList.add('ridotto');
+        // colore scelto nel benvenuto (il blu è quello predefinito)
+        try {
+          var p = JSON.parse(localStorage.getItem('gd-profilo') || 'null');
+          if (p && ['rosso', 'viola', 'verde'].indexOf(p.tema) > -1) h.dataset.tema = p.tema;
+          if (p && p.nome) h.classList.add('ha-nome');
+        } catch (e) {}
         // Intro col punto di luce: solo alla prima pagina della visita
         try { if (!sessionStorage.getItem('gd-intro')) h.classList.add('intro-attiva'); } catch (e) {}
       })();
@@ -85,7 +104,7 @@ const voci = [
       })();
     </script>
 
-    <a class="skip-link" href="#contenuto">Vai al contenuto</a>
+    <a class="skip-link" href="#contenuto">{t.vaiContenuto}</a>
 
     {scena && <div class="scena" aria-hidden="true"><canvas data-scena></canvas></div>}
     <div class="velo" aria-hidden="true"></div>
@@ -93,19 +112,31 @@ const voci = [
 
     <header class="site-header" data-header>
       <div class="wrap header-bar">
-        <a class="brand" href="/" aria-label="Gabriele Desideri, home">
+        <a class="brand" href={home} aria-label={t.home}>
           <span class="brand-mark" set:html={marchio} />
           <span class="brand-testo">
             <span class="brand-nome-piccolo">Gabriele</span>
             <span class="brand-nome">desideri</span>
           </span>
         </a>
-        <nav class="nav" aria-label="Principale">
+        <nav class="nav" aria-label={t.navEtichetta}>
           {voci.map((v) => <a href={v.href} aria-current={isCurrent(v.href)}>{v.testo}</a>)}
         </nav>
-        <a class="btn btn-azione btn-piccolo header-cta" href="/preventivo" data-magnete data-azione>Calcola il preventivo</a>
+        <div class="header-strumenti">
+          <a class="personalizza-btn" href={`${home}#personalizza`} data-personalizza title={t.personalizza}>
+            <span class="tavolozza" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <span class="sr-only">{t.personalizza}</span>
+          </a>
+          {alt && (
+            <a class="lingua" href={alt} hreflang={altLang} lang={altLang} data-lingua={altLang} title={t.cambiaLingua}>
+              <span class="lingua-attiva" aria-hidden="true">{t.questaLinguaBreve}</span><span class="lingua-sep" aria-hidden="true">/</span><span>{t.altraLinguaBreve}</span>
+              <span class="sr-only">{t.cambiaLingua}</span>
+            </a>
+          )}
+        </div>
+        <a class="btn btn-azione btn-piccolo header-cta" href={preventivo} data-magnete data-azione>{t.ctaPreventivo}</a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-mobile" data-menu-toggle>
-          <span></span><span></span><span class="sr-only">Menu</span>
+          <span></span><span></span><span class="sr-only">{t.menu}</span>
         </button>
       </div>
     </header>
@@ -116,8 +147,11 @@ const voci = [
       </ul>
       <div style="display:grid;gap:1rem">
         <p class="mono">{contatti.zona}</p>
-        <a class="btn btn-azione btn-grande" href="/preventivo">Calcola il preventivo</a>
-        <a class="btn btn-vetro" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener">Scrivimi su WhatsApp</a>
+        <a class="btn btn-azione btn-grande" href={preventivo}>{t.ctaPreventivo}</a>
+        <a class="btn btn-vetro" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener" data-wa>{t.whatsapp}</a>
+        <a class="btn btn-vetro" href={`${home}#personalizza`} data-personalizza>
+          <span class="tavolozza" aria-hidden="true"><i></i><i></i><i></i><i></i></span> {t.personalizza}
+        </a>
       </div>
     </div>
 
@@ -129,29 +163,26 @@ const voci = [
       <div class="wrap">
         <div class="footer-grid">
           <div>
-            <a class="brand" href="/" aria-label="Gabriele Desideri, home">
+            <a class="brand" href={home} aria-label={t.home}>
               <span class="brand-mark" set:html={marchio} />
               <span class="brand-testo">
                 <span class="brand-nome-piccolo">Gabriele</span>
                 <span class="brand-nome">desideri</span>
               </span>
             </a>
-            <p class="footer-claim">Di cognome faccio Desideri. Di lavoro, li creo.</p>
+            <p class="footer-claim">{t.footerClaim}</p>
           </div>
           <div>
-            <h2>Servizi</h2>
+            <h2>{t.footerServizi}</h2>
             <ul role="list">
-              <li><a href="/#servizi">Siti web</a></li>
-              <li><a href="/#servizi">Negozi online</a></li>
-              <li><a href="/#servizi">Software e collegamenti AI</a></li>
-              <li><a href="/#servizi">Pubblicità online</a></li>
-              <li><a href="/preventivo">Preventivo automatico</a></li>
+              {t.footerVoci.slice(0, 4).map((v) => <li><a href={`${home}#servizi`}>{v}</a></li>)}
+              <li><a href={preventivo}>{t.footerVoci[4]}</a></li>
             </ul>
           </div>
           <div>
-            <h2>Parliamone</h2>
+            <h2>{t.footerParliamone}</h2>
             <ul role="list">
-              <li><a href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener">WhatsApp</a></li>
+              <li><a href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener" data-wa>WhatsApp</a></li>
               <li><a href={`tel:${contatti.telefono.replace(/\s/g, '')}`}>{contatti.telefono}</a></li>
               <li><a href={`mailto:${contatti.email}`}>{contatti.email}</a></li>
               <li><a href={contatti.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
@@ -161,37 +192,37 @@ const voci = [
         </div>
         <div class="footer-legale">
           <span>© {new Date().getFullYear()} {contatti.nome}{contatti.piva ? ` · P.IVA ${contatti.piva}` : ''}</span>
-          <span><a href="/privacy">Privacy e cookie</a> · <button type="button" data-cookie-apri style="background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font-size:inherit">Preferenze cookie</button></span>
+          <span><a href={url('privacy', lang)}>{t.privacy}</a> · <button type="button" data-cookie-apri style="background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font-size:inherit">{t.preferenzeCookie}</button>{alt && <> · <a href={alt} hreflang={altLang} lang={altLang}>{t.altraLingua}</a></>}</span>
         </div>
       </div>
     </footer>
 
     {barra && (
       <div class="barra-pollice" data-barra>
-        <a class="btn btn-azione" href="/preventivo">Calcola il preventivo</a>
-        <a class="btn btn-vetro" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener" aria-label="Scrivimi su WhatsApp">
+        <a class="btn btn-azione" href={preventivo}>{t.ctaPreventivo}</a>
+        <a class="btn btn-vetro" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener" aria-label={t.whatsapp} data-wa>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3Z"/></svg>
         </a>
       </div>
     )}
 
     <div class="cookie" data-cookie hidden role="dialog" aria-label="Cookie">
-      <p>Uso cookie di statistica e pubblicità solo se mi dai il permesso: servono a capire cosa funziona e a non sprecare annunci. Il sito funziona benissimo anche senza. <a href="/privacy">Dettagli</a></p>
+      <p>{t.cookie} <a href={url('privacy', lang)}>{t.dettagli}</a></p>
       <div class="cookie-azioni">
-        <button class="btn btn-vetro btn-piccolo" type="button" data-cookie-no>No, grazie</button>
-        <button class="btn btn-vetro btn-piccolo" type="button" data-cookie-si>Va bene</button>
+        <button class="btn btn-vetro btn-piccolo" type="button" data-cookie-no>{t.cookieNo}</button>
+        <button class="btn btn-vetro btn-piccolo" type="button" data-cookie-si>{t.cookieSi}</button>
       </div>
     </div>
 
     {uscita && (
       <div class="uscita" data-uscita hidden role="dialog" aria-modal="true" aria-labelledby="uscita-titolo">
         <div class="uscita-box">
-          <span class="capitolo">Un'ultima cosa</span>
-          <h2 id="uscita-titolo">Prima di andare, <span class="em em-firma">guarda qui.</span></h2>
-          <p>In 2 minuti vedi quanto costa il tuo progetto. Gratis, senza impegno, senza lasciare l'email per forza.</p>
+          <span class="capitolo">{t.uscitaCapitolo}</span>
+          <h2 id="uscita-titolo"><span data-nome-prefisso></span><span data-minuscola>{t.uscitaTitolo}</span><span class="em em-firma">{t.uscitaTitoloEm}</span></h2>
+          <p>{t.uscitaTesto}</p>
           <div class="uscita-azioni">
-            <a class="btn btn-azione btn-grande" href="/preventivo" data-azione data-uscita-si>Fammi vedere quanto costa <span class="freccia" aria-hidden="true">→</span></a>
-            <button class="btn btn-vetro" type="button" data-uscita-chiudi>No grazie, ci penso</button>
+            <a class="btn btn-azione btn-grande" href={preventivo} data-azione data-uscita-si>{t.uscitaSi} <span class="freccia" aria-hidden="true">→</span></a>
+            <button class="btn btn-vetro" type="button" data-uscita-chiudi>{t.uscitaNo}</button>
           </div>
         </div>
       </div>
@@ -199,10 +230,18 @@ const voci = [
 
     <div class="ritorno" data-ritorno hidden role="status">
       <span class="ritorno-occhio" aria-hidden="true">◉</span>
-      <p><strong>Bentornato!</strong> <span data-ritorno-testo>Riprendiamo da dove eravamo?</span></p>
-      <a class="link-freccia" href="/preventivo" data-ritorno-link>Calcola il preventivo <span class="freccia" aria-hidden="true">→</span></a>
-      <button class="ritorno-chiudi" type="button" aria-label="Chiudi" data-ritorno-chiudi>×</button>
+      <p><strong data-ritorno-titolo>{t.bentornato}!</strong> <span data-ritorno-testo>{t.bentornatoTesto}</span></p>
+      <a class="link-freccia" href={preventivo} data-ritorno-link>{t.ctaPreventivo} <span class="freccia" aria-hidden="true">→</span></a>
+      <button class="ritorno-chiudi" type="button" aria-label={t.chiudi} data-ritorno-chiudi>×</button>
     </div>
+
+    {alt && (
+      <div class="avviso-lingua" data-avviso-lingua data-per={altLang} hidden role="status" lang={altLang}>
+        <span>{t.avvisoLingua}</span>
+        <a href={alt} hreflang={altLang} data-lingua={altLang}>{t.avvisoLinguaLink} <span class="freccia" aria-hidden="true">→</span></a>
+        <button type="button" aria-label={t.chiudi} data-avviso-chiudi>×</button>
+      </div>
+    )}
 
     <div class="cursore" aria-hidden="true"></div>
     <div class="cursore-punto" aria-hidden="true"></div>

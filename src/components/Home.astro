@@ -1,0 +1,603 @@
+---
+// La home in italiano (/) e in inglese (/en/): stessa struttura, testi nella lingua della pagina.
+import Base from '../layouts/Base.astro';
+import Icona from './Icona.astro';
+import { dati } from '../i18n/dati.js';
+import { url } from '../i18n/ui.js';
+import { euro } from '../data/formato.js';
+
+interface Props { lang?: 'it' | 'en' }
+const { lang = 'it' } = Astro.props;
+const it = lang === 'it';
+const T = (a: string, b: string) => (it ? a : b);
+const { servizi, metodo, lavori, faq, contatti, categorie } = dati(lang);
+const eur = (n: number) => euro(n, lang);
+const preventivo = url('preventivo', lang);
+const mese = T('/mese', '/month');
+
+const sito = categorie.find((c) => c.id === 'sito')!;
+const piani = ['signature', 'presenza', 'impulso'].map((id) => sito.livelli.find((l) => l.id === id)!);
+const perChi: Record<string, string> = it ? {
+  signature: 'Per professionisti e brand che vogliono essere ricordati.',
+  presenza: 'Per attività e professionisti che vogliono richieste ogni settimana.',
+  impulso: 'Per partire subito o lanciare una promozione.',
+} : {
+  signature: 'For professionals and brands who want to be remembered.',
+  presenza: 'For businesses and professionals who want enquiries every week.',
+  impulso: 'To get started fast or launch a promotion.',
+};
+const altri = ['ecommerce', 'software', 'integrazioni', 'ads', 'cura'].map((id) => {
+  const c = categorie.find((x) => x.id === id)!;
+  const l = c.livelli[0];
+  return { nome: c.nome, prezzo: l.una ? eur(l.una) : eur(l.mese!) + mese };
+});
+const parole = it
+  ? ['Siti web', 'Negozi online', 'Software con AI', 'Collegamenti AI', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Neuromarketing', 'Copy che vende', 'Esperienze 3D']
+  : ['Websites', 'Online stores', 'AI software', 'AI integrations', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Neuromarketing', 'Copy that sells', '3D experiences'];
+
+// Benvenuto: le tre domande dell'hero
+const settori = it
+  ? [['professionista', 'Professionista'], ['artigiano', 'Artigiano o servizi'], ['immobiliare', 'Immobiliare'], ['negozio', 'Negozio o e-commerce'], ['azienda', 'Azienda'], ['altro', 'Altro']]
+  : [['professionista', 'Professional'], ['artigiano', 'Trades and services'], ['immobiliare', 'Real estate'], ['negozio', 'Shop or e-commerce'], ['azienda', 'Company'], ['altro', 'Other']];
+const colori = [
+  { id: 'blu', c: '#3D7BFF', nome: T('Blu', 'Blue'), senso: T('Fiducia', 'Trust') },
+  { id: 'rosso', c: '#FF3347', nome: T('Rosso', 'Red'), senso: T('Energia', 'Energy') },
+  { id: 'viola', c: '#8B6CFF', nome: T('Viola', 'Purple'), senso: T('Creatività', 'Creativity') },
+  { id: 'verde', c: '#22D47E', nome: T('Verde', 'Green'), senso: T('Crescita', 'Growth') },
+];
+
+const waTesto = T('Ciao Gabriele, ho visto il tuo sito e vorrei parlarti di un progetto.', "Hi Gabriele, I saw your website and I'd like to talk about a project.");
+const descrizione = T(
+  'Siti web, e-commerce, software con intelligenza artificiale e pubblicità online progettati con psicologia e neuromarketing.',
+  'Websites, e-commerce, AI software and online advertising designed with psychology and neuromarketing.',
+);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Gabriele Desideri',
+  description: descrizione,
+  url: new URL(url('home', lang), Astro.site).toString(),
+  email: contatti.email,
+  telephone: contatti.telefono,
+  areaServed: it ? 'IT' : ['IT', 'EU'],
+  inLanguage: lang,
+  address: { '@type': 'PostalAddress', addressLocality: 'Milano', addressCountry: 'IT' },
+  sameAs: [contatti.linkedin],
+};
+---
+<Base
+  lang={lang}
+  path={url('home', lang)}
+  alt={url('home', it ? 'en' : 'it')}
+  title={T('Gabriele Desideri · Siti web, software AI e pubblicità che portano clienti', 'Gabriele Desideri · Websites, AI software and ads that bring clients')}
+  description={T(
+    'Siti web, e-commerce, software con intelligenza artificiale e pubblicità online, progettati con la psicologia per portare le persone dal primo sguardo al «sì». Milano e tutta Italia.',
+    'Websites, e-commerce, AI software and online advertising, designed with psychology to take people from first glance to "yes". Based in Milan, working worldwide.',
+  )}
+  jsonLd={jsonLd}
+>
+  <!-- 01 · ATTENZIONE -->
+  <section class="hero" id="inizio" data-forma="0" data-lato="destra" data-x="1.13" data-scala="0.86" data-y-mobile="0.2" data-scala-mobile="0.6" data-luce-mobile="1">
+    <div class="wrap">
+      <div class="hero-testo">
+        <div class="hero-spazio-occhio" aria-hidden="true"></div>
+        <span class="capitolo" data-appare>{T('Capitolo 01 · Attenzione', 'Chapter 01 · Attention')}</span>
+        {it ? (
+          <h1 data-righe>
+            <span class="riga riga-nome" data-riga-nome hidden><span><span data-nome></span>,</span></span>
+            <span class="riga"><span data-minuscola>Trasformo</span></span>
+            <span class="riga"><span>chi ti guarda</span></span>
+            <span class="riga"><span>in chi ti <span class="em em-firma">sceglie.</span></span></span>
+          </h1>
+        ) : (
+          <h1 data-righe>
+            <span class="riga riga-nome" data-riga-nome hidden><span><span data-nome></span>,</span></span>
+            <span class="riga"><span>I turn</span></span>
+            <span class="riga"><span>attention</span></span>
+            <span class="riga"><span>into <span class="em em-firma">clients.</span></span></span>
+          </h1>
+        )}
+        {it ? (
+          <p class="lead" data-appare="0.25">
+            <a class="parola-iride" href="#servizi" data-iride="sito">Siti web</a>, <a class="parola-iride" href="#servizi" data-iride="ecommerce">negozi online</a>, <a class="parola-iride" href="#servizi" data-iride="software">software con intelligenza artificiale</a> e <a class="parola-iride" href="#servizi" data-iride="ads">pubblicità</a>.
+            Progettati con la psicologia per portare le persone <strong style="color:var(--latte);font-weight:600">dal primo sguardo al «sì»</strong>.
+          </p>
+        ) : (
+          <p class="lead" data-appare="0.25">
+            <a class="parola-iride" href="#servizi" data-iride="sito">Websites</a>, <a class="parola-iride" href="#servizi" data-iride="ecommerce">online stores</a>, <a class="parola-iride" href="#servizi" data-iride="software">AI software</a> and <a class="parola-iride" href="#servizi" data-iride="ads">advertising</a>.
+            Designed with psychology to take people <strong style="color:var(--latte);font-weight:600">from first glance to "yes"</strong>.
+          </p>
+        )}
+        <div class="hero-azioni" data-appare="0.4">
+          <a class="btn btn-azione btn-grande" href={preventivo} data-azione data-sguardo-meta>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="btn btn-vetro btn-grande" href="#metodo">{T('Guarda come funziona', 'See how it works')}</a>
+        </div>
+        <ul class="rassicura" data-appare="0.55">
+          <li>{T('Preventivo in 2 minuti', 'Quote in 2 minutes')}</li>
+          <li>{T('Risposta entro 24 ore', 'Reply within 24 hours')}</li>
+          <li>{contatti.zona}</li>
+        </ul>
+
+        <!-- Benvenuto: tre domande facoltative che rendono il sito suo -->
+        <div class="benvenuto" id="personalizza" data-benvenuto data-appare="0.7">
+          <div class="bv-testa">
+            <span class="bv-punto" aria-hidden="true"></span>
+            <span class="mono">{T('Rendi tuo questo sito', 'Make this site yours')}</span>
+            <span class="bv-passi" aria-hidden="true"><i class="attivo"></i><i></i><i></i></span>
+            <button class="bv-chiudi" type="button" data-bv-chiudi aria-label={T('Chiudi la personalizzazione', 'Close personalisation')}>×</button>
+          </div>
+
+          <form class="bv-passo" data-bv-passo="1">
+            <label class="bv-domanda" for="bv-nome">{T('Come ti chiami?', "What's your name?")}</label>
+            <div class="bv-riga">
+              <input id="bv-nome" name="nome" type="text" autocomplete="given-name" maxlength="24" placeholder={T('Il tuo nome', 'Your first name')} enterkeyhint="next" />
+              <button class="btn btn-vetro btn-piccolo" type="submit">{T('Avanti', 'Next')} <span class="freccia" aria-hidden="true">→</span></button>
+            </div>
+            <button class="bv-salta" type="button" data-bv-salta>{T('Salta', 'Skip')}</button>
+          </form>
+
+          <div class="bv-passo" data-bv-passo="2" hidden>
+            <p class="bv-domanda"><span data-bv-saluto></span>{T('Di cosa ti occupi?', 'What do you do?')}</p>
+            <div class="bv-scelte">
+              {settori.map(([id, nome]) => <button class="bv-chip" type="button" data-settore={id}>{nome}</button>)}
+            </div>
+            <button class="bv-salta" type="button" data-bv-salta>{T('Salta', 'Skip')}</button>
+          </div>
+
+          <div class="bv-passo" data-bv-passo="3" hidden>
+            <p class="bv-domanda">{T('Che colore ti somiglia?', 'Which colour feels like you?')}</p>
+            <div class="bv-colori" role="radiogroup" aria-label={T('Colore del sito', 'Site colour')}>
+              {colori.map((c) => (
+                <button class="bv-colore" type="button" role="radio" aria-checked="false" data-tema-scelta={c.id} style={`--c:${c.c}`}>
+                  <i aria-hidden="true"></i><span>{c.nome}</span><small>{c.senso}</small>
+                </button>
+              ))}
+            </div>
+            <button class="bv-salta" type="button" data-bv-salta>{T('Salta', 'Skip')}</button>
+          </div>
+
+          <div class="bv-passo bv-fatto" data-bv-passo="4" hidden>
+            <p><span data-bv-fatto></span> <button class="bv-salta" type="button" data-bv-modifica>{T('Modifica', 'Edit')}</button></p>
+          </div>
+          <p class="bv-nota">{T('Resta solo sul tuo dispositivo.', 'Stays on your device only.')}</p>
+        </div>
+      </div>
+    </div>
+    <div class="didascalia">
+      {it
+        ? <p class="didascalia-testo">L'attenzione è la moneta più preziosa di oggi. <span class="em em-firma">Chi la cattura, vince.</span></p>
+        : <p class="didascalia-testo">Attention is today's most valuable currency. <span class="em em-firma">Whoever captures it, wins.</span></p>}
+      <p class="sguardo-hint" aria-hidden="true">
+        <span class="sguardo-mouse">{T("Passa sulle parole e guarda dove va l'attenzione", 'Hover over the words and watch where attention goes')}</span>
+        <span class="sguardo-dito">{T("Tocca le parole e guarda dove va l'attenzione", 'Tap the words and watch where attention goes')}</span>
+      </p>
+    </div>
+    <a class="scorri" href="#problema" aria-label={T('Scorri', 'Scroll')}>
+      <span class="mono">{T('Scorri', 'Scroll')}</span>
+      <span class="scorri-linea"></span>
+    </a>
+  </section>
+
+  <div class="nastro" aria-hidden="true">
+    <div class="nastro-traccia">
+      {[0, 1].map(() => (
+        <div class="nastro-gruppo">
+          {parole.map((p) => <span>{p}<i>✦</i></span>)}
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- IL PROBLEMA -->
+  <section class="sezione" id="problema" data-forma="0" data-lato="destra" data-y="0.2" data-luce="0.5" data-scala="0.62">
+    <div class="wrap">
+      <div class="testa-sezione">
+        <span class="capitolo" data-appare>{T('Il problema', 'The problem')}</span>
+        {it ? (
+          <h2 data-righe>
+            <span class="riga"><span>Un sito bello non basta.</span></span>
+            <span class="riga"><span>Deve far venire <span class="em">voglia</span></span></span>
+            <span class="riga"><span>di sceglierti.</span></span>
+          </h2>
+        ) : (
+          <h2 data-righe>
+            <span class="riga"><span>A beautiful site isn't enough.</span></span>
+            <span class="riga"><span>It has to make people <span class="em">want</span></span></span>
+            <span class="riga"><span>to choose you.</span></span>
+          </h2>
+        )}
+      </div>
+      <div class="dolori" data-sequenza>
+        {(it ? [
+          ['01 — Nessuno ti trova', 'Sei bravo, ma online sei invisibile.', 'I clienti cercano proprio quello che fai. Solo che trovano prima gli altri.'],
+          ['02 — Ti trovano, ma se ne vanno', 'Pochi secondi e chiudono la pagina.', 'Il sito è lento, confuso o uguale a mille altri. Il cervello decide in fretta e passa oltre.'],
+          ['03 — Ti guardano, ma non ti scrivono', 'Visite tante, richieste poche.', 'Manca il percorso che porta dalla curiosità alla fiducia, e dalla fiducia al «ti scrivo».'],
+        ] : [
+          ['01 — Nobody finds you', "You're good, but online you're invisible.", 'Clients are searching for exactly what you do. They just find someone else first.'],
+          ['02 — They find you, then leave', 'A few seconds and the tab is closed.', 'The site is slow, confusing or looks like a thousand others. The brain decides fast and moves on.'],
+          ["03 — They look, but don't get in touch", 'Lots of visits, few enquiries.', 'The path from curiosity to trust, and from trust to "let\'s talk", is missing.'],
+        ]).map(([n, h, p]) => (
+          <div class="dolore">
+            <span class="dolore-num">{n}</span>
+            <h3>{h}</h3>
+            <p>{p}</p>
+          </div>
+        ))}
+      </div>
+      <p class="svolta" data-appare>
+        {T('Io costruisco quel percorso.', 'I build that path.')} <span class="em em-firma">{T('Dal primo sguardo al sì.', 'From first glance to yes.')}</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- 02 · INTERESSE -->
+  <section class="sezione" id="servizi" data-forma="1" data-lato="destra" data-y="0.18" data-luce="0.45" data-scala="0.8">
+    <div class="wrap">
+      <div class="testa-sezione">
+        <span class="capitolo" data-appare>{T('Capitolo 02 · Interesse', 'Chapter 02 · Interest')}</span>
+        <h2 data-righe>
+          <span class="riga"><span>{T('Cosa faccio,', 'What I do,')}</span></span>
+          <span class="riga"><span><span class="em">{T('detto semplice.', 'in plain words.')}</span></span></span>
+        </h2>
+        <p class="lead" data-appare>{T(
+          'Sei servizi che lavorano insieme. Puoi sceglierne uno solo o farli parlare tra loro: è lì che i risultati si moltiplicano.',
+          "Six services that work together. Pick just one or let them talk to each other: that's where results multiply.",
+        )}</p>
+      </div>
+      <div class="servizi-griglia" data-sequenza>
+        {servizi.map((s) => (
+          <article class="card servizio" data-iride={s.id}>
+            <div class="servizio-top">
+              <span class="servizio-icona"><Icona nome={s.icona} /></span>
+              <span class="mono">{s.numero}</span>
+            </div>
+            <h3>{s.titolo}</h3>
+            <div style="display:grid;gap:1rem;align-content:start">
+              <p>{s.semplice}</p>
+              <p class="esempio">{s.esempio}</p>
+            </div>
+            <div class="servizio-piede">
+              <span class="prezzo-da">{T('A partire da', 'Starting from')}<strong>{eur(s.da)}{s.mese && <small> {mese}</small>}</strong></span>
+              <a class="link-freccia" href={`${preventivo}?s=${s.id}`}>{T('Aggiungi', 'Add')} <span class="freccia" aria-hidden="true">→</span></a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCOLATORE DEL TEMPO RISPARMIATO -->
+  <section class="sezione" id="risparmio" data-forma="1" data-lato="sinistra" data-luce="0.75" data-scala="0.9">
+    <div class="wrap risparmio">
+      <div class="testa-sezione" style="margin-bottom:0">
+        <span class="capitolo" data-appare>{T('Software con AI', 'AI software')}</span>
+        {it ? (
+          <h2 data-righe>
+            <span class="riga"><span>Quanto tempo</span></span>
+            <span class="riga"><span>perdi in lavori</span></span>
+            <span class="riga"><span class="em">che una macchina</span></span>
+            <span class="riga"><span class="em">farebbe meglio?</span></span>
+          </h2>
+        ) : (
+          <h2 data-righe>
+            <span class="riga"><span>How much time</span></span>
+            <span class="riga"><span>do you lose on work</span></span>
+            <span class="riga"><span class="em">a machine would</span></span>
+            <span class="riga"><span class="em">do better?</span></span>
+          </h2>
+        )}
+        <p class="lead" data-appare>{T(
+          'Copiare dati, rispondere sempre alle stesse email, preparare preventivi, cercare documenti. Muovi i cursori e guarda quanto vale il tempo che ti restituisco.',
+          'Copying data, answering the same emails over and over, preparing quotes, hunting for documents. Move the sliders and see what the time I give back is worth.',
+        )}</p>
+      </div>
+      <div class="risparmio-pannello" data-risparmio data-lang={lang} data-appare>
+        <div class="cursore-campo">
+          <label for="r-ore">{T('Ore a settimana in lavori ripetitivi, a persona', 'Hours a week on repetitive work, per person')} <output data-out="ore">8</output></label>
+          <input id="r-ore" type="range" min="1" max="30" value="8" data-in="ore" />
+        </div>
+        <div class="cursore-campo">
+          <label for="r-persone">{T('Persone che li fanno', 'People doing it')} <output data-out="persone">3</output></label>
+          <input id="r-persone" type="range" min="1" max="30" value="3" data-in="persone" />
+        </div>
+        <div class="cursore-campo">
+          <label for="r-costo">{T("Costo di un'ora di lavoro", 'Cost of one hour of work')} <output data-out="costo">{eur(25)}</output></label>
+          <input id="r-costo" type="range" min="12" max="80" value="25" data-in="costo" />
+        </div>
+        <div class="risultati" aria-live="polite">
+          <div class="risultato"><strong data-ris="ore">662</strong><span>{T('ore restituite in un anno', 'hours given back each year')}</span></div>
+          <div class="risultato caldo"><strong data-ris="euro">{eur(16550)}</strong><span>{T('di lavoro risparmiato ogni anno', 'of work saved every year')}</span></div>
+        </div>
+        <a class="btn btn-azione" href={`${preventivo}?s=software`} data-azione>{T('Voglio recuperare questo tempo', 'I want this time back')} <span class="freccia" aria-hidden="true">→</span></a>
+        <p class="nota">{T(
+          'Stima prudente: calcolo 46 settimane lavorative e considero automatizzabile il 60% di quelle ore. Il numero vero lo misuriamo insieme nella Diagnosi AI.',
+          'A cautious estimate: I count 46 working weeks and assume 60% of those hours can be automated. We measure the real number together in the AI diagnosis.',
+        )}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · FIDUCIA: IL METODO -->
+  <section class="sezione" id="metodo">
+    <div class="wrap metodo">
+      <div class="metodo-fisso">
+        <span class="capitolo">{T('Capitolo 03 · Il metodo', 'Chapter 03 · The method')}</span>
+        {it ? (
+          <h2 data-righe>
+            <span class="riga"><span>Cinque passi</span></span>
+            <span class="riga"><span>nella testa</span></span>
+            <span class="riga"><span>del <span class="em em-firma">tuo cliente.</span></span></span>
+          </h2>
+        ) : (
+          <h2 data-righe>
+            <span class="riga"><span>Five steps</span></span>
+            <span class="riga"><span>inside your</span></span>
+            <span class="riga"><span><span class="em em-firma">client's mind.</span></span></span>
+          </h2>
+        )}
+        <p class="metodo-sotto">{T(
+          'Le cinque tappe che ogni persona attraversa prima di comprare. Per ognuna uso tecniche studiate dalla psicologia e provate sul campo.',
+          'The five stages everyone goes through before buying. For each one I use techniques studied by psychology and tested in the field.',
+        )}</p>
+        <ol class="metodo-indice" data-indice>
+          {metodo.map((m, i) => <li class={i === 0 ? 'attivo' : ''}>{String(i + 1).padStart(2, '0')} {m.passo}</li>)}
+        </ol>
+      </div>
+      <div class="passi">
+        {metodo.map((m, i) => (
+          <article class="passo" data-passo data-forma={m.forma} data-lato="sinistra" data-y="-0.31" data-scala="0.44">
+            <span class="passo-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span class="capitolo">{m.passo}</span>
+            <h3>{m.titolo}</h3>
+            <p class="passo-testa">{m.testa}</p>
+            <div class="passo-tecnica">
+              <span class="mono">{T('Tecnica', 'Technique')} · {m.tecnica}</span>
+              <p>{m.spiega}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- LAVORI -->
+  <section class="sezione" id="lavori" data-forma="2" data-lato="destra" data-y="0.22" data-luce="0.3" data-scala="0.75">
+    <div class="wrap">
+      <div class="testa-sezione">
+        <span class="capitolo" data-appare>{T('Lavori', 'Work')}</span>
+        <h2 data-righe>
+          <span class="riga"><span>{T('Non te lo racconto.', "I won't tell you.")}</span></span>
+          <span class="riga"><span><span class="em">{T('Te lo mostro.', "I'll show you.")}</span></span></span>
+        </h2>
+        <p class="lead" data-appare>{T(
+          'Due progetti molto diversi, con lo stesso obiettivo: far scegliere il mio cliente invece della concorrenza.',
+          'Two very different projects with the same goal: getting my client chosen over the competition.',
+        )}</p>
+      </div>
+      <div class="lavori" data-lavori>
+        {lavori.map((l) => (
+          <article class="lavoro" data-lavoro={l.id}>
+            <a class="lavoro-media" href={l.url} target="_blank" rel="noopener" aria-label={T(`Apri il sito di ${l.cliente}`, `Open ${l.cliente}'s website`)} data-appare>
+              <span class="browser" aria-hidden="true"><i></i><i></i><i></i></span>
+              <img src={l.img} alt={T(`La home del sito di ${l.cliente}`, `The home page of ${l.cliente}'s website`)} width="1440" height="900" loading="lazy" decoding="async" />
+            </a>
+            <div class="lavoro-testo" data-appare="0.1">
+              <span class="pacchetto-tag">{l.pacchetto}</span>
+              <h3 style="font-size:clamp(1.8rem,3vw,2.6rem)">{l.cliente}</h3>
+              <p class="settore">{l.settore}</p>
+              <p class="sfida">{l.sfida}</p>
+              <ul class="lista-check">{l.fatto.map((f) => <li>{f}</li>)}</ul>
+              <div class="tags">{l.tag.map((t) => <span>{t}</span>)}</div>
+              {l.recensione
+                ? <blockquote class="recensione">{l.recensione}</blockquote>
+                : <p class="recensione-attesa">{T('Recensione del cliente in arrivo.', 'Client review coming soon.')}</p>}
+              <a class="link-freccia" href={l.url} target="_blank" rel="noopener">{T('Visita il sito', 'Visit the site')} <span class="freccia" aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CHI SONO -->
+  <section class="sezione" id="chi-sono" data-forma="2" data-lato="destra" data-luce="0.32" data-scala="0.85">
+    <div class="wrap chi">
+      <div class="chi-testo">
+        <span class="capitolo" data-appare>{T('Chi sono', 'About me')}</span>
+        {it ? (
+          <h2 data-righe>
+            <span class="riga"><span>Di cognome</span></span>
+            <span class="riga"><span>faccio <span class="em em-firma">Desideri.</span></span></span>
+            <span class="riga"><span>Di lavoro, li creo.</span></span>
+          </h2>
+        ) : (
+          <h2 data-righe>
+            <span class="riga"><span>My surname is</span></span>
+            <span class="riga"><span><span class="em em-firma">Desideri</span>: "desires".</span></span>
+            <span class="riga"><span>Creating them is my job.</span></span>
+          </h2>
+        )}
+        {it ? (
+          <>
+            <p data-appare>Sono <strong>Gabriele</strong>. Ho iniziato a vendere <strong>faccia a faccia</strong>, porta a porta e al telefono. Lì ho imparato la lezione più importante: <strong>le persone non comprano un prodotto, comprano come si sentono quando lo scelgono.</strong></p>
+            <p data-appare>Poi ho portato quella lezione online. Ho lanciato negozi online miei e per aziende, gestito pubblicità su Meta, Google, LinkedIn e TikTok, costruito siti e software. Ho studiato psicologia, marketing, neuromarketing e intelligenza artificiale, e ho provato ogni tecnica sul campo prima di usarla per un cliente.</p>
+            <p data-appare>Quello che amo è tutto il viaggio: <strong>dal primo sguardo alla conversione.</strong> Ogni colore, ogni parola e ogni movimento di un mio progetto ha un motivo preciso.</p>
+          </>
+        ) : (
+          <>
+            <p data-appare>I'm <strong>Gabriele</strong>. I started out selling <strong>face to face</strong>, door to door and on the phone. That's where I learned the most important lesson: <strong>people don't buy a product, they buy how they feel when they choose it.</strong></p>
+            <p data-appare>Then I took that lesson online. I launched online stores of my own and for companies, ran ads on Meta, Google, LinkedIn and TikTok, and built websites and software. I studied psychology, marketing, neuromarketing and artificial intelligence, and tested every technique in the field before using it for a client.</p>
+            <p data-appare>What I love is the whole journey: <strong>from first glance to conversion.</strong> Every colour, every word and every movement in my projects is there for a reason.</p>
+          </>
+        )}
+        <div class="certificati" data-appare>
+          {(it
+            ? ['Social Media Manager · certificato ISO 9001 – MIUR – Google', 'AI per il Digital Marketing', 'Impresa e Startup · Ikigai Hub', "Creazione d'impresa · Confesercenti"]
+            : ['Social Media Manager · ISO 9001 – MIUR – Google certified', 'AI for Digital Marketing', 'Business and Startups · Ikigai Hub', 'Starting a business · Confesercenti']
+          ).map((c) => <span>{c}</span>)}
+        </div>
+      </div>
+      <ol class="percorso" data-sequenza>
+        {(it ? [
+          ['2021 — 2022', 'Agente di commercio e team leader', 'Vendita diretta ai clienti, ricerca di nuovi contatti, formazione di nuovi venditori.'],
+          ['2022 — oggi', 'Freelance: siti, social, e-commerce, pubblicità', "Siti ed e-commerce dall'idea alla gestione quotidiana, campagne pubblicitarie, funnel di vendita, analisi dei dati."],
+          ['2023 — 2024', 'Co-founder di una startup', 'Business plan, strategia di crescita e marketing di un prodotto nuovo, da zero.'],
+          ['2025 — oggi', 'Vendita immobiliare a Milano', 'Trattative vere, ogni giorno: telefonate, valutazioni, appuntamenti. La palestra migliore per capire come decide una persona.'],
+          ['Adesso', 'Software e sistemi con AI', "Unisco tutto: design, vendita e intelligenza artificiale, per far crescere le aziende e togliere loro il lavoro inutile."],
+        ] : [
+          ['2021 — 2022', 'Sales agent and team leader', 'Direct sales, prospecting for new clients, training new salespeople.'],
+          ['2022 — now', 'Freelance: websites, social, e-commerce, ads', 'Websites and online stores from idea to day-to-day running, ad campaigns, sales funnels, data analysis.'],
+          ['2023 — 2024', 'Startup co-founder', 'Business plan, growth strategy and marketing for a brand-new product, from scratch.'],
+          ['2025 — now', 'Real estate sales in Milan', 'Real negotiations, every day: calls, valuations, viewings. The best training ground for understanding how people decide.'],
+          ['Now', 'AI software and systems', 'I bring it all together: design, sales and artificial intelligence, to help companies grow and take pointless work off their hands.'],
+        ]).map(([anno, titolo, testo]) => <li><span class="anno">{anno}</span><strong>{titolo}</strong><span>{testo}</span></li>)}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 04 · DESIDERIO: PREZZI -->
+  <section class="sezione" id="prezzi" data-forma="3" data-luce="0.2" data-scala="1.35">
+    <div class="wrap">
+      <div class="testa-sezione centro">
+        <span class="capitolo" data-appare>{T('Capitolo 04 · Desiderio', 'Chapter 04 · Desire')}</span>
+        {it ? (
+          <h2 data-righe>
+            <span class="riga"><span>Prezzi chiari.</span></span>
+            <span class="riga"><span><span class="em">Prima</span> di iniziare.</span></span>
+          </h2>
+        ) : (
+          <h2 data-righe>
+            <span class="riga"><span>Clear prices.</span></span>
+            <span class="riga"><span><span class="em">Before</span> we start.</span></span>
+          </h2>
+        )}
+        <p class="lead" data-appare>{T(
+          "Niente «dipende», niente sorprese. Questi sono i prezzi dei siti. Per tutto il resto c'è il preventivo automatico: componi il tuo progetto e vedi subito quanto costa.",
+          'No "it depends", no surprises. These are the website prices. For everything else there\'s the instant quote: build your project and see the price straight away.',
+        )}</p>
+      </div>
+      <div class="prezzi" data-sequenza>
+        {piani.map((p) => (
+          <article class={`card piano${p.top ? ' top' : ''}`}>
+            {p.top && <span class="piano-badge">{T('Il più scelto', 'Most popular')}</span>}
+            <span class="piano-nome">{p.nome}</span>
+            <p class="piano-per">{perChi[p.id]}</p>
+            <span class="piano-prezzo">{p.id === 'signature' ? T('da ', 'from ') : ''}{eur(p.una!)}<small>{T('una tantum · IVA esclusa', 'one-off · excl. VAT')}</small></span>
+            <ul class="lista-check">{p.include.map((i) => <li>{i}</li>)}</ul>
+            <a class={`btn ${p.top ? 'btn-azione' : 'btn-vetro'}`} href={`${preventivo}?s=sito:${p.id}`} data-azione={p.top ? '' : undefined}>{T('Scegli', 'Choose')} {p.nome} <span class="freccia" aria-hidden="true">→</span></a>
+          </article>
+        ))}
+      </div>
+      <div class="altri-prezzi" data-appare>
+        {altri.map((a) => <div><span>{a.nome}</span><strong>{T('da', 'from')} {a.prezzo}</strong></div>)}
+      </div>
+      <p class="prezzi-nota">{T(
+        'Pagamento in due parti: metà alla firma, metà alla consegna. Il sito, una volta saldato, è tuo al 100%.',
+        'Payment in two parts: half on signing, half on delivery. Once paid, the site is 100% yours.',
+      )}</p>
+    </div>
+  </section>
+
+  <!-- GARANZIE -->
+  <section class="sezione" id="garanzie" data-forma="3" data-luce="0.14" data-scala="1.5" style="padding-top:0">
+    <div class="wrap">
+      <div class="garanzie" data-sequenza>
+        {(it ? [
+          ['revisioni', 'Ritocchi finché non ti convince', 'Prima di andare online lavoriamo sul design finché non ti piace davvero. Il sito deve rappresentarti.'],
+          ['chiave', 'Tutto è tuo', 'Codice, dominio, contenuti e account pubblicitari restano tuoi. Niente vincoli e niente ostaggi.'],
+          ['prezzo', 'Il prezzo è quello', 'Firmi un preventivo chiaro, voce per voce. Se qualcosa cambia, lo decidiamo insieme prima.'],
+        ] : [
+          ['revisioni', "Tweaks until you're convinced", "Before going live we work on the design until you truly like it. The site has to represent you."],
+          ['chiave', 'Everything is yours', 'Code, domain, content and ad accounts stay yours. No lock-in and no hostages.'],
+          ['prezzo', 'The price is the price', 'You sign a clear quote, line by line. If anything changes, we agree on it together first.'],
+        ]).map(([icona, titolo, testo]) => (
+          <div class="card garanzia">
+            <span class="garanzia-icona"><Icona nome={icona} /></span>
+            <h3>{titolo}</h3>
+            <p>{testo}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- DOMANDE -->
+  <section class="sezione" id="domande" data-forma="3" data-luce="0.1" data-scala="1.6">
+    <div class="wrap">
+      <div class="testa-sezione centro">
+        <span class="capitolo" data-appare>{T('Domande frequenti', 'Frequently asked questions')}</span>
+        {it
+          ? <h2 data-righe><span class="riga"><span>Quello che <span class="em">tutti</span> mi chiedono.</span></span></h2>
+          : <h2 data-righe><span class="riga"><span>What <span class="em">everyone</span> asks me.</span></span></h2>}
+      </div>
+      <div class="faq">
+        {faq.map((f) => (
+          <details>
+            <summary>{f.d}<span class="piu" aria-hidden="true"></span></summary>
+            <p class="risposta">{f.r}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · AZIONE -->
+  <section class="sezione finale" id="azione" data-forma="4" data-luce="0.75" data-luce-mobile="0.5" data-scala="1.15">
+    <div class="wrap finale-testo">
+      <span class="capitolo" data-appare>{T('Capitolo 05 · Azione', 'Chapter 05 · Action')}</span>
+      <h2 data-righe>
+        <span class="riga riga-nome" data-riga-nome hidden><span><span data-nome></span>,</span></span>
+        <span class="riga"><span data-minuscola>{T('Il tuo prossimo cliente', 'Your next client')}</span></span>
+        <span class="riga"><span>{T('ti sta', 'is')} <span class="em em-firma">{T('già cercando.', 'already looking for you.')}</span></span></span>
+      </h2>
+      <p class="lead" data-appare>{T(
+        'Componi il tuo progetto in 2 minuti: scegli quello che ti serve, vedi subito il prezzo e mandami la richiesta. Ti rispondo entro 24 ore.',
+        "Build your project in 2 minutes: choose what you need, see the price straight away and send me the request. I'll reply within 24 hours.",
+      )}</p>
+      <div class="hero-azioni" data-appare style="justify-content:center">
+        <a class="btn btn-azione btn-grande" href={preventivo} data-azione>{T('Componi il tuo progetto', 'Build your project')} <span class="freccia" aria-hidden="true">→</span></a>
+        <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivimi su WhatsApp', 'Message me on WhatsApp')}</a>
+      </div>
+      <ul class="rassicura" data-appare style="justify-content:center">
+        <li>{T('Preventivo gratuito', 'Free quote')}</li>
+        <li>{T('Nessun impegno', 'No commitment')}</li>
+        <li>{T('Chiamata conoscitiva di 20 minuti', '20-minute intro call')}</li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nastro { position: relative; z-index: 2; border-block: 1px solid var(--linea); background: rgba(var(--notte-rgb),.55); overflow: hidden; padding: 1.1rem 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+  .nastro-traccia { display: flex; width: max-content; animation: nastro 38s linear infinite; }
+  .nastro-gruppo { display: flex; }
+  .nastro span { display: inline-flex; align-items: center; gap: 2.2rem; padding-right: 2.2rem; font-family: var(--f-titolo); font-size: clamp(1.1rem, 2vw, 1.6rem); font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; color: var(--nebbia); }
+  .nastro i { font-style: normal; color: var(--viola); font-size: .8em; }
+  @keyframes nastro { to { transform: translateX(-50%); } }
+  .recensione { margin: 0; padding: 1rem 1.2rem; border-left: 2px solid var(--ambra); font-family: var(--f-emozione); font-style: italic; font-size: 1.2rem; }
+</style>
+
+<script>
+  // Calcolatore del tempo risparmiato
+  import { numero, euro } from '../data/formato.js';
+  const box = document.querySelector<HTMLElement>('[data-risparmio]');
+  if (box) {
+    const lang = box.dataset.lang === 'en' ? 'en' : 'it';
+    const val = (k: string) => Number((box.querySelector(`[data-in="${k}"]`) as HTMLInputElement).value);
+    const aggiorna = () => {
+      box.querySelectorAll<HTMLInputElement>('input[type="range"]').forEach((i) => {
+        const p = ((Number(i.value) - Number(i.min)) / (Number(i.max) - Number(i.min))) * 100;
+        i.style.setProperty('--p', `${p}%`);
+      });
+      const ore = val('ore'), persone = val('persone'), costo = val('costo');
+      const anno = Math.round(ore * persone * 46 * 0.6);
+      box.querySelector('[data-out="ore"]')!.textContent = String(ore);
+      box.querySelector('[data-out="persone"]')!.textContent = String(persone);
+      box.querySelector('[data-out="costo"]')!.textContent = euro(costo, lang);
+      box.querySelector('[data-ris="ore"]')!.textContent = numero(anno, lang);
+      box.querySelector('[data-ris="euro"]')!.textContent = euro(anno * costo, lang);
+    };
+    box.addEventListener('input', aggiorna);
+    aggiorna();
+  }
+</script>

@@ -1,17 +1,60 @@
 // Preventivo automatico: legge le scelte del modulo, calcola i totali in tempo reale,
 // salva il progetto nel browser e invia la richiesta.
 import gsap from 'gsap';
-import { categorie, tempi, scontoPacchetto, voucher } from '../data/listino.js';
-import { contatti } from '../data/sito.js';
+import { dati as datiLingua } from '../i18n/dati.js';
+import { euro as euroIn } from '../data/formato.js';
+import { leggiProfilo } from './profilo.js';
 
 const ENDPOINT = import.meta.env.PUBLIC_PREVENTIVO_ENDPOINT || '';
 const CHIAVE = 'gd-preventivo';
-import { euro } from '../data/formato.js';
 const traccia = (e, d) => window.gdTrack?.(e, d);
+
+const TESTI = {
+  it: {
+    mese: '/mese', vuoto: 'Scegli un servizio per iniziare.',
+    veloce: 'Corsia veloce (+20%)', calma: 'Senza fretta (−5%)', sconto: (p) => `Sconto pacchetto (−${p}%)`,
+    sconto3: 'Sconto massimo sbloccato: −10% sulla parte una tantum',
+    sconto2: 'Sconto del 5% sbloccato! Con un terzo servizio arrivi al 10%',
+    sconto1: 'Aggiungi un secondo servizio: sblocchi il 5% di sconto',
+    sconto0: 'Più servizi scegli, più risparmi',
+    voucher: (e) => `Con il Voucher Doppia Transizione della Lombardia potresti risparmiare fino a ${e} sulla parte AI (contributo del 50%, da verificare insieme: lo sportello si esaurisce in fretta).`,
+    intro: 'Ciao Gabriele, ecco il mio progetto dal preventivo automatico:',
+    tempi: 'Tempi', scontoRiga: 'Sconto pacchetto', totale: 'Totale indicativo', una: 'una tantum', iva: 'IVA esclusa',
+    nome: 'Nome', attivita: 'Attività', settore: 'Settore', telefono: 'Telefono', preferisco: 'Preferisco', sito: 'Sito/social attuale', obiettivo: 'Obiettivo',
+    oggetto: 'Richiesta di preventivo dal sito',
+    inviaWa: 'Invia su WhatsApp', inviaMail: 'Invia per email', invio: 'Invio in corso…', riprova: 'Riprova',
+    errore: (wa) => `Non sono riuscito a inviare la richiesta. Puoi mandarla <a href="${wa}" target="_blank" rel="noopener">su WhatsApp</a> con un clic.`,
+    grazieModulo: (n, c) => `Grazie ${n}, ho ricevuto il tuo progetto. Ti ricontatto entro 24 ore${c ? ` via ${c.toLowerCase()}` : ''} con il preventivo definitivo.`,
+    grazieApp: (n, email) => `Grazie ${n}! Si è aperto ${email ? 'il programma di posta' : 'WhatsApp'} con il tuo progetto già scritto: premi invia e ti rispondo entro 24 ore.`,
+    riapriMail: "Apri di nuovo l'email", riapriWa: 'Apri di nuovo WhatsApp',
+  },
+  en: {
+    mese: '/month', vuoto: 'Choose a service to get started.',
+    veloce: 'Fast lane (+20%)', calma: 'No rush (−5%)', sconto: (p) => `Bundle discount (−${p}%)`,
+    sconto3: 'Maximum discount unlocked: −10% on the one-off part',
+    sconto2: '5% discount unlocked! Add a third service to reach 10%',
+    sconto1: 'Add a second service to unlock a 5% discount',
+    sconto0: 'The more services you choose, the more you save',
+    voucher: (e) => `With the Lombardy "Doppia Transizione" voucher you could save up to ${e} on the AI part (50% grant, to be checked together: the fund runs out fast).`,
+    intro: "Hi Gabriele, here's my project from the instant quote:",
+    tempi: 'Timing', scontoRiga: 'Bundle discount', totale: 'Indicative total', una: 'one-off', iva: 'excl. VAT',
+    nome: 'Name', attivita: 'Business', settore: 'Sector', telefono: 'Phone', preferisco: 'Preferred contact', sito: 'Current site/social', obiettivo: 'Goal',
+    oggetto: 'Quote request from the website',
+    inviaWa: 'Send on WhatsApp', inviaMail: 'Send by email', invio: 'Sending…', riprova: 'Try again',
+    errore: (wa) => `I couldn't send your request. You can send it <a href="${wa}" target="_blank" rel="noopener">on WhatsApp</a> in one click.`,
+    grazieModulo: (n, c) => `Thank you ${n}, I've received your project. I'll get back to you within 24 hours${c ? ` by ${c.toLowerCase()}` : ''} with the final quote.`,
+    grazieApp: (n, email) => `Thank you ${n}! ${email ? 'Your email app' : 'WhatsApp'} has opened with your project already written: press send and I'll reply within 24 hours.`,
+    riapriMail: 'Open the email again', riapriWa: 'Open WhatsApp again',
+  },
+};
 
 export function avviaPreventivo() {
   const form = document.querySelector('[data-preventivo]');
   if (!form) return;
+  const lang = form.dataset.lang === 'en' ? 'en' : 'it';
+  const t = TESTI[lang];
+  const { categorie, tempi, scontoPacchetto, voucher, contatti } = datiLingua(lang);
+  const euro = (n) => euroIn(n, lang);
   const ridotto = document.documentElement.classList.contains('ridotto');
   const passi = [...form.querySelectorAll('[data-passo]')];
   const indicatori = [...document.querySelectorAll('[data-passo-ind]')];
@@ -86,11 +129,11 @@ export function avviaPreventivo() {
     const r = calcola(stato);
     elRighe.innerHTML = '';
     if (!r.righe.length) {
-      elRighe.innerHTML = '<li class="pv-vuoto">Scegli un servizio per iniziare.</li>';
+      elRighe.innerHTML = `<li class="pv-vuoto">${t.vuoto}</li>`;
     }
     for (const x of r.righe) {
       const li = document.createElement('li');
-      const prezzo = [x.una ? euro(x.una) : '', x.mese ? `${euro(x.mese)}/mese` : ''].filter(Boolean).join(' + ');
+      const prezzo = [x.una ? euro(x.una) : '', x.mese ? `${euro(x.mese)}${t.mese}` : ''].filter(Boolean).join(' + ');
       li.innerHTML = `<div><strong></strong><span class="pv-riga-liv"></span>${x.dett.length ? '<span class="pv-riga-dett"></span>' : ''}</div><span class="pv-riga-prezzo"></span>`;
       li.querySelector('strong').textContent = x.nome;
       li.querySelector('.pv-riga-liv').textContent = x.livello;
@@ -98,26 +141,23 @@ export function avviaPreventivo() {
       li.querySelector('.pv-riga-prezzo').textContent = prezzo;
       elRighe.appendChild(li);
     }
-    if (r.maggiorazione > 0) aggiungiRiga(`Corsia veloce (+20%)`, `+ ${euro(r.maggiorazione)}`);
-    if (r.maggiorazione < 0) aggiungiRiga(`Senza fretta (−5%)`, `− ${euro(-r.maggiorazione)}`, true);
-    if (r.scontoEuro > 0) aggiungiRiga(`Sconto pacchetto (−${r.sconto * 100}%)`, `− ${euro(r.scontoEuro)}`, true);
+    if (r.maggiorazione > 0) aggiungiRiga(t.veloce, `+ ${euro(r.maggiorazione)}`);
+    if (r.maggiorazione < 0) aggiungiRiga(t.calma, `− ${euro(-r.maggiorazione)}`, true);
+    if (r.scontoEuro > 0) aggiungiRiga(t.sconto(r.sconto * 100), `− ${euro(r.scontoEuro)}`, true);
 
     animaNumero(elUna, 'una', r.una);
     animaNumero(elMese, 'mese', r.mese);
-    elBreve.textContent = `${euro(r.una)}${r.mese ? ` + ${euro(r.mese)}/mese` : ''}`;
+    elBreve.textContent = `${euro(r.una)}${r.mese ? ` + ${euro(r.mese)}${t.mese}` : ''}`;
 
     // gamification dello sconto pacchetto
     const n = r.nServizi;
     elScontoBarra.style.width = `${Math.min(n, 3) / 3 * 100}%`;
-    elScontoTesto.textContent = n >= 3 ? 'Sconto massimo sbloccato: −10% sulla parte una tantum'
-      : n === 2 ? 'Sconto del 5% sbloccato! Con un terzo servizio arrivi al 10%'
-      : n === 1 ? 'Aggiungi un secondo servizio: sblocchi il 5% di sconto'
-      : 'Più servizi scegli, più risparmi';
+    elScontoTesto.textContent = n >= 3 ? t.sconto3 : n === 2 ? t.sconto2 : n === 1 ? t.sconto1 : t.sconto0;
     riep.querySelector('[data-sconto]').classList.toggle('attivo', n >= 2);
 
     if (r.risparmioVoucher > 0) {
       elVoucher.hidden = false;
-      elVoucher.textContent = `Con il Voucher Doppia Transizione della Lombardia potresti risparmiare fino a ${euro(r.risparmioVoucher)} sulla parte AI (contributo del 50%, da verificare insieme: lo sportello si esaurisce in fretta).`;
+      elVoucher.textContent = t.voucher(euro(r.risparmioVoucher));
     } else elVoucher.hidden = true;
 
     salva(stato);
@@ -225,34 +265,34 @@ export function avviaPreventivo() {
 
   // ---------- Invio ----------
   function testoProgetto(r, d) {
-    const righe = [`Ciao Gabriele, ecco il mio progetto dal preventivo automatico:`, ''];
+    const righe = [t.intro, ''];
     for (const x of r.righe) {
       righe.push(`• ${x.nome} — ${x.livello}${x.dett.length ? ` (+ ${x.dett.join(', ')})` : ''}`);
     }
-    righe.push('', `Tempi: ${r.tempi.nome}`);
-    if (r.sconto) righe.push(`Sconto pacchetto: −${r.sconto * 100}%`);
-    righe.push(`Totale indicativo: ${euro(r.una)} una tantum${r.mese ? ` + ${euro(r.mese)}/mese` : ''} (IVA esclusa)`);
+    righe.push('', `${t.tempi}: ${r.tempi.nome}`);
+    if (r.sconto) righe.push(`${t.scontoRiga}: −${r.sconto * 100}%`);
+    righe.push(`${t.totale}: ${euro(r.una)} ${t.una}${r.mese ? ` + ${euro(r.mese)}${t.mese}` : ''} (${t.iva})`);
     if (d) {
-      righe.push('', `Nome: ${d.nome}`);
-      if (d.azienda) righe.push(`Attività: ${d.azienda}`);
-      if (d.settore) righe.push(`Settore: ${d.settore}`);
-      righe.push(`Email: ${d.email}`, `Telefono: ${d.telefono}`, `Preferisco: ${d.canale}`);
-      if (d.sito_attuale) righe.push(`Sito/social attuale: ${d.sito_attuale}`);
-      if (d.messaggio) righe.push('', `Obiettivo: ${d.messaggio}`);
+      righe.push('', `${t.nome}: ${d.nome}`);
+      if (d.azienda) righe.push(`${t.attivita}: ${d.azienda}`);
+      if (d.settore) righe.push(`${t.settore}: ${d.settore}`);
+      righe.push(`Email: ${d.email}`, `${t.telefono}: ${d.telefono}`, `${t.preferisco}: ${d.canale}`);
+      if (d.sito_attuale) righe.push(`${t.sito}: ${d.sito_attuale}`);
+      if (d.messaggio) righe.push('', `${t.obiettivo}: ${d.messaggio}`);
     }
     return righe.join('\n');
   }
   const waLink = (testo) => `https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(testo)}`;
-  const mailLink = (testo) => `mailto:${contatti.email}?subject=${encodeURIComponent('Richiesta di preventivo dal sito')}&body=${encodeURIComponent(testo)}`;
+  const mailLink = (testo) => `mailto:${contatti.email}?subject=${encodeURIComponent(t.oggetto)}&body=${encodeURIComponent(testo)}`;
 
   // senza indirizzo dello script, l'invio passa da WhatsApp (o email)
   if (!ENDPOINT) {
     const btn = form.querySelector('[data-invia]');
-    btn.innerHTML = 'Invia su WhatsApp <span class="freccia" aria-hidden="true">→</span>';
+    btn.innerHTML = `${t.inviaWa} <span class="freccia" aria-hidden="true">→</span>`;
     const mail = document.createElement('button');
     mail.type = 'button';
     mail.className = 'btn btn-vetro';
-    mail.textContent = 'Invia per email';
+    mail.textContent = t.inviaMail;
     mail.addEventListener('click', () => {
       if (!valido(4)) return;
       const d = dati();
@@ -266,7 +306,7 @@ export function avviaPreventivo() {
     const f = form.elements;
     return {
       nome: f.nome.value.trim(), azienda: f.azienda.value.trim(), email: f.email.value.trim(), telefono: f.telefono.value.trim(),
-      settore: f.settore.value, messaggio: f.messaggio.value.trim(), canale: f.canale.value, sito_attuale: f.sito_attuale.value.trim(),
+      settore: f.settore.value ? f.settore.selectedOptions[0].textContent.trim() : '', messaggio: f.messaggio.value.trim(), canale: f.canale.value, sito_attuale: f.sito_attuale.value.trim(),
     };
   }
 
@@ -284,7 +324,7 @@ export function avviaPreventivo() {
     }
     const btn = form.querySelector('[data-invia]');
     btn.disabled = true;
-    btn.textContent = 'Invio in corso…';
+    btn.textContent = t.invio;
     try {
       // text/plain: richiesta "semplice", niente preflight CORS verso Google Apps Script
       const res = await fetch(ENDPOINT, {
@@ -292,7 +332,7 @@ export function avviaPreventivo() {
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({
           ...d, botcheck: '', progetto: testo, una: Math.round(r.una), mese: Math.round(r.mese), tempi: r.tempi.nome,
-          servizi: r.righe.map((x) => `${x.nome} (${x.livello})`).join(', '), pagina: location.href,
+          servizi: r.righe.map((x) => `${x.nome} (${x.livello})`).join(', '), pagina: location.href, lingua: lang,
         }),
       });
       const j = await res.json().catch(() => ({}));
@@ -300,10 +340,10 @@ export function avviaPreventivo() {
       fatto(d, 'modulo');
     } catch (_) {
       btn.disabled = false;
-      btn.innerHTML = 'Riprova <span class="freccia" aria-hidden="true">→</span>';
+      btn.innerHTML = `${t.riprova} <span class="freccia" aria-hidden="true">→</span>`;
       const err = form.querySelector('[data-errore="4"]');
       err.hidden = false;
-      err.innerHTML = `Non sono riuscito a inviare la richiesta. Puoi mandarla <a href="${waLink(testo)}" target="_blank" rel="noopener">su WhatsApp</a> con un clic.`;
+      err.innerHTML = t.errore(waLink(testo));
     }
   });
 
@@ -313,16 +353,15 @@ export function avviaPreventivo() {
     const testo = testoProgetto(r, d);
     const box = form.querySelector('[data-fatto-azioni]');
     const p = form.querySelector('[data-fatto-testo]');
-    p.textContent = via === 'modulo'
-      ? `Grazie ${d.nome.split(' ')[0]}, ho ricevuto il tuo progetto. Ti ricontatto entro 24 ore${d.canale ? ` via ${d.canale.toLowerCase()}` : ''} con il preventivo definitivo.`
-      : `Grazie ${d.nome.split(' ')[0]}! Si è aperto ${via === 'email' ? 'il programma di posta' : 'WhatsApp'} con il tuo progetto già scritto: premi invia e ti rispondo entro 24 ore.`;
+    const primo = d.nome.split(' ')[0];
+    p.textContent = via === 'modulo' ? t.grazieModulo(primo, d.canale) : t.grazieApp(primo, via === 'email');
     box.innerHTML = '';
     if (via !== 'modulo') {
       const a = document.createElement('a');
       a.className = 'btn btn-azione';
       a.href = via === 'email' ? mailLink(testo) : waLink(testo);
       a.target = '_blank'; a.rel = 'noopener';
-      a.textContent = via === 'email' ? 'Apri di nuovo l\'email' : 'Apri di nuovo WhatsApp';
+      a.textContent = via === 'email' ? t.riapriMail : t.riapriWa;
       box.appendChild(a);
     }
     vaiA(5);
@@ -360,6 +399,10 @@ export function avviaPreventivo() {
     const radio = liv && form.querySelector(`input[name="liv-${id}"][value="${liv}"]`);
     if (radio) radio.checked = true;
   }
+  // nome e settore scelti nel benvenuto della home
+  const profilo = leggiProfilo();
+  if (profilo.nome && !form.elements.nome.value) form.elements.nome.value = profilo.nome;
+  if (profilo.settore && !form.elements.settore.value && form.querySelector(`#pv-settore option[value="${profilo.settore}"]`)) form.elements.settore.value = profilo.settore;
   mostraBlocchi();
   aggiorna();
   vaiA(1, false);
