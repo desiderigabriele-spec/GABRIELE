@@ -58,7 +58,10 @@ Una **sfera di luce** che fluttua nello spazio e ruota tutta verso ciò che guar
 - **Chi torna** (più di 30 minuti dopo l'ultima visita): la pupilla diventa un **cuore** per un paio di secondi e compare «Bentornato!». Se c'era un preventivo iniziato, il link porta a riprenderlo.
 
 ### Il testo resta sempre leggibile
-La scena misura le righe di testo visibili (titoli, paragrafi, bottoni, etichette, header e finestre in primo piano) e **spegne le particelle che ci passano sopra**, con un bordo sfumato. Vale per tutte le forme (sfera, rete neurale, spirale, cuore, stella), anche durante le trasformazioni e mentre si scorre: le forme si aprono attorno alle parole invece di coprirle.
+Niente ritagli attorno alle lettere. Le regole sono tre:
+- **Spazio libero:** le forme stanno nella parte vuota dello schermo (accanto ai titoli, a destra dell'hero) e si muovono lente.
+- **Velo morbido:** se una forma passa dietro a un blocco di testo, lì la sua luce cala con una sfumatura ampia (fino a un quarto), senza contorni.
+- **Sezioni piene di testo** (servizi, prezzi, garanzie, domande): forme più tenui. Piene solo nei capitoli d'apertura e nel finale. Su telefono, fuori dall'hero, le forme restano molto tenui e non stanno mai davanti alla lettura.
 
 Su telefono l'occhio sta sopra il titolo, a piena luce. Sotto l'occhio c'è la sua didascalia: «L'attenzione è la moneta più preziosa di oggi. Chi la cattura, vince.», con l'invito «Passa sulle parole e guarda dove va l'attenzione» (sparisce dopo il primo gesto).
 
@@ -86,7 +89,7 @@ Su telefono l'occhio sta sopra il titolo, a piena luce. Sotto l'occhio c'è la s
 **Regola:** i colori freddi servono a capire, quelli caldi ad agire. Il gradiente viola → fuoco è la firma: il passaggio dalla ragione all'emozione, cioè dall'interesse al desiderio.
 
 ### Tipografia
-- **Syne** (titoli): geometrica, larga, con carattere. Si riconosce.
+- **Bricolage Grotesque** (titoli): ha personalità ma è compatta e leggibile; i dettagli delle lettere la rendono riconoscibile senza «urlare» (scelta dopo il confronto in «Prove hero Desideri»).
 - **Instrument Serif corsivo** (parole emotive: *desideri*, *sì*, *clienti*): il tocco umano ed elegante dentro la tecnologia.
 - **Inter** (testi): massima leggibilità.
 - **JetBrains Mono** (etichette, numeri dei capitoli, prezzi tecnici): il lato "ingegnere".

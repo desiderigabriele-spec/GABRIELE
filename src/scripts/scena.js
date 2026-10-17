@@ -199,16 +199,16 @@ void main(){
   vLuce = 0.55 + aRand * 0.45 + pulse * 2.0 + spinta * 6.0;
   vCol = mix(colore(i0), colore(i1), t);
   float vis = i0 == 0 ? mix(eVis, 1.0, t) : 1.0;
-  // dove c'è testo le particelle si spengono: la lettura non viene mai disturbata
+  // dietro ai blocchi di testo la luce cala con una sfumatura ampia (velo morbido, nessun contorno)
   vec2 px = vec2((ndc.x * 0.5 + 0.5) * uRis.x, (0.5 - ndc.y * 0.5) * uRis.y);
   float libero = 1.0;
   for (int j = 0; j < 32; j++) {
     if (j >= uNTesto) break;
     vec4 r = uTesto[j];
     float sd = max(max(r.x - px.x, px.x - r.z), max(r.y - px.y, px.y - r.w));
-    libero = min(libero, smoothstep(-4.0, 22.0, sd));
+    libero = min(libero, smoothstep(-40.0, 80.0, sd));
   }
-  vis *= mix(0.06, 1.0, libero);
+  vis *= mix(0.24, 1.0, libero);
   float dim = i0 == 0 ? mix(eSize, 1.0, t) : 1.0;
   vVis = vis;
   gl_PointSize = vis < 0.01 ? 0.0 : uSize * uPR * dim * (0.45 + aRand * 0.9) * (1.0 + pulse * 1.4) / -mv.z;
@@ -436,11 +436,12 @@ export function avviaScena(canvas) {
     const lato = scelta.dataset.lato || 'centro';
     const spost = mobile ? 0 : larghezzaMondo * 0.24;
     obiettivo.forma = Number(scelta.dataset.forma) || 0;
-    obiettivo.x = lato === 'destra' ? spost : lato === 'sinistra' ? -spost : 0;
+    const quanto = Number(scelta.dataset.x) || 1; // data-x: quanto spingere la forma verso il bordo
+    obiettivo.x = (lato === 'destra' ? spost : lato === 'sinistra' ? -spost : 0) * quanto;
     obiettivo.y = (mobile ? Number(scelta.dataset.yMobile) || 0 : Number(scelta.dataset.y) || 0) * altezzaMondo;
     obiettivo.luce = scelta.dataset.luce != null ? Number(scelta.dataset.luce) : 1;
     // su telefono la forma sta dietro al testo: più tenue, per lasciarlo leggibile
-    if (mobile) obiettivo.luce *= scelta.dataset.luceMobile != null ? Number(scelta.dataset.luceMobile) : lato !== 'centro' ? 0.45 : 1;
+    if (mobile) obiettivo.luce *= scelta.dataset.luceMobile != null ? Number(scelta.dataset.luceMobile) : 0.4;
     obiettivo.scala = mobile && scelta.dataset.scalaMobile ? Number(scelta.dataset.scalaMobile) : (Number(scelta.dataset.scala) || 1) * (mobile ? 0.82 : 1);
     if (segnali.sorpresa) {
       // chi sta per andarsene: le particelle tornano occhio, al centro, e lo guardano
@@ -502,29 +503,34 @@ export function avviaScena(canvas) {
     return bersaglio;
   }
 
-  // ---------- Il testo resta pulito ----------
-  // Misuro le righe di testo della pagina: le particelle che ci passano sopra si spengono.
-  const SEL_TESTO = 'main :is(h1, h2, h3, p, li, summary, label, dt, dd, blockquote, output, .btn, .capitolo, .mono, .piano-prezzo, .piano-nome, .pacchetto-tag, .tags span, .certificati span)';
-  const SEL_FISSO = '.site-header .brand, .site-header .nav, .site-header .header-cta, .uscita:not([hidden]) :is(h2, p, .btn, .capitolo), .ritorno.visibile';
+  // ---------- Il testo resta leggibile, senza contorni ----------
+  // Per ogni blocco di testo misuro l'area che le righe occupano davvero (non tutta la colonna).
+  // Dietro a quell'area le particelle si affievoliscono con una sfumatura ampia: nessun ritaglio
+  // attorno alle lettere, solo una luce che cala dove si legge.
+  const SEL_BLOCCHI = 'main :is(.hero-testo, .didascalia, .testa-sezione, .dolore, .svolta, .servizio, .risparmio-pannello, .metodo-fisso, .passo, .lavoro-testo, .chi-testo, .percorso, .piano, .altri-prezzi, .prezzi-nota, .garanzia, .faq details, .finale-testo, .pv-testa, .pv-passi, .pv-passo:not([hidden]), .prosa)';
+  const SEL_FISSO = '.site-header .header-bar, .uscita:not([hidden]) .uscita-box, .ritorno.visibile';
   let righe = [];
+  const rng = document.createRange();
+  function areaTesto(el) {
+    let r = null;
+    const aggiungi = (q) => { if (q.width > 1 && q.height > 1) r = r ? [Math.min(r[0], q.left), Math.min(r[1], q.top), Math.max(r[2], q.right), Math.max(r[3], q.bottom)] : [q.left, q.top, q.right, q.bottom]; };
+    const giro = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    for (let n = giro.nextNode(); n; n = giro.nextNode()) {
+      if (!n.textContent.trim()) continue;
+      rng.selectNodeContents(n);
+      for (const q of rng.getClientRects()) aggiungi(q);
+    }
+    el.querySelectorAll('.btn, input, select, textarea').forEach((b) => aggiungi(b.getBoundingClientRect()));
+    return r;
+  }
   function misuraTesto() {
     righe = [];
     const sy = window.scrollY;
-    const rng = document.createRange();
-    const visti = new Set();
-    for (const el of document.querySelectorAll(SEL_TESTO)) {
-      const r = el.getBoundingClientRect();
-      if (!r.width || !r.height || r.bottom < -H || r.top > H * 2) continue;
-      // i bottoni e le etichette contano per intero, non solo le lettere
-      if (el.matches('.btn, .pacchetto-tag, .tags span, .certificati span')) { righe.push([r.left, r.top + sy, r.right, r.bottom + sy]); continue; }
-      // solo le righe di testo vere (non i blocchi interi, che sono larghi quanto la colonna)
-      const giro = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-      for (let n = giro.nextNode(); n; n = giro.nextNode()) {
-        if (visti.has(n) || !n.textContent.trim()) continue;
-        visti.add(n);
-        rng.selectNodeContents(n);
-        for (const q of rng.getClientRects()) if (q.width > 2 && q.height > 2) righe.push([q.left, q.top + sy, q.right, q.bottom + sy]);
-      }
+    for (const el of document.querySelectorAll(SEL_BLOCCHI)) {
+      const q = el.getBoundingClientRect();
+      if (!q.width || !q.height || q.bottom < -H || q.top > H * 2) continue;
+      const r = areaTesto(el);
+      if (r) righe.push([r[0], r[1] + sy, r[2], r[3] + sy]);
     }
   }
   function unisci(a, b) { return [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.max(a[2], b[2]), Math.max(a[3], b[3])]; }
@@ -535,17 +541,12 @@ export function avviaScena(canvas) {
     // con la finestra di uscita aperta la pagina è spenta: conta solo il testo in primo piano
     if (!html.classList.contains('uscita-aperta')) for (const r of righe) { const t = r[1] - sy, bt = r[3] - sy; if (bt > -20 && t < H + 20) v.push([r[0], t, r[2], bt]); }
     for (const el of document.querySelectorAll(SEL_FISSO)) {
-      const q = el.getBoundingClientRect();
-      if (q.width && q.height && q.bottom > 0 && q.top < H) v.push([q.left, q.top, q.right, q.bottom]);
+      const q = el.matches('.header-bar') ? null : el.getBoundingClientRect();
+      const r = q ? [q.left, q.top, q.right, q.bottom] : areaTesto(el);
+      if (r && r[3] > 0 && r[1] < H) v.push(r);
     }
-    // stessa riga e vicini: un solo rettangolo
     v.sort((a, b) => a[1] - b[1] || a[0] - b[0]);
-    const righeUnite = [];
-    for (const r of v) {
-      const u = righeUnite[righeUnite.length - 1];
-      if (u && Math.min(u[3], r[3]) - Math.max(u[1], r[1]) > (r[3] - r[1]) * 0.5 && r[0] - u[2] < 40 && u[0] - r[2] < 40) righeUnite[righeUnite.length - 1] = unisci(u, r);
-      else righeUnite.push(r);
-    }
+    const righeUnite = v;
     // al massimo 32: unisco le coppie che aggiungono meno area vuota
     while (righeUnite.length > 32) {
       let migliore = 0, costo = Infinity;
@@ -587,7 +588,7 @@ export function avviaScena(canvas) {
     ultimoScroll = sy;
 
     const morbido = (a, b, k) => a + (b - a) * (1 - Math.exp(-k * dt));
-    uniforms.uTime.value = t;
+    uniforms.uTime.value = t * 0.6; // movimenti più lenti: accompagnano senza distrarre
     uniforms.uForma.value = ridotto ? obiettivo.forma : morbido(uniforms.uForma.value, obiettivo.forma, segnali.sorpresa ? 7 : 2.2);
     uniforms.uOpacity.value = morbido(uniforms.uOpacity.value, obiettivo.luce, 2.5);
     uniforms.uVel.value = ridotto ? 0 : THREE.MathUtils.clamp(vel, -1.5, 1.5);
