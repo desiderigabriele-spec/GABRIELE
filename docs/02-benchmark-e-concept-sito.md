@@ -88,6 +88,13 @@ Su telefono l'occhio sta sopra il titolo, a piena luce. Sotto l'occhio c'è la s
 
 **Regola:** i colori freddi servono a capire, quelli caldi ad agire. Il gradiente viola → fuoco è la firma: il passaggio dalla ragione all'emozione, cioè dall'interesse al desiderio.
 
+### Logo
+Direzione **Aggancio**: un occhio che non guarda chi lo osserva, ma un **punto rosso** accanto a sé, lo stimolo che ha catturato la sua attenzione. È il messaggio del brand in un segno: chi cattura l'attenzione vince.
+- Palpebra con il gradiente viola → ciano, iride ambra, pupilla rivolta verso il punto.
+- **Punto rosso** (`--segnale`, `#FF3347`): il colore universale del segnale d'attenzione (spia "REC", diretta, notifiche). Sul sito pulsa piano ogni 2,4 secondi, mai con lampeggi veloci; fermo con "riduci movimento".
+- Nome: «GABRIELE» piccolo e spaziato sopra «desideri» in Bricolage Grotesque.
+- File: `src/assets/marchio.svg` (header e footer), `public/favicon.svg`.
+
 ### Tipografia
 - **Bricolage Grotesque** (titoli): ha personalità ma è compatta e leggibile; i dettagli delle lettere la rendono riconoscibile senza «urlare» (scelta dopo il confronto in «Prove hero Desideri»).
 - **Instrument Serif corsivo** (parole emotive: *desideri*, *sì*, *clienti*): il tocco umano ed elegante dentro la tecnologia.

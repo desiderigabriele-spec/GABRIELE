@@ -19,6 +19,7 @@
   --ciano: #5ce1e6;
   --fuoco: #ff5e3a;
   --ambra: #ffb547;
+  --segnale: #ff3347;
   --caldo: linear-gradient(100deg, var(--fuoco), var(--ambra));
   --firma: linear-gradient(100deg, var(--viola) 0%, #d16bd6 45%, var(--fuoco) 75%, var(--ambra) 100%);
 
@@ -139,8 +140,18 @@ html.intro-fine .intro-punto { animation: intro-esplodi .7s var(--ease) forwards
 .site-header.nascosto { transform: translateY(-100%); }
 .header-bar { display: flex; align-items: center; gap: 2rem; width: 100%; }
 .brand { display: inline-flex; align-items: center; gap: .8rem; text-decoration: none; margin-right: auto; }
-.brand-mark { width: 38px; height: 38px; flex: none; }
-.brand-nome { font-family: var(--f-titolo); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; line-height: 1; display: block; }
+.brand-mark { width: 54px; height: 31px; flex: none; }
+.brand-mark svg { width: 100%; height: 100%; overflow: visible; }
+.brand-testo { display: grid; gap: .12rem; }
+.brand-nome-piccolo { font-family: var(--f-testo); font-weight: 500; font-size: .58rem; letter-spacing: .42em; text-transform: uppercase; line-height: 1; color: var(--latte); }
+.brand-nome { font-family: var(--f-titolo); font-weight: 800; font-size: 1.4rem; letter-spacing: -0.04em; line-height: .9; display: block; }
+/* Il punto rosso del logo: lo stimolo che cattura l'attenzione. Pulsa piano, come la spia "REC". */
+.punto-segnale { transform-box: fill-box; transform-origin: center; animation: segnale 2.4s ease-in-out infinite; }
+@keyframes segnale { 0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 3px rgba(255, 51, 71, .9)); } 50% { opacity: .35; transform: scale(.82); filter: drop-shadow(0 0 0 rgba(255, 51, 71, 0)); } }
+.footer-grid a.brand { color: var(--latte); }
+.footer-grid .brand-mark { width: 74px; height: 42px; }
+.footer-grid .brand-nome { font-size: 1.9rem; }
+.footer-grid .brand-nome-piccolo { font-size: .66rem; }
 .brand-ruolo { display: block; font-family: var(--f-mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--nebbia); margin-top: .3rem; }
 .nav { display: flex; gap: 1.8rem; }
 .nav a { text-decoration: none; font-size: .95rem; color: var(--nebbia); transition: color .2s; position: relative; }
