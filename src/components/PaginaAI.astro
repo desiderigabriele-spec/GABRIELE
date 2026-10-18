@@ -1,0 +1,427 @@
+---
+// L'intelligenza artificiale spiegata a chi non è del settore: cosa fa, esempi per settore, benefici,
+// programma su misura, come lavoriamo, paure comuni. Italiano (/intelligenza-artificiale) e inglese (/en/ai).
+import Base from '../layouts/Base.astro';
+import Icona from './Icona.astro';
+import Occhio from './Occhio.astro';
+import { dati } from '../i18n/dati.js';
+import { url } from '../i18n/ui.js';
+import { euro } from '../data/formato.js';
+import '../styles/ai.css';
+
+interface Props { lang?: 'it' | 'en' }
+const { lang = 'it' } = Astro.props;
+const it = lang === 'it';
+const T = (a: string, b: string) => (it ? a : b);
+const { categorie, contatti, voucher } = dati(lang);
+const eur = (n: number) => euro(n, lang);
+const preventivo = url('preventivo', lang);
+const prezzo = (cat: string, liv: string) => categorie.find((c) => c.id === cat)!.livelli.find((l) => l.id === liv)!;
+const pCollegamento = prezzo('integrazioni', 'singola');
+const pAssistente = prezzo('software', 'assistente');
+const pMisura = prezzo('software', 'misura');
+
+// Esempi per settore: com'è oggi e come diventa
+const settori = it ? [
+  { id: 'professionista', nome: 'Professionisti', esempi: [
+    ['Appuntamenti', 'Rispondi ai messaggi la sera, dopo il lavoro, per fissare gli orari.', 'Il paziente scrive su WhatsApp alle 23: l’assistente risponde, propone gli orari liberi e segna l’appuntamento in agenda.'],
+    ['Documenti lunghi', 'Leggi 40 pagine per trovare scadenze e punti importanti.', 'Carichi il documento e in un minuto hai il riassunto, con scadenze e punti da controllare.'],
+    ['Promemoria', 'Telefoni per ricordare appuntamenti e pagamenti.', 'I promemoria partono da soli, con il messaggio giusto per ogni persona.'],
+  ] },
+  { id: 'artigiano', nome: 'Artigiani e servizi', esempi: [
+    ['Preventivi', 'La sera scrivi i preventivi a mano, uno per uno.', 'Il cliente manda foto e misure: l’AI prepara la bozza con i tuoi prezzi. Tu la controlli e la mandi.'],
+    ['Chiamate perse', 'Sei sul lavoro, non rispondi, e il cliente chiama un altro.', 'Se non rispondi, il cliente riceve subito un messaggio che gli chiede indirizzo e problema. Lo richiami con tutto pronto.'],
+    ['Spese e bolle', 'Ricopi a mano le bolle dei fornitori nel foglio delle spese.', 'Fotografi la bolla: i dati finiscono da soli nel foglio, già ordinati.'],
+  ] },
+  { id: 'immobiliare', nome: 'Immobiliare', esempi: [
+    ['Annunci', 'Scrivi a mano l’annuncio per ogni portale e per i social.', 'Inserisci le caratteristiche della casa: l’AI scrive l’annuncio per i portali, il post e il testo per WhatsApp.'],
+    ['Richieste di informazioni', 'Rispondi a tutti allo stesso modo, anche a chi non comprerà mai.', 'Chi chiede informazioni riceve risposta subito, e l’AI ti dice chi è pronto: budget, zona e tempi.'],
+    ['Ricontatti', 'Dimentichi di richiamare chi aveva detto «ci penso».', 'Ogni mattina sai chi richiamare, con il messaggio già pronto per ognuno.'],
+  ] },
+  { id: 'negozio', nome: 'Negozi ed e-commerce', esempi: [
+    ['Schede prodotto', 'Un mese per scrivere le descrizioni di 100 prodotti.', '100 schede prodotto scritte in un pomeriggio, nel tuo stile. Tu le rileggi.'],
+    ['Domande dei clienti', '«Dov’è il mio ordine?» Rispondi sempre alle stesse domande.', 'L’assistente risponde da solo, giorno e notte, e passa a te solo i casi difficili.'],
+    ['Magazzino', 'Ti accorgi che un prodotto è finito quando un cliente lo chiede.', 'Ti avvisa prima che finisca e prepara l’ordine per il fornitore.'],
+  ] },
+  { id: 'azienda', nome: 'Aziende', esempi: [
+    ['Email in arrivo', 'Una persona passa la mattina a leggere e smistare le email.', 'Le email vengono lette, mandate al collega giusto e arrivano con una bozza di risposta.'],
+    ['Domande interne', 'Il nuovo collega chiede sempre a te listini, sconti e procedure.', 'Chiede all’assistente aziendale, che risponde leggendo i tuoi listini e documenti.'],
+    ['Riepiloghi', 'A fine settimana metti insieme i numeri da 4 file diversi.', 'Ogni lunedì arriva da solo il riepilogo di vendite e problemi, in parole semplici.'],
+  ] },
+] : [
+  { id: 'professionista', nome: 'Professionals', esempi: [
+    ['Appointments', 'You answer messages in the evening, after work, to set times.', 'A patient writes on WhatsApp at 11pm: the assistant replies, offers free slots and books the appointment in your calendar.'],
+    ['Long documents', 'You read 40 pages to find deadlines and key points.', 'You upload the document and in one minute you get a summary with deadlines and points to check.'],
+    ['Reminders', 'You phone people to remind them of appointments and payments.', 'Reminders go out on their own, with the right message for each person.'],
+  ] },
+  { id: 'artigiano', nome: 'Trades and services', esempi: [
+    ['Quotes', 'In the evening you write quotes by hand, one by one.', 'The customer sends photos and measurements: AI drafts the quote with your prices. You check it and send it.'],
+    ['Missed calls', 'You are on a job, you miss the call and the customer phones someone else.', 'If you can’t answer, the customer instantly gets a message asking for address and problem. You call back with everything ready.'],
+    ['Receipts', 'You copy supplier delivery notes into your expenses sheet by hand.', 'You take a photo of the note: the data goes into the sheet on its own, already sorted.'],
+  ] },
+  { id: 'immobiliare', nome: 'Real estate', esempi: [
+    ['Listings', 'You write each listing by hand for every portal and social network.', 'Enter the property details: AI writes the portal listing, the post and the WhatsApp text.'],
+    ['Enquiries', 'You answer everyone the same way, even people who will never buy.', 'Every enquiry gets an instant reply, and AI tells you who is ready: budget, area and timing.'],
+    ['Follow-ups', 'You forget to call back people who said "I’ll think about it".', 'Every morning you know who to call, with the message already written for each one.'],
+  ] },
+  { id: 'negozio', nome: 'Shops and e-commerce', esempi: [
+    ['Product pages', 'A month to write descriptions for 100 products.', '100 product pages written in an afternoon, in your style. You read them through.'],
+    ['Customer questions', '"Where is my order?" You keep answering the same questions.', 'The assistant answers on its own, day and night, and passes only the tricky cases to you.'],
+    ['Stock', 'You notice a product has run out when a customer asks for it.', 'It warns you before it runs out and prepares the order for the supplier.'],
+  ] },
+  { id: 'azienda', nome: 'Companies', esempi: [
+    ['Incoming email', 'Someone spends the morning reading and forwarding emails.', 'Emails are read, sent to the right colleague and arrive with a draft reply.'],
+    ['Internal questions', 'New colleagues always ask you about price lists, discounts and procedures.', 'They ask the company assistant, which answers by reading your price lists and documents.'],
+    ['Summaries', 'At the end of the week you pull numbers together from 4 different files.', 'Every Monday a plain-language summary of sales and issues arrives on its own.'],
+  ] },
+];
+
+const benefici = it ? [
+  ['tempi', 'Ore di lavoro restituite', 'Ogni settimana le ore passate a copiare, rispondere e cercare tornano a te e al tuo team.'],
+  ['sguardo', 'Clienti serviti subito', 'Una risposta in pochi secondi, anche di sera e nel weekend. Chi risponde per primo spesso vince il cliente.'],
+  ['scudo', 'Meno errori', 'Niente copia e incolla tra un programma e l’altro: i dati passano da soli, uguali ogni volta.'],
+  ['onda', 'Cresci senza assumere subito', 'Gestisci più richieste con le stesse persone. Assumi quando serve davvero, non per fare lavoro ripetitivo.'],
+] : [
+  ['tempi', 'Working hours given back', 'Every week, the hours spent copying, replying and searching come back to you and your team.'],
+  ['sguardo', 'Customers served instantly', 'A reply in seconds, even in the evening and at weekends. Whoever answers first often wins the customer.'],
+  ['scudo', 'Fewer mistakes', 'No copy and paste between programs: data moves on its own, the same way every time.'],
+  ['onda', 'Grow without hiring right away', 'Handle more requests with the same people. Hire when you really need to, not for repetitive work.'],
+];
+
+const passi = it ? [
+  ['Diagnosi', '90 minuti insieme', 'Guardiamo le attività che ti rubano più tempo e scegliamo da dove partire. Se poi fai il progetto, la diagnosi è gratis.'],
+  ['Prima versione', 'in 2-3 settimane', 'Parto da una cosa sola, quella che fa risparmiare di più. La provi subito sul lavoro vero.'],
+  ['Prova e ritocchi', 'con il tuo team', 'Lo usi qualche giorno, mi dici cosa cambiare e lo sistemo. Spiego a tutti come si usa.'],
+  ['Sempre seguito', 'ogni mese', 'Controllo che funzioni, lo aggiorno e ti propongo il prossimo lavoro da toglierti di dosso.'],
+] : [
+  ['Diagnosis', '90 minutes together', 'We look at the tasks that steal the most time and choose where to start. If you go ahead with the project, it’s free.'],
+  ['First version', 'in 2-3 weeks', 'I start with one thing only, the one that saves the most. You try it straight away on real work.'],
+  ['Test and tweaks', 'with your team', 'You use it for a few days, tell me what to change and I fix it. I show everyone how to use it.'],
+  ['Ongoing support', 'every month', 'I check it works, keep it updated and suggest the next job to take off your plate.'],
+];
+
+const paure = it ? [
+  ['Devo cambiare i programmi che uso?', 'No. L’AI si collega a quelli che hai già: email, WhatsApp, Excel o Fogli Google, il tuo programma di fatture o il gestionale.'],
+  ['E se l’AI sbaglia?', 'Per le cose importanti decide sempre una persona. L’AI prepara il lavoro, tu lo controlli e lo approvi con un clic.'],
+  ['I miei dati sono al sicuro?', 'Uso servizi in versione professionale, che non usano i tuoi dati per allenare l’AI. Gli accessi sono protetti e i dati restano tuoi.'],
+  ['Sostituisce i miei collaboratori?', 'No. Toglie i lavori noiosi e ripetitivi, così le persone fanno quello che sa fare solo una persona: parlare con i clienti, decidere, creare.'],
+  ['Serve essere bravi con il computer?', 'Se sai usare WhatsApp, sai usarlo. E insegno io a te e al team come funziona.'],
+  ['E se non mi serve?', 'Te lo dico. Partiamo sempre dalla diagnosi: se l’AI non ti fa risparmiare tempo o soldi, non te la vendo.'],
+] : [
+  ['Do I have to change the programs I use?', 'No. AI connects to what you already have: email, WhatsApp, Excel or Google Sheets, your invoicing or management software.'],
+  ['What if the AI makes a mistake?', 'For important things a person always decides. AI prepares the work, you check it and approve it with one click.'],
+  ['Is my data safe?', 'I use professional versions of these services, which don’t use your data to train AI. Access is protected and your data stays yours.'],
+  ['Will it replace my staff?', 'No. It removes the boring, repetitive work, so people do what only a person can: talk to customers, decide, create.'],
+  ['Do I need to be good with computers?', 'If you can use WhatsApp, you can use this. And I teach you and your team how it works.'],
+  ['What if I don’t need it?', 'I’ll tell you. We always start with the diagnosis: if AI won’t save you time or money, I won’t sell it to you.'],
+];
+
+// L'esempio animato: una richiesta vera di un cliente, come la leggerebbe l'AI
+const demo = it ? {
+  da: 'Laura Bianchi', ora: '22:47', oggetto: 'Preventivo bagno',
+  testo: 'Buonasera, vorrei rifare il bagno di casa: circa 6 metri quadri, con doccia al posto della vasca. Abito a Monza. Si potrebbe iniziare a marzo? Grazie, Laura',
+  campi: [['Cliente', 'Laura Bianchi'], ['Lavoro', 'Rifare il bagno, doccia al posto della vasca'], ['Misure', '6 m²'], ['Zona', 'Monza'], ['Quando', 'Marzo']],
+  risposta: 'Buonasera Laura, grazie per averci scritto. Per un bagno di 6 m² con doccia al posto della vasca, a Monza, la spesa indicativa è tra 7.500 e 9.000 €. Possiamo passare a vedere il bagno giovedì alle 18 o sabato mattina: quale preferisce?',
+} : {
+  da: 'Laura Bianchi', ora: '10:47 pm', oggetto: 'Bathroom quote',
+  testo: 'Good evening, I would like to redo my bathroom: about 6 square metres, with a shower instead of the bath. I live in Monza. Could we start in March? Thanks, Laura',
+  campi: [['Customer', 'Laura Bianchi'], ['Job', 'Redo bathroom, shower instead of bath'], ['Size', '6 m²'], ['Area', 'Monza'], ['When', 'March']],
+  risposta: 'Good evening Laura, thank you for getting in touch. For a 6 m² bathroom with a shower instead of the bath, in Monza, the indicative cost is between €7,500 and €9,000. We can come and see it on Thursday at 6pm or Saturday morning: which suits you?',
+};
+---
+<Base
+  lang={lang}
+  path={url('ai', lang)}
+  alt={url('ai', it ? 'en' : 'it')}
+  title={T('Intelligenza artificiale per aziende, spiegata semplice · Studio Desideri', 'AI for business, in plain words · Studio Desideri')}
+  description={T(
+    'Cosa può fare l’intelligenza artificiale nella tua attività, con esempi concreti: preventivi, email, appuntamenti, documenti. Senza termini tecnici. Milano, Italia e Svizzera.',
+    'What AI can do for your business, with real examples: quotes, emails, appointments, documents. No jargon. Milan, Italy and Switzerland.',
+  )}
+>
+  <!-- Cos'è, in una frase -->
+  <section class="hero ai-hero" data-forma="1" data-lato="destra" data-x="1.05" data-scala="0.8" data-y-mobile="0.22" data-scala-mobile="0.55" data-luce-mobile="0.7">
+    <div class="wrap">
+      <div class="hero-testo">
+        <div class="hero-spazio-occhio" aria-hidden="true"></div>
+        <span class="icona-titolo"><Icona nome="chip" /></span>
+        <span class="capitolo" data-appare>{T('Intelligenza artificiale per aziende', 'AI for business')}</span>
+        {it ? (
+          <h1 data-righe>
+            <span class="riga"><span>Il collaboratore</span></span>
+            <span class="riga"><span>che fa i lavori</span></span>
+            <span class="riga"><span><span class="em em-firma">noiosi al posto tuo.</span></span></span>
+          </h1>
+        ) : (
+          <h1 data-righe>
+            <span class="riga"><span>The colleague</span></span>
+            <span class="riga"><span>who does the</span></span>
+            <span class="riga"><span><span class="em em-firma">boring work for you.</span></span></span>
+          </h1>
+        )}
+        <p class="lead" data-appare="0.25">{T(
+          'Risponde ai clienti, prepara preventivi, legge documenti e sposta i dati da un programma all’altro. Lavora dentro gli strumenti che usi già, giorno e notte. Tu controlli, lui esegue.',
+          'It answers customers, drafts quotes, reads documents and moves data from one program to another. It works inside the tools you already use, day and night. You check, it does the work.',
+        )}</p>
+        <div class="hero-azioni" data-appare="0.4">
+          <a class="btn btn-azione btn-grande" href="#esempio" data-sguardo-meta>{T('Guardalo al lavoro', 'See it at work')} <span class="freccia" aria-hidden="true">↓</span></a>
+          <a class="btn btn-vetro btn-grande" href={`${preventivo}?s=software`}>{T('Calcola quanto costa', 'See what it costs')}</a>
+        </div>
+        <ul class="rassicura" data-appare="0.55">
+          <li>{T('Niente termini tecnici', 'No jargon')}</li>
+          <li>{T('Si collega ai programmi che hai', 'Works with the programs you have')}</li>
+          <li>{T('Decidi sempre tu', 'You always decide')}</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guardalo al lavoro -->
+  <section class="sezione" id="esempio" data-forma="1" data-lato="sinistra" data-luce="0.35" data-scala="0.7">
+    <div class="wrap">
+      <div class="testa-sezione">
+        <span class="capitolo" data-appare>{T('Guardalo al lavoro', 'See it at work')}</span>
+        <h2 data-righe>
+          <span class="riga"><span>{T('Una richiesta alle 22:47.', 'An enquiry at 10:47 pm.')}</span></span>
+          <span class="riga"><span><span class="em">{T('La risposta è già pronta.', 'The reply is already written.')}</span></span></span>
+        </h2>
+        <p class="lead" data-appare>{T(
+          'Un esempio per un’impresa che ristruttura bagni. Lo stesso funziona per i tuoi clienti, i tuoi prezzi e i tuoi programmi.',
+          'An example for a bathroom renovation business. The same works with your customers, your prices and your programs.',
+        )}</p>
+      </div>
+      <div class="demo-ai" data-demo-ai>
+        <div class="demo-colonna">
+          <span class="demo-etichetta"><b>1</b>{T('Arriva la richiesta', 'The enquiry arrives')}</span>
+          <article class="demo-email">
+            <header><strong>{demo.da}</strong><span>{demo.ora}</span></header>
+            <p class="demo-oggetto">{demo.oggetto}</p>
+            <p class="demo-testo" data-demo-testo>{demo.testo}</p>
+          </article>
+        </div>
+        <div class="demo-colonna">
+          <span class="demo-etichetta"><b>2</b>{T('L’AI capisce cosa serve', 'AI works out what’s needed')}</span>
+          <dl class="demo-campi">
+            {demo.campi.map(([k, v]) => <div data-demo-campo><dt>{k}</dt><dd>{v}</dd></div>)}
+          </dl>
+          <p class="demo-nota" data-demo-campo>{T('Salvato da solo nella tua lista clienti', 'Saved automatically to your customer list')}</p>
+        </div>
+        <div class="demo-colonna">
+          <span class="demo-etichetta"><b>3</b>{T('Prepara la risposta', 'It drafts the reply')}</span>
+          <article class="demo-email demo-risposta">
+            <p class="demo-testo" data-demo-risposta data-testo={demo.risposta}>{demo.risposta}</p>
+          </article>
+          <div class="demo-azioni" data-demo-fine>
+            <span class="demo-tu"><Occhio espressione="ok" /> {T('Tu controlli e premi «Invia»', 'You check it and press "Send"')}</span>
+            <button class="btn btn-vetro btn-piccolo" type="button" data-demo-ripeti>{T('Guarda di nuovo', 'Watch again')}</button>
+          </div>
+        </div>
+      </div>
+      <p class="demo-avviso">{T('Esempio dimostrativo: nomi e prezzi sono inventati.', 'Demonstration example: names and prices are made up.')}</p>
+    </div>
+  </section>
+
+  <!-- Esempi per settore -->
+  <section class="sezione" id="esempi" data-forma="1" data-lato="destra" data-y="0.2" data-luce="0.3" data-scala="0.7">
+    <div class="wrap">
+      <div class="testa-sezione">
+        <span class="capitolo" data-appare>{T('Nella tua attività', 'In your business')}</span>
+        <h2 data-righe>
+          <span class="riga"><span>{T('Com’è oggi,', 'How it is today,')}</span></span>
+          <span class="riga"><span><span class="em">{T('come diventa.', 'how it could be.')}</span></span></span>
+        </h2>
+      </div>
+      <div class="settori" role="tablist" aria-label={T('Scegli il tuo settore', 'Choose your sector')} data-settori>
+        {settori.map((s, i) => <button type="button" role="tab" id={`tab-${s.id}`} aria-controls={`pannello-${s.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-settore-tab={s.id}>{s.nome}</button>)}
+      </div>
+      {settori.map((s, i) => (
+        <div class="pannello" role="tabpanel" id={`pannello-${s.id}`} aria-labelledby={`tab-${s.id}`} data-settore-pannello={s.id} hidden={i !== 0}>
+          {s.esempi.map(([titolo, prima, dopo]) => (
+            <article class="card prima-dopo">
+              <h3>{titolo}</h3>
+              <div class="pd-riga pd-prima"><span class="mono">{T('Oggi', 'Today')}</span><p>{prima}</p></div>
+              <div class="pd-riga pd-dopo"><span class="mono">{T('Con l’AI', 'With AI')}</span><p>{dopo}</p></div>
+            </article>
+          ))}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Benefici -->
+  <section class="sezione" id="benefici" data-forma="2" data-lato="destra" data-luce="0.3" data-scala="0.8">
+    <div class="wrap">
+      <div class="testa-sezione">
+        <span class="capitolo" data-appare>{T('Cosa ci guadagni', 'What you gain')}</span>
+        <h2 data-righe><span class="riga"><span>{T('Quattro vantaggi', 'Four benefits')} <span class="em">{T('che si vedono.', 'you can see.')}</span></span></span></h2>
+      </div>
+      <div class="benefici" data-sequenza>
+        {benefici.map(([icona, titolo, testo]) => (
+          <article class="card beneficio">
+            <span class="garanzia-icona"><Icona nome={icona} /></span>
+            <h3>{titolo}</h3>
+            <p>{testo}</p>
+          </article>
+        ))}
+      </div>
+      <p class="ai-rimando" data-appare>
+        <a class="link-freccia" href={`${url('home', lang)}#risparmio`}>{T('Calcola quante ore ti restituisce in un anno', 'Work out how many hours it gives back in a year')} <span class="freccia" aria-hidden="true">→</span></a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Il programma su misura -->
+  <section class="sezione" id="su-misura" data-forma="2" data-lato="sinistra" data-luce="0.3" data-scala="0.8">
+    <div class="wrap su-misura">
+      <div class="testa-sezione" style="margin-bottom:0">
+        <span class="capitolo" data-appare>{T('Il programma su misura', 'Your own software')}</span>
+        <h2 data-righe>
+          <span class="riga"><span>{T('Tutta l’azienda', 'Your whole business')}</span></span>
+          <span class="riga"><span><span class="em">{T('in una schermata.', 'on one screen.')}</span></span></span>
+        </h2>
+        <p class="lead" data-appare>{T(
+          'Molte aziende usano cinque programmi diversi e passano i dati a mano tra Excel, email e gestionale. Creo un programma interno tutto tuo: entri e vedi clienti, preventivi, ordini e scadenze insieme. L’AI lavora dentro: compila, avvisa, suggerisce.',
+          'Many businesses use five different programs and move data by hand between Excel, email and other software. I build an internal program that’s all yours: open it and see customers, quotes, orders and deadlines together. AI works inside it: it fills in, warns and suggests.',
+        )}</p>
+        <ul class="lista-check" data-appare>
+          <li>{T('Si apre dal computer e dal telefono', 'Opens on computer and phone')}</li>
+          <li>{T('Solo le funzioni che ti servono, niente pulsanti inutili', 'Only the features you need, no useless buttons')}</li>
+          <li>{T('Accessi diversi per te e per i collaboratori', 'Different access for you and your staff')}</li>
+          <li>{T('I dati restano tuoi, sempre', 'Your data stays yours, always')}</li>
+        </ul>
+      </div>
+      <div class="cruscotto" aria-label={T('Esempio di schermata', 'Example screen')} data-appare>
+        <div class="cr-testa"><span class="cr-pallini" aria-hidden="true"><i></i><i></i><i></i></span><strong>{T('Buongiorno, Marco', 'Good morning, Marco')}</strong><span class="mono">{T('lunedì', 'Monday')}</span></div>
+        <div class="cr-griglia">
+          <div class="cr-scheda cr-calda"><span class="mono">{T('Da approvare', 'To approve')}</span><strong>3</strong><span>{T('preventivi preparati dall’AI', 'quotes drafted by AI')}</span></div>
+          <div class="cr-scheda"><span class="mono">{T('Da richiamare', 'To call back')}</span><strong>2</strong><span>{T('clienti pronti a decidere', 'customers ready to decide')}</span></div>
+          <div class="cr-scheda"><span class="mono">{T('In scadenza', 'Due soon')}</span><strong>{eur(1240)}</strong><span>{T('fatture da incassare', 'invoices to collect')}</span></div>
+          <div class="cr-scheda"><span class="mono">{T('Risparmiato', 'Saved')}</span><strong>{T('11 ore', '11 hours')}</strong><span>{T('questa settimana', 'this week')}</span></div>
+        </div>
+        <div class="cr-avviso"><Occhio espressione="curioso" /><p>{T('Il cliente Rossi ha chiesto un preventivo ieri sera: la bozza è pronta, manca solo il tuo ok.', 'Mr Rossi asked for a quote last night: the draft is ready, it just needs your OK.')}</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Come lavoriamo -->
+  <section class="sezione" id="come" data-forma="3" data-luce="0.2" data-scala="1.2">
+    <div class="wrap">
+      <div class="testa-sezione">
+        <span class="capitolo" data-appare>{T('Come lavoriamo', 'How we work')}</span>
+        <h2 data-righe><span class="riga"><span>{T('Si parte piccoli,', 'Start small,')} <span class="em">{T('si cresce dopo.', 'grow later.')}</span></span></span></h2>
+      </div>
+      <ol class="passi-ai" data-sequenza>
+        {passi.map(([titolo, quando, testo], i) => (
+          <li class="card">
+            <span class="passo-ai-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{titolo}</h3>
+            <span class="mono">{quando}</span>
+            <p>{testo}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Paure comuni -->
+  <section class="sezione" id="dubbi" data-forma="3" data-luce="0.12" data-scala="1.4">
+    <div class="wrap">
+      <div class="testa-sezione centro">
+        <span class="capitolo" data-appare>{T('I dubbi di tutti', 'Everyone’s doubts')}</span>
+        <h2 data-righe><span class="riga"><span>{T('Le domande', 'The questions')} <span class="em">{T('che mi fanno sempre.', 'I always get.')}</span></span></span></h2>
+      </div>
+      <div class="faq">
+        {paure.map(([d, r]) => (
+          <details>
+            <summary>{d}<span class="piu" aria-hidden="true"></span></summary>
+            <p class="risposta">{r}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Prezzi e invito -->
+  <section class="sezione finale" id="azione" data-forma="4" data-luce="0.7" data-luce-mobile="0.45" data-scala="1.15">
+    <div class="wrap finale-testo">
+      <span class="capitolo" data-appare>{T('Quanto costa', 'What it costs')}</span>
+      <h2 data-righe>
+        <span class="riga"><span>{T('Il primo lavoro', 'The first job')}</span></span>
+        <span class="riga"><span>{T('che ti togli', 'off your')}</span></span>
+        <span class="riga"><span class="em em-firma">{T('di dosso.', 'plate.')}</span></span>
+      </h2>
+      <div class="altri-prezzi prezzi-ai" data-appare>
+        <div><span>{T('Un collegamento tra due programmi', 'One connection between two programs')}</span><strong>{T('da', 'from')} {eur(pCollegamento.una!)}</strong></div>
+        <div><span>{T('Un assistente per i clienti', 'A customer assistant')}</span><strong><span class="intero">{T('da', 'from')} {eur(pAssistente.una!)}</span> <span class="intero">+ {eur(pAssistente.mese!)}{T('/mese', '/month')}</span></strong></div>
+        <div><span>{T('Un programma interno su misura', 'A custom internal program')}</span><strong>{T('da', 'from')} {eur(pMisura.una!)}</strong></div>
+      </div>
+      <p class="lead" data-appare>{T(
+        `In Lombardia il Voucher Doppia Transizione può coprire fino al ${voucher.percentuale * 100}% dei progetti con AI da almeno ${eur(voucher.soglia)}. Verifichiamo insieme se è ancora disponibile.`,
+        `In Lombardy the "Doppia Transizione" voucher can cover up to ${voucher.percentuale * 100}% of AI projects from ${eur(voucher.soglia)}. We check together whether it’s still available.`,
+      )}</p>
+      <div class="hero-azioni" data-appare style="justify-content:center">
+        <a class="btn btn-azione btn-grande" href={`${preventivo}?s=software`} data-azione>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
+        <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener" data-wa>{T('Dimmi cosa ti fa perdere tempo', 'Tell me what wastes your time')}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { leggiProfilo } from '../scripts/profilo.js';
+  const ridotto = document.documentElement.classList.contains('ridotto');
+
+  // ---------- Esempi per settore: schede, frecce da tastiera, settore scelto nel benvenuto ----------
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-settore-tab]')];
+  const pannelli = [...document.querySelectorAll<HTMLElement>('[data-settore-pannello]')];
+  function scegli(id: string, focus = false) {
+    tabs.forEach((t) => {
+      const on = t.dataset.settoreTab === id;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      if (on && focus) t.focus();
+    });
+    pannelli.forEach((p) => { p.hidden = p.dataset.settorePannello !== id; });
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => scegli(t.dataset.settoreTab!));
+    t.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const j = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+      scegli(tabs[j].dataset.settoreTab!, true);
+    });
+  });
+  const settore = leggiProfilo().settore;
+  if (settore && tabs.some((t) => t.dataset.settoreTab === settore)) scegli(settore);
+
+  // ---------- L'esempio animato: legge, capisce, scrive ----------
+  const demo = document.querySelector<HTMLElement>('[data-demo-ai]');
+  if (demo) {
+    const campi = [...demo.querySelectorAll<HTMLElement>('[data-demo-campo]')];
+    const risposta = demo.querySelector<HTMLElement>('[data-demo-risposta]')!;
+    const testoRisposta = risposta.dataset.testo || '';
+    const fine = demo.querySelector<HTMLElement>('[data-demo-fine]')!;
+    const email = demo.querySelector<HTMLElement>('[data-demo-testo]')!;
+    let timer: number[] = [];
+    const dopo = (ms: number, f: () => void) => timer.push(window.setTimeout(f, ms));
+    function avvia() {
+      timer.forEach(clearTimeout); timer = [];
+      demo!.classList.remove('fatto');
+      if (ridotto) { demo!.classList.add('fatto'); campi.forEach((c) => c.classList.add('visto')); risposta.textContent = testoRisposta; fine.classList.add('visto'); return; }
+      campi.forEach((c) => c.classList.remove('visto'));
+      fine.classList.remove('visto');
+      risposta.textContent = '';
+      email.classList.add('lettura');
+      dopo(1400, () => email.classList.remove('lettura'));
+      campi.forEach((c, i) => dopo(1500 + i * 380, () => c.classList.add('visto')));
+      const parole = testoRisposta.split(' ');
+      const inizio = 1500 + campi.length * 380 + 300;
+      parole.forEach((_, i) => dopo(inizio + i * 70, () => { risposta.textContent = parole.slice(0, i + 1).join(' '); }));
+      dopo(inizio + parole.length * 70 + 300, () => { fine.classList.add('visto'); demo!.classList.add('fatto'); });
+    }
+    demo.querySelector('[data-demo-ripeti]')!.addEventListener('click', avvia);
+    // parte quando l'esempio entra nello schermo
+    const io = new IntersectionObserver((v) => { if (v.some((x) => x.isIntersecting)) { avvia(); io.disconnect(); } }, { threshold: 0.35 });
+    io.observe(demo);
+  }
+</script>

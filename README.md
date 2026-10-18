@@ -24,6 +24,7 @@ Stack: Astro (statico) · three.js (shader scritti a mano) · GSAP + ScrollTrigg
 | Home (italiano e inglese) | `src/components/Home.astro` · pagine `src/pages/index.astro`, `src/pages/en/index.astro` |
 | Testi in inglese | interfaccia `src/i18n/ui.js` · dati (servizi, listino, FAQ) `src/data/en.js` |
 | Benvenuto e personalizzazione (nome, settore, colore) | `src/scripts/benvenuto.js` · `src/scripts/profilo.js` |
+| Pagina «AI per aziende» (spiegata semplice) | `src/components/PaginaAI.astro` (pagine `/intelligenza-artificiale`, `/en/ai`) · `src/styles/ai.css` |
 | Preventivo automatico | `src/components/Preventivo.astro` (pagine `/preventivo`, `/en/quote`) · `src/scripts/preventivo.js` · `src/styles/preventivo.css` |
 | Scena 3D a particelle | `src/scripts/scena.js` (forma per sezione: attributo `data-forma` 0-4, `data-lato`, `data-luce`, `data-scala`) |
 | Colori, temi (blu, rosso, viola, verde), tipografia, componenti | `src/styles/global.css` |

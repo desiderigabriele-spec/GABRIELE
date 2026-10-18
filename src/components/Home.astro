@@ -270,7 +270,9 @@ const jsonLd = {
             </div>
             <div class="servizio-piede">
               <span class="prezzo-da">{T('A partire da', 'Starting from')}<strong>{eur(s.da)}{s.mese && <small> {mese}</small>}</strong></span>
-              <a class="link-freccia" href={`${preventivo}?s=${s.id}`}>{T('Aggiungi', 'Add')} <span class="freccia" aria-hidden="true">→</span></a>
+              {s.id === 'software' || s.id === 'integrazioni'
+                ? <a class="link-freccia" href={url('ai', lang)}>{T('Come funziona', 'How it works')} <span class="freccia" aria-hidden="true">→</span></a>
+                : <a class="link-freccia" href={`${preventivo}?s=${s.id}`}>{T('Aggiungi', 'Add')} <span class="freccia" aria-hidden="true">→</span></a>}
             </div>
           </article>
         ))}
@@ -321,6 +323,7 @@ const jsonLd = {
           <div class="risultato caldo"><strong data-ris="euro">{eur(16550)}</strong><span>{T('di lavoro risparmiato ogni anno', 'of work saved every year')}</span></div>
         </div>
         <a class="btn btn-azione" href={`${preventivo}?s=software`} data-azione>{T('Voglio recuperare questo tempo', 'I want this time back')} <span class="freccia" aria-hidden="true">→</span></a>
+        <a class="link-freccia" href={url('ai', lang)}>{T("Cosa può fare l'AI nella tua attività, spiegato semplice", 'What AI can do for your business, in plain words')} <span class="freccia" aria-hidden="true">→</span></a>
         <p class="nota">{T(
           'Stima prudente: calcolo 46 settimane lavorative e considero automatizzabile il 60% di quelle ore. Il numero vero lo misuriamo insieme nella Diagnosi AI.',
           'A cautious estimate: I count 46 working weeks and assume 60% of those hours can be automated. We measure the real number together in the AI diagnosis.',

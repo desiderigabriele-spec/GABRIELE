@@ -6,6 +6,7 @@ const PERCORSI = {
   home: { it: '/', en: '/en' },
   preventivo: { it: '/preventivo', en: '/en/quote' },
   privacy: { it: '/privacy', en: '/en/privacy' },
+  ai: { it: '/intelligenza-artificiale', en: '/en/ai' },
 };
 export const url = (pagina, lang = 'it') => (PERCORSI[pagina] || PERCORSI.home)[lang];
 
@@ -15,7 +16,7 @@ export const tr = (o, lang) => (lang === 'en' && o && o.en ? { ...o, ...o.en } :
 export const ui = {
   it: {
     lang: 'it', locale: 'it_IT', vaiContenuto: 'Vai al contenuto', menu: 'Menu',
-    nav: [['servizi', 'Servizi'], ['metodo', 'Metodo'], ['lavori', 'Lavori'], ['prezzi', 'Prezzi'], ['chi-sono', 'Chi sono']],
+    nav: [['servizi', 'Servizi'], ['@ai', 'AI per aziende'], ['metodo', 'Metodo'], ['lavori', 'Lavori'], ['prezzi', 'Prezzi'], ['chi-sono', 'Chi sono']],
     navEtichetta: 'Principale', home: 'Studio Desideri, home', tagline: 'Dal primo sguardo al sì', ruolo: 'Siti web · AI · Pubblicità',
     ctaPreventivo: 'Calcola il preventivo', whatsapp: 'Scrivimi su WhatsApp', personalizza: 'Personalizza',
     zona: 'Milano, Italia e Svizzera',
@@ -35,7 +36,7 @@ export const ui = {
   },
   en: {
     lang: 'en', locale: 'en_GB', vaiContenuto: 'Skip to content', menu: 'Menu',
-    nav: [['servizi', 'Services'], ['metodo', 'Method'], ['lavori', 'Work'], ['prezzi', 'Pricing'], ['chi-sono', 'About']],
+    nav: [['servizi', 'Services'], ['@ai', 'AI for business'], ['metodo', 'Method'], ['lavori', 'Work'], ['prezzi', 'Pricing'], ['chi-sono', 'About']],
     navEtichetta: 'Main', home: 'Studio Desideri, home', tagline: 'From first glance to yes', ruolo: 'Websites · AI · Advertising',
     ctaPreventivo: 'Get a quote', whatsapp: 'Message me on WhatsApp', personalizza: 'Personalise',
     zona: 'Milan · Italy and Switzerland',

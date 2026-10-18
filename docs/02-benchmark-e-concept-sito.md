@@ -157,6 +157,7 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
 ```
 /                 Home: il percorso in 5 capitoli
 /preventivo       Componi il tuo progetto (preventivo automatico)
+/intelligenza-artificiale   L'AI per aziende spiegata semplice (in inglese /en/ai)
 /privacy          Privacy e cookie
 /404              Pagina non trovata (anche lei con le particelle)
 ```
@@ -178,6 +179,19 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
 10. **Garanzie** — Revisioni finché il design non ti convince · Il sito è tuo · Prezzo chiaro prima di iniziare.
 11. **Domande frequenti** — Le obiezioni, con risposte semplici.
 12. **Azione finale** — La stella. "Il tuo prossimo cliente ti sta già cercando." → **Componi il tuo progetto**.
+
+### Pagina «AI per aziende», sezione per sezione
+Scritta per chi non è del settore: niente parole tecniche, solo cosa cambia nella giornata.
+1. **Hero** — "Il collaboratore che fa i lavori noiosi al posto tuo." Tu controlli, lui esegue.
+2. **Guardalo al lavoro** — esempio animato in 3 colonne: arriva l'email di Laura (bagno a Monza), l'AI ne tira fuori cliente, lavoro, misure, zona e periodo, poi scrive la risposta parola per parola. Alla fine: "Tu controlli e premi «Invia»". Parte quando entra nello schermo; con "riduci movimento" è già completa.
+3. **Com'è oggi, come diventa** — 5 schede (professionisti, artigiani, immobiliare, negozi, aziende) con 3 esempi "Oggi / Con l'AI" ciascuna. Si apre da sola sul settore scelto nel benvenuto.
+4. **Quattro vantaggi** — ore restituite, clienti serviti subito, meno errori, crescere senza assumere subito. Link al calcolatore della home.
+5. **Il programma su misura** — cos'è un software interno, con una finta schermata ("Buongiorno, Marco": preventivi da approvare, clienti da richiamare, fatture in scadenza, ore risparmiate).
+6. **Come lavoriamo** — diagnosi di 90 minuti, prima versione in 2-3 settimane, prova con il team, assistenza ogni mese.
+7. **Le domande che mi fanno sempre** — programmi da cambiare, errori dell'AI, dati, collaboratori, bravura col computer, "e se non mi serve?".
+8. **Quanto costa** — prezzi presi da `listino.js` (collegamento, assistente, programma su misura) + voucher, bottoni preventivo e WhatsApp.
+
+File: `src/components/PaginaAI.astro` · `src/styles/ai.css` · pagine `src/pages/intelligenza-artificiale.astro`, `src/pages/en/ai.astro`. Nel menu è la voce "AI per aziende"; ci portano anche i link "Come funziona" delle schede servizio in home.
 
 ---
 

@@ -32,7 +32,8 @@ const preventivo = url('preventivo', lang);
 const canonical = new URL(path, Astro.site).toString();
 const current = Astro.url.pathname.replace(/\.html$/, '');
 const isCurrent = (href: string) => (current === href ? 'page' : undefined);
-const voci = t.nav.map(([id, testo]) => ({ href: `${home}#${id}`, testo }));
+// '@pagina' = un'altra pagina del sito, altrimenti una sezione della home
+const voci = t.nav.map(([id, testo]) => ({ href: id.startsWith('@') ? url(id.slice(1), lang) : `${home}#${id}`, testo }));
 const hrefIt = lang === 'it' ? path : alt;
 const hrefEn = lang === 'en' ? path : alt;
 ---
@@ -190,7 +191,7 @@ const hrefEn = lang === 'en' ? path : alt;
           <div>
             <h2>{t.footerServizi}</h2>
             <ul role="list">
-              {t.footerVoci.slice(0, 4).map((v) => <li><a href={`${home}#servizi`}>{v}</a></li>)}
+              {t.footerVoci.slice(0, 4).map((v, i) => <li><a href={i === 2 ? url('ai', lang) : `${home}#servizi`}>{v}</a></li>)}
               <li><a href={preventivo}>{t.footerVoci[4]}</a></li>
             </ul>
           </div>
