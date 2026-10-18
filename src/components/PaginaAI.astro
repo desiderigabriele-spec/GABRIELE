@@ -368,10 +368,9 @@ const demo = it ? {
 </Base>
 
 <script>
-  import { leggiProfilo } from '../scripts/profilo.js';
   const ridotto = document.documentElement.classList.contains('ridotto');
 
-  // ---------- Esempi per settore: schede, frecce da tastiera, settore scelto nel benvenuto ----------
+  // ---------- Esempi per settore: schede e frecce da tastiera ----------
   const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-settore-tab]')];
   const pannelli = [...document.querySelectorAll<HTMLElement>('[data-settore-pannello]')];
   function scegli(id: string, focus = false) {
@@ -391,8 +390,6 @@ const demo = it ? {
       scegli(tabs[j].dataset.settoreTab!, true);
     });
   });
-  const settore = leggiProfilo().settore;
-  if (settore && tabs.some((t) => t.dataset.settoreTab === settore)) scegli(settore);
 
   // ---------- L'esempio animato: legge, capisce, scrive ----------
   const demo = document.querySelector<HTMLElement>('[data-demo-ai]');

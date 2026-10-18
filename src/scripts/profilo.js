@@ -1,4 +1,4 @@
-// Il profilo che il visitatore sceglie nel benvenuto: nome, di cosa si occupa, colore.
+// Il profilo che il visitatore sceglie in «Personalizza»: nome e colore.
 // Resta solo nel suo browser (localStorage) e serve a rendere il sito più suo.
 const CHIAVE = 'gd-profilo';
 const html = document.documentElement;
@@ -6,26 +6,14 @@ export const lang = html.lang === 'en' ? 'en' : 'it';
 
 export const TEMI_SITO = ['blu', 'rosso', 'viola', 'verde'];
 
-// servizi consigliati e lavoro da mostrare per primo, per settore
-export const SETTORI = {
-  professionista: { servizi: ['sito', 'ads'], lavoro: 'lorenzo' },
-  artigiano: { servizi: ['sito', 'ads'], lavoro: 'montini' },
-  immobiliare: { servizi: ['sito', 'ads', 'integrazioni'], lavoro: 'lorenzo' },
-  negozio: { servizi: ['ecommerce', 'ads'], lavoro: 'montini' },
-  azienda: { servizi: ['software', 'integrazioni'], lavoro: 'lorenzo' },
-  altro: { servizi: [], lavoro: 'lorenzo' },
-};
-
 const TESTI = {
   it: {
     wa: (n) => `Ciao Gabriele, sono ${n}. Ho visto il tuo sito e vorrei parlarti di un progetto.`,
-    consigliato: 'Consigliato per te',
     // saluti senza genere: vanno bene per Marco e per Giulia
     saluto: (h) => (h >= 5 && h < 14 ? 'Buongiorno ' : h >= 14 && h < 18 ? 'Ciao ' : 'Buonasera '),
   },
   en: {
     wa: (n) => `Hi Gabriele, I'm ${n}. I saw your website and I'd like to talk about a project.`,
-    consigliato: 'Recommended for you',
     saluto: (h) => (h >= 5 && h < 12 ? 'Good morning, ' : h >= 12 && h < 18 ? 'Good afternoon, ' : 'Good evening, '),
   },
 }[lang];
@@ -49,7 +37,7 @@ export function impostaTema(tema) {
   window.dispatchEvent(new CustomEvent('gd-tema', { detail: t }));
 }
 
-// Applica il profilo alla pagina: nome nei titoli e nei messaggi, servizi consigliati, ordine dei lavori
+// Applica il profilo alla pagina: nome nei titoli e nei messaggi
 const originali = new WeakMap();
 export function applicaProfilo(p = leggiProfilo()) {
   const nome = p.nome || '';
@@ -72,23 +60,4 @@ export function applicaProfilo(p = leggiProfilo()) {
     if (a.dataset.waTesto && !nome) u.searchParams.set('text', a.dataset.waTesto);
     a.href = u.toString();
   });
-
-  const settore = SETTORI[p.settore];
-  document.querySelectorAll('[data-consiglio]').forEach((el) => el.remove());
-  document.querySelectorAll('.consigliato').forEach((el) => el.classList.remove('consigliato'));
-  if (settore) {
-    settore.servizi.forEach((id) => {
-      document.querySelectorAll(`.servizio[data-iride="${id}"], .pv-cat-card[data-iride="${id}"]`).forEach((card) => {
-        card.classList.add('consigliato');
-        const b = document.createElement('span');
-        b.className = 'badge-consiglio';
-        b.dataset.consiglio = '';
-        b.textContent = TESTI.consigliato;
-        card.appendChild(b);
-      });
-    });
-    const lista = document.querySelector('[data-lavori]');
-    const primo = lista?.querySelector(`[data-lavoro="${settore.lavoro}"]`);
-    if (primo && lista.firstElementChild !== primo) lista.prepend(primo);
-  }
 }

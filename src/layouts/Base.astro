@@ -5,7 +5,7 @@ import '@fontsource-variable/jetbrains-mono';
 import '@fontsource/instrument-serif/400-italic.css';
 import '../styles/global.css';
 import { dati } from '../i18n/dati.js';
-import { ui, url } from '../i18n/ui.js';
+import { ui, url, urlServizio } from '../i18n/ui.js';
 import marchio from '../assets/marchio.svg?raw';
 import Occhio from '../components/Occhio.astro';
 
@@ -26,7 +26,7 @@ const { title, description, path = '/', scena = true, barra = true, uscita = tru
 const t = ui[lang];
 const altLang = lang === 'it' ? 'en' : 'it';
 const alt = Astro.props.alt === undefined ? url('home', altLang) : Astro.props.alt;
-const { contatti } = dati(lang);
+const { contatti, servizi } = dati(lang);
 const home = url('home', lang);
 const preventivo = url('preventivo', lang);
 const canonical = new URL(path, Astro.site).toString();
@@ -34,6 +34,12 @@ const current = Astro.url.pathname.replace(/\.html$/, '');
 const isCurrent = (href: string) => (current === href ? 'page' : undefined);
 // '@pagina' = un'altra pagina del sito, altrimenti una sezione della home
 const voci = t.nav.map(([id, testo]) => ({ href: id.startsWith('@') ? url(id.slice(1), lang) : `${home}#${id}`, testo }));
+const colori = [
+  { id: 'blu', c: '#3D7BFF', nome: t.colori[0] },
+  { id: 'rosso', c: '#FF3347', nome: t.colori[1] },
+  { id: 'viola', c: '#8B6CFF', nome: t.colori[2] },
+  { id: 'verde', c: '#22D47E', nome: t.colori[3] },
+];
 const hrefIt = lang === 'it' ? path : alt;
 const hrefEn = lang === 'en' ? path : alt;
 ---
@@ -68,7 +74,7 @@ const hrefEn = lang === 'en' ? path : alt;
         var h = document.documentElement;
         h.classList.add('js');
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) h.classList.add('ridotto');
-        // colore scelto nel benvenuto (il blu è quello predefinito)
+        // colore scelto in «Personalizza» (il blu è quello predefinito)
         try {
           var p = JSON.parse(localStorage.getItem('gd-profilo') || 'null');
           if (p && ['rosso', 'viola', 'verde'].indexOf(p.tema) > -1) h.dataset.tema = p.tema;
@@ -138,10 +144,10 @@ const hrefEn = lang === 'en' ? path : alt;
           {voci.map((v) => <a href={v.href} aria-current={isCurrent(v.href)}>{v.testo}</a>)}
         </nav>
         <div class="header-strumenti">
-          <a class="personalizza-btn" href={`${home}#personalizza`} data-personalizza title={t.personalizza}>
+          <button class="personalizza-btn" type="button" data-personalizza aria-expanded="false" aria-controls="pannello-tema" title={t.personalizza}>
             <span class="tavolozza" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
             <span class="sr-only">{t.personalizza}</span>
-          </a>
+          </button>
           {alt && (
             <a class="lingua" href={alt} hreflang={altLang} lang={altLang} data-lingua={altLang} title={t.cambiaLingua}>
               <span class="lingua-attiva" aria-hidden="true">{t.questaLinguaBreve}</span><span class="lingua-sep" aria-hidden="true">/</span><span>{t.altraLinguaBreve}</span>
@@ -156,6 +162,30 @@ const hrefEn = lang === 'en' ? path : alt;
       </div>
     </header>
 
+    <!-- Personalizza: nome e colore, cambiano subito mentre scegli -->
+    <div class="pannello-tema" id="pannello-tema" data-pannello-tema hidden role="dialog" aria-labelledby="pt-titolo">
+      <div class="pt-testa">
+        <Occhio espressione="curioso" />
+        <span class="mono" id="pt-titolo">{t.ptTitolo}</span>
+        <button class="pt-chiudi" type="button" data-pt-chiudi aria-label={t.chiudi}>×</button>
+      </div>
+      <label class="pt-domanda" for="pt-nome">{t.ptNome}</label>
+      <input id="pt-nome" type="text" autocomplete="given-name" maxlength="24" placeholder={t.ptNomeSegnaposto} enterkeyhint="done" data-pt-nome />
+      <p class="pt-domanda" id="pt-colore">{t.ptColore}</p>
+      <div class="pt-colori" role="radiogroup" aria-labelledby="pt-colore">
+        {colori.map((c) => (
+          <button class="pt-colore" type="button" role="radio" aria-checked="false" data-tema-scelta={c.id} style={`--c:${c.c}`}>
+            <i aria-hidden="true"></i><span>{c.nome}</span>
+          </button>
+        ))}
+      </div>
+      <p class="pt-nota">{t.ptNota}</p>
+    </div>
+    <div class="pt-invito" data-pt-invito hidden role="status">
+      <span>{t.ptInvito}</span>
+      <button type="button" aria-label={t.chiudi} data-pt-invito-chiudi>×</button>
+    </div>
+
     <div class="menu-mobile" id="menu-mobile" data-menu inert>
       <ul role="list">
         {voci.map((v) => <li><a href={v.href}>{v.testo}</a></li>)}
@@ -164,9 +194,9 @@ const hrefEn = lang === 'en' ? path : alt;
         <p class="mono">{contatti.zona}</p>
         <a class="btn btn-azione btn-grande" href={preventivo}>{t.ctaPreventivo}</a>
         <a class="btn btn-vetro" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener" data-wa>{t.whatsapp}</a>
-        <a class="btn btn-vetro" href={`${home}#personalizza`} data-personalizza>
+        <button class="btn btn-vetro" type="button" data-personalizza aria-controls="pannello-tema">
           <span class="tavolozza" aria-hidden="true"><i></i><i></i><i></i><i></i></span> {t.personalizza}
-        </a>
+        </button>
       </div>
     </div>
 
@@ -191,8 +221,9 @@ const hrefEn = lang === 'en' ? path : alt;
           <div>
             <h2>{t.footerServizi}</h2>
             <ul role="list">
-              {t.footerVoci.slice(0, 4).map((v, i) => <li><a href={i === 2 ? url('ai', lang) : `${home}#servizi`}>{v}</a></li>)}
-              <li><a href={preventivo}>{t.footerVoci[4]}</a></li>
+              {servizi.map((s) => <li><a href={urlServizio(s.id, lang)}>{s.titolo}</a></li>)}
+              <li><a href={url('ai', lang)}>{t.footerAi}</a></li>
+              <li><a href={preventivo}>{t.footerPreventivo}</a></li>
             </ul>
           </div>
           <div>

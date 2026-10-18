@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { numero } from '../data/formato.js';
-import { avviaBenvenuto } from './benvenuto.js';
+import { avviaPersonalizza } from './benvenuto.js';
 import { avviaEffetti } from './effetti.js';
 import { leggiProfilo, lang } from './profilo.js';
 
@@ -168,14 +168,6 @@ if (finePointer && !ridotto) {
     });
     el.addEventListener('pointerleave', () => { el.style.transform = ''; });
   });
-  document.querySelectorAll('.lavoro-media').forEach((el) => {
-    el.addEventListener('pointermove', (e) => {
-      const r = el.getBoundingClientRect();
-      el.style.setProperty('--ry', `${((e.clientX - r.left) / r.width - 0.5) * 8}deg`);
-      el.style.setProperty('--rx', `${(0.5 - (e.clientY - r.top) / r.height) * 6}deg`);
-    });
-    el.addEventListener('pointerleave', () => { el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); });
-  });
 }
 
 // ---------- Metodo: indice che segue il passo attivo ----------
@@ -202,8 +194,8 @@ if (banner) {
 // ---------- Scena 3D: si carica dopo il testo, solo se serve ----------
 let scena = null;
 const canvas = document.querySelector('[data-scena]');
-// profilo del visitatore (nome, settore, colore) e benvenuto nell'hero
-avviaBenvenuto(() => scena);
+// profilo del visitatore (nome e colore) e pannello «Personalizza»
+avviaPersonalizza(() => scena);
 function caricaScena() {
   if (!canvas || scena) return;
   import('./scena.js').then((m) => { scena = m.avviaScena(canvas) || null; if (scena) html.classList.add('scena-on'); }).catch(() => {});

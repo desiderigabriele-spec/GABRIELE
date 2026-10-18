@@ -475,10 +475,9 @@ export function avviaPreventivo() {
     const radio = liv && form.querySelector(`input[name="liv-${id}"][value="${liv}"]`);
     if (radio) radio.checked = true;
   }
-  // nome e settore scelti nel benvenuto della home
+  // il nome scelto in «Personalizza»
   const profilo = leggiProfilo();
   if (profilo.nome && !form.elements.nome.value) form.elements.nome.value = profilo.nome;
-  if (profilo.settore && !form.elements.settore.value && form.querySelector(`#pv-settore option[value="${profilo.settore}"]`)) form.elements.settore.value = profilo.settore;
   mostraBlocchi();
   aggiorna();
   vaiA(1, false);

@@ -10,19 +10,30 @@ const PERCORSI = {
 };
 export const url = (pagina, lang = 'it') => (PERCORSI[pagina] || PERCORSI.home)[lang];
 
+// Una pagina per ogni servizio: /servizi/siti-web e /en/services/websites
+export const SLUG_SERVIZI = {
+  sito: { it: 'siti-web', en: 'websites' },
+  ecommerce: { it: 'negozi-online', en: 'online-stores' },
+  software: { it: 'software-ai', en: 'ai-software' },
+  integrazioni: { it: 'collegamenti-ai', en: 'ai-integrations' },
+  ads: { it: 'pubblicita-online', en: 'online-advertising' },
+  cura: { it: 'cura-e-crescita', en: 'care-and-growth' },
+};
+export const urlServizio = (id, lang = 'it') => (lang === 'en' ? `/en/services/${SLUG_SERVIZI[id].en}` : `/servizi/${SLUG_SERVIZI[id].it}`);
+
 // Unisce i campi tradotti di un oggetto dati ({ ..., en: { ... } })
 export const tr = (o, lang) => (lang === 'en' && o && o.en ? { ...o, ...o.en } : o);
 
 export const ui = {
   it: {
     lang: 'it', locale: 'it_IT', vaiContenuto: 'Vai al contenuto', menu: 'Menu',
-    nav: [['servizi', 'Servizi'], ['@ai', 'AI per aziende'], ['metodo', 'Metodo'], ['lavori', 'Lavori'], ['prezzi', 'Prezzi'], ['chi-sono', 'Chi sono']],
+    nav: [['servizi', 'Servizi'], ['@ai', 'AI per aziende'], ['metodo', 'Metodo'], ['lavori', 'Clienti'], ['prezzi', 'Prezzi'], ['chi-sono', 'Chi sono']],
     navEtichetta: 'Principale', home: 'Studio Desideri, home', tagline: 'Dal primo sguardo al sì', ruolo: 'Siti web · AI · Pubblicità',
     ctaPreventivo: 'Calcola il preventivo', whatsapp: 'Scrivimi su WhatsApp', personalizza: 'Personalizza',
     zona: 'Milano, Italia e Svizzera',
     footerClaim: 'Di cognome faccio Desideri. Di lavoro, li creo.',
     footerServizi: 'Servizi', footerParliamone: 'Parliamone',
-    footerVoci: ['Siti web', 'Negozi online', 'Software e collegamenti AI', 'Pubblicità online', 'Preventivo automatico'],
+    footerAi: 'AI per aziende, spiegata semplice', footerPreventivo: 'Preventivo automatico',
     privacy: 'Privacy e cookie', preferenzeCookie: 'Preferenze cookie',
     cookie: 'Uso cookie di statistica e pubblicità solo se mi dai il permesso: servono a capire cosa funziona e a non sprecare annunci. Il sito funziona benissimo anche senza.',
     dettagli: 'Dettagli', cookieNo: 'No, grazie', cookieSi: 'Va bene',
@@ -33,16 +44,19 @@ export const ui = {
     riprendi: 'Riprendi il preventivo', chiudi: 'Chiudi',
     altraLingua: 'English', altraLinguaBreve: 'EN', questaLinguaBreve: 'IT', cambiaLingua: 'Read this site in English',
     avvisoLingua: 'Prefer English?', avvisoLinguaLink: 'Switch to English',
+    ptTitolo: 'Rendi tuo il sito', ptNome: 'Come ti chiami?', ptNomeSegnaposto: 'Il tuo nome', ptColore: 'Il tuo colore',
+    ptNota: 'Cambia subito. Resta solo sul tuo dispositivo.', ptInvito: 'Vuoi il sito con il tuo nome e il tuo colore? Tocca qui.',
+    colori: ['Blu', 'Rosso', 'Viola', 'Verde'],
   },
   en: {
     lang: 'en', locale: 'en_GB', vaiContenuto: 'Skip to content', menu: 'Menu',
-    nav: [['servizi', 'Services'], ['@ai', 'AI for business'], ['metodo', 'Method'], ['lavori', 'Work'], ['prezzi', 'Pricing'], ['chi-sono', 'About']],
+    nav: [['servizi', 'Services'], ['@ai', 'AI for business'], ['metodo', 'Method'], ['lavori', 'Clients'], ['prezzi', 'Pricing'], ['chi-sono', 'About']],
     navEtichetta: 'Main', home: 'Studio Desideri, home', tagline: 'From first glance to yes', ruolo: 'Websites · AI · Advertising',
     ctaPreventivo: 'Get a quote', whatsapp: 'Message me on WhatsApp', personalizza: 'Personalise',
     zona: 'Milan · Italy and Switzerland',
     footerClaim: 'My surname means "desires". Creating them is my job.',
     footerServizi: 'Services', footerParliamone: "Let's talk",
-    footerVoci: ['Websites', 'Online stores', 'AI software and integrations', 'Online advertising', 'Instant quote'],
+    footerAi: 'AI for business, in plain words', footerPreventivo: 'Instant quote',
     privacy: 'Privacy and cookies', preferenzeCookie: 'Cookie preferences',
     cookie: 'I only use analytics and advertising cookies if you allow it: they help me see what works and avoid wasting ad money. The site works perfectly without them.',
     dettagli: 'Details', cookieNo: 'No, thanks', cookieSi: 'OK',
@@ -53,5 +67,8 @@ export const ui = {
     riprendi: 'Resume your quote', chiudi: 'Close',
     altraLingua: 'Italiano', altraLinguaBreve: 'IT', questaLinguaBreve: 'EN', cambiaLingua: 'Leggi il sito in italiano',
     avvisoLingua: 'Preferisci l\'italiano?', avvisoLinguaLink: 'Passa all\'italiano',
+    ptTitolo: 'Make this site yours', ptNome: "What's your name?", ptNomeSegnaposto: 'Your first name', ptColore: 'Your colour',
+    ptNota: 'Changes right away. Stays on your device only.', ptInvito: 'Want the site with your name and your colour? Tap here.',
+    colori: ['Blue', 'Red', 'Purple', 'Green'],
   },
 };

@@ -1,69 +1,75 @@
-// Il benvenuto nell'hero: tre domande saltabili (nome, di cosa ti occupi, colore).
-// Ogni risposta cambia subito qualcosa sulla pagina, così il visitatore vede che vale la pena rispondere.
-import { lang, leggiProfilo, salvaProfilo, pulisciNome, impostaTema, applicaProfilo, SETTORI, TEMI_SITO } from './profilo.js';
-
-const TESTI = {
-  it: {
-    piacere: (n) => `Piacere, ${n}. `,
-    fatto: (n) => (n ? `Fatto, ${n}. Il sito adesso è un po' più tuo.` : "Fatto. Il sito adesso è un po' più tuo."),
-  },
-  en: {
-    piacere: (n) => `Nice to meet you, ${n}. `,
-    fatto: (n) => (n ? `Done, ${n}. This site is now a little more yours.` : 'Done. This site is now a little more yours.'),
-  },
-}[lang];
+// «Personalizza»: un pannellino sotto il bottone dei colori, con il nome e il colore.
+// Tutto cambia mentre scegli: il nome compare nei titoli, il colore su tutto il sito.
+import { leggiProfilo, salvaProfilo, pulisciNome, impostaTema, applicaProfilo, TEMI_SITO } from './profilo.js';
 
 const traccia = (e, d) => window.gdTrack?.(e, d);
-const ss = { set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} } };
+const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} } };
 
-export function avviaBenvenuto(scena) {
-  const box = document.querySelector('[data-benvenuto]');
+export function avviaPersonalizza(scena) {
   const html = document.documentElement;
   let p = leggiProfilo();
   applicaProfilo(p);
+  const box = document.querySelector('[data-pannello-tema]');
   if (!box) return;
 
-  const passi = [...box.querySelectorAll('[data-bv-passo]')];
-  const puntini = [...box.querySelectorAll('.bv-passi i')];
-  const input = box.querySelector('input[name="nome"]');
+  const input = box.querySelector('[data-pt-nome]');
   const colori = [...box.querySelectorAll('[data-tema-scelta]')];
+  const bottoni = [...document.querySelectorAll('[data-personalizza]')];
+  const invito = document.querySelector('[data-pt-invito]');
+  let aperto = false, origine = null, nomeScritto = p.nome || '';
 
-  function vai(n, focus = true) {
-    passi.forEach((el) => { el.hidden = Number(el.dataset.bvPasso) !== n; });
-    puntini.forEach((el, i) => { el.classList.toggle('attivo', i + 1 === n); el.classList.toggle('fatto', i + 1 < n); });
-    box.classList.toggle('bv-chiuso', n === 4);
-    if (n === 2) box.querySelector('[data-bv-saluto]').textContent = p.nome ? TESTI.piacere(p.nome) : '';
-    if (n === 3) colori.forEach((c) => c.setAttribute('aria-checked', String(c.dataset.temaScelta === (p.tema || 'blu'))));
-    if (n === 4) box.querySelector('[data-bv-fatto]').textContent = TESTI.fatto(p.nome);
-    if (focus) {
-      const primo = passi[n - 1]?.querySelector('input, button:not([data-bv-salta])');
-      setTimeout(() => primo?.focus({ preventScroll: true }), 60);
-    }
-  }
-  const usato = () => ss.set('gd-personalizzato', '1'); // niente finestra d'uscita per chi ha appena personalizzato
   const salva = () => { salvaProfilo(p); applicaProfilo(p); };
+  const segnaColore = () => colori.forEach((c) => c.setAttribute('aria-checked', String(c.dataset.temaScelta === (p.tema || 'blu'))));
+  const usato = () => ss.set('gd-personalizzato', '1'); // niente finestra d'uscita per chi ha appena personalizzato
 
-  // 1. Il nome
-  box.querySelector('[data-bv-passo="1"]').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const nome = pulisciNome(input.value);
+  // il pannello si apre sotto il bottone dell'header (su telefono, sotto la barra in alto)
+  function posiziona() {
+    const b = bottoni.find((x) => x.offsetParent && x.closest('.site-header'));
+    const d = b ? `${Math.max(12, Math.min(innerWidth - b.getBoundingClientRect().right - 24, innerWidth - 352))}px` : '12px';
+    box.style.setProperty('--pt-destra', d);
+    if (invito) invito.style.right = d;
+  }
+  function apri(da) {
+    if (html.classList.contains('menu-aperto')) document.querySelector('[data-menu-toggle]')?.click();
+    nascondiInvito();
+    origine = da || null;
+    p = leggiProfilo();
+    input.value = p.nome || '';
+    segnaColore();
+    posiziona();
+    box.hidden = false;
+    requestAnimationFrame(() => box.classList.add('aperto'));
+    bottoni.forEach((b) => b.setAttribute('aria-expanded', 'true'));
+    aperto = true;
+    setTimeout(() => input.focus({ preventScroll: true }), 80);
+    traccia('personalizza_aperto');
+  }
+  function chiudi(rimetti = true) {
+    if (!aperto) return;
+    aperto = false;
+    scriviNome();
+    impostaTema(p.tema);
+    box.classList.remove('aperto');
+    bottoni.forEach((b) => b.setAttribute('aria-expanded', 'false'));
+    setTimeout(() => { if (!aperto) box.hidden = true; }, 250);
+    if (rimetti && origine?.offsetParent) origine.focus({ preventScroll: true });
+  }
+
+  // il nome: si vede subito nei titoli; le stelle lo scrivono quando hai finito
+  function scriviNome() {
+    if (p.nome && p.nome !== nomeScritto) { scena()?.scrivi?.(p.nome); traccia('personalizza_nome'); }
+    nomeScritto = p.nome || '';
+  }
+  input.addEventListener('input', () => {
     usato();
-    if (nome) {
-      const nuovo = nome !== p.nome;
-      p.nome = nome; salva();
-      if (nuovo) { scena()?.scrivi?.(nome); traccia('personalizza_nome'); }
-    }
-    vai(2);
+    p.nome = pulisciNome(input.value);
+    p.fatto = true;
+    salva();
   });
-  // 2. Di cosa ti occupi
-  box.querySelectorAll('[data-settore]').forEach((b) => b.addEventListener('click', () => {
-    if (!SETTORI[b.dataset.settore]) return;
-    usato();
-    p.settore = b.dataset.settore; salva();
-    traccia('personalizza_settore', { settore: p.settore });
-    vai(3);
-  }));
-  // 3. Il colore: anteprima passandoci sopra, scelta con il clic
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); chiudi(); } });
+  input.addEventListener('change', scriviNome);
+
+  // il colore: anteprima passandoci sopra, scelta con il clic
   colori.forEach((c) => {
     c.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') impostaTema(c.dataset.temaScelta); });
     c.addEventListener('focus', () => impostaTema(c.dataset.temaScelta));
@@ -71,47 +77,50 @@ export function avviaBenvenuto(scena) {
       if (!TEMI_SITO.includes(c.dataset.temaScelta)) return;
       usato();
       p.tema = c.dataset.temaScelta; p.fatto = true; salva();
-      impostaTema(p.tema);
+      impostaTema(p.tema); segnaColore();
       traccia('personalizza_colore', { tema: p.tema });
-      vai(4);
     });
   });
-  box.querySelector('.bv-colori')?.addEventListener('pointerleave', () => impostaTema(p.tema));
-  box.querySelector('.bv-colori')?.addEventListener('focusout', (e) => { if (!e.currentTarget.contains(e.relatedTarget)) impostaTema(p.tema); });
+  const gruppo = box.querySelector('.pt-colori');
+  gruppo.addEventListener('pointerleave', () => impostaTema(p.tema));
+  gruppo.addEventListener('focusout', (e) => { if (!gruppo.contains(e.relatedTarget)) impostaTema(p.tema); });
 
-  // Salta: passa alla domanda dopo
-  box.querySelectorAll('[data-bv-salta]').forEach((b) => b.addEventListener('click', () => {
-    const n = Number(b.closest('[data-bv-passo]').dataset.bvPasso);
-    if (n === 3) { p.fatto = true; salva(); }
-    vai(n + 1);
-  }));
-  box.querySelector('[data-bv-modifica]').addEventListener('click', () => { if (input) input.value = p.nome || ''; vai(1); });
-  box.querySelector('[data-bv-chiudi]').addEventListener('click', () => {
-    if (!p.fatto) { p.saltato = true; salvaProfilo(p); }
-    box.classList.add('bv-via');
-    setTimeout(() => { box.hidden = true; }, 500);
-    traccia('personalizza_chiuso');
-  });
-
-  // il bottone «Personalizza» dell'header riapre il benvenuto
-  function apri() {
-    box.hidden = false; box.classList.remove('bv-via');
-    if (input) input.value = p.nome || '';
-    const top = box.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.35;
-    if (window.gdLenis) window.gdLenis.scrollTo(Math.max(0, top), { duration: 1 }); else window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-    vai(1);
-  }
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('[data-personalizza]');
-    if (!a) return;
+  bottoni.forEach((b) => b.addEventListener('click', (e) => {
     e.preventDefault();
-    if (html.classList.contains('menu-aperto')) document.querySelector('[data-menu-toggle]')?.click();
-    apri();
+    if (aperto) chiudi(); else apri(b);
+  }));
+  invito?.addEventListener('click', (e) => {
+    if (e.target.closest('[data-pt-invito-chiudi]')) { nascondiInvito(); return; }
+    apri(bottoni[0]);
   });
+  box.querySelector('[data-pt-chiudi]').addEventListener('click', () => chiudi());
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && aperto) chiudi(); });
+  document.addEventListener('pointerdown', (e) => {
+    if (aperto && !box.contains(e.target) && !e.target.closest('[data-personalizza]')) chiudi(false);
+  });
+  window.addEventListener('resize', () => { if (aperto) posiziona(); });
 
-  // stato iniziale
-  if (location.hash === '#personalizza') { history.replaceState(null, '', location.pathname); apri(); }
-  else if (p.fatto) vai(4, false);
-  else if (p.saltato) box.hidden = true;
-  else vai(1, false);
+  // alla prima visita un piccolo invito sotto il bottone, una volta sola
+  function nascondiInvito() {
+    if (!invito || invito.hidden) return;
+    invito.classList.remove('visibile');
+    setTimeout(() => { invito.hidden = true; }, 400);
+    try { localStorage.setItem('gd-invito', '1'); } catch (_) {}
+  }
+  let giaVisto = true;
+  try { giaVisto = !!localStorage.getItem('gd-invito'); } catch (_) {}
+  if (invito && !p.fatto && !giaVisto) {
+    const mostra = () => setTimeout(() => {
+      // non insieme all'avviso della lingua: ci riprova alla prossima visita
+      if (aperto || html.classList.contains('menu-aperto') || document.querySelector('[data-avviso-lingua]:not([hidden])')) return;
+      posiziona();
+      invito.hidden = false;
+      requestAnimationFrame(() => invito.classList.add('visibile'));
+      setTimeout(nascondiInvito, 9000);
+    }, 2600);
+    if (html.classList.contains('intro-attiva')) window.addEventListener('gd-intro-fine', mostra, { once: true }); else mostra();
+  }
+
+  // i vecchi link «#personalizza» aprono il pannello
+  if (location.hash === '#personalizza') { history.replaceState(null, '', location.pathname); setTimeout(() => apri(bottoni[0]), 300); }
 }
