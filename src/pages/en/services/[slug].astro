@@ -1,0 +1,10 @@
+---
+import PaginaServizio from '../../../components/PaginaServizio.astro';
+import { SLUG_SERVIZI } from '../../../i18n/ui.js';
+
+export function getStaticPaths() {
+  return Object.entries(SLUG_SERVIZI).map(([id, s]) => ({ params: { slug: s.en }, props: { id } }));
+}
+const { id } = Astro.props;
+---
+<PaginaServizio id={id} lang="en" />

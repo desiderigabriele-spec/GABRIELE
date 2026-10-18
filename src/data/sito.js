@@ -36,7 +36,7 @@ export const servizi = [
     id: 'software',
     numero: '03',
     titolo: 'Software con AI',
-    semplice: 'Programmi su misura che fanno in un minuto il lavoro che oggi fate a mano in un\'ora.',
+    semplice: 'Programmi su misura che fanno in un minuto il lavoro che oggi fai a mano in un\'ora.',
     esempio: 'Preventivi scritti da soli, fatture lette in automatico, email con la risposta già pronta.',
     da: 2400,
     icona: 'chip',

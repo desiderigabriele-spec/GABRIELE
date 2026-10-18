@@ -93,15 +93,17 @@ Palette d'apertura **C · Blu**, scelta dopo il confronto in «Palette Desideri 
 **Regola:** i freddi servono a capire, i caldi ad agire. Il gradiente blu → azzurro (le parole come *sceglie.*) è la firma; il caldo compare solo dove si clicca.
 
 ### Temi scelti dal visitatore
-Nel benvenuto chi visita sceglie l'atmosfera: **blu** (fiducia, predefinito), **rosso** (energia), **viola** (creatività), **verde** (crescita). Cambiano sfondo, accenti e particelle dell'occhio (`html[data-tema]` in `global.css`, `TEMI` in `scena.js`). Restano sempre uguali il punto rosso del logo e i bottoni d'azione: il marchio resta riconoscibile e il punto di conversione resta il più caldo della pagina.
+Dal bottone dei colori nell'header chi visita sceglie l'atmosfera: **blu** (fiducia, predefinito), **rosso** (energia), **viola** (creatività), **verde** (crescita). Cambiano sfondo, accenti e particelle dell'occhio (`html[data-tema]` in `global.css`, `TEMI` in `scena.js`). Restano sempre uguali il punto rosso del logo e i bottoni d'azione: il marchio resta riconoscibile e il punto di conversione resta il più caldo della pagina.
 
-### Personalizzazione (benvenuto nell'hero)
-Tre domande facoltative, ognuna saltabile, sotto i bottoni dell'hero:
-1. **Come ti chiami?** Il nome apre il titolo, grande come il titolo, con il saluto dell'ora (Buongiorno 5-14, Ciao 14-18, Buonasera 18-5: «Buonasera Marco, trasformo…»), nel titolo finale, nel messaggio WhatsApp, nel «Rieccoti» e nel campo nome del preventivo. Le particelle dell'occhio scrivono il nome per qualche secondo, poi tornano occhio.
-2. **Di cosa ti occupi?** Segna «Consigliato per te» sui servizi giusti (anche nel preventivo), mette per primo il lavoro più vicino (artigiani e negozi vedono prima Montini) e precompila il settore nel preventivo.
-3. **Che colore ti somiglia?** Anteprima dal vivo passandoci sopra, scelta con un clic.
+### Personalizzazione (bottone dei colori nell'header)
+Il bottone con i quattro puntini apre un pannellino con due sole cose, che cambiano subito mentre scegli:
+1. **Come ti chiami?** Mentre scrivi, il nome compare nel titolo dell'hero, grande come il titolo, con il saluto dell'ora (Buongiorno 5-14, Ciao 14-18, Buonasera 18-5: «Buonasera Marco, trasformo…»), poi nel titolo finale, nel messaggio WhatsApp, nel «Rieccoti» e nel campo nome del preventivo. Quando hai finito, le particelle dell'occhio scrivono il nome per qualche secondo.
+2. **Il tuo colore.** Anteprima dal vivo passandoci sopra, scelta con un clic.
 
-Tutto resta nel browser (`localStorage gd-profilo`), niente viene inviato. Chi ha appena personalizzato non vede la finestra d'uscita: al massimo una finestra per visita. Il bottone con i quattro puntini nell'header riapre il benvenuto.
+Si chiude con Invio, Esc, la × o toccando fuori. Alla prima visita compare una volta un piccolo invito sotto il bottone («Vuoi il sito con il tuo nome e il tuo colore?»), mai insieme all'avviso della lingua. Tutto resta nel browser (`localStorage gd-profilo`), niente viene inviato. Chi ha appena personalizzato non vede la finestra d'uscita: al massimo una finestra per visita. La domanda «di cosa ti occupi?» è stata tolta: il settore si chiede solo nel preventivo.
+
+### Ogni sezione in uno schermo
+Su computer ogni sezione della home, delle pagine servizio e della pagina AI sta in una schermata: spazi, titoli e alcune scritte seguono l'altezza della finestra (`svh`), con una versione più compatta sotto gli 840 px di altezza. Verificato a 1900×870, 1440×800, 1280×760 (a 1366×700 due sezioni superano di circa 30 px). Fa eccezione il **Metodo**, che scorre di proposito: ogni passo però sta in uno schermo. Su telefono l'hero è intero nella prima schermata (occhio, titolo, frase, bottone); le altre sezioni scorrono.
 
 ### Lingue
 Italiano predefinito (`/`), inglese su pagine vere (`/en`, `/en/quote`, `/en/privacy`) con `hreflang`, così Google mostra la versione giusta. Il selettore IT / EN è nell'header; chi ha il browser in un'altra lingua riceve un avviso discreto («Prefer English?»). Testi dell'interfaccia in `src/i18n/ui.js`, testi dei dati in `src/data/en.js`.
@@ -158,6 +160,12 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
 /                 Home: il percorso in 5 capitoli
 /preventivo       Componi il tuo progetto (preventivo automatico)
 /intelligenza-artificiale   L'AI per aziende spiegata semplice (in inglese /en/ai)
+/servizi/siti-web           Una pagina per ogni servizio (in inglese /en/services/websites)
+/servizi/negozi-online      … /en/services/online-stores
+/servizi/software-ai        … /en/services/ai-software
+/servizi/collegamenti-ai    … /en/services/ai-integrations
+/servizi/pubblicita-online  … /en/services/online-advertising
+/servizi/cura-e-crescita    … /en/services/care-and-growth
 /privacy          Privacy e cookie
 /404              Pagina non trovata (anche lei con le particelle)
 ```
@@ -170,12 +178,12 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
    - Bottoni: **Calcola il tuo preventivo** (caldo) · Guarda come funziona.
    - Riduttori di rischio: "Preventivo in 2 minuti · Risposta entro 24 ore · Milano e tutta Italia".
 3. **Il problema** — "Un sito bello non basta. Deve far venire voglia di sceglierti." Tre dolori in parole semplici: nessuno ti trova, ti trovano ma se ne vanno, ti contattano ma non comprano.
-4. **Servizi · Interesse** — 6 card: Siti web · E-commerce · Software AI che velocizzano il lavoro · Integrazioni AI · Pubblicità online · Cura e crescita. Ogni card ha "In parole semplici", un esempio concreto e "da X €".
-5. **Calcolatore del tempo risparmiato** — "Quante ore perdi in lavori ripetitivi?" Due cursori (ore a settimana, persone) → ore e euro risparmiati in un anno. È la vendita del software AI in 10 secondi.
+4. **Servizi · Interesse** — 6 schede compatte: Siti web · Negozi online · Software con AI · Collegamenti AI · Pubblicità online · Cura e crescita. Ogni scheda ha "In parole semplici", "da X €" e porta alla pagina del servizio.
+5. **Calcolatore del tempo risparmiato** — "Quante ore ti rubano i lavori sempre uguali?" Dieci lavori da spuntare (rispondere alle stesse domande, copiare dati, preventivi, appuntamenti, email, documenti, testi, fatture, ordini, report), ognuno con cosa fa l'AI al posto tuo e le ore a settimana. Le ore spuntate, le persone e il costo orario danno ore ed euro risparmiati in un anno.
 6. **Il metodo · Fiducia** — Sezione bloccata con 5 passi che scorrono (Sguardo, Interesse, Fiducia, Desiderio, Azione). Per ogni passo: cosa succede nella testa del cliente + la tecnica usata + cosa fa Gabriele.
-7. **Lavori** — Montini (Progetto Presenza) e Lorenzo Baldassarri (Progetto Signature): problema, soluzione, cosa è stato costruito. Spazio pronto per le recensioni.
+7. **Parlano di noi** (voce di menu "Clienti") — una scheda per cliente: anteprima del sito con il link per vederlo dal vivo, la recensione (oggi, finché non arriva, la sfida del progetto), nome, settore, pacchetto e cosa è stato fatto.
 8. **Chi sono** — Storia: ha venduto faccia a faccia (agente di commercio, team leader, consulente immobiliare), ha lanciato e-commerce suoi e per aziende, ha studiato psicologia, marketing, neuromarketing e AI. Certificazioni.
-9. **Prezzi · Desiderio** — Tre pacchetti sito (Signature, Presenza "il più scelto", Impulso), più "da X €" per tutto il resto e un link al preventivo.
+9. **Prezzi · Desiderio** — Tre pacchetti sito (Signature, Presenza "il più scelto", Impulso), più "da X €" per tutto il resto. I tre pacchetti sono i livelli del preventivo: il bottone apre il preventivo con quel pacchetto già scelto. Servono a chi vuole vedere un prezzo subito senza comporre niente, e lo Signature messo per primo fa da "àncora" (Presenza sembra più ragionevole accanto a lui).
 10. **Garanzie** — Revisioni finché il design non ti convince · Il sito è tuo · Prezzo chiaro prima di iniziare.
 11. **Domande frequenti** — Le obiezioni, con risposte semplici.
 12. **Azione finale** — La stella. "Il tuo prossimo cliente ti sta già cercando." → **Componi il tuo progetto**.
@@ -184,7 +192,7 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
 Scritta per chi non è del settore: niente parole tecniche, solo cosa cambia nella giornata.
 1. **Hero** — "Il collaboratore che fa i lavori noiosi al posto tuo." Tu controlli, lui esegue.
 2. **Guardalo al lavoro** — esempio animato in 3 colonne: arriva l'email di Laura (bagno a Monza), l'AI ne tira fuori cliente, lavoro, misure, zona e periodo, poi scrive la risposta parola per parola. Alla fine: "Tu controlli e premi «Invia»". Parte quando entra nello schermo; con "riduci movimento" è già completa.
-3. **Com'è oggi, come diventa** — 5 schede (professionisti, artigiani, immobiliare, negozi, aziende) con 3 esempi "Oggi / Con l'AI" ciascuna. Si apre da sola sul settore scelto nel benvenuto.
+3. **Com'è oggi, come diventa** — 5 schede (professionisti, artigiani, immobiliare, negozi, aziende) con 3 esempi "Oggi / Con l'AI" ciascuna.
 4. **Quattro vantaggi** — ore restituite, clienti serviti subito, meno errori, crescere senza assumere subito. Link al calcolatore della home.
 5. **Il programma su misura** — cos'è un software interno, con una finta schermata ("Buongiorno, Marco": preventivi da approvare, clienti da richiamare, fatture in scadenza, ore risparmiate).
 6. **Come lavoriamo** — diagnosi di 90 minuti, prima versione in 2-3 settimane, prova con il team, assistenza ogni mese.
@@ -192,6 +200,16 @@ Scritta per chi non è del settore: niente parole tecniche, solo cosa cambia nel
 8. **Quanto costa** — prezzi presi da `listino.js` (collegamento, assistente, programma su misura) + voucher, bottoni preventivo e WhatsApp.
 
 File: `src/components/PaginaAI.astro` · `src/styles/ai.css` · pagine `src/pages/intelligenza-artificiale.astro`, `src/pages/en/ai.astro`. Nel menu è la voce "AI per aziende"; ci portano anche i link "Come funziona" delle schede servizio in home.
+
+### Pagine dei servizi, sezione per sezione
+Una pagina per servizio, stessa struttura, testi in `src/data/pagine-servizi.js` (italiano e inglese), prezzi e pacchetti presi da `listino.js`.
+1. **Hero** — titolo, frase semplice, "a partire da", bottoni preventivo (con il servizio già scelto) e WhatsApp. A destra un'illustrazione animata del servizio (`src/components/Illustrazione.astro`): il sito con il cursore che clicca e la richiesta che arriva; la scheda prodotto con il carrello che conta e l'ordine; il cruscotto «Buongiorno, Marco» con l'assistente che ha preparato i preventivi; i programmi collegati all'occhio in mezzo; il telefono con l'annuncio, il bersaglio e i numeri; il grafico che sale con il report del mese. Su telefono l'illustrazione va sopra il titolo.
+2. **Cosa ottieni** — sei punti con icona.
+3. **Come funziona** — quattro tappe unite da una linea con una luce che scorre. Per software e collegamenti c'è il rimando all'esempio animato della pagina AI.
+4. **Per esempio** — tre situazioni tipo (non clienti veri).
+5. **Pacchetti e prezzi** — i tre livelli del listino con il bottone che apre il preventivo già impostato, gli extra e la nota del listino.
+6. **Domande** — quattro domande sul servizio.
+7. **Il prossimo passo** — bottoni e gli altri cinque servizi.
 
 ---
 

@@ -1,0 +1,182 @@
+/* Pagine dei servizi: /servizi/... e /en/services/... */
+.sv-hero-griglia { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
+.sv-hero .hero-testo { max-width: 640px; }
+.sv-hero h1 { font-size: clamp(2.3rem, min(4.4vw, 7.8svh), 4.4rem); }
+.sv-hero .hero-testo { gap: clamp(.8rem, 2.2svh, 1.5rem); }
+.sv-indietro { justify-self: start; display: inline-flex; gap: .5rem; align-items: center; font-size: .88rem; color: var(--nebbia); text-decoration: none; }
+.sv-indietro:hover { color: var(--latte); }
+.sv-prezzo { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 1rem; margin: 0; }
+.sv-prezzo strong { font-family: var(--f-titolo); font-size: clamp(1.8rem, 3vw, 2.4rem); letter-spacing: -0.03em; color: var(--latte); }
+.sv-prezzo strong small { font-size: .5em; color: var(--nebbia); font-weight: 500; }
+.sv-iva { font-size: .82rem; color: var(--nebbia-2); }
+.sv-ill { position: relative; }
+.sv-ill .ill { display: block; width: 100%; max-height: calc(100svh - var(--header-h) - 60px); }
+@media (max-width: 900px) {
+  .sv-hero-griglia { grid-template-columns: minmax(0, 1fr); }
+  .sv-ill { order: -1; max-width: 440px; margin: 0 auto -10px; width: 100%; }
+  .sv-ill .ill { max-height: 27svh; margin: 0 auto; }
+  .sv-hero { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+  .sv-hero .hero-testo { gap: .85rem; }
+  .sv-hero .sv-indietro { display: none; }
+  .sv-hero .lead { font-size: 1rem; }
+  .sv-prezzo strong { font-size: 1.7rem; }
+  .sv-hero .hero-azioni .btn-vetro { display: none; }
+  .sv-hero .hero-azioni .btn { --pad: 1.05rem 1.6rem; }
+}
+
+/* cosa ottieni */
+.sv-ottieni { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.sv-punto { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .5rem 1rem; align-items: center; padding: clamp(18px, 2.4svh, 26px) clamp(18px, 1.8vw, 26px); }
+.sv-punto h3 { font-size: clamp(1.1rem, 1.4vw, 1.3rem); }
+.sv-punto p { grid-column: 1 / -1; color: var(--nebbia); font-size: .95rem; }
+@media (max-width: 1020px) { .sv-ottieni { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .sv-ottieni { grid-template-columns: minmax(0, 1fr); } }
+
+/* come funziona: quattro tappe unite da una linea con una luce che scorre */
+.flusso-box { position: relative; }
+.flusso { position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 2.4vw, 36px); }
+.flusso-linea { position: absolute; left: 36px; right: 36px; top: 35px; height: 2px; background: var(--linea-forte); overflow: hidden; }
+.flusso-linea i { position: absolute; top: 0; left: 0; width: 22%; height: 100%; background: linear-gradient(90deg, transparent, var(--viola-chiaro), var(--ambra), transparent); animation: flusso-luce 3.6s var(--ease) infinite; }
+@keyframes flusso-luce { from { transform: translateX(-100%); } to { transform: translateX(460%); } }
+.flusso li { position: relative; display: grid; gap: .55rem; align-content: start; }
+.flusso-tappa { position: relative; width: 72px; height: 72px; border-radius: 22px; display: grid; place-items: center; background: linear-gradient(180deg, rgba(var(--sup2-rgb), .98), rgba(var(--sup-rgb), .98)); border: 1px solid rgba(var(--brand-rgb), .4); color: var(--viola-chiaro); box-shadow: 0 18px 50px -24px rgba(var(--brand-rgb), .8); margin-bottom: .5rem; }
+.flusso-tappa .ico { width: 36px; height: 36px; }
+.flusso-tappa b { position: absolute; top: -8px; right: -8px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--caldo); color: var(--azione-testo); font-family: var(--f-mono); font-size: .75rem; }
+.flusso h3 { font-size: clamp(1.25rem, 1.7vw, 1.6rem); }
+.flusso p { color: var(--nebbia); font-size: .97rem; max-width: 26em; }
+@media (max-width: 900px) {
+  .flusso { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .flusso-linea { left: 35px; right: auto; top: 36px; bottom: 36px; width: 2px; height: auto; }
+  .flusso-linea i { width: 100%; height: 22%; background: linear-gradient(180deg, transparent, var(--viola-chiaro), var(--ambra), transparent); animation-name: flusso-luce-v; }
+  @keyframes flusso-luce-v { from { transform: translateY(-100%); } to { transform: translateY(460%); } }
+  .flusso li { grid-template-columns: 72px minmax(0, 1fr); column-gap: 1.1rem; }
+  .flusso-tappa { grid-row: span 2; margin: 0; }
+}
+.sv-ai { margin-top: clamp(24px, 4svh, 44px); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 1rem; align-items: center; text-decoration: none; color: inherit; padding: 18px 22px; }
+.sv-ai strong { display: block; font-family: var(--f-titolo); font-size: 1.15rem; }
+.sv-ai span:nth-child(2) { color: var(--nebbia); font-size: .95rem; }
+.sv-ai .freccia { color: var(--ambra); font-size: 1.3rem; transition: transform .4s var(--ease); }
+.sv-ai:hover .freccia { transform: translateX(4px); }
+
+/* esempi */
+.sv-esempi { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.sv-esempio { display: grid; gap: .7rem; align-content: start; }
+.sv-esempio-num { font-family: var(--f-titolo); font-weight: 800; font-size: 2.6rem; line-height: 1; background: var(--firma); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.sv-esempio h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
+.sv-esempio p { color: var(--nebbia); }
+@media (max-width: 900px) { .sv-esempi { grid-template-columns: minmax(0, 1fr); } }
+
+/* pacchetti */
+.sv-piano-prezzo { font-size: clamp(1.8rem, min(2.8vw, 5svh), 2.6rem) !important; }
+.sv-piano-prezzo small { color: var(--nebbia); }
+.sv-finale .finale-testo { max-width: 1180px; }
+.sv-finale h2, .sv-finale .lead { max-width: 900px; }
+.sv-extra { margin-top: clamp(16px, 2.6svh, 28px); display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; }
+.sv-extra ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .45rem; }
+.sv-extra li { font-size: .86rem; padding: .45rem .8rem; border-radius: 99px; border: 1px solid var(--linea); background: rgba(var(--sup-rgb), .8); color: var(--nebbia); }
+.sv-extra li b { color: var(--latte); font-weight: 600; margin-left: .3rem; }
+.sv-nota { margin-top: .9rem; font-size: .85rem; color: var(--nebbia-2); }
+
+/* altri servizi */
+.sv-altri { margin-top: clamp(12px, 3svh, 32px); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; width: 100%; text-align: left; }
+.sv-altri a { display: flex; gap: .7rem; align-items: center; padding: .7rem .8rem; border-radius: 16px; border: 1px solid var(--linea); background: rgba(var(--sup-rgb), .8); text-decoration: none; color: var(--latte); font-weight: 600; font-size: .9rem; transition: border-color .3s, transform .4s var(--ease); }
+.sv-altri a:hover { border-color: rgba(var(--brand-rgb), .6); transform: translateY(-2px); }
+.sv-altri .servizio-icona { width: 36px; height: 36px; border-radius: 11px; flex: none; }
+.sv-altri .servizio-icona svg { width: 22px; height: 22px; }
+.sv-altri small { display: block; font-weight: 400; color: var(--nebbia); font-size: .78rem; }
+@media (max-width: 1100px) { .sv-altri { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .sv-altri { grid-template-columns: minmax(0, 1fr); } }
+
+/* ==========================================================================
+   Illustrazioni
+   ========================================================================== */
+.ill { overflow: visible; }
+.ill .st-b { stop-color: var(--viola); }
+.ill .s1 { fill: rgba(var(--sup2-rgb), .96); stroke: var(--linea-forte); stroke-width: 1.5; }
+.ill .s1.forte { stroke: rgba(var(--brand-rgb), .55); }
+.ill .s2 { fill: rgba(var(--notte-rgb), .65); stroke: var(--linea); stroke-width: 1; }
+.ill .s2.bordo-a { stroke: rgba(255, 181, 71, .55); }
+.ill .b { fill: var(--viola); }
+.ill .bs { fill: rgba(var(--brand-rgb), .2); }
+.ill .a { fill: var(--ambra); }
+.ill .r { fill: #ff3347; }
+.ill .c { fill: var(--ciano); }
+.ill .l { fill: var(--latte); }
+.ill .verde { fill: #22d47e; }
+.ill .notte { fill: #05070f; }
+.ill .n { fill: rgba(var(--latte-rgb), .22); }
+.ill .n2 { fill: rgba(var(--latte-rgb), .12); }
+.ill .riga-l { stroke: var(--linea); stroke-width: 1.5; fill: none; }
+.ill .riga-c { stroke: var(--ciano); stroke-width: 2.5; stroke-linecap: round; fill: none; opacity: .7; }
+.ill .bl { fill: none; stroke: var(--viola-chiaro); stroke-width: 3; stroke-linecap: round; }
+.ill .bl.spesso { stroke-width: 6; stroke: var(--viola); }
+.ill .tratto-l { fill: none; stroke: var(--latte); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ill .bs.tratto-l { fill: rgba(var(--brand-rgb), .2); }
+.ill .tratto-b { fill: none; stroke: var(--viola-chiaro); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.ill .bordo-notte { stroke: #05070f; stroke-width: 1.5; stroke-linejoin: round; }
+.ill .spunta { fill: none; stroke: #05070f; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.ill .spunta-l { fill: none; stroke: var(--ciano); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.ill .linea-b { fill: none; stroke: var(--viola-chiaro); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.ill .linea-b.spessa { stroke-width: 3.5; stroke: var(--viola); }
+.ill .anello-l { fill: none; stroke: var(--linea-forte); stroke-width: 1.5; }
+.ill .anello-b { fill: rgba(var(--brand-rgb), .14); stroke: rgba(var(--brand-rgb), .6); stroke-width: 1.5; }
+.ill .ill-anello { fill: none; stroke: rgba(var(--brand-rgb), .6); stroke-width: 2; stroke-dasharray: 3 9; }
+.ill .ill-filo { fill: none; stroke: var(--linea-forte); stroke-width: 2; }
+.ill .ill-flusso { fill: none; stroke: var(--viola-chiaro); stroke-width: 2.6; stroke-linecap: round; stroke-dasharray: 3 16; animation: ill-flusso 1.2s linear infinite; }
+.ill .t { font-family: var(--f-testo); font-weight: 600; font-size: 13px; fill: var(--latte); }
+.ill .t.piccolo { font-size: 12px; }
+.ill .t.scura { fill: #1a0605; }
+.ill .tp { font-family: var(--f-testo); font-size: 11px; fill: var(--nebbia); }
+.ill .tp.chiaro { font-size: 12.5px; fill: var(--latte); }
+.ill .tm { font-family: var(--f-mono); font-size: 9.5px; letter-spacing: .08em; fill: var(--nebbia); }
+.ill .tg { font-family: var(--f-titolo); font-weight: 700; letter-spacing: -0.02em; fill: var(--latte); }
+.ill .tg.a { fill: var(--ambra); } .ill .tg.c { fill: var(--ciano); }
+
+/* movimenti lenti: niente distrae dalla lettura */
+.ill .ill-galleggia { animation: ill-galleggia 7s ease-in-out infinite; }
+.ill .ill-galleggia.lento { animation-duration: 9s; animation-delay: -2s; }
+.ill .ill-galleggia.lentissimo { animation-duration: 11s; animation-delay: -5s; }
+@keyframes ill-galleggia { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes ill-flusso { to { stroke-dashoffset: -19; } }
+.ill .ill-pulsa { transform-box: fill-box; transform-origin: center; animation: ill-pulsa 2.4s ease-in-out infinite; }
+@keyframes ill-pulsa { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.35); opacity: .75; } }
+.ill .ill-gira { transform-box: fill-box; transform-origin: center; animation: ill-gira 14s linear infinite; }
+@keyframes ill-gira { to { transform: rotate(360deg); } }
+.ill .ill-stelle circle { animation: ill-brilla 3s ease-in-out infinite; }
+.ill .ill-stelle circle:nth-child(2n) { animation-delay: -1.4s; }
+@keyframes ill-brilla { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+.ill .ill-barra { transform-box: fill-box; transform-origin: bottom; animation: ill-barra 1.4s var(--ease) .4s both; }
+@keyframes ill-barra { from { transform: scaleY(.1); } to { transform: scaleY(1); } }
+.ill .ill-disegna { stroke-dasharray: 420; stroke-dashoffset: 420; animation: ill-disegna 2.2s var(--ease) .5s forwards; }
+@keyframes ill-disegna { to { stroke-dashoffset: 0; } }
+
+/* il ciclo di 6 secondi: il cursore va sul bottone, clic, arriva la notifica */
+.ill .ill-cursore { animation: ill-cursore 6s var(--ease) infinite; }
+@keyframes ill-cursore { 0% { transform: translate(430px, 330px); opacity: 0; } 10% { opacity: 1; } 40% { transform: translate(168px, 244px); } 44% { transform: translate(168px, 244px) scale(.85); } 48%, 80% { transform: translate(168px, 244px); opacity: 1; } 92%, 100% { transform: translate(168px, 244px); opacity: 0; } }
+.ill .ill-cta { transform-box: fill-box; transform-origin: center; animation: ill-cta 6s ease infinite; }
+@keyframes ill-cta { 0%, 42%, 50%, 100% { transform: scale(1); } 45% { transform: scale(.95); } }
+.ill .ill-onda-clic { fill: none; stroke: var(--latte); stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; animation: ill-onda 6s ease-out infinite; }
+@keyframes ill-onda { 0%, 44% { opacity: 0; transform: scale(.4); } 46% { opacity: .9; } 60%, 100% { opacity: 0; transform: scale(1.8); } }
+.ill .ill-notifica { animation: ill-notifica 6s var(--ease) infinite; }
+@keyframes ill-notifica { 0%, 48% { opacity: 0; transform: translateY(-10px); } 56%, 90% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
+.ill-software .ill-notifica, .ill-ads .ill-notifica { animation-name: ill-notifica-sotto; }
+@keyframes ill-notifica-sotto { 0%, 40% { opacity: 0; transform: translateY(12px); } 50%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
+.ill .ill-conta-a { animation: ill-conta-a 6s steps(1) infinite; }
+.ill .ill-conta-b { animation: ill-conta-b 6s steps(1) infinite; }
+@keyframes ill-conta-a { 0%, 46% { opacity: 1; } 47%, 100% { opacity: 0; } }
+@keyframes ill-conta-b { 0%, 46% { opacity: 0; } 47%, 100% { opacity: 1; } }
+
+html.ridotto .ill * { animation: none !important; }
+html.ridotto .ill .ill-notifica, html.ridotto .ill .ill-conta-b { opacity: 1; }
+html.ridotto .ill .ill-conta-a, html.ridotto .ill .ill-cursore, html.ridotto .ill .ill-onda-clic { opacity: 0; }
+html.ridotto .ill .ill-disegna { stroke-dashoffset: 0; }
+
+/* ogni sezione in uno schermo (computer) */
+@media (min-width: 901px) {
+  .sv-hero { padding-bottom: 4svh; }
+  .flusso p, .sv-esempio p { font-size: .95rem; }
+}
+@media (min-width: 901px) and (max-height: 840px) {
+  .sv-punto p { font-size: .88rem; }
+  .sv-esempio-num { font-size: 2rem; }
+}

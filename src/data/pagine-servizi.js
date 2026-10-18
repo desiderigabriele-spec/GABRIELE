@@ -1,0 +1,406 @@
+// Le pagine dei sei servizi, in parole semplici. Prezzi e pacchetti arrivano da listino.js.
+// ottieni / come: [icona, titolo, testo] · esempi: [chi, cosa cambia] · faq: [domanda, risposta]
+// Gli esempi sono situazioni tipo, non clienti: i clienti veri sono nella home («Parlano di noi»).
+export const pagineServizi = {
+  it: {
+    sito: {
+      titolo: ['Un sito che ti porta', 'richieste, non solo visite.'],
+      sotto: 'Ti trovano su Google, capiscono in pochi secondi cosa fai e ti scrivono. Le richieste ti arrivano sul telefono, già ordinate.',
+      meta: 'Siti web su misura a Milano, in Italia e in Svizzera: veloci, chiari e pensati per farti arrivare richieste. Da 1.500 €.',
+      ottieni: [
+        ['ricerca', 'Ti trovano su Google', 'Pagine e testi scritti con le parole che usano i tuoi clienti quando cercano.'],
+        ['lampo', 'Si apre in un attimo', 'Un sito lento perde metà delle persone. Il tuo si apre in un secondo, anche dal telefono.'],
+        ['sguardo', 'Si capisce subito', 'In tre secondi chi arriva sa cosa fai, per chi lo fai e perché sceglierti.'],
+        ['telefono', 'Perfetto sul telefono', 'Quasi tutti ti guardano dal telefono: bottoni grandi, chiamata e WhatsApp a portata di pollice.'],
+        ['posta', 'Richieste in tempo reale', 'Ogni richiesta ti arriva su WhatsApp, Telegram o email e finisce da sola in un foglio ordinato.'],
+        ['chiave', 'È tutto tuo', 'Dominio, testi, foto e codice restano tuoi. Niente vincoli e niente costi nascosti.'],
+      ],
+      come: {
+        titolo: ['Come arriva', 'un nuovo cliente.'],
+        passi: [
+          ['ricerca', 'Cerca', 'Una persona cerca «idraulico a Sesto San Giovanni» e trova te.'],
+          ['sguardo', 'Guarda', 'Apre il sito: veloce, chiaro, con i lavori e le recensioni in vista.'],
+          ['chat', 'Scrive', 'Tocca «Chiedi un preventivo» e in 30 secondi ti manda la richiesta.'],
+          ['telefono', 'Ti arriva', 'La ricevi subito sul telefono, con nome, problema e zona.'],
+        ],
+      },
+      esempi: [
+        ['Un idraulico', 'Le richieste arrivano da Google con zona e tipo di guasto. Chi ha un’emergenza ti chiama con un tocco.'],
+        ['Uno studio professionale', 'Una pagina per ogni servizio e per ogni tipo di cliente: ognuno trova subito la sua strada e prenota.'],
+        ['Un ristorante', 'Menu sempre aggiornato, foto che fanno venire fame e il tavolo prenotato con un messaggio.'],
+      ],
+      faq: [
+        ['Quanto tempo serve?', 'Una pagina singola è pronta in 7-10 giorni, un sito completo in 3-5 settimane, un sito con il 3D in 6-8 settimane.'],
+        ['Devo scrivere io i testi?', 'No. Ti faccio qualche domanda e i testi li scrivo io, pensati per convincere e per farti trovare. Tu li leggi e li approvi.'],
+        ['Posso cambiarlo da solo?', 'Sì: ti lascio un modo semplice per cambiare testi e foto. Se preferisci, con la Cura+ le modifiche le faccio io.'],
+        ['Cosa pago dopo?', 'Il sito lo paghi una volta. Poi restano dominio e hosting: con la Cura, da 59 € al mese, sono compresi insieme a backup, sicurezza e aggiornamenti.'],
+      ],
+    },
+    ecommerce: {
+      titolo: ['Il tuo negozio,', 'aperto anche di notte.'],
+      sotto: 'Un negozio online bello, veloce e facile da usare. I clienti trovano il prodotto, pagano in due tocchi e a te arriva l’ordine.',
+      meta: 'Negozi online su Shopify pensati per vendere: schede prodotto, pagamenti, spedizioni ed email automatiche. Da 3.900 €.',
+      ottieni: [
+        ['borsa', 'Schede che fanno comprare', 'Foto, testi e dettagli che rispondono ai dubbi prima ancora che il cliente li abbia.'],
+        ['carrello', 'Pagamento in due tocchi', 'Carta, Apple Pay, Google Pay, PayPal e rate: meno passaggi, più ordini.'],
+        ['pacco', 'Spedizioni senza pensieri', 'Costi chiari, etichette pronte e il cliente che riceve da solo gli aggiornamenti sul pacco.'],
+        ['posta', 'Email che vendono da sole', 'Benvenuto, carrello dimenticato, «ti è piaciuto?»: partono da sole al momento giusto.'],
+        ['grafico', 'Sai cosa funziona', 'Quanto vendi, cosa vendi e da dove arrivano i clienti, in un colpo d’occhio.'],
+        ['lingua', 'Vendi anche all’estero', 'Lingue, valute e spedizioni internazionali quando vuoi crescere oltre l’Italia.'],
+      ],
+      come: {
+        titolo: ['Dal primo clic', 'al pacco a casa.'],
+        passi: [
+          ['sguardo', 'Scopre', 'Vede il tuo prodotto su Instagram o su Google e arriva nel negozio.'],
+          ['borsa', 'Sceglie', 'La scheda risponde ai dubbi: misure, tempi, resi. Lo mette nel carrello.'],
+          ['carrello', 'Paga', 'Due tocchi con Apple Pay o con la carta, senza registrarsi per forza.'],
+          ['pacco', 'Riceve', 'A te arriva l’ordine, a lui gli aggiornamenti sul pacco. E poi torna.'],
+        ],
+      },
+      esempi: [
+        ['Un negozio di abbigliamento', 'Guida alle taglie chiara, foto indossate e cambio taglia facile: meno resi e più ordini.'],
+        ['Un produttore di vino o di olio', 'La storia dietro ogni bottiglia, gli abbinamenti e le confezioni regalo pronte per Natale.'],
+        ['Un artigiano', 'Prodotti su ordinazione con un configuratore: il cliente sceglie misure e colori e vede subito il prezzo.'],
+      ],
+      faq: [
+        ['Perché Shopify?', 'È la piattaforma più usata al mondo per vendere online: sicura, veloce e facile da gestire anche per te. Server e aggiornamenti non sono un tuo problema.'],
+        ['Quanto costa Shopify al mese?', 'Dipende dal piano: di solito tra 30 e 110 € al mese, più le commissioni sui pagamenti. Li paghi direttamente a Shopify, senza ricarichi.'],
+        ['I prodotti li carico io?', 'Nel prezzo c’è il caricamento dei prodotti del pacchetto. Se ne hai di più, ne carichiamo altri 100 alla volta.'],
+        ['Si collega al mio gestionale?', 'Sì. Ordini, magazzino e fatture possono aggiornarsi da soli nel gestionale che usi già.'],
+      ],
+    },
+    software: {
+      titolo: ['Un programma su misura', 'che lavora al posto tuo.'],
+      sotto: 'Preventivi, email, documenti, appuntamenti: il lavoro ripetitivo lo fa il software con l’intelligenza artificiale. Tu controlli e approvi con un clic.',
+      meta: 'Software con intelligenza artificiale su misura per aziende e professionisti: assistenti, automazioni e programmi interni. Da 2.400 €.',
+      ottieni: [
+        ['chat', 'Un assistente che risponde', 'Conosce la tua attività, risponde ai clienti sul sito e su WhatsApp e fissa gli appuntamenti.'],
+        ['preventivo', 'Preventivi già pronti', 'Dalla richiesta del cliente alla bozza con i tuoi prezzi in un minuto. Tu la controlli.'],
+        ['posta', 'Email lette e smistate', 'Ogni email viene capita e girata alla persona giusta, con la risposta già scritta.'],
+        ['ricerca', 'Trovi tutto subito', 'Chiedi in chat di listini, contratti e procedure: risponde e ti dice dove l’ha letto.'],
+        ['grafico', 'Un cruscotto chiaro', 'In una schermata vedi cosa c’è da fare, cosa è fatto e quanto tempo hai risparmiato.'],
+        ['lucchetto', 'I dati restano tuoi', 'Accessi diversi per ogni persona e servizi professionali che non usano i tuoi dati per addestrare l’AI.'],
+      ],
+      come: {
+        titolo: ['Dal lavoro noioso', 'al clic su «Approva».'],
+        passi: [
+          ['tempi', 'Guardiamo', '90 minuti insieme per scegliere il lavoro che ti ruba più tempo.'],
+          ['chip', 'Costruisco', 'In 2-3 settimane hai la prima versione, collegata ai tuoi programmi.'],
+          ['utenti', 'Lo provate', 'Lo usate sul lavoro vero e io sistemo quello che non va.'],
+          ['grafico', 'Cresce', 'Ogni mese controllo che funzioni e aggiungiamo il pezzo successivo.'],
+        ],
+      },
+      esempi: [
+        ['Un’impresa edile', 'Il cliente manda foto e misure: il software prepara il preventivo con il listino dell’impresa. Il titolare lo rilegge e lo manda.'],
+        ['Uno studio di commercialisti', 'Le fatture dei clienti vengono lette da sole e inserite nel gestionale. Le persone controllano solo i casi strani.'],
+        ['Un’agenzia immobiliare', 'Ogni richiesta dai portali riceve risposta in un minuto e l’AI segnala chi è pronto a comprare.'],
+      ],
+      faq: [
+        ['Devo cambiare i programmi che uso?', 'No. Il software si collega a quelli che hai già: email, Excel, gestionale, calendario, WhatsApp.'],
+        ['E se l’AI sbaglia?', 'Per le cose importanti decide sempre una persona. L’AI prepara il lavoro, tu lo controlli e lo approvi.'],
+        ['Quanto costa al mese?', 'Il canone, da 149 € al mese, copre hosting, controlli e aggiornamenti. Il consumo dell’AI oltre i 30 € al mese si paga a parte, al costo reale.'],
+        ['Ci sono contributi?', 'In Lombardia il Voucher Doppia Transizione può coprire fino al 50% dei progetti con AI da almeno 4.000 €. Verifichiamo insieme se è ancora aperto.'],
+      ],
+    },
+    integrazioni: {
+      titolo: ['I tuoi programmi', 'finalmente si parlano.'],
+      sotto: 'Email, WhatsApp, Excel, gestionale, calendario: li colleghiamo tra loro con l’intelligenza artificiale in mezzo. I dati passano da soli, senza copia e incolla.',
+      meta: 'Collegamenti AI tra i programmi che usi già: email, WhatsApp, Excel, gestionale e CRM. Niente più copia e incolla. Da 1.200 €.',
+      ottieni: [
+        ['nodi', 'Basta copia e incolla', 'I dati di un cliente si scrivono una volta sola e arrivano dovunque servono.'],
+        ['chip', 'L’AI legge e capisce', 'Capisce cosa chiede un’email o un messaggio e lo manda nel posto giusto.'],
+        ['lampo', 'Risposte in un minuto', 'Chi ti scrive riceve subito una risposta, anche di sera e nel weekend.'],
+        ['calendario', 'Appuntamenti da soli', 'Richiesta, appuntamento in agenda e promemoria al cliente, senza toccare niente.'],
+        ['scudo', 'Avvisi se qualcosa non va', 'Se un passaggio si blocca lo sai subito. Nessuna richiesta va persa.'],
+        ['revisioni', 'Usi quello che hai', 'Non cambi abitudini né programmi: funzionano meglio quelli di adesso.'],
+      ],
+      come: {
+        titolo: ['Entra un messaggio,', 'il resto succede da solo.'],
+        passi: [
+          ['chat', 'Arriva', 'Un cliente scrive su WhatsApp o compila il modulo del sito.'],
+          ['chip', 'L’AI capisce', 'Legge il messaggio e tira fuori nome, richiesta, zona e urgenza.'],
+          ['nodi', 'Si sistema', 'I dati finiscono nel gestionale o nel foglio clienti, al posto giusto.'],
+          ['telefono', 'Ti avvisa', 'A te arriva il riepilogo sul telefono, al cliente una risposta immediata.'],
+        ],
+      },
+      esempi: [
+        ['Un centro estetico', 'Le prenotazioni da Instagram e WhatsApp finiscono da sole in agenda, con il promemoria il giorno prima.'],
+        ['Un negozio online', 'Ogni ordine aggiorna magazzino e contabilità. Quando un prodotto sta per finire, arriva un avviso.'],
+        ['Un’azienda di servizi', 'L’AI valuta le richieste dal sito: quelle importanti arrivano subito al commerciale giusto.'],
+      ],
+      faq: [
+        ['Con quali programmi funziona?', 'Con quasi tutti quelli che si usano ogni giorno: Gmail, Outlook, WhatsApp Business, Google Fogli, Excel, Fatture in Cloud, Shopify, calendari e CRM.'],
+        ['Che differenza c’è con un software su misura?', 'Il collegamento fa lavorare insieme i programmi che hai. Il software su misura è un programma nuovo, tutto tuo. Spesso si parte dal collegamento.'],
+        ['E se un programma cambia?', 'Con l’automazione completa c’è un controllo ogni mese: se qualcosa cambia, lo sistemo io.'],
+        ['Quanto tempo serve?', 'Un collegamento semplice è pronto in 1-2 settimane, un sistema completo in 3-6 settimane.'],
+      ],
+    },
+    ads: {
+      titolo: ['Pubblicità che porta', 'clienti, non «mi piace».'],
+      sotto: 'Annunci su Instagram, Facebook, Google e TikTok mostrati alle persone giuste. Ogni mese sai quanto hai speso e quanto ti è costato ogni contatto.',
+      meta: 'Pubblicità online su Meta, Google e TikTok con creatività, test e report chiari. Gestione da 590 € al mese.',
+      ottieni: [
+        ['bersaglio', 'Le persone giuste', 'Gli annunci li vede chi può davvero comprare: zona, età, interessi, cosa sta cercando.'],
+        ['matita', 'Annunci che fermano il pollice', 'Immagini, video e testi fatti per farsi notare in mezzo a mille post.'],
+        ['finestra', 'Una pagina per chi arriva', 'Chi tocca l’annuncio trova una pagina fatta apposta, che trasforma molto di più.'],
+        ['grafico', 'Numeri chiari', 'Ogni mese: quanto hai speso, quante richieste sono arrivate e quanto è costata ognuna.'],
+        ['revisioni', 'Prove continue', 'Proviamo versioni diverse e teniamo solo quelle che portano risultati.'],
+        ['prezzo', 'Budget sotto controllo', 'Quanto spendere lo decidi tu. Il budget lo paghi direttamente alle piattaforme.'],
+      ],
+      come: {
+        titolo: ['Dall’annuncio', 'alla richiesta.'],
+        passi: [
+          ['bersaglio', 'Scegliamo', 'Chi deve vedere l’annuncio: zona, età, interessi.'],
+          ['onda', 'Si fa notare', 'L’annuncio compare su Instagram, Google o TikTok.'],
+          ['finestra', 'Convince', 'Chi lo tocca arriva su una pagina chiara, con un solo obiettivo.'],
+          ['grafico', 'Misuriamo', 'Contiamo le richieste e spostiamo il budget dove rende di più.'],
+        ],
+      },
+      esempi: [
+        ['Uno studio dentistico', 'Annunci su Google per chi cerca «impianti dentali» in zona: le richieste arrivano già con il giorno preferito.'],
+        ['Una palestra', 'Una prova gratuita su Instagram a settembre, con un modulo di due campi e la risposta su WhatsApp.'],
+        ['Un negozio online', 'Annunci per chi ha guardato un prodotto senza comprarlo, con proprio quel prodotto davanti agli occhi.'],
+      ],
+      faq: [
+        ['Quanto devo spendere in pubblicità?', 'Per partire bastano 10-20 € al giorno su un canale. Il budget lo decidi tu e lo paghi direttamente a Meta, Google o TikTok.'],
+        ['Quando vedo i risultati?', 'I primi dati arrivano in pochi giorni, ma servono 4-8 settimane per capire cosa funziona davvero. Per questo si parte con almeno 3 mesi.'],
+        ['Cosa c’è nel report?', 'Quanto hai speso, quante persone hanno visto gli annunci, quante richieste sono arrivate e quanto è costata ognuna. In parole semplici.'],
+        ['Gli account restano miei?', 'Sì. Gli account pubblicitari sono intestati a te: se smettiamo di lavorare insieme, restano tuoi con tutti i dati.'],
+      ],
+    },
+    cura: {
+      titolo: ['Il sito sempre in forma,', 'senza pensarci tu.'],
+      sotto: 'Aggiornamenti, sicurezza, backup e piccole modifiche: ci penso io, ogni mese. E con la Crescita il sito porta qualche richiesta in più ogni mese.',
+      meta: 'Manutenzione e crescita del sito: hosting veloce, backup, sicurezza, modifiche e report mensile. Da 59 € al mese.',
+      ottieni: [
+        ['scudo', 'Sicurezza', 'Controlli continui e protezione da attacchi e spam.'],
+        ['revisioni', 'Backup ogni giorno', 'Se qualcosa va storto, il sito torna com’era in pochi minuti.'],
+        ['lampo', 'Hosting veloce', 'Il sito resta veloce e online, anche quando arrivano tante visite insieme.'],
+        ['matita', 'Piccole modifiche', 'Un orario, un prezzo, una foto: me lo scrivi e lo cambio io.'],
+        ['preventivo', 'Un report chiaro', 'Ogni mese ti dico quante persone sono arrivate e quante ti hanno scritto.'],
+        ['grafico', 'Sempre un po’ meglio', 'Con la Crescita provo nuove versioni di pagine e testi per farti arrivare più richieste.'],
+      ],
+      come: {
+        titolo: ['Ogni mese,', 'un passo avanti.'],
+        passi: [
+          ['scudo', 'Controllo', 'Sicurezza, velocità e backup, ogni giorno, in automatico.'],
+          ['matita', 'Sistemo', 'Le modifiche che mi chiedi, senza preventivi e senza attese.'],
+          ['grafico', 'Misuro', 'Guardo da dove arrivano le persone e dove si fermano.'],
+          ['preventivo', 'Ti racconto', 'Un report semplice e la prossima cosa da migliorare.'],
+        ],
+      },
+      esempi: [
+        ['Un professionista', 'Non tocca mai il sito: quando cambia un orario o un servizio manda un messaggio, e il giorno dopo è online.'],
+        ['Un’impresa locale', 'Ogni mese una pagina nuova per una zona servita: piano piano compare su Google in sempre più città.'],
+        ['Un negozio online', 'Prove sulla pagina prodotto e sul carrello: piccoli ritocchi che mese dopo mese fanno crescere gli ordini.'],
+      ],
+      faq: [
+        ['Posso smettere quando voglio?', 'Sì. Il sito resta tuo e ti consegno tutto quello che serve per gestirlo.'],
+        ['Va bene anche per un sito che non hai fatto tu?', 'Sì, dopo un controllo iniziale per capire com’è fatto e cosa va sistemato.'],
+        ['Cosa vuol dire «un’ora di modifiche»?', 'Piccoli cambi come testi, foto, prezzi, orari o una sezione semplice in più. Le ore non usate non si accumulano.'],
+        ['Che differenza c’è tra Cura+ e Crescita?', 'La Cura+ tiene il sito in ordine. La Crescita lo migliora ogni mese con prove, SEO e contenuti nuovi per farti arrivare più richieste.'],
+      ],
+    },
+  },
+
+  en: {
+    sito: {
+      titolo: ['A website that brings', 'enquiries, not just visits.'],
+      sotto: 'People find you on Google, understand what you do in seconds and get in touch. Enquiries reach your phone, already organised.',
+      meta: 'Custom websites from Milan for Italy and Switzerland: fast, clear and built to bring you enquiries. From €1,500.',
+      ottieni: [
+        ['ricerca', 'Found on Google', 'Pages and copy written with the words your clients use when they search.'],
+        ['lampo', 'Opens in a flash', 'A slow site loses half its visitors. Yours opens in a second, on phones too.'],
+        ['sguardo', 'Clear at a glance', 'In three seconds visitors know what you do, who it is for and why to choose you.'],
+        ['telefono', 'Perfect on a phone', 'Almost everyone looks at you on a phone: big buttons, call and WhatsApp within thumb’s reach.'],
+        ['posta', 'Enquiries in real time', 'Every enquiry reaches you on WhatsApp, Telegram or email and lands in a tidy sheet by itself.'],
+        ['chiave', 'It is all yours', 'Domain, copy, photos and code stay yours. No lock-in and no hidden costs.'],
+      ],
+      come: {
+        titolo: ['How a new client', 'finds you.'],
+        passi: [
+          ['ricerca', 'Searches', 'Someone searches “plumber near me” and finds you.'],
+          ['sguardo', 'Looks', 'They open your site: fast, clear, with your work and reviews in sight.'],
+          ['chat', 'Writes', 'They tap “Ask for a quote” and send the request in 30 seconds.'],
+          ['telefono', 'You get it', 'It reaches your phone straight away, with name, problem and area.'],
+        ],
+      },
+      esempi: [
+        ['A plumber', 'Enquiries come from Google with area and type of fault. Anyone with an emergency calls you with one tap.'],
+        ['A professional practice', 'A page for each service and each type of client: everyone finds their way and books.'],
+        ['A restaurant', 'An always up-to-date menu, photos that make people hungry and a table booked with one message.'],
+      ],
+      faq: [
+        ['How long does it take?', 'A single page is ready in 7-10 days, a full website in 3-5 weeks, a website with 3D in 6-8 weeks.'],
+        ['Do I have to write the copy?', 'No. I ask you a few questions and write the copy myself, made to convince and to be found. You read it and approve it.'],
+        ['Can I change it myself?', 'Yes: you get a simple way to change text and photos. If you prefer, with Care+ I make the changes for you.'],
+        ['What do I pay afterwards?', 'You pay for the site once. Then there are domain and hosting: with Care, from €59 a month, they are included together with backups, security and updates.'],
+      ],
+    },
+    ecommerce: {
+      titolo: ['Your shop,', 'open all night too.'],
+      sotto: 'A beautiful, fast online store that is easy to use. Customers find the product, pay in two taps and you get the order.',
+      meta: 'Shopify online stores built to sell: product pages, payments, shipping and automatic emails. From €3,900.',
+      ottieni: [
+        ['borsa', 'Product pages that sell', 'Photos, copy and details that answer doubts before the customer even has them.'],
+        ['carrello', 'Two-tap checkout', 'Card, Apple Pay, Google Pay, PayPal and instalments: fewer steps, more orders.'],
+        ['pacco', 'Stress-free shipping', 'Clear costs, ready labels and customers who get parcel updates on their own.'],
+        ['posta', 'Emails that sell by themselves', 'Welcome, forgotten basket, “did you like it?”: they go out on their own at the right moment.'],
+        ['grafico', 'Know what works', 'How much you sell, what you sell and where customers come from, at a glance.'],
+        ['lingua', 'Sell abroad too', 'Languages, currencies and international shipping when you want to grow beyond Italy.'],
+      ],
+      come: {
+        titolo: ['From the first click', 'to the parcel at home.'],
+        passi: [
+          ['sguardo', 'Discovers', 'They see your product on Instagram or Google and land in your shop.'],
+          ['borsa', 'Chooses', 'The page answers their doubts: sizes, timing, returns. Into the basket.'],
+          ['carrello', 'Pays', 'Two taps with Apple Pay or card, no forced sign-up.'],
+          ['pacco', 'Receives', 'You get the order, they get parcel updates. And then they come back.'],
+        ],
+      },
+      esempi: [
+        ['A clothing shop', 'A clear size guide, photos of the clothes being worn and easy size swaps: fewer returns, more orders.'],
+        ['A wine or olive oil producer', 'The story behind every bottle, food pairings and gift boxes ready for Christmas.'],
+        ['A craftsperson', 'Made-to-order products with a configurator: customers pick sizes and colours and see the price straight away.'],
+      ],
+      faq: [
+        ['Why Shopify?', 'It is the most widely used platform for selling online: secure, fast and easy for you to manage. Servers and updates are not your problem.'],
+        ['How much is Shopify per month?', 'It depends on the plan: usually between €30 and €110 a month, plus payment fees. You pay Shopify directly, with no mark-up.'],
+        ['Do I upload the products?', 'The price includes uploading the products in your package. If you have more, we add another 100 at a time.'],
+        ['Does it connect to my management software?', 'Yes. Orders, stock and invoices can update themselves in the software you already use.'],
+      ],
+    },
+    software: {
+      titolo: ['Custom software', 'that does the work for you.'],
+      sotto: 'Quotes, emails, documents, appointments: the repetitive work is done by software with artificial intelligence. You check and approve with one click.',
+      meta: 'Custom AI software for companies and professionals: assistants, automations and internal tools. From €2,400.',
+      ottieni: [
+        ['chat', 'An assistant that answers', 'It knows your business, replies to clients on your site and on WhatsApp and books appointments.'],
+        ['preventivo', 'Quotes ready to go', 'From the client’s request to a draft with your prices in a minute. You check it.'],
+        ['posta', 'Emails read and sorted', 'Every email is understood and passed to the right person, with the reply already written.'],
+        ['ricerca', 'Find anything at once', 'Ask in a chat about price lists, contracts and procedures: it answers and tells you where it read it.'],
+        ['grafico', 'A clear dashboard', 'One screen shows what needs doing, what is done and how much time you saved.'],
+        ['lucchetto', 'Your data stays yours', 'Separate access for each person and professional services that do not use your data to train AI.'],
+      ],
+      come: {
+        titolo: ['From boring work', 'to clicking “Approve”.'],
+        passi: [
+          ['tempi', 'We look', '90 minutes together to pick the job that eats the most time.'],
+          ['chip', 'I build', 'In 2-3 weeks you have the first version, connected to your programs.'],
+          ['utenti', 'You try it', 'You use it on real work and I fix whatever is not right.'],
+          ['grafico', 'It grows', 'Every month I check it works and we add the next piece.'],
+        ],
+      },
+      esempi: [
+        ['A building firm', 'The client sends photos and measurements: the software drafts the quote with the firm’s price list. The owner reads it and sends it.'],
+        ['An accounting practice', 'Clients’ invoices are read automatically and entered in the accounting software. People only check the odd cases.'],
+        ['An estate agency', 'Every enquiry from the property portals gets a reply in a minute and AI flags who is ready to buy.'],
+      ],
+      faq: [
+        ['Do I have to change the programs I use?', 'No. The software connects to what you already have: email, Excel, management software, calendar, WhatsApp.'],
+        ['What if AI makes a mistake?', 'For important things a person always decides. AI prepares the work, you check and approve it.'],
+        ['What does it cost per month?', 'The fee, from €149 a month, covers hosting, checks and updates. AI usage above €30 a month is charged separately, at cost.'],
+        ['Are there grants?', 'In Lombardy the “Doppia Transizione” voucher can cover up to 50% of AI projects from €4,000. We check together whether it is still open.'],
+      ],
+    },
+    integrazioni: {
+      titolo: ['Your programs', 'finally talk to each other.'],
+      sotto: 'Email, WhatsApp, Excel, management software, calendar: we connect them with artificial intelligence in the middle. Data moves on its own, no copy and paste.',
+      meta: 'AI integrations between the programs you already use: email, WhatsApp, Excel, management software and CRM. No more copy and paste. From €1,200.',
+      ottieni: [
+        ['nodi', 'No more copy and paste', 'A client’s details are written once and reach everywhere they are needed.'],
+        ['chip', 'AI reads and understands', 'It understands what an email or message is asking and sends it to the right place.'],
+        ['lampo', 'Replies in a minute', 'Whoever writes to you gets an answer straight away, evenings and weekends too.'],
+        ['calendario', 'Appointments on their own', 'Request, appointment in the diary and reminder to the client, without touching a thing.'],
+        ['scudo', 'Alerts if something breaks', 'If a step gets stuck you know at once. No enquiry gets lost.'],
+        ['revisioni', 'Use what you have', 'No new habits or programs: the ones you use now just work better.'],
+      ],
+      come: {
+        titolo: ['A message comes in,', 'the rest happens by itself.'],
+        passi: [
+          ['chat', 'It arrives', 'A client writes on WhatsApp or fills in the form on your site.'],
+          ['chip', 'AI understands', 'It reads the message and picks out name, request, area and urgency.'],
+          ['nodi', 'It files itself', 'The details land in your management software or client sheet, in the right place.'],
+          ['telefono', 'You are told', 'You get a summary on your phone, the client gets an instant reply.'],
+        ],
+      },
+      esempi: [
+        ['A beauty salon', 'Bookings from Instagram and WhatsApp land in the diary by themselves, with a reminder the day before.'],
+        ['An online shop', 'Every order updates stock and accounts. When a product is about to run out, you get an alert.'],
+        ['A service company', 'AI assesses enquiries from the website: the important ones go straight to the right salesperson.'],
+      ],
+      faq: [
+        ['Which programs does it work with?', 'With almost all the ones used every day: Gmail, Outlook, WhatsApp Business, Google Sheets, Excel, Fatture in Cloud, Shopify, calendars and CRMs.'],
+        ['How is it different from custom software?', 'An integration makes the programs you have work together. Custom software is a new program, all yours. Often you start with an integration.'],
+        ['What if a program changes?', 'With full automation there is a monthly check: if something changes, I fix it.'],
+        ['How long does it take?', 'A simple integration is ready in 1-2 weeks, a full system in 3-6 weeks.'],
+      ],
+    },
+    ads: {
+      titolo: ['Advertising that brings', 'clients, not “likes”.'],
+      sotto: 'Ads on Instagram, Facebook, Google and TikTok shown to the right people. Every month you know what you spent and what each enquiry cost you.',
+      meta: 'Online advertising on Meta, Google and TikTok with creative, testing and clear reports. Management from €590 a month.',
+      ottieni: [
+        ['bersaglio', 'The right people', 'Ads are seen by people who can actually buy: area, age, interests, what they are looking for.'],
+        ['matita', 'Ads that stop the scroll', 'Images, videos and copy made to stand out among a thousand posts.'],
+        ['finestra', 'A page for those who click', 'Whoever taps the ad finds a page made for them, which converts far better.'],
+        ['grafico', 'Clear numbers', 'Every month: what you spent, how many enquiries came in and what each one cost.'],
+        ['revisioni', 'Constant testing', 'We try different versions and keep only the ones that bring results.'],
+        ['prezzo', 'Budget under control', 'You decide how much to spend. You pay the budget directly to the platforms.'],
+      ],
+      come: {
+        titolo: ['From the ad', 'to the enquiry.'],
+        passi: [
+          ['bersaglio', 'We choose', 'Who should see the ad: area, age, interests.'],
+          ['onda', 'It gets noticed', 'The ad shows up on Instagram, Google or TikTok.'],
+          ['finestra', 'It convinces', 'Whoever taps it lands on a clear page with a single goal.'],
+          ['grafico', 'We measure', 'We count the enquiries and move budget to where it works best.'],
+        ],
+      },
+      esempi: [
+        ['A dental practice', 'Google ads for people searching “dental implants” nearby: enquiries arrive with the preferred day already filled in.'],
+        ['A gym', 'A free trial on Instagram in September, with a two-field form and the reply on WhatsApp.'],
+        ['An online shop', 'Ads for people who looked at a product without buying, with that very product in front of them.'],
+      ],
+      faq: [
+        ['How much should I spend on ads?', 'To start, €10-20 a day on one channel is enough. You decide the budget and pay it directly to Meta, Google or TikTok.'],
+        ['When will I see results?', 'The first data comes in within days, but it takes 4-8 weeks to learn what really works. That is why we start with at least 3 months.'],
+        ['What is in the report?', 'What you spent, how many people saw the ads, how many enquiries came in and what each one cost. In plain words.'],
+        ['Do the accounts stay mine?', 'Yes. The ad accounts are in your name: if we stop working together, they stay yours with all the data.'],
+      ],
+    },
+    cura: {
+      titolo: ['Your site always in shape,', 'without you thinking about it.'],
+      sotto: 'Updates, security, backups and small changes: I take care of them every month. And with Growth, the site brings a few more enquiries each month.',
+      meta: 'Website care and growth: fast hosting, backups, security, changes and a monthly report. From €59 a month.',
+      ottieni: [
+        ['scudo', 'Security', 'Constant checks and protection from attacks and spam.'],
+        ['revisioni', 'Daily backups', 'If something goes wrong, the site is back as it was in minutes.'],
+        ['lampo', 'Fast hosting', 'The site stays fast and online, even when lots of visitors arrive at once.'],
+        ['matita', 'Small changes', 'Opening hours, a price, a photo: send me a message and I change it.'],
+        ['preventivo', 'A clear report', 'Every month I tell you how many people came and how many got in touch.'],
+        ['grafico', 'A little better every month', 'With Growth I test new versions of pages and copy to bring you more enquiries.'],
+      ],
+      come: {
+        titolo: ['Every month,', 'a step forward.'],
+        passi: [
+          ['scudo', 'I check', 'Security, speed and backups, every day, automatically.'],
+          ['matita', 'I fix', 'The changes you ask for, with no quotes and no waiting.'],
+          ['grafico', 'I measure', 'I look at where people come from and where they stop.'],
+          ['preventivo', 'I report', 'A simple report and the next thing to improve.'],
+        ],
+      },
+      esempi: [
+        ['A professional', 'Never touches the site: when hours or a service change, they send a message and it is online the next day.'],
+        ['A local business', 'Every month a new page for an area they serve: little by little it shows up on Google in more and more towns.'],
+        ['An online shop', 'Tests on the product page and basket: small tweaks that, month after month, grow the orders.'],
+      ],
+      faq: [
+        ['Can I stop whenever I want?', 'Yes. The site stays yours and I hand over everything you need to run it.'],
+        ['Does it work for a site you did not build?', 'Yes, after an initial check to understand how it is built and what needs fixing.'],
+        ['What does “one hour of changes” mean?', 'Small changes like text, photos, prices, opening hours or a simple extra section. Unused hours do not roll over.'],
+        ['What is the difference between Care+ and Growth?', 'Care+ keeps the site in order. Growth improves it every month with tests, SEO and new content to bring you more enquiries.'],
+      ],
+    },
+  },
+};

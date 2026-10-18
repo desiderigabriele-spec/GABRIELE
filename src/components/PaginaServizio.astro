@@ -1,0 +1,222 @@
+---
+// La pagina di un servizio, in italiano (/servizi/...) e in inglese (/en/services/...):
+// cosa ottieni, come funziona, esempi, pacchetti dal listino, domande e gli altri servizi.
+import Base from '../layouts/Base.astro';
+import Icona from './Icona.astro';
+import Illustrazione from './Illustrazione.astro';
+import { dati } from '../i18n/dati.js';
+import { url, urlServizio } from '../i18n/ui.js';
+import { euro } from '../data/formato.js';
+import { pagineServizi } from '../data/pagine-servizi.js';
+import '../styles/servizio.css';
+
+interface Props { id: string; lang?: 'it' | 'en' }
+const { id, lang = 'it' } = Astro.props;
+const it = lang === 'it';
+const T = (a: string, b: string) => (it ? a : b);
+const { servizi, categorie, contatti } = dati(lang);
+const s = servizi.find((x) => x.id === id)!;
+const c = categorie.find((x) => x.id === id)!;
+const p = pagineServizi[lang][id];
+const eur = (n: number) => euro(n, lang);
+const mese = T('/mese', '/month');
+const preventivo = url('preventivo', lang);
+const prezzoLivello = (l: { una?: number; mese?: number }) =>
+  l.una && l.mese ? `${eur(l.una)} + ${eur(l.mese)}${mese}` : l.mese ? `${eur(l.mese)}${mese}` : eur(l.una!);
+const altri = servizi.filter((x) => x.id !== id);
+const ai = id === 'software' || id === 'integrazioni';
+const waTesto = T(`Ciao Gabriele, ho visto la pagina «${s.titolo}» e vorrei parlarti di un progetto.`, `Hi Gabriele, I saw your “${s.titolo}” page and I'd like to talk about a project.`);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: s.titolo,
+  description: p.meta,
+  serviceType: s.titolo,
+  areaServed: ['IT', 'CH'],
+  provider: { '@type': 'ProfessionalService', name: contatti.studio, url: new URL(url('home', lang), Astro.site).toString() },
+  offers: c.livelli.map((l) => ({ '@type': 'Offer', name: l.nome, price: l.una ?? l.mese, priceCurrency: 'EUR' })),
+};
+---
+<Base
+  lang={lang}
+  path={urlServizio(id, lang)}
+  alt={urlServizio(id, it ? 'en' : 'it')}
+  title={`${s.titolo} · Studio Desideri`}
+  description={p.meta}
+  jsonLd={jsonLd}
+>
+  <section class="hero sv-hero" data-forma="0" data-lato="sinistra" data-luce="0.16" data-scala="0.7" data-luce-mobile="0.1">
+    <div class="wrap sv-hero-griglia">
+      <div class="hero-testo sv-testo">
+        <a class="sv-indietro" href={`${url('home', lang)}#servizi`}><span aria-hidden="true">←</span> {T('Tutti i servizi', 'All services')}</a>
+        <span class="capitolo" data-appare>{T('Servizio', 'Service')} {s.numero} · {s.titolo}</span>
+        <h1 data-righe>
+          <span class="riga"><span>{p.titolo[0]}</span></span>
+          <span class="riga"><span><span class="em em-firma">{p.titolo[1]}</span></span></span>
+        </h1>
+        <p class="lead" data-appare="0.2">{p.sotto}</p>
+        <p class="sv-prezzo" data-appare="0.3"><span class="mono">{T('A partire da', 'Starting from')}</span><strong>{eur(s.da)}{s.mese && <small> {mese}</small>}</strong><span class="sv-iva">{T('IVA esclusa', 'excl. VAT')}</span></p>
+        <div class="hero-azioni" data-appare="0.4">
+          <a class="btn btn-azione btn-grande" href={`${preventivo}?s=${id}`} data-azione><span class="scia" aria-hidden="true"></span>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivimi su WhatsApp', 'Message me on WhatsApp')}</a>
+        </div>
+      </div>
+      <div class="sv-ill" data-appare="0.15"><Illustrazione id={id} lang={lang} /></div>
+    </div>
+  </section>
+
+  <!-- Cosa ottieni -->
+  <section class="sezione" id="cosa" data-forma="1" data-lato="destra" data-luce="0.18" data-scala="0.8">
+    <div class="wrap">
+      <div class="testa-sezione testa-riga">
+        <span class="capitolo" data-appare>{T('Cosa ottieni', 'What you get')}</span>
+        <h2 data-righe>
+          <span class="riga"><span>{T('Sei cose che', 'Six things that')}</span></span>
+          <span class="riga"><span><span class="em">{T('cambiano davvero.', 'really change.')}</span></span></span>
+        </h2>
+        <p class="lead" data-appare>{s.semplice} {s.esempio}</p>
+      </div>
+      <div class="sv-ottieni" data-sequenza>
+        {p.ottieni.map(([icona, titolo, testo]) => (
+          <div class="card sv-punto">
+            <span class="servizio-icona"><Icona nome={icona} /></span>
+            <h3>{titolo}</h3>
+            <p>{testo}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Come funziona: il percorso illustrato -->
+  <section class="sezione" id="come" data-forma="2" data-lato="destra" data-luce="0.14" data-scala="0.7">
+    <div class="wrap">
+      <div class="testa-sezione">
+        <span class="capitolo" data-appare>{T('Come funziona', 'How it works')}</span>
+        <h2 data-righe>
+          <span class="riga"><span>{p.come.titolo[0]}</span></span>
+          <span class="riga"><span><span class="em em-firma">{p.come.titolo[1]}</span></span></span>
+        </h2>
+      </div>
+      <div class="flusso-box">
+      <span class="flusso-linea" aria-hidden="true"><i></i></span>
+      <ol class="flusso" data-sequenza>
+        {p.come.passi.map(([icona, titolo, testo], i) => (
+          <li>
+            <span class="flusso-tappa"><Icona nome={icona} /><b>{i + 1}</b></span>
+            <h3>{titolo}</h3>
+            <p>{testo}</p>
+          </li>
+        ))}
+      </ol>
+      </div>
+      {ai && (
+        <a class="sv-ai card" href={url('ai', lang)}>
+          <span class="servizio-icona"><Icona nome="sguardo" /></span>
+          <span><strong>{T('Guardalo al lavoro', 'See it at work')}</strong>{T('Un esempio animato: arriva una richiesta, l’AI la capisce e scrive la risposta.', 'An animated example: a request comes in, AI understands it and writes the reply.')}</span>
+          <span class="freccia" aria-hidden="true">→</span>
+        </a>
+      )}
+    </div>
+  </section>
+
+  <!-- Per esempio -->
+  <section class="sezione" id="esempi" data-forma="2" data-lato="sinistra" data-luce="0.14" data-scala="0.7">
+    <div class="wrap">
+      <div class="testa-sezione testa-riga">
+        <span class="capitolo" data-appare>{T('Per esempio', 'For example')}</span>
+        <h2 data-righe>
+          <span class="riga"><span>{T('Come può essere', 'What it could look like')}</span></span>
+          <span class="riga"><span><span class="em">{T('nella tua attività.', 'in your business.')}</span></span></span>
+        </h2>
+        <p class="lead" data-appare>{T('Tre situazioni tipo. Il tuo progetto parte da come lavori tu, non da un modello uguale per tutti.', 'Three typical situations. Your project starts from how you work, not from a one-size-fits-all template.')}</p>
+      </div>
+      <div class="sv-esempi" data-sequenza>
+        {p.esempi.map(([chi, testo], i) => (
+          <div class="card sv-esempio">
+            <span class="sv-esempio-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{chi}</h3>
+            <p>{testo}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pacchetti, dal listino -->
+  <section class="sezione" id="pacchetti" data-forma="3" data-luce="0.16" data-scala="1.3">
+    <div class="wrap">
+      <div class="testa-sezione testa-riga">
+        <span class="capitolo" data-appare>{T('Pacchetti e prezzi', 'Packages and prices')}</span>
+        <h2 data-righe>
+          <span class="riga"><span>{T('Tre modi', 'Three ways')}</span></span>
+          <span class="riga"><span>{T('per', 'to')} <span class="em">{T('cominciare.', 'begin.')}</span></span></span>
+        </h2>
+        <p class="lead" data-appare>{T('Scegli quello che ti somiglia: nel preventivo lo trovi già selezionato e aggiungi solo quello che ti serve. Prezzi IVA esclusa.', 'Pick the one that fits you: it comes pre-selected in the quote, where you add only what you need. Prices excl. VAT.')}</p>
+      </div>
+      <div class="prezzi" data-sequenza>
+        {c.livelli.map((l) => (
+          <article class={`card piano${l.top ? ' top' : ''}`}>
+            {l.top && <span class="scia" aria-hidden="true"></span>}
+            {l.top && <span class="piano-badge">{T('Il più scelto', 'Most popular')}</span>}
+            <span class="piano-nome">{l.nome}</span>
+            <p class="piano-per">{l.spiega}</p>
+            <span class="piano-prezzo sv-piano-prezzo">{l.una ? eur(l.una) : `${eur(l.mese!)}${mese}`}<small>{l.una && l.mese ? `${T('una tantum', 'one-off')} + ${eur(l.mese)}${mese}` : l.mese ? T('al mese, IVA esclusa', 'per month, excl. VAT') : T('una tantum, IVA esclusa', 'one-off, excl. VAT')}</small></span>
+            <ul class="lista-check">{(l.include || []).map((x) => <li>{x}</li>)}</ul>
+            <a class={`btn ${l.top ? 'btn-azione' : 'btn-vetro'}`} href={`${preventivo}?s=${id}:${l.id}`} data-azione={l.top ? '' : undefined}>{T('Scegli', 'Choose')} {l.nome} <span class="freccia" aria-hidden="true">→</span></a>
+          </article>
+        ))}
+      </div>
+      {c.extra.length > 0 && (
+        <div class="sv-extra" data-appare>
+          <span class="mono">{T('Puoi aggiungere', 'You can add')}</span>
+          <ul>{c.extra.map((e) => <li>{e.nome} <b>{prezzoLivello(e)}</b></li>)}</ul>
+        </div>
+      )}
+      {c.nota && <p class="sv-nota">{c.nota}</p>}
+    </div>
+  </section>
+
+  <!-- Domande -->
+  <section class="sezione" id="domande" data-forma="3" data-luce="0.1" data-scala="1.5">
+    <div class="wrap">
+      <div class="testa-sezione centro">
+        <span class="capitolo" data-appare>{T('Domande', 'Questions')}</span>
+        <h2 data-righe><span class="riga"><span>{T('Quello che', 'What')} <span class="em">{T('tutti', 'everyone')}</span> {T('mi chiedono.', 'asks me.')}</span></span></h2>
+      </div>
+      <div class="faq">
+        {p.faq.map(([d, r]) => (
+          <details>
+            <summary>{d}<span class="piu" aria-hidden="true"></span></summary>
+            <p class="risposta">{r}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Azione e altri servizi -->
+  <section class="sezione finale sv-finale" id="azione" data-forma="4" data-luce="0.6" data-luce-mobile="0.4" data-scala="1.1">
+    <div class="wrap finale-testo">
+      <span class="capitolo" data-appare>{T('Il prossimo passo', 'The next step')}</span>
+      <h2 data-righe>
+        <span class="riga"><span>{T('Vediamo quanto costa', 'Let’s see what it costs')}</span></span>
+        <span class="riga"><span><span class="em em-firma">{T('il tuo progetto.', 'for your project.')}</span></span></span>
+      </h2>
+      <p class="lead" data-appare>{T('Due minuti nel preventivo automatico e vedi subito il prezzo. Ti rispondo entro 24 ore.', 'Two minutes in the instant quote and you see the price straight away. I reply within 24 hours.')}</p>
+      <div class="hero-azioni" data-appare style="justify-content:center">
+        <a class="btn btn-azione btn-grande" href={`${preventivo}?s=${id}`} data-azione>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
+        <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivimi su WhatsApp', 'Message me on WhatsApp')}</a>
+      </div>
+      <nav class="sv-altri" aria-label={T('Gli altri servizi', 'Other services')} data-appare>
+        {altri.map((a) => (
+          <a href={urlServizio(a.id, lang)}>
+            <span class="servizio-icona"><Icona nome={a.icona} /></span>
+            <span>{a.titolo}<small>{T('da', 'from')} {eur(a.da)}{a.mese ? mese : ''}</small></span>
+          </a>
+        ))}
+      </nav>
+    </div>
+  </section>
+</Base>
