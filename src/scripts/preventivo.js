@@ -16,11 +16,11 @@ const TESTI = {
   it: {
     mese: '/mese', vuoto: 'Scegli un servizio per iniziare.',
     veloce: 'Corsia veloce (+20%)', calma: 'Senza fretta (−5%)', sconto: (p) => `Sconto pacchetto (−${p}%)`,
-    sconto3: 'Sconto massimo sbloccato: −10% sulla parte una tantum',
-    sconto2: 'Sconto del 5% sbloccato! Con un terzo servizio arrivi al 10%',
-    sconto1: 'Aggiungi un secondo servizio: sblocchi il 5% di sconto',
-    sconto0: 'Più servizi scegli, più risparmi',
-    voucher: (e) => `Con il Voucher Doppia Transizione della Lombardia potresti risparmiare fino a ${e} sulla parte AI (contributo del 50%, da verificare insieme: lo sportello si esaurisce in fretta).`,
+    sconto3: 'Hai lo sconto massimo: −10%',
+    sconto2: 'Sconto −5% attivo. Con un terzo servizio diventa −10%',
+    sconto1: 'Con un secondo servizio hai il 5% di sconto',
+    sconto0: '',
+    voucher: (e) => `In Lombardia il Voucher Doppia Transizione potrebbe coprire fino a ${e} della parte AI. Lo verifichiamo insieme.`,
     intro: 'Ciao Studio Desideri, ecco il mio progetto dal preventivo automatico:',
     tempi: 'Tempi', scontoRiga: 'Sconto pacchetto', totale: 'Totale indicativo', una: 'una tantum', iva: 'IVA esclusa',
     nome: 'Nome', attivita: 'Attività', settore: 'Settore', telefono: 'Telefono', preferisco: 'Preferisco', sito: 'Sito/social attuale', obiettivo: 'Obiettivo',
@@ -35,11 +35,11 @@ const TESTI = {
   en: {
     mese: '/month', vuoto: 'Choose a service to get started.',
     veloce: 'Fast lane (+20%)', calma: 'No rush (−5%)', sconto: (p) => `Bundle discount (−${p}%)`,
-    sconto3: 'Maximum discount unlocked: −10% on the one-off part',
-    sconto2: '5% discount unlocked! Add a third service to reach 10%',
-    sconto1: 'Add a second service to unlock a 5% discount',
-    sconto0: 'The more services you choose, the more you save',
-    voucher: (e) => `With the Lombardy "Doppia Transizione" voucher you could save up to ${e} on the AI part (50% grant, to be checked together: the fund runs out fast).`,
+    sconto3: 'You have the maximum discount: −10%',
+    sconto2: '−5% discount on. Add a third service for −10%',
+    sconto1: 'Add a second service for 5% off',
+    sconto0: '',
+    voucher: (e) => `In Lombardy the "Doppia Transizione" voucher could cover up to ${e} of the AI part. We check it together.`,
     intro: "Hi Studio Desideri, here's my project from the instant quote:",
     tempi: 'Timing', scontoRiga: 'Bundle discount', totale: 'Indicative total', una: 'one-off', iva: 'excl. VAT',
     nome: 'Name', attivita: 'Business', settore: 'Sector', telefono: 'Phone', preferisco: 'Preferred contact', sito: 'Current site/social', obiettivo: 'Goal',
@@ -136,29 +136,18 @@ export function avviaPreventivo() {
   const elBreve = riep.querySelector('[data-tot-breve]');
   const elVoucher = riep.querySelector('[data-voucher]');
   const elScontoTesto = riep.querySelector('[data-sconto-testo]');
-  const elScontoBarra = riep.querySelector('[data-sconto-barra]');
+  const elMeseRiga = riep.querySelector('[data-tot-mese-riga]');
   const mostrati = { una: 0, mese: 0 };
 
-  // i totali girano come un contachilometri: ogni cifra scorre fino al valore nuovo, con un bagliore
+  // il totale sale (o scende) contando fino al valore nuovo, con un breve bagliore
   function animaNumero(el, chiave, valore) {
-    const testo = euro(valore);
-    const cambiato = mostrati[chiave] !== valore;
+    const da = mostrati[chiave];
     mostrati[chiave] = valore;
-    el.setAttribute('aria-label', testo);
-    if (ridotto) { el.textContent = testo; return; }
-    const forma = testo.replace(/\d/g, '0');
-    if (el.dataset.forma !== forma) {
-      el.dataset.forma = forma;
-      el.innerHTML = '<span class="odo" aria-hidden="true">' + [...testo].map((ch) => (/\d/.test(ch)
-        ? `<span class="odo-col"><span>${[...'0123456789'].map((d) => `<i>${d}</i>`).join('')}</span></span>`
-        : `<span>${ch === ' ' ? '&nbsp;' : ch}</span>`)).join('') + '</span>';
-    }
-    const colonne = el.querySelectorAll('.odo-col > span');
-    let k = 0;
-    requestAnimationFrame(() => {
-      for (const ch of testo) if (/\d/.test(ch)) colonne[k++].style.transform = `translateY(-${Number(ch) * 1.1}em)`;
-    });
-    if (cambiato) { el.classList.add('lampo'); clearTimeout(el._lampo); el._lampo = setTimeout(() => el.classList.remove('lampo'), 500); }
+    if (ridotto || da === valore) { el.textContent = euro(valore); return; }
+    const o = { v: da };
+    gsap.killTweensOf(o);
+    gsap.to(o, { v: valore, duration: 0.6, ease: 'power2.out', onUpdate: () => { el.textContent = euro(Math.round(o.v)); } });
+    el.classList.add('lampo'); clearTimeout(el._lampo); el._lampo = setTimeout(() => el.classList.remove('lampo'), 500);
   }
 
   function aggiorna() {
@@ -185,13 +174,13 @@ export function avviaPreventivo() {
 
     animaNumero(elUna, 'una', r.una);
     animaNumero(elMese, 'mese', r.mese);
+    elMeseRiga.hidden = !r.mese;
     elBreve.textContent = `${euro(r.una)}${r.mese ? ` + ${euro(r.mese)}${t.mese}` : ''}`;
 
     // gamification dello sconto pacchetto
     const n = r.nServizi;
     if (serviziPrima !== null && n >= 2 && n > serviziPrima) occhio('ok', 1600);
     serviziPrima = n;
-    elScontoBarra.style.width = `${Math.min(n, 3) / 3 * 100}%`;
     elScontoTesto.textContent = n >= 3 ? t.sconto3 : n === 2 ? t.sconto2 : n === 1 ? t.sconto1 : t.sconto0;
     riep.querySelector('[data-sconto]').classList.toggle('attivo', n >= 2);
 
@@ -199,6 +188,13 @@ export function avviaPreventivo() {
       elVoucher.hidden = false;
       elVoucher.textContent = t.voucher(euro(r.risparmioVoucher));
     } else elVoucher.hidden = true;
+
+    // quanti extra hai aggiunto, scritto accanto a «Aggiungi extra»
+    form.querySelectorAll('[data-extra-box]').forEach((box) => {
+      const k = [...box.querySelectorAll('[data-extra], [data-incontro]')].filter((x) => Number(x.dataset.q || 0) > 0).length
+        + (box.querySelector('input[name="tempi"]:checked') && box.querySelector('input[name="tempi"]:checked').value !== 'normale' ? 1 : 0);
+      box.querySelector('[data-extra-conta]').textContent = k ? `${k}` : '';
+    });
 
     salva(stato);
     return r;
@@ -251,7 +247,7 @@ export function avviaPreventivo() {
       li.classList.toggle('attivo', i === n);
       li.classList.toggle('fatto', i < n);
     });
-    if (progresso) progresso.style.width = `${[0, 8, 37, 66, 92, 100][n]}%`;
+    if (progresso) progresso.style.width = `${[0, 12, 55, 90, 100][n]}%`;
     const attivo = passi.find((p) => Number(p.dataset.passo) === n);
     if (!ridotto && attivo) gsap.fromTo(attivo, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: 'expo.out' });
     if (focus) {
@@ -270,18 +266,21 @@ export function avviaPreventivo() {
       form.querySelector('[data-errore="1"]').hidden = ok;
       return ok;
     }
-    if (n === 4) {
+    if (n === 3) {
+      // nome, almeno un contatto (email o telefono) e il consenso
+      const f = form.elements;
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value.trim());
+      const telOk = f.telefono.value.replace(/\D/g, '').length >= 6;
+      const esiti = { nome: f.nome.value.trim().length > 1, email: emailOk || telOk, telefono: emailOk || telOk, privacy: f.privacy.checked };
+      // un'email scritta male resta un errore anche se c'è il telefono
+      if (f.email.value.trim() && !emailOk) esiti.email = false;
       let ok = true;
-      ['nome', 'email', 'telefono', 'privacy'].forEach((k) => {
-        const el = form.elements[k];
-        let v = el.type === 'checkbox' ? el.checked : el.value.trim().length > 1;
-        if (k === 'email') v = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim());
-        if (k === 'telefono') v = el.value.replace(/\D/g, '').length >= 6;
-        el.closest('.pv-campo, .pv-privacy')?.classList.toggle('errore', !v);
-        el.setAttribute('aria-invalid', String(!v));
+      for (const [k, v] of Object.entries(esiti)) {
+        f[k].closest('.pv-campo, .pv-privacy')?.classList.toggle('errore', !v);
+        f[k].setAttribute('aria-invalid', String(!v));
         if (!v) ok = false;
-      });
-      form.querySelector('[data-errore="4"]').hidden = ok;
+      }
+      form.querySelector('[data-errore="3"]').hidden = ok;
       return ok;
     }
     return true;
@@ -293,7 +292,7 @@ export function avviaPreventivo() {
   });
   indicatori.forEach((li) => li.addEventListener('click', () => {
     const n = Number(li.dataset.passoInd);
-    if (n < passo || (n > passo && valido(passo) && n <= 4 && (n !== 2 || form.querySelector('input[name="cat"]:checked')))) vaiA(n);
+    if (n < passo || (n > passo && valido(passo) && n <= 3 && (n !== 2 || form.querySelector('input[name="cat"]:checked')))) vaiA(n);
   }));
 
   // ---------- Riepilogo su mobile ----------
@@ -320,7 +319,9 @@ export function avviaPreventivo() {
       righe.push('', `${t.nome}: ${d.nome}`);
       if (d.azienda) righe.push(`${t.attivita}: ${d.azienda}`);
       if (d.settore) righe.push(`${t.settore}: ${d.settore}`);
-      righe.push(`Email: ${d.email}`, `${t.telefono}: ${d.telefono}`, `${t.preferisco}: ${d.canale}`);
+      if (d.email) righe.push(`Email: ${d.email}`);
+      if (d.telefono) righe.push(`${t.telefono}: ${d.telefono}`);
+      righe.push(`${t.preferisco}: ${d.canale}`);
       if (d.sito_attuale) righe.push(`${t.sito}: ${d.sito_attuale}`);
       if (d.messaggio) righe.push('', `${t.obiettivo}: ${d.messaggio}`);
     }
@@ -338,7 +339,7 @@ export function avviaPreventivo() {
     mail.className = 'btn btn-vetro';
     mail.textContent = t.inviaMail;
     mail.addEventListener('click', () => {
-      if (!valido(4)) return;
+      if (!valido(3)) return;
       const d = dati();
       location.href = mailLink(testoProgetto(calcola(leggi()), d));
       fatto(d, 'email');
@@ -349,15 +350,17 @@ export function avviaPreventivo() {
   function dati() {
     const f = form.elements;
     return {
-      nome: f.nome.value.trim(), azienda: f.azienda.value.trim(), email: f.email.value.trim(), telefono: f.telefono.value.trim(),
-      settore: f.settore.value ? f.settore.selectedOptions[0].textContent.trim() : '', messaggio: f.messaggio.value.trim(), canale: f.canale.value, sito_attuale: f.sito_attuale.value.trim(),
+      nome: f.nome.value.trim(), email: f.email.value.trim(), telefono: f.telefono.value.trim(),
+      messaggio: f.messaggio.value.trim(), canale: f.canale.value,
+      // campi che il foglio Preventivi si aspetta ancora: restano vuoti
+      azienda: '', settore: '', sito_attuale: '',
     };
   }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (form.elements.botcheck.checked) return; // trappola per i bot
-    if (!valido(4)) return;
+    if (!valido(3)) return;
     const d = dati();
     const r = calcola(leggi());
     const testo = testoProgetto(r, d);
@@ -389,7 +392,7 @@ export function avviaPreventivo() {
       occhio('perso', 2500);
       btn.disabled = false;
       btn.innerHTML = `${t.riprova} <span class="freccia" aria-hidden="true">→</span>`;
-      const err = form.querySelector('[data-errore="4"]');
+      const err = form.querySelector('[data-errore="3"]');
       err.hidden = false;
       err.innerHTML = t.errore(waLink(testo));
     }
@@ -414,13 +417,13 @@ export function avviaPreventivo() {
       a.textContent = via === 'email' ? t.riapriMail : t.riapriWa;
       box.appendChild(a);
     }
-    vaiA(5);
+    vaiA(4);
     try { localStorage.removeItem(CHIAVE); } catch (_) {}
   }
 
   // ---------- Salvataggio nel browser ----------
   function salva(stato) {
-    try { localStorage.setItem(CHIAVE, JSON.stringify({ ...stato, passo: Math.min(passo, 3) })); } catch (_) {}
+    try { localStorage.setItem(CHIAVE, JSON.stringify({ ...stato, passo: Math.min(passo, 2) })); } catch (_) {}
   }
   function ripristina(stato) {
     for (const [id, s] of Object.entries(stato.cat || {})) {
@@ -494,5 +497,6 @@ export function avviaPreventivo() {
   } catch (_) {}
   mostraBlocchi();
   aggiorna();
+  form.querySelectorAll('[data-extra-box]').forEach((box) => { if (box.querySelector('[data-extra-conta]').textContent) box.open = true; });
   vaiA(1, false);
 }

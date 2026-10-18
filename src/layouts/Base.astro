@@ -277,7 +277,6 @@ const hrefEn = lang === 'en' ? path : alt;
             </ul>
           </div>
         </div>
-        <p class="firma-footer" aria-hidden="true">Desideri</p>
         <div class="footer-legale">
           <span>© {new Date().getFullYear()} {contatti.studio} di {contatti.nome}{contatti.piva ? ` · P.IVA ${contatti.piva}` : ''}</span>
           <span><a href={url('privacy', lang)}>{t.privacy}</a> · <button type="button" data-cookie-apri style="background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font-size:inherit">{t.preferenzeCookie}</button>{alt && <> · <a href={alt} hreflang={altLang} lang={altLang}>{t.altraLingua}</a></>}</span>

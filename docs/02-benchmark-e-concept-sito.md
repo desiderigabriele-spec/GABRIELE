@@ -204,7 +204,7 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
 5. **Software con AI: quanto ti fa risparmiare** — Nella home solo un assaggio che incuriosisce: «Quante ore ti rubano i lavori sempre uguali?» e la scheda «Stanotte, mentre dormivi, il tuo software ha fatto da solo:» con quattro lavori che si spuntano uno alla volta e la domanda «E a te quante ore restituirebbe? ? ore all'anno». Il bottone «Calcola quanto risparmi» apre una finestra in tre passi: 1) cosa fai ancora a mano (dieci lavori da spuntare, ognuno con cosa farebbe l'AI e le ore a settimana); 2) quanto vale (persone e costo orario → ore ed euro all'anno); 3) il riepilogo con i lavori scelti e «Richiedi il preventivo», che apre il preventivo con il software già scelto e i lavori già scritti nel campo obiettivo (oppure WhatsApp con lo stesso testo). Si apre anche da `/#calcola`.
 6. **Il metodo · Fiducia** — Sezione bloccata con 5 passi che scorrono (Sguardo, Interesse, Fiducia, Desiderio, Azione). Per ogni passo: cosa succede nella testa del cliente + la tecnica usata + cosa facciamo noi.
 7. **Parlano di noi** (voce di menu "Clienti") — una scheda per cliente: anteprima del sito con il link per vederlo dal vivo, la recensione (oggi, finché non arriva, la sfida del progetto), nome, settore, pacchetto e cosa è stato fatto.
-8. **Lo studio** — «Ci chiamiamo Desideri. Di lavoro, li creiamo.» Chi è Studio Desideri e chi l'ha fondato: Gabriele Desideri, che ha provato ogni tipo di vendita a freddo per capire come decidono le persone e per allenarsi. Cinque punti (vendita provata sul campo, negozi e pubblicità, una startup da zero, psicologia applicata, oggi software con AI) e le certificazioni. Niente date e niente lavori da dipendente: si parla dello studio.
+8. **Lo studio** — «Desideri di nome, risultati di fatto.» Chi è Studio Desideri e chi l'ha fondato: Gabriele Desideri, che ha provato ogni tipo di vendita a freddo per capire come decidono le persone e per allenarsi. Cinque punti (vendita provata sul campo, negozi e pubblicità, una startup da zero, psicologia applicata, oggi software con AI) e le certificazioni. Niente date e niente lavori da dipendente: si parla dello studio.
 9. **Prezzi · Desiderio** — Tre pacchetti sito (Signature, Presenza "il più scelto", Impulso), più "da X €" per tutto il resto. I tre pacchetti sono i livelli del preventivo: il bottone apre il preventivo con quel pacchetto già scelto. Servono a chi vuole vedere un prezzo subito senza comporre niente, e lo Signature messo per primo fa da "àncora" (Presenza sembra più ragionevole accanto a lui).
 10. **Garanzie** — Revisioni finché il design non ti convince · Il sito è tuo · Prezzo chiaro prima di iniziare.
 11. **Domande frequenti** — Le obiezioni, con risposte semplici.
@@ -239,19 +239,15 @@ Una pagina per servizio, stessa struttura, testi in `src/data/pagine-servizi.js`
 
 Il visitatore costruisce il proprio progetto come se riempisse un carrello. Vede il prezzo crescere in tempo reale e capisce cosa sta comprando.
 
-**Passo 1 — Cosa ti serve?** Card grandi da toccare (si possono scegliere più servizi): Sito web · E-commerce · Software AI · Integrazioni AI · Pubblicità online · Cura del sito. *Un clic: facilissimo, quindi la persona inizia (effetto "piede nella porta").*
+Tre passi, il meno possibile da leggere e da scrivere.
 
-**Passo 2 — Scegli il livello e aggiungi.** Per ogni servizio scelto: tre livelli (con "il più scelto" su quello centrale) + extra da aggiungere con "+ / −" (pagine in più, lingue, testi SEO, creatività per le pubblicità, automazioni…). Ogni voce ha un **"Cosa vuol dire?"** che la spiega in una riga.
+**Passo 1 — Cosa ti serve?** Sei schede orizzontali da toccare (icona, nome, una riga, «da X €»), anche più di una. *Un clic: facilissimo, quindi la persona inizia (effetto "piede nella porta").*
 
-**Passo 3 — Tempi.** Normale · Veloce (+20%, corsia prioritaria) · Senza fretta (-5%).
+**Passo 2 — Scegli il pacchetto.** Per ogni servizio tre schede con nome, prezzo e una riga; il più scelto è già selezionato. Gli extra sono chiusi in «Aggiungi extra (facoltativo)», con il numero di quelli aggiunti accanto; tempi (normale, veloce +20%, senza fretta −5%) e incontri di persona sono chiusi in un unico riquadro facoltativo.
 
-**Passo 4 — I tuoi contatti.** Nome, email, telefono, azienda, settore, note, consenso privacy.
+**Passo 3 — I contatti.** Solo nome, email *o* telefono (basta uno dei due), come preferisci essere ricontattato, un messaggio facoltativo e il consenso privacy.
 
-**Sempre visibile — Il riepilogo:**
-- Totale **una tantum** e totale **al mese**, che si aggiornano con un'animazione.
-- **Sconto pacchetto sbloccato:** 2 servizi = -5%, 3 o più = -10% sulla parte una tantum (gamification: la barra si riempie).
-- **Voucher Lombardia:** se la parte AI supera 4.000 €, compare "Con il voucher regionale potresti risparmiare fino al 50%" (con la nota "da verificare").
-- Nota sempre visibile: "Prezzi indicativi. Il preventivo definitivo arriva dopo una chiamata di 20 minuti."
+**Sempre visibile — Il riepilogo:** le voci con il prezzo, lo sconto pacchetto in una riga (2 servizi −5%, 3 o più −10%), il **totale** grande che sale contando fino al valore nuovo e, sotto, «+ X € al mese» se c'è un canone. Il voucher Lombardia compare in un riquadro solo se la parte AI supera 4.000 €. € / CHF in alto a destra.
 
 **Invio:**
 - Se è configurato l'indirizzo dello script (variabile `PUBLIC_PREVENTIVO_ENDPOINT`, uno script Google Apps come quello di Montini): la richiesta finisce in **Google Fogli + Telegram**.

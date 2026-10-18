@@ -19,11 +19,9 @@ const prezzoLivello = (l: { una?: number; mese?: number }) =>
   [l.una ? euro(l.una, lang) : '', l.mese ? `${euro(l.mese, lang)}${T('/mese', '/month')}` : ''].filter(Boolean).join(' + ');
 // prezzi con gli importi negli attributi: lo script li riscrive in franchi se il visitatore lo chiede
 const attrPrezzo = (l: { una?: number; mese?: number }) => ({ 'data-prezzo': '', 'data-una': l.una || 0, 'data-mese': l.mese || 0 });
-const passi = it ? ['Cosa ti serve', 'Personalizza', 'Tempi', 'I tuoi contatti'] : ['What you need', 'Customise', 'Timing', 'Your details'];
-const passoDi = (n: number) => T(`Passo ${n} di 4`, `Step ${n} of 4`);
-const settori = it
-  ? [['professionista', 'Professionista (medico, psicologo, avvocato, consulente…)'], ['artigiano', 'Artigiano o servizi a domicilio'], ['locale', 'Negozio, ristorante o attività locale'], ['immobiliare', 'Immobiliare'], ['negozio', 'E-commerce o vendita di prodotti'], ['azienda', 'Azienda / PMI'], ['startup', 'Startup'], ['altro', 'Altro']]
-  : [['professionista', 'Professional (doctor, psychologist, lawyer, consultant…)'], ['artigiano', 'Trades or home services'], ['locale', 'Shop, restaurant or local business'], ['immobiliare', 'Real estate'], ['negozio', 'E-commerce or product sales'], ['azienda', 'Company / SME'], ['startup', 'Startup'], ['altro', 'Other']];
+// tre passi: cosa ti serve, il pacchetto (con gli extra facoltativi chiusi), i contatti
+const passi = it ? ['Servizi', 'Pacchetto', 'Contatti'] : ['Services', 'Package', 'Contact'];
+const passoDi = (n: number) => T(`Passo ${n} di 3`, `Step ${n} of 3`);
 ---
 <Base
   lang={lang}
@@ -40,15 +38,14 @@ const settori = it
   <section class="pv" data-forma="4" data-lato="destra" data-luce="0.22" data-scala="1.3">
     <div class="wrap">
       <header class="pv-testa">
-        <span class="icona-titolo"><Icona nome="preventivo" /></span>
         <span class="capitolo">{T('Preventivo automatico', 'Instant quote')}</span>
         <h1 data-righe>
           <span class="riga"><span>{T('Componi il tuo', 'Build your')}</span></span>
           <span class="riga"><span><span class="em em-firma">{T('progetto.', 'project.')}</span></span></span>
         </h1>
         <p class="lead">{T(
-          'Scegli quello che ti serve, aggiungi i dettagli e guarda il prezzo aggiornarsi in tempo reale. Ci vogliono 2 minuti. Nessun impegno.',
-          'Choose what you need, add the details and watch the price update in real time. It takes 2 minutes. No commitment.',
+          'Tre passi, due minuti, nessun impegno. Il prezzo si aggiorna mentre scegli.',
+          'Three steps, two minutes, no commitment. The price updates as you choose.',
         )}</p>
         <p class="pv-svizzera" data-svizzera hidden>
           {T('Sei in Svizzera?', 'Are you in Switzerland?')} <button type="button" data-valuta-scegli="CHF">{T('Mostra i prezzi anche in franchi', 'Show prices in Swiss francs too')}</button>
@@ -68,20 +65,16 @@ const settori = it
 
       <div class="pv-griglia">
         <form class="pv-form" data-preventivo data-lang={lang} novalidate>
-          <!-- PASSO 1 -->
+          <!-- PASSO 1 · cosa ti serve -->
           <fieldset class="pv-passo" data-passo="1">
             <legend><span class="mono">{passoDi(1)}</span>{T('Cosa ti serve?', 'What do you need?')}</legend>
-            <p class="pv-aiuto">{T(
-              'Puoi sceglierne più di uno. Più servizi scegli, più risparmi: con 2 servizi hai il 5% di sconto, con 3 o più il 10%.',
-              'You can choose more than one. The more services you pick, the more you save: 5% off with 2 services, 10% with 3 or more.',
-            )}</p>
+            <p class="pv-aiuto">{T('Puoi sceglierne più di uno: con 2 servizi hai il 5% di sconto, con 3 il 10%.', 'You can pick more than one: 5% off with 2 services, 10% with 3.')}</p>
             <div class="pv-cat">
               {categorie.map((c) => (
                 <label class="pv-cat-card" data-iride={c.id}>
                   <input type="checkbox" name="cat" value={c.id} />
                   <span class="pv-cat-icona"><Icona nome={icone[c.id]} /></span>
-                  <span class="pv-cat-nome">{c.nome}</span>
-                  <span class="pv-cat-riga">{c.riga}</span>
+                  <span class="pv-cat-testo"><span class="pv-cat-nome">{c.nome}</span><span class="pv-cat-riga">{c.riga}</span></span>
                   <span class="pv-cat-da">{T('da', 'from')} <span {...attrPrezzo(c.livelli[0])}>{prezzoLivello(c.livelli[0])}</span></span>
                   <span class="pv-spunta" aria-hidden="true"></span>
                 </label>
@@ -94,40 +87,36 @@ const settori = it
             </div>
           </fieldset>
 
-          <!-- PASSO 2 -->
+          <!-- PASSO 2 · il pacchetto di ogni servizio; extra, tempi e incontri sono facoltativi e chiusi -->
           <fieldset class="pv-passo" data-passo="2" hidden>
-            <legend><span class="mono">{passoDi(2)}</span>{T('Personalizza', 'Customise')}</legend>
-            {it
-              ? <p class="pv-aiuto">Per ogni servizio scegli il livello e aggiungi gli extra. Tocca <em>Cosa vuol dire?</em> se qualcosa non è chiaro.</p>
-              : <p class="pv-aiuto">For each service choose the level and add extras. Tap <em>What does it mean?</em> if anything is unclear.</p>}
+            <legend><span class="mono">{passoDi(2)}</span>{T('Scegli il pacchetto', 'Pick your package')}</legend>
+            <p class="pv-aiuto">{T('Abbiamo già scelto il più richiesto: cambialo se vuoi.', 'We have already picked the most popular one: change it if you like.')}</p>
             {categorie.map((c) => (
               <div class="pv-blocco" data-blocco={c.id} hidden>
                 <div class="pv-blocco-testa">
                   <span class="pv-cat-icona"><Icona nome={icone[c.id]} /></span>
                   <h2>{c.nome}</h2>
                 </div>
-                <div class="pv-livelli" role="radiogroup" aria-label={`${T('Livello', 'Level')} ${c.nome}`}>
+                <div class="pv-livelli" role="radiogroup" aria-label={`${T('Pacchetto', 'Package')} ${c.nome}`}>
                   {c.livelli.map((l, i) => (
                     <label class={`pv-livello${l.top ? ' top' : ''}`}>
                       <input type="radio" name={`liv-${c.id}`} value={l.id} checked={l.top || (i === 0 && !c.livelli.some((x) => x.top))} />
-                      {l.top && <span class="pv-badge">{T('Il più scelto', 'Most popular')}</span>}
-                      <span class="pv-livello-nome">{l.nome}</span>
+                      <span class="pv-livello-riga"><span class="pv-livello-nome">{l.nome}</span>{l.top && <span class="pv-badge">{T('Il più scelto', 'Most popular')}</span>}</span>
                       <span class="pv-livello-prezzo" {...attrPrezzo(l)}>{prezzoLivello(l)}</span>
                       <span class="pv-livello-spiega">{l.spiega}</span>
-                      <ul>{l.include.map((x) => <li>{x}</li>)}</ul>
                     </label>
                   ))}
                 </div>
                 {c.extra.length > 0 && (
-                  <div class="pv-extra">
-                    <h3 class="mono">{T('Aggiungi', 'Add')}</h3>
+                  <details class="pv-extra" data-extra-box>
+                    <summary>{T('Aggiungi extra', 'Add extras')} <span class="facolt">{T('(facoltativo)', '(optional)')}</span><span class="pv-extra-conta" data-extra-conta></span></summary>
                     {c.extra.map((e) => (
                       <div class="pv-extra-riga" data-extra={`${c.id}.${e.id}`} data-max={e.max || 1}>
                         <div class="pv-extra-testo">
                           <span class="pv-extra-nome">{e.nome}</span>
-                          <span class="pv-extra-prezzo"><span {...attrPrezzo(e)}>{prezzoLivello(e)}</span>{e.max ? T(' cad.', ' each') : ''}</span>
-                          <details class="pv-spiega"><summary>{T('Cosa vuol dire?', 'What does it mean?')}</summary><p>{e.spiega}</p></details>
+                          <span class="pv-extra-spiega">{e.spiega}</span>
                         </div>
+                        <span class="pv-extra-prezzo"><span {...attrPrezzo(e)}>{prezzoLivello(e)}</span>{e.max ? T(' cad.', ' each') : ''}</span>
                         {e.max ? (
                           <div class="pv-stepper">
                             <button type="button" data-meno aria-label={`${T('Togli', 'Remove')} ${e.nome}`}>−</button>
@@ -142,42 +131,29 @@ const settori = it
                         )}
                       </div>
                     ))}
-                  </div>
+                  </details>
                 )}
                 {c.nota && <p class="pv-nota">{c.nota}</p>}
               </div>
             ))}
-            <div class="pv-nav">
-              <button class="btn btn-vetro" type="button" data-indietro>← {T('Indietro', 'Back')}</button>
-              <button class="btn btn-azione" type="button" data-avanti>{T('Continua', 'Continue')} <span class="freccia" aria-hidden="true">→</span></button>
-            </div>
-          </fieldset>
-
-          <!-- PASSO 3 -->
-          <fieldset class="pv-passo" data-passo="3" hidden>
-            <legend><span class="mono">{passoDi(3)}</span><span class="pv-legend-ico"><Icona nome="tempi" /></span>{T('Quando ti serve?', 'When do you need it?')}</legend>
-            <div class="pv-tempi">
-              {tempi.map((t, i) => (
-                <label class="pv-livello">
-                  <input type="radio" name="tempi" value={t.id} checked={i === 0} />
-                  <span class="pv-livello-nome">{t.nome}</span>
-                  <span class="pv-livello-spiega">{t.riga}</span>
-                </label>
-              ))}
-            </div>
-            <div class="pv-extra pv-incontri">
-              <h3 class="mono">{T('Ci vediamo di persona?', 'Shall we meet in person?')}</h3>
-              <p class="pv-aiuto">{T(
-                'Le videochiamate sono sempre incluse e a Milano città gli incontri sono gratuiti. Fuori Milano il prezzo dipende solo dalla distanza, in Italia come in Svizzera.',
-                'Video calls are always included and meetings in Milan city are free. Outside Milan the price depends only on distance, in Italy and Switzerland alike.',
-              )}</p>
+            <details class="pv-extra pv-altro" data-extra-box>
+              <summary><span class="pv-legend-ico"><Icona nome="tempi" /></span>{T('Tempi e incontri di persona', 'Timing and in-person meetings')} <span class="facolt">{T('(facoltativo)', '(optional)')}</span><span class="pv-extra-conta" data-extra-conta></span></summary>
+              <div class="pv-tempi" role="radiogroup" aria-label={T('Tempi', 'Timing')}>
+                {tempi.map((t, i) => (
+                  <label class="pv-scelta">
+                    <input type="radio" name="tempi" value={t.id} checked={i === 0} />
+                    <span><strong>{t.nome}</strong><small>{t.riga}</small></span>
+                  </label>
+                ))}
+              </div>
+              <p class="pv-aiuto pv-aiuto-piccolo">{T('Videochiamate sempre incluse; a Milano città gli incontri sono gratuiti.', 'Video calls always included; meetings in Milan city are free.')}</p>
               {incontri.map((e) => (
                 <div class="pv-extra-riga" data-incontro={e.id} data-max={e.max}>
                   <div class="pv-extra-testo">
                     <span class="pv-extra-nome">{e.nome}</span>
-                    <span class="pv-extra-prezzo"><span {...attrPrezzo(e)}>{prezzoLivello(e)}</span>{T(' a incontro', ' per meeting')}</span>
-                    <details class="pv-spiega"><summary>{T('Quali zone?', 'Which areas?')}</summary><p>{e.spiega}</p></details>
+                    <span class="pv-extra-spiega">{e.spiega}</span>
                   </div>
+                  <span class="pv-extra-prezzo"><span {...attrPrezzo(e)}>{prezzoLivello(e)}</span>{T(' a incontro', ' per meeting')}</span>
                   <div class="pv-stepper">
                     <button type="button" data-meno aria-label={`${T('Togli', 'Remove')} ${e.nome}`}>−</button>
                     <output data-q>0</output>
@@ -185,51 +161,39 @@ const settori = it
                   </div>
                 </div>
               ))}
-            </div>
-            <div class="pv-campo" style="margin-top:1.6rem">
-              <label for="pv-sito-attuale">{T('Hai già un sito o una pagina social?', 'Do you already have a website or social page?')} <span class="facolt">{T('(facoltativo)', '(optional)')}</span></label>
-              <input id="pv-sito-attuale" name="sito_attuale" type="text" placeholder={T('es. www.tuosito.it o @tuapagina', 'e.g. www.yoursite.com or @yourpage')} autocomplete="url" />
-            </div>
+            </details>
             <div class="pv-nav">
               <button class="btn btn-vetro" type="button" data-indietro>← {T('Indietro', 'Back')}</button>
               <button class="btn btn-azione" type="button" data-avanti>{T('Ultimo passo', 'Last step')} <span class="freccia" aria-hidden="true">→</span></button>
             </div>
           </fieldset>
 
-          <!-- PASSO 4 -->
-          <fieldset class="pv-passo" data-passo="4" hidden>
-            <legend><span class="mono">{passoDi(4)}</span>{T('A chi mandiamo il preventivo?', 'Who should we send the quote to?')}</legend>
-            <p class="pv-aiuto">{T(
-              'Ti rispondiamo entro 24 ore con il preventivo definitivo e una proposta per una chiamata di 20 minuti.',
-              "We'll reply within 24 hours with the final quote and a suggested time for a 20-minute call.",
-            )}</p>
+          <!-- PASSO 3 · i contatti, solo l'essenziale -->
+          <fieldset class="pv-passo" data-passo="3" hidden>
+            <legend><span class="mono">{passoDi(3)}</span>{T('Dove ti mandiamo il preventivo?', 'Where should we send the quote?')}</legend>
+            <p class="pv-aiuto">{T('Ti rispondiamo entro 24 ore con il prezzo definitivo.', 'We reply within 24 hours with the final price.')}</p>
             <div class="pv-campi">
-              <div class="pv-campo"><label for="pv-nome">{T('Nome e cognome', 'Full name')}</label><input id="pv-nome" name="nome" required autocomplete="name" /></div>
-              <div class="pv-campo"><label for="pv-azienda">{T('Azienda o attività', 'Company or business')} <span class="facolt">{T('(facoltativo)', '(optional)')}</span></label><input id="pv-azienda" name="azienda" autocomplete="organization" /></div>
-              <div class="pv-campo"><label for="pv-email">Email</label><input id="pv-email" name="email" type="email" required autocomplete="email" /></div>
-              <div class="pv-campo"><label for="pv-tel">{T('Telefono', 'Phone')}</label><input id="pv-tel" name="telefono" type="tel" required autocomplete="tel" inputmode="tel" /></div>
-              <div class="pv-campo pv-largo">
-                <label for="pv-settore">{T('Di cosa ti occupi?', 'What do you do?')}</label>
-                <select id="pv-settore" name="settore">
-                  <option value="">{T('Scegli…', 'Choose…')}</option>
-                  {settori.map(([id, nome]) => <option value={id}>{nome}</option>)}
-                </select>
-              </div>
-              <div class="pv-campo pv-largo"><label for="pv-msg">{T('Raccontaci il tuo obiettivo', 'Tell us your goal')} <span class="facolt">{T('(facoltativo)', '(optional)')}</span></label><textarea id="pv-msg" name="messaggio" rows="4" placeholder={T('es. Vorrei ricevere più richieste di preventivo per i miei lavori a Milano', 'e.g. I would like more quote requests for my work in Milan')}></textarea></div>
+              <div class="pv-campo pv-largo"><label for="pv-nome">{T('Come ti chiami?', 'Your name')}</label><input id="pv-nome" name="nome" required autocomplete="name" /></div>
+              <div class="pv-campo"><label for="pv-email">Email</label><input id="pv-email" name="email" type="email" autocomplete="email" /></div>
+              <div class="pv-campo"><label for="pv-tel">{T('Telefono', 'Phone')}</label><input id="pv-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" /></div>
+              <p class="pv-suggerimento pv-largo">{T('Basta uno dei due.', 'One of the two is enough.')}</p>
               <fieldset class="pv-campo pv-largo pv-canale">
-                <legend>{T('Come preferisci essere ricontattato?', 'How would you like us to get back to you?')}</legend>
-                <label><input type="radio" name="canale" value="WhatsApp" checked /> WhatsApp</label>
-                <label><input type="radio" name="canale" value={T('Chiamata', 'Call')} /> {T('Chiamata', 'Call')}</label>
-                <label><input type="radio" name="canale" value="Email" /> Email</label>
+                <legend>{T('Ti ricontattiamo con', 'We get back to you by')}</legend>
+                <div>
+                  <label><input type="radio" name="canale" value="WhatsApp" checked /><span>WhatsApp</span></label>
+                  <label><input type="radio" name="canale" value={T('Chiamata', 'Call')} /><span>{T('Chiamata', 'Call')}</span></label>
+                  <label><input type="radio" name="canale" value="Email" /><span>Email</span></label>
+                </div>
               </fieldset>
+              <div class="pv-campo pv-largo"><label for="pv-msg">{T('Vuoi dirci qualcosa?', 'Anything to add?')} <span class="facolt">{T('(facoltativo)', '(optional)')}</span></label><textarea id="pv-msg" name="messaggio" rows="3" placeholder={T('es. Vorrei più richieste per i miei lavori a Milano', 'e.g. I would like more enquiries for my work in Milan')}></textarea></div>
               <input class="pv-trappola" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
               {it
                 ? <label class="pv-privacy pv-largo"><input type="checkbox" name="privacy" required /> Ho letto l'<a href="/privacy" target="_blank">informativa privacy</a> e acconsento a essere ricontattato per questa richiesta.</label>
                 : <label class="pv-privacy pv-largo"><input type="checkbox" name="privacy" required /> I have read the <a href="/en/privacy" target="_blank">privacy notice</a> and agree to be contacted about this request.</label>}
             </div>
-            <p class="pv-errore" data-errore="4" hidden>{T(
-              'Controlla i campi evidenziati: nome, email, telefono e consenso privacy sono necessari.',
-              'Check the highlighted fields: name, email, phone and privacy consent are required.',
+            <p class="pv-errore" data-errore="3" hidden>{T(
+              'Ci mancano il tuo nome, un modo per risponderti (email o telefono) e il consenso privacy.',
+              'We need your name, a way to reply (email or phone) and the privacy consent.',
             )}</p>
             <div class="pv-nav">
               <button class="btn btn-vetro" type="button" data-indietro>← {T('Indietro', 'Back')}</button>
@@ -238,14 +202,11 @@ const settori = it
                 <button class="btn btn-azione btn-grande" type="submit" data-invia>{T('Invia la richiesta', 'Send request')} <span class="freccia" aria-hidden="true">→</span></button>
               </div>
             </div>
-            <p class="pv-rassicura">{T(
-              'Nessun impegno · I tuoi dati servono solo per risponderti · Ti rispondiamo entro 24 ore',
-              'No commitment · Your details are only used to reply to you · Reply within 24 hours',
-            )}</p>
+            <p class="pv-rassicura">{T('Nessun impegno · Usiamo i tuoi dati solo per risponderti', 'No commitment · We only use your details to reply to you')}</p>
           </fieldset>
 
           <!-- FATTO -->
-          <div class="pv-passo pv-fatto" data-passo="5" hidden tabindex="-1">
+          <div class="pv-passo pv-fatto" data-passo="4" hidden tabindex="-1">
             <Occhio espressione="festa" class="pv-fatto-occhio" />
             <h2>{T('Ricevuto.', 'Received.')} <span class="em em-firma">{T('Grazie!', 'Thank you!')}</span></h2>
             <p class="lead" data-fatto-testo>{T(
@@ -273,23 +234,18 @@ const settori = it
               </div>
             </div>
             <ul class="pv-righe" data-righe-riep><li class="pv-vuoto">{T('Scegli un servizio per iniziare.', 'Choose a service to get started.')}</li></ul>
-            <div class="pv-sconto" data-sconto>
-              <div class="pv-sconto-testo"><Occhio espressione="ok" class="pv-sconto-occhio" /><span data-sconto-testo></span></div>
-              <div class="pv-sconto-barra"><span data-sconto-barra></span></div>
+            <p class="pv-sconto" data-sconto><span data-sconto-testo></span></p>
+            <div class="pv-totale">
+              <span class="pv-totale-et">{T('Totale', 'Total')}</span>
+              <strong data-tot-una>{euro(0, lang)}</strong>
+              <span class="pv-totale-mese" data-tot-mese-riga hidden>+ <span data-tot-mese>{euro(0, lang)}</span> {T('al mese', 'a month')}</span>
             </div>
-            <dl class="pv-totali">
-              <div><dt>{T('Una tantum', 'One-off')}</dt><dd data-tot-una>{euro(0, lang)}</dd></div>
-              <div><dt>{T('Al mese', 'Per month')}</dt><dd data-tot-mese>{euro(0, lang)}</dd></div>
-            </dl>
             <p class="pv-voucher" data-voucher hidden></p>
             <p class="pv-nota-tot" data-valuta-nota hidden>{T(
               `Stessi prezzi per tutti, convertiti in franchi al cambio indicativo di 1 € = ${tasso} CHF. In fattura vale l’importo concordato.`,
               `Same prices for everyone, converted to Swiss francs at an indicative rate of €1 = CHF ${tasso}. The invoice shows the agreed amount.`,
             )}</p>
-            <p class="pv-nota-tot">{T(
-              'Prezzi indicativi, IVA esclusa. Il preventivo definitivo arriva dopo una chiamata di 20 minuti.',
-              'Indicative prices, excluding VAT. The final quote follows a 20-minute call.',
-            )}</p>
+            <p class="pv-nota-tot">{T('Prezzi indicativi, IVA esclusa.', 'Indicative prices, excl. VAT.')}</p>
           </div>
         </aside>
       </div>
