@@ -111,6 +111,13 @@ Sulle pagine Software con AI, Collegamenti AI e AI per aziende c'è la sezione �
 - quattro punti sull'AI, scritti per essere veri: API professionali (non le app gratuite); nei contratti per le aziende i fornitori non usano i dati delle API per addestrare i modelli; li tengono poco (al massimo 30 giorni per i controlli di sicurezza), con conservazione zero e server in Europa quando serve; tutto per iscritto come chiede il GDPR, con la chiave dell'AI che può essere intestata al cliente.
 Il canone mensile è l'assistenza (hosting, controlli, aggiornamenti, sistemazioni), non un affitto: lo dicono il listino e le domande frequenti.
 
+### Il puntatore: l'occhio della mascotte
+Su computer la freccia diventa l'occhio di «Occhio» (`Base.astro` + `site.js`), con le espressioni della mascotte:
+- **curioso** di base: la pupilla guarda nella direzione in cui muovi il mouse, ogni 3-6 secondi sbatte le palpebre, al clic si stringe;
+- **più grande** su link e bottoni normali, **occhiolino** sui bottoni d'azione, **innamorato** su pacchetti prezzi, anteprime dei clienti, scheda AI del menu e «? ore all'anno»;
+- **sorpreso** quando si apre la finestra d'uscita, **pensieroso** dopo 9 secondi fermo e mentre il preventivo viene inviato, **festa** quando il preventivo è arrivato, **ok** quando si sblocca lo sconto, **perso** sulla pagina 404 e se l'invio non riesce.
+Nei campi di testo torna la stanghetta del sistema; nella finestra del calcolo torna la freccia normale. Su telefono e con «riduci movimento» il puntatore resta quello del sistema. Altre parti del sito possono chiedere un'espressione con l'evento `gd-occhio`.
+
 ### Header e menu
 - Voci nello stesso ordine delle sezioni della home: **Servizi ▾ · AI per aziende · Metodo · Clienti · Lo studio · Prezzi**.
 - Su computer il menu è una capsula di vetro al centro dell'header. Una luce scivola sotto la voce su cui passi; in home si accende da sola la voce della sezione che stai guardando, sulle pagine servizio «Servizi», sulla pagina AI «AI per aziende» (che ha anche il punto rosso del logo).

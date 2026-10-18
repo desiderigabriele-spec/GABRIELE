@@ -332,8 +332,12 @@ const hrefEn = lang === 'en' ? path : alt;
       </div>
     )}
 
-    <div class="cursore" aria-hidden="true"></div>
-    <div class="cursore-punto" aria-hidden="true"></div>
+    <!-- il puntatore è l'occhio della mascotte: cambia espressione con quello che fai (site.js) -->
+    <div class="cursore-occhio" aria-hidden="true" data-occhio>
+      <div class="co-corpo">
+        {(['curioso', 'occhiolino', 'innamorato', 'sorpreso', 'pensieroso', 'festa', 'ok', 'perso'] as const).map((e) => <Occhio espressione={e} class={`co co-${e}`} />)}
+      </div>
+    </div>
 
     <script>
       import '../scripts/site.js';

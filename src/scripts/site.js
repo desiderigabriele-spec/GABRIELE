@@ -201,21 +201,79 @@ document.querySelectorAll('[data-conta]').forEach((el) => {
   });
 });
 
-// ---------- Cursore ----------
+// ---------- Il puntatore è l'occhio della mascotte ----------
+// Curioso di base: la pupilla guarda dove vai e ogni tanto sbatte le palpebre. Occhiolino sui bottoni
+// d'azione, innamorato su pacchetti e lavori, sorpreso quando stai per andare via, pensieroso se resti
+// fermo, perso nella 404. Le altre pagine possono chiedere un'espressione per un momento:
+// window.dispatchEvent(new CustomEvent('gd-occhio', { detail: { esp: 'festa', ms: 3000 } }))
 if (finePointer && !ridotto) {
-  html.classList.add('cursore-on');
-  const c = document.querySelector('.cursore'), p = document.querySelector('.cursore-punto');
-  const xc = gsap.quickTo(c, 'x', { duration: 0.45, ease: 'power3' }), yc = gsap.quickTo(c, 'y', { duration: 0.45, ease: 'power3' });
-  const xp = gsap.quickTo(p, 'x', { duration: 0.08 }), yp = gsap.quickTo(p, 'y', { duration: 0.08 });
-  window.addEventListener('pointermove', (e) => { html.classList.add('cursore-mosso'); xc(e.clientX); yc(e.clientY); xp(e.clientX); yp(e.clientY); }, { passive: true });
-  document.addEventListener('pointerleave', () => html.classList.remove('cursore-mosso'));
-  document.addEventListener('pointerover', (e) => {
-    const az = e.target.closest('[data-azione], .btn-azione');
-    const link = e.target.closest('a, button, summary, label, input[type="range"]');
-    html.classList.toggle('cursore-azione', !!az);
-    html.classList.toggle('cursore-sopra', !az && !!link);
-    if (scena) scena.battito = az ? 1 : 0;
-  });
+  const occhio = document.querySelector('[data-occhio]');
+  if (occhio) {
+    html.classList.add('cursore-on');
+    const facce = {};
+    occhio.querySelectorAll('.co').forEach((s) => { const e = [...s.classList].find((c) => c.startsWith('co-')); if (e) facce[e.slice(3)] = s; });
+    const base = document.querySelector('.pagina-404') ? 'perso' : 'curioso';
+    let contesto = base, momento = null, timerMomento = 0, mostrata = null;
+    let mx = -100, my = -100, x = -100, y = -100, vx = 0, vy = 0, fermoDa = performance.now();
+
+    function mostra() {
+      const fermo = performance.now() - fermoDa > 9000 && contesto === base && base === 'curioso';
+      const esp = momento || (html.classList.contains('uscita-aperta') ? 'sorpreso' : fermo ? 'pensieroso' : contesto);
+      if (esp === mostrata || !facce[esp]) return;
+      mostrata = esp;
+      Object.entries(facce).forEach(([k, s]) => s.classList.toggle('vis', k === esp));
+    }
+    window.addEventListener('gd-occhio', (e) => {
+      momento = e.detail?.esp || null;
+      clearTimeout(timerMomento);
+      const ms = e.detail?.ms ?? 1800;
+      if (momento && ms) timerMomento = setTimeout(() => { momento = null; mostra(); }, ms);
+      mostra();
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      html.classList.add('cursore-mosso');
+      vx += (e.clientX - mx - vx) * 0.35; vy += (e.clientY - my - vy) * 0.35;
+      mx = e.clientX; my = e.clientY;
+      fermoDa = performance.now();
+    }, { passive: true });
+    document.addEventListener('pointerleave', () => html.classList.remove('cursore-mosso'));
+    document.addEventListener('pointerdown', () => occhio.classList.add('premuto'));
+    document.addEventListener('pointerup', () => occhio.classList.remove('premuto'));
+    document.addEventListener('pointerover', (e) => {
+      const t = e.target;
+      occhio.classList.toggle('nascosto', !!t.closest('input:not([type="range"], [type="checkbox"], [type="radio"]), textarea, select'));
+      const az = t.closest('[data-azione], .btn-azione');
+      const amato = t.closest('.piano, .cliente-anteprima, .mega-ai, .st-domanda');
+      const link = t.closest('a, button, summary, label, input[type="range"], [role="tab"]');
+      contesto = az ? 'occhiolino' : amato ? 'innamorato' : base;
+      occhio.classList.toggle('sopra', !az && !amato && !!link);
+      if (scena) scena.battito = az ? 1 : 0;
+      mostra();
+    });
+
+    // battito di ciglia ogni 3-6 secondi
+    (function batti() {
+      setTimeout(() => {
+        if (mostrata && mostrata !== 'occhiolino') { occhio.classList.add('batte'); setTimeout(() => occhio.classList.remove('batte'), 130); }
+        batti();
+      }, 3000 + Math.random() * 3000);
+    })();
+
+    (function segui() {
+      x += (mx - x) * 0.5; y += (my - y) * 0.5;
+      occhio.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      vx *= 0.9; vy *= 0.9;
+      const pup = facce[mostrata]?.querySelector('.m-pupilla');
+      if (pup) {
+        const d = Math.hypot(vx, vy), m = Math.min(6, d * 0.7);
+        pup.style.transform = d > 0.2 ? `translate(${(vx / d) * m}px, ${(vy / d) * m}px)` : '';
+      }
+      mostra();
+      requestAnimationFrame(segui);
+    })();
+  }
 }
 
 // ---------- Effetto magnetico sui bottoni importanti ----------
