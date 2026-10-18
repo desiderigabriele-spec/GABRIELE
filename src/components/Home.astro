@@ -60,7 +60,7 @@ const ripetitivi: [string, string, number][] = it ? [
   ['Writing reports and summaries', 'Every Monday the week’s summary arrives, in plain words.', 1.5],
 ];
 
-const waTesto = T('Ciao Gabriele, ho visto il tuo sito e vorrei parlarti di un progetto.', "Hi Gabriele, I saw your website and I'd like to talk about a project.");
+const waTesto = T('Ciao! Ho visto il sito di Studio Desideri e vorrei parlarvi di un progetto.', "Hi! I saw the Studio Desideri website and I'd like to talk to you about a project.");
 const descrizione = T(
   'Siti web, e-commerce, software con intelligenza artificiale e pubblicità online progettati con psicologia e neuromarketing.',
   'Websites, e-commerce, AI software and online advertising designed with psychology and neuromarketing.',
@@ -109,14 +109,14 @@ const jsonLd = {
         {it ? (
           <h1 data-righe>
             <span class="riga riga-nome" data-riga-nome hidden><span><span data-saluto></span><span data-nome></span>,</span></span>
-            <span class="riga"><span data-minuscola>Trasformo</span></span>
+            <span class="riga"><span data-minuscola>Trasformiamo</span></span>
             <span class="riga"><span>chi ti guarda</span></span>
             <span class="riga"><span>in chi ti <span class="em em-firma" data-stelle>sceglie.</span></span></span>
           </h1>
         ) : (
           <h1 data-righe>
             <span class="riga riga-nome" data-riga-nome hidden><span><span data-saluto></span><span data-nome></span>,</span></span>
-            <span class="riga"><span>I turn</span></span>
+            <span class="riga"><span>We turn</span></span>
             <span class="riga"><span>attention</span></span>
             <span class="riga"><span>into <span class="em em-firma" data-stelle>clients.</span></span></span>
           </h1>
@@ -205,7 +205,7 @@ const jsonLd = {
         ))}
       </div>
       <p class="svolta" data-appare>
-        {T('Io costruisco quel percorso.', 'I build that path.')} <span class="em em-firma">{T('Dal primo sguardo al sì.', 'From first glance to yes.')}</span>
+        {T('Noi costruiamo quel percorso.', 'We build that path.')} <span class="em em-firma">{T('Dal primo sguardo al sì.', 'From first glance to yes.')}</span>
       </p>
     </div>
   </section>
@@ -216,7 +216,7 @@ const jsonLd = {
       <div class="testa-sezione testa-riga">
         <span class="capitolo" data-appare>{T('Capitolo 02 · Interesse', 'Chapter 02 · Interest')}</span>
         <h2 data-righe>
-          <span class="riga"><span>{T('Cosa faccio,', 'What I do,')}</span></span>
+          <span class="riga"><span>{T('Cosa facciamo,', 'What we do,')}</span></span>
           <span class="riga"><span><span class="em">{T('detto semplice.', 'in plain words.')}</span></span></span>
         </h2>
         <p class="lead" data-appare>{T(
@@ -321,8 +321,8 @@ const jsonLd = {
           </h2>
         )}
         <p class="metodo-sotto">{T(
-          'Le cinque tappe che ogni persona attraversa prima di comprare. Per ognuna uso tecniche studiate dalla psicologia e provate sul campo.',
-          'The five stages everyone goes through before buying. For each one I use techniques studied by psychology and tested in the field.',
+          'Le cinque tappe che ogni persona attraversa prima di comprare. Per ognuna usiamo tecniche studiate dalla psicologia e provate sul campo.',
+          'The five stages everyone goes through before buying. For each one we use techniques studied by psychology and tested in the field.',
         )}</p>
         <ol class="metodo-indice" data-indice>
           {metodo.map((m, i) => <li class={i === 0 ? 'attivo' : ''}>{String(i + 1).padStart(2, '0')} {m.passo}</li>)}
@@ -389,35 +389,35 @@ const jsonLd = {
     </div>
   </section>
 
-  <!-- CHI SONO -->
+  <!-- LO STUDIO -->
   <section class="sezione" id="chi-sono" data-forma="2" data-lato="destra" data-luce="0.32" data-scala="0.85">
     <div class="wrap chi">
       <div class="chi-testo">
-        <span class="capitolo" data-appare>{T('Chi sono', 'About me')}</span>
+        <span class="capitolo" data-appare>{T('Lo studio', 'The studio')}</span>
         {it ? (
           <h2 data-righe>
-            <span class="riga"><span>Di cognome</span></span>
-            <span class="riga"><span>faccio <span class="em em-firma">Desideri.</span></span></span>
-            <span class="riga"><span>Di lavoro, li creo.</span></span>
+            <span class="riga"><span>Ci chiamiamo</span></span>
+            <span class="riga"><span><span class="em em-firma">Desideri.</span></span></span>
+            <span class="riga"><span>Di lavoro, li creiamo.</span></span>
           </h2>
         ) : (
           <h2 data-righe>
-            <span class="riga"><span>My surname is</span></span>
-            <span class="riga"><span><span class="em em-firma">Desideri</span>: "desires".</span></span>
-            <span class="riga"><span>I create them.</span></span>
+            <span class="riga"><span>Our name means</span></span>
+            <span class="riga"><span><span class="em em-firma">“desires”.</span></span></span>
+            <span class="riga"><span>Creating them is our job.</span></span>
           </h2>
         )}
         {it ? (
           <>
-            <p data-appare>Sono <strong>Gabriele</strong>, fondatore di Studio Desideri. Ho iniziato a vendere <strong>faccia a faccia</strong>, porta a porta e al telefono. Lì ho imparato la lezione più importante: <strong>le persone non comprano un prodotto, comprano come si sentono quando lo scelgono.</strong></p>
-            <p data-appare>Poi ho portato quella lezione online. Ho lanciato negozi online miei e per aziende, gestito pubblicità su Meta, Google, LinkedIn e TikTok, costruito siti e software. Ho studiato psicologia, marketing, neuromarketing e intelligenza artificiale, e ho provato ogni tecnica sul campo prima di usarla per un cliente.</p>
-            <p data-appare>Quello che amo è tutto il viaggio: <strong>dal primo sguardo alla conversione.</strong> Ogni colore, ogni parola e ogni movimento di un mio progetto ha un motivo preciso.</p>
+            <p data-appare><strong>Studio Desideri</strong> è uno studio di Milano che unisce design, vendita e intelligenza artificiale. L’ha fondato <strong>Gabriele Desideri</strong>, che prima di disegnare siti ha provato <strong>ogni tipo di vendita a freddo</strong>: per capire come decidono le persone e per allenarsi, perché è una cosa che gli piace.</p>
+            <p data-appare>Da lì viene la lezione su cui lavoriamo ogni giorno: <strong>le persone non comprano un prodotto, comprano come si sentono quando lo scelgono.</strong> Per questo studiamo psicologia, marketing, neuromarketing e intelligenza artificiale, e proviamo ogni tecnica sul campo prima di usarla per un cliente.</p>
+            <p data-appare>Quello che amiamo è tutto il viaggio: <strong>dal primo sguardo alla conversione.</strong> Ogni colore, ogni parola e ogni movimento di un nostro progetto ha un motivo preciso.</p>
           </>
         ) : (
           <>
-            <p data-appare>I'm <strong>Gabriele</strong>, founder of Studio Desideri. I started out selling <strong>face to face</strong>, door to door and on the phone. That's where I learned the most important lesson: <strong>people don't buy a product, they buy how they feel when they choose it.</strong></p>
-            <p data-appare>Then I took that lesson online. I launched online stores of my own and for companies, ran ads on Meta, Google, LinkedIn and TikTok, and built websites and software. I studied psychology, marketing, neuromarketing and artificial intelligence, and tested every technique in the field before using it for a client.</p>
-            <p data-appare>What I love is the whole journey: <strong>from first glance to conversion.</strong> Every colour, every word and every movement in my projects is there for a reason.</p>
+            <p data-appare><strong>Studio Desideri</strong> is a Milan studio that brings together design, sales and artificial intelligence. It was founded by <strong>Gabriele Desideri</strong>, who before designing websites tried <strong>every kind of cold selling</strong>: to understand how people decide and to train, because it is something he enjoys.</p>
+            <p data-appare>That is where the lesson we work on every day comes from: <strong>people don't buy a product, they buy how they feel when they choose it.</strong> That is why we study psychology, marketing, neuromarketing and artificial intelligence, and test every technique in the field before using it for a client.</p>
+            <p data-appare>What we love is the whole journey: <strong>from first glance to conversion.</strong> Every colour, every word and every movement in our projects is there for a reason.</p>
           </>
         )}
         <div class="certificati" data-appare>
@@ -429,17 +429,17 @@ const jsonLd = {
       </div>
       <ol class="percorso" data-sequenza>
         {(it ? [
-          ['2021 — 2022', 'Agente di commercio e team leader', 'Vendita diretta ai clienti, ricerca di nuovi contatti, formazione di nuovi venditori.'],
-          ['2022 — oggi', 'Freelance: siti, social, e-commerce, pubblicità', "Siti ed e-commerce dall'idea alla gestione quotidiana, campagne pubblicitarie, funnel di vendita, analisi dei dati."],
-          ['2023 — 2024', 'Co-founder di una startup', 'Business plan, strategia di crescita e marketing di un prodotto nuovo, da zero.'],
-          ['2025 — oggi', 'Vendita immobiliare a Milano', 'Trattative vere, ogni giorno: telefonate, valutazioni, appuntamenti. La palestra migliore per capire come decide una persona.'],
-          ['Adesso', 'Software e sistemi con AI', "Unisco tutto: design, vendita e intelligenza artificiale, per far crescere le aziende e togliere loro il lavoro inutile."],
+          ['Vendita', 'Provata sul campo', 'Ogni tipo di vendita a freddo, fatta per capire come decide una persona. Ogni progetto parte da lì.'],
+          ['Online', 'Negozi e pubblicità', 'Negozi online lanciati e campagne su Meta, Google, LinkedIn e TikTok: sappiamo cosa porta clienti e cosa brucia budget.'],
+          ['Da zero', 'Una startup costruita', 'Strategia di crescita e marketing di un prodotto nuovo, partendo da un foglio bianco.'],
+          ['Metodo', 'Psicologia applicata', 'Neuromarketing e psicologia della scelta, usati per guidare le persone dal primo sguardo al «sì».'],
+          ['Oggi', 'Software e sistemi con AI', 'Design, vendita e intelligenza artificiale in un solo studio, per far crescere le aziende e togliere loro il lavoro inutile.'],
         ] : [
-          ['2021 — 2022', 'Sales agent and team leader', 'Direct sales, prospecting for new clients, training new salespeople.'],
-          ['2022 — now', 'Freelance: websites, social, e-commerce, ads', 'Websites and online stores from idea to day-to-day running, ad campaigns, sales funnels, data analysis.'],
-          ['2023 — 2024', 'Startup co-founder', 'Business plan, growth strategy and marketing for a brand-new product, from scratch.'],
-          ['2025 — now', 'Real estate sales in Milan', 'Real negotiations, every day: calls, valuations, viewings. The best training ground for understanding how people decide.'],
-          ['Now', 'AI software and systems', 'I bring it all together: design, sales and artificial intelligence, to help companies grow and take pointless work off their hands.'],
+          ['Sales', 'Tested in the field', 'Every kind of cold selling, done to understand how people decide. Every project starts there.'],
+          ['Online', 'Stores and advertising', 'Online stores launched and campaigns on Meta, Google, LinkedIn and TikTok: we know what brings clients and what burns budget.'],
+          ['From scratch', 'A startup built', 'Growth strategy and marketing for a brand-new product, starting from a blank page.'],
+          ['Method', 'Applied psychology', 'Neuromarketing and the psychology of choice, used to guide people from first glance to “yes”.'],
+          ['Today', 'AI software and systems', 'Design, sales and artificial intelligence in one studio, to help companies grow and take pointless work off their hands.'],
         ]).map(([anno, titolo, testo]) => <li><span class="anno">{anno}</span><strong>{titolo}</strong><span>{testo}</span></li>)}
       </ol>
     </div>
@@ -514,8 +514,8 @@ const jsonLd = {
       <div class="testa-sezione centro">
         <span class="capitolo" data-appare>{T('Domande frequenti', 'Frequently asked questions')}</span>
         {it
-          ? <h2 data-righe><span class="riga"><span>Quello che <span class="em">tutti</span> mi chiedono.</span></span></h2>
-          : <h2 data-righe><span class="riga"><span>What <span class="em">everyone</span> asks me.</span></span></h2>}
+          ? <h2 data-righe><span class="riga"><span>Quello che <span class="em">tutti</span> ci chiedono.</span></span></h2>
+          : <h2 data-righe><span class="riga"><span>What <span class="em">everyone</span> asks us.</span></span></h2>}
       </div>
       <div class="faq">
         {faq.map((f) => (
@@ -538,12 +538,12 @@ const jsonLd = {
         <span class="riga"><span>{T('ti sta', 'is')} <span class="em em-firma">{T('già cercando.', 'already looking for you.')}</span></span></span>
       </h2>
       <p class="lead" data-appare>{T(
-        'Componi il tuo progetto in 2 minuti: scegli quello che ti serve, vedi subito il prezzo e mandami la richiesta. Ti rispondo entro 24 ore.',
-        "Build your project in 2 minutes: choose what you need, see the price straight away and send me the request. I'll reply within 24 hours.",
+        'Componi il tuo progetto in 2 minuti: scegli quello che ti serve, vedi subito il prezzo e mandaci la richiesta. Ti rispondiamo entro 24 ore.',
+        "Build your project in 2 minutes: choose what you need, see the price straight away and send us the request. We'll reply within 24 hours.",
       )}</p>
       <div class="hero-azioni" data-appare style="justify-content:center">
         <a class="btn btn-azione btn-grande" href={preventivo} data-azione>{T('Componi il tuo progetto', 'Build your project')} <span class="freccia" aria-hidden="true">→</span></a>
-        <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivimi su WhatsApp', 'Message me on WhatsApp')}</a>
+        <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
       </div>
       <ul class="rassicura" data-appare style="justify-content:center">
         <li>{T('Preventivo gratuito', 'Free quote')}</li>

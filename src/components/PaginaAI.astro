@@ -4,6 +4,7 @@
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
 import Occhio from './Occhio.astro';
+import TuoSoftware from './TuoSoftware.astro';
 import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -90,30 +91,30 @@ const benefici = it ? [
 
 const passi = it ? [
   ['Diagnosi', '90 minuti insieme', 'Guardiamo le attività che ti rubano più tempo e scegliamo da dove partire. Se poi fai il progetto, la diagnosi è gratis.'],
-  ['Prima versione', 'in 2-3 settimane', 'Parto da una cosa sola, quella che fa risparmiare di più. La provi subito sul lavoro vero.'],
-  ['Prova e ritocchi', 'con il tuo team', 'Lo usi qualche giorno, mi dici cosa cambiare e lo sistemo. Spiego a tutti come si usa.'],
-  ['Sempre seguito', 'ogni mese', 'Controllo che funzioni, lo aggiorno e ti propongo il prossimo lavoro da toglierti di dosso.'],
+  ['Pronto da usare', 'in 2-3 settimane', 'Partiamo da una cosa sola, quella che fa risparmiare di più. Te la consegniamo pronta e impostata: la usi subito sul lavoro vero.'],
+  ['Prova e ritocchi', 'con il tuo team', 'Lo usi qualche giorno, ci dici cosa cambiare e lo sistemiamo noi. Tu non devi mai metterci mano.'],
+  ['Sempre seguito', 'ogni mese', 'Controlliamo che funzioni, lo aggiorniamo e ti proponiamo il prossimo lavoro da toglierti di dosso.'],
 ] : [
   ['Diagnosis', '90 minutes together', 'We look at the tasks that steal the most time and choose where to start. If you go ahead with the project, it’s free.'],
-  ['First version', 'in 2-3 weeks', 'I start with one thing only, the one that saves the most. You try it straight away on real work.'],
-  ['Test and tweaks', 'with your team', 'You use it for a few days, tell me what to change and I fix it. I show everyone how to use it.'],
-  ['Ongoing support', 'every month', 'I check it works, keep it updated and suggest the next job to take off your plate.'],
+  ['Ready to use', 'in 2-3 weeks', 'We start with one thing only, the one that saves the most. We hand it over ready and set up: you use it straight away on real work.'],
+  ['Test and tweaks', 'with your team', 'You use it for a few days, tell us what to change and we fix it. You never have to touch it.'],
+  ['Ongoing support', 'every month', 'We check it works, keep it updated and suggest the next job to take off your plate.'],
 ];
 
 const paure = it ? [
   ['Devo cambiare i programmi che uso?', 'No. L’AI si collega a quelli che hai già: email, WhatsApp, Excel o Fogli Google, il tuo programma di fatture o il gestionale.'],
   ['E se l’AI sbaglia?', 'Per le cose importanti decide sempre una persona. L’AI prepara il lavoro, tu lo controlli e lo approvi con un clic.'],
-  ['I miei dati sono al sicuro?', 'Uso servizi in versione professionale, che non usano i tuoi dati per allenare l’AI. Gli accessi sono protetti e i dati restano tuoi.'],
+  ['I miei dati restano miei?', 'Sì. Il software è installato a nome tuo e i dati stanno lì, non sui server di un servizio in abbonamento. L’AI lavora con API professionali che per contratto non usano i tuoi dati per addestrarsi.'],
   ['Sostituisce i miei collaboratori?', 'No. Toglie i lavori noiosi e ripetitivi, così le persone fanno quello che sa fare solo una persona: parlare con i clienti, decidere, creare.'],
-  ['Serve essere bravi con il computer?', 'Se sai usare WhatsApp, sai usarlo. E insegno io a te e al team come funziona.'],
-  ['E se non mi serve?', 'Te lo dico. Partiamo sempre dalla diagnosi: se l’AI non ti fa risparmiare tempo o soldi, non te la vendo.'],
+  ['Serve essere bravi con il computer?', 'Se sai usare WhatsApp, sai usarlo. Te lo consegniamo pronto e lo impostiamo noi: tu non devi mai metterci mano.'],
+  ['E se non mi serve?', 'Te lo diciamo. Partiamo sempre dalla diagnosi: se l’AI non ti fa risparmiare tempo o soldi, non te la vendiamo.'],
 ] : [
   ['Do I have to change the programs I use?', 'No. AI connects to what you already have: email, WhatsApp, Excel or Google Sheets, your invoicing or management software.'],
   ['What if the AI makes a mistake?', 'For important things a person always decides. AI prepares the work, you check it and approve it with one click.'],
-  ['Is my data safe?', 'I use professional versions of these services, which don’t use your data to train AI. Access is protected and your data stays yours.'],
+  ['Does my data stay mine?', 'Yes. The software is installed in your name and the data lives there, not on the servers of a subscription service. AI works through business APIs that by contract do not use your data for training.'],
   ['Will it replace my staff?', 'No. It removes the boring, repetitive work, so people do what only a person can: talk to customers, decide, create.'],
-  ['Do I need to be good with computers?', 'If you can use WhatsApp, you can use this. And I teach you and your team how it works.'],
-  ['What if I don’t need it?', 'I’ll tell you. We always start with the diagnosis: if AI won’t save you time or money, I won’t sell it to you.'],
+  ['Do I need to be good with computers?', 'If you can use WhatsApp, you can use this. We hand it over ready and set it up: you never have to touch it.'],
+  ['What if I don’t need it?', 'We’ll tell you. We always start with the diagnosis: if AI won’t save you time or money, we won’t sell it to you.'],
 ];
 
 // L'esempio animato: una richiesta vera di un cliente, come la leggerebbe l'AI
@@ -280,14 +281,14 @@ const demo = it ? {
           <span class="riga"><span><span class="em">{T('in una schermata.', 'on one screen.')}</span></span></span>
         </h2>
         <p class="lead" data-appare>{T(
-          'Molte aziende usano cinque programmi diversi e passano i dati a mano tra Excel, email e gestionale. Creo un programma interno tutto tuo: entri e vedi clienti, preventivi, ordini e scadenze insieme. L’AI lavora dentro: compila, avvisa, suggerisce.',
-          'Many businesses use five different programs and move data by hand between Excel, email and other software. I build an internal program that’s all yours: open it and see customers, quotes, orders and deadlines together. AI works inside it: it fills in, warns and suggests.',
+          'Molte aziende usano cinque programmi diversi e passano i dati a mano tra Excel, email e gestionale. Creiamo un programma interno tutto tuo, consegnato pronto: entri e vedi clienti, preventivi, ordini e scadenze insieme. L’AI lavora dentro: compila, avvisa, suggerisce.',
+          'Many businesses use five different programs and move data by hand between Excel, email and other software. We build an internal program that’s all yours, handed over ready: open it and see customers, quotes, orders and deadlines together. AI works inside it: it fills in, warns and suggests.',
         )}</p>
         <ul class="lista-check" data-appare>
           <li>{T('Si apre dal computer e dal telefono', 'Opens on computer and phone')}</li>
           <li>{T('Solo le funzioni che ti servono, niente pulsanti inutili', 'Only the features you need, no useless buttons')}</li>
           <li>{T('Accessi diversi per te e per i collaboratori', 'Different access for you and your staff')}</li>
-          <li>{T('I dati restano tuoi, sempre', 'Your data stays yours, always')}</li>
+          <li>{T('Il software e i dati restano tuoi, sempre', 'The software and the data stay yours, always')}</li>
         </ul>
       </div>
       <div class="cruscotto" aria-label={T('Esempio di schermata', 'Example screen')} data-appare>
@@ -302,6 +303,8 @@ const demo = it ? {
       </div>
     </div>
   </section>
+
+  <TuoSoftware lang={lang} />
 
   <!-- Come lavoriamo -->
   <section class="sezione" id="come" data-forma="3" data-luce="0.2" data-scala="1.2">
@@ -328,7 +331,7 @@ const demo = it ? {
     <div class="wrap">
       <div class="testa-sezione centro">
         <span class="capitolo" data-appare>{T('I dubbi di tutti', 'Everyone’s doubts')}</span>
-        <h2 data-righe><span class="riga"><span>{T('Le domande', 'The questions')} <span class="em">{T('che mi fanno sempre.', 'I always get.')}</span></span></span></h2>
+        <h2 data-righe><span class="riga"><span>{T('Le domande', 'The questions')} <span class="em">{T('che ci fanno sempre.', 'we always get.')}</span></span></span></h2>
       </div>
       <div class="faq">
         {paure.map(([d, r]) => (
@@ -361,7 +364,7 @@ const demo = it ? {
       )}</p>
       <div class="hero-azioni" data-appare style="justify-content:center">
         <a class="btn btn-azione btn-grande" href={`${preventivo}?s=software`} data-azione>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
-        <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener" data-wa>{T('Dimmi cosa ti fa perdere tempo', 'Tell me what wastes your time')}</a>
+        <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener" data-wa>{T('Dicci cosa ti fa perdere tempo', 'Tell us what wastes your time')}</a>
       </div>
     </div>
   </section>

@@ -121,11 +121,11 @@ export const en = {
     },
     {
       d: 'What does "AI software" actually mean?',
-      r: 'It means taking boring, repetitive work off people\'s plates. For example: a customer emails a request and the software drafts the quote for you to check. You approve it with one click. We always start with an analysis: if AI won\'t save you time or money, I\'ll tell you.',
+      r: 'It means taking boring, repetitive work off people\'s plates. For example: a customer emails a request and the software drafts the quote for you to check. You approve it with one click. We always start with an analysis: if AI won\'t save you time or money, we\'ll tell you. The software is handed over ready, it stays yours and so does your data.',
     },
     {
       d: 'You use AI to build sites? So they all look the same?',
-      r: 'I use Claude and ChatGPT the way a craftsman uses the best tools: to work faster and more precisely. Strategy, design, copy and decisions are mine and made for you. The result is unique, and it arrives sooner.',
+      r: 'We use Claude and ChatGPT the way a craftsman uses the best tools: to work faster and more precisely. Strategy, design, copy and decisions are ours and made for you. The result is unique, and it arrives sooner.',
     },
     {
       d: 'Are there grants to help with the cost?',
@@ -133,7 +133,7 @@ export const en = {
     },
     {
       d: 'Do you only work in Milan?',
-      r: 'I\'m based in Milan, but I work with clients all over Italy, in Switzerland (Ticino included) and abroad. Video calls are always included and meetings in Milan city are free. Outside Milan an in-person meeting costs €190 within 100 km (for example Como, Bergamo or Lugano) and €490 beyond. Prices are the same for everyone: if you\'re in Switzerland you can also see them in Swiss francs in the quote.',
+      r: 'The studio is in Milan, but we work with clients all over Italy, in Switzerland (Ticino included) and abroad. Video calls are always included and meetings in Milan city are free. Outside Milan an in-person meeting costs €190 within 100 km (for example Como, Bergamo or Lugano) and €490 beyond. Prices are the same for everyone: if you\'re in Switzerland you can also see them in Swiss francs in the quote.',
     },
   ],
 
@@ -183,9 +183,9 @@ export const en = {
       extra: {
         diagnosi: { nome: 'AI diagnosis (deducted from the project)', spiega: '90 minutes together to find where AI really saves you money. If you go ahead with the project, it\'s free.' },
         copilota: { nome: 'Company copilot', spiega: 'An assistant for your team that knows price lists, procedures and spec sheets and answers in chat.' },
-        formazione: { nome: 'AI training for your team (half day)', spiega: 'I teach your team to use Claude and ChatGPT in their everyday work.' },
+        formazione: { nome: 'AI training for your team (half day)', spiega: 'We teach your team to use Claude and ChatGPT in their everyday work.' },
       },
-      nota: 'The monthly fee covers hosting, monitoring and updates. AI usage above €30/month is billed separately, at cost.',
+      nota: 'The software and your data are yours. The monthly fee is the support: hosting, monitoring, updates and fixes. AI usage above €30/month is billed separately, at cost.',
     },
     integrazioni: {
       nome: 'AI integrations',
@@ -233,6 +233,6 @@ export const en = {
   tempi: {
     normale: { nome: 'Standard', riga: 'The right amount of time to do things well' },
     veloce: { nome: 'Fast', riga: 'Priority lane · +20% on the one-off part' },
-    calma: { nome: 'No rush', riga: 'I fit it in when I have space · −5%' },
+    calma: { nome: 'No rush', riga: 'We fit it in when we have space · −5%' },
   },
 };

@@ -57,8 +57,8 @@ const settori = it
 
       <noscript>
         {it
-          ? <p class="pv-noscript">Per usare il preventivo automatico serve JavaScript. Puoi scrivermi direttamente su <a href={`https://wa.me/${contatti.whatsapp}`}>WhatsApp</a> o a <a href={`mailto:${contatti.email}`}>{contatti.email}</a>.</p>
-          : <p class="pv-noscript">The instant quote needs JavaScript. You can write to me directly on <a href={`https://wa.me/${contatti.whatsapp}`}>WhatsApp</a> or at <a href={`mailto:${contatti.email}`}>{contatti.email}</a>.</p>}
+          ? <p class="pv-noscript">Per usare il preventivo automatico serve JavaScript. Puoi scriverci direttamente su <a href={`https://wa.me/${contatti.whatsapp}`}>WhatsApp</a> o a <a href={`mailto:${contatti.email}`}>{contatti.email}</a>.</p>
+          : <p class="pv-noscript">The instant quote needs JavaScript. You can write to us directly on <a href={`https://wa.me/${contatti.whatsapp}`}>WhatsApp</a> or at <a href={`mailto:${contatti.email}`}>{contatti.email}</a>.</p>}
       </noscript>
 
       <ol class="pv-passi" data-passi aria-label={T('Passaggi', 'Steps')}>
@@ -198,10 +198,10 @@ const settori = it
 
           <!-- PASSO 4 -->
           <fieldset class="pv-passo" data-passo="4" hidden>
-            <legend><span class="mono">{passoDi(4)}</span>{T('A chi mando il preventivo?', 'Who should I send the quote to?')}</legend>
+            <legend><span class="mono">{passoDi(4)}</span>{T('A chi mandiamo il preventivo?', 'Who should we send the quote to?')}</legend>
             <p class="pv-aiuto">{T(
-              'Ti rispondo entro 24 ore con il preventivo definitivo e una proposta per una chiamata di 20 minuti.',
-              "I'll reply within 24 hours with the final quote and a suggested time for a 20-minute call.",
+              'Ti rispondiamo entro 24 ore con il preventivo definitivo e una proposta per una chiamata di 20 minuti.',
+              "We'll reply within 24 hours with the final quote and a suggested time for a 20-minute call.",
             )}</p>
             <div class="pv-campi">
               <div class="pv-campo"><label for="pv-nome">{T('Nome e cognome', 'Full name')}</label><input id="pv-nome" name="nome" required autocomplete="name" /></div>
@@ -215,9 +215,9 @@ const settori = it
                   {settori.map(([id, nome]) => <option value={id}>{nome}</option>)}
                 </select>
               </div>
-              <div class="pv-campo pv-largo"><label for="pv-msg">{T('Raccontami il tuo obiettivo', 'Tell me your goal')} <span class="facolt">{T('(facoltativo)', '(optional)')}</span></label><textarea id="pv-msg" name="messaggio" rows="4" placeholder={T('es. Vorrei ricevere più richieste di preventivo per i miei lavori a Milano', 'e.g. I would like more quote requests for my work in Milan')}></textarea></div>
+              <div class="pv-campo pv-largo"><label for="pv-msg">{T('Raccontaci il tuo obiettivo', 'Tell us your goal')} <span class="facolt">{T('(facoltativo)', '(optional)')}</span></label><textarea id="pv-msg" name="messaggio" rows="4" placeholder={T('es. Vorrei ricevere più richieste di preventivo per i miei lavori a Milano', 'e.g. I would like more quote requests for my work in Milan')}></textarea></div>
               <fieldset class="pv-campo pv-largo pv-canale">
-                <legend>{T('Come preferisci essere ricontattato?', 'How would you like me to get back to you?')}</legend>
+                <legend>{T('Come preferisci essere ricontattato?', 'How would you like us to get back to you?')}</legend>
                 <label><input type="radio" name="canale" value="WhatsApp" checked /> WhatsApp</label>
                 <label><input type="radio" name="canale" value={T('Chiamata', 'Call')} /> {T('Chiamata', 'Call')}</label>
                 <label><input type="radio" name="canale" value="Email" /> Email</label>
@@ -239,7 +239,7 @@ const settori = it
               </div>
             </div>
             <p class="pv-rassicura">{T(
-              'Nessun impegno · I tuoi dati servono solo per risponderti · Ti rispondo entro 24 ore',
+              'Nessun impegno · I tuoi dati servono solo per risponderti · Ti rispondiamo entro 24 ore',
               'No commitment · Your details are only used to reply to you · Reply within 24 hours',
             )}</p>
           </fieldset>
@@ -249,8 +249,8 @@ const settori = it
             <Occhio espressione="festa" class="pv-fatto-occhio" />
             <h2>{T('Ricevuto.', 'Received.')} <span class="em em-firma">{T('Grazie!', 'Thank you!')}</span></h2>
             <p class="lead" data-fatto-testo>{T(
-              'Ho ricevuto il tuo progetto. Ti scrivo entro 24 ore con il preventivo definitivo.',
-              "I've received your project. I'll write to you within 24 hours with the final quote.",
+              'Abbiamo ricevuto il tuo progetto. Ti scriviamo entro 24 ore con il preventivo definitivo.',
+              "We've received your project. We'll write to you within 24 hours with the final quote.",
             )}</p>
             <div class="hero-azioni" data-fatto-azioni></div>
             <a class="link-freccia" href={url('home', lang)}>{T('Torna alla home', 'Back to home')} <span class="freccia" aria-hidden="true">→</span></a>

@@ -4,6 +4,7 @@
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
 import Illustrazione from './Illustrazione.astro';
+import TuoSoftware from './TuoSoftware.astro';
 import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -25,7 +26,7 @@ const prezzoLivello = (l: { una?: number; mese?: number }) =>
   l.una && l.mese ? `${eur(l.una)} + ${eur(l.mese)}${mese}` : l.mese ? `${eur(l.mese)}${mese}` : eur(l.una!);
 const altri = servizi.filter((x) => x.id !== id);
 const ai = id === 'software' || id === 'integrazioni';
-const waTesto = T(`Ciao Gabriele, ho visto la pagina «${s.titolo}» e vorrei parlarti di un progetto.`, `Hi Gabriele, I saw your “${s.titolo}” page and I'd like to talk about a project.`);
+const waTesto = T(`Ciao! Ho visto la pagina «${s.titolo}» di Studio Desideri e vorrei parlarvi di un progetto.`, `Hi! I saw the Studio Desideri “${s.titolo}” page and I'd like to talk to you about a project.`);
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -59,7 +60,7 @@ const jsonLd = {
         <p class="sv-prezzo" data-appare="0.3"><span class="mono">{T('A partire da', 'Starting from')}</span><strong>{eur(s.da)}{s.mese && <small> {mese}</small>}</strong><span class="sv-iva">{T('IVA esclusa', 'excl. VAT')}</span></p>
         <div class="hero-azioni" data-appare="0.4">
           <a class="btn btn-azione btn-grande" href={`${preventivo}?s=${id}`} data-azione><span class="scia" aria-hidden="true"></span>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
-          <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivimi su WhatsApp', 'Message me on WhatsApp')}</a>
+          <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
         </div>
       </div>
       <div class="sv-ill" data-appare="0.15"><Illustrazione id={id} lang={lang} /></div>
@@ -120,6 +121,8 @@ const jsonLd = {
       )}
     </div>
   </section>
+
+  {ai && <TuoSoftware lang={lang} />}
 
   <!-- Per esempio -->
   <section class="sezione" id="esempi" data-forma="2" data-lato="sinistra" data-luce="0.14" data-scala="0.7">
@@ -183,7 +186,7 @@ const jsonLd = {
     <div class="wrap">
       <div class="testa-sezione centro">
         <span class="capitolo" data-appare>{T('Domande', 'Questions')}</span>
-        <h2 data-righe><span class="riga"><span>{T('Quello che', 'What')} <span class="em">{T('tutti', 'everyone')}</span> {T('mi chiedono.', 'asks me.')}</span></span></h2>
+        <h2 data-righe><span class="riga"><span>{T('Quello che', 'What')} <span class="em">{T('tutti', 'everyone')}</span> {T('ci chiedono.', 'asks us.')}</span></span></h2>
       </div>
       <div class="faq">
         {p.faq.map(([d, r]) => (
@@ -204,10 +207,10 @@ const jsonLd = {
         <span class="riga"><span>{T('Vediamo quanto costa', 'Let’s see what it costs')}</span></span>
         <span class="riga"><span><span class="em em-firma">{T('il tuo progetto.', 'for your project.')}</span></span></span>
       </h2>
-      <p class="lead" data-appare>{T('Due minuti nel preventivo automatico e vedi subito il prezzo. Ti rispondo entro 24 ore.', 'Two minutes in the instant quote and you see the price straight away. I reply within 24 hours.')}</p>
+      <p class="lead" data-appare>{T('Due minuti nel preventivo automatico e vedi subito il prezzo. Ti rispondiamo entro 24 ore.', 'Two minutes in the instant quote and you see the price straight away. We reply within 24 hours.')}</p>
       <div class="hero-azioni" data-appare style="justify-content:center">
         <a class="btn btn-azione btn-grande" href={`${preventivo}?s=${id}`} data-azione>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
-        <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivimi su WhatsApp', 'Message me on WhatsApp')}</a>
+        <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
       </div>
       <nav class="sv-altri" aria-label={T('Gli altri servizi', 'Other services')} data-appare>
         {altri.map((a) => (

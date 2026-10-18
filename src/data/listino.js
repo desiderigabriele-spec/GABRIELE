@@ -51,9 +51,9 @@ export const categorie = [
     extra: [
       { id: 'diagnosi', nome: 'Diagnosi AI (si scala dal progetto)', una: 390, spiega: '90 minuti insieme per capire dove l\'AI ti fa risparmiare davvero. Se poi fai il progetto, è gratis.' },
       { id: 'copilota', nome: 'Copilota aziendale', una: 3900, mese: 199, spiega: 'Un assistente per il tuo team che conosce listini, procedure e schede tecniche e risponde in chat.' },
-      { id: 'formazione', nome: 'Formazione AI per il team (mezza giornata)', una: 650, max: 6, spiega: 'Insegno al tuo team a usare Claude e ChatGPT nel lavoro di ogni giorno.' },
+      { id: 'formazione', nome: 'Formazione AI per il team (mezza giornata)', una: 650, max: 6, spiega: 'Insegniamo al tuo team a usare Claude e ChatGPT nel lavoro di ogni giorno.' },
     ],
-    nota: 'Il canone copre hosting, controlli e aggiornamenti. Il consumo dell\'AI oltre i 30 €/mese si paga a parte, al costo reale.',
+    nota: 'Il software e i tuoi dati sono tuoi. Il canone è l\'assistenza: hosting, controlli, aggiornamenti e sistemazioni. Il consumo dell\'AI oltre i 30 €/mese si paga a parte, al costo reale.',
   },
   {
     id: 'integrazioni',
@@ -111,7 +111,7 @@ export const cambio = { CHF: 0.92, aggiornato: '2026-10' };
 export const tempi = [
   { id: 'normale', nome: 'Normale', riga: 'I tempi giusti per fare le cose bene', fattore: 1 },
   { id: 'veloce', nome: 'Veloce', riga: 'Corsia prioritaria · +20% sulla parte una tantum', fattore: 1.2 },
-  { id: 'calma', nome: 'Senza fretta', riga: 'Mi organizzo quando ho spazio · −5%', fattore: 0.95 },
+  { id: 'calma', nome: 'Senza fretta', riga: 'Ci organizziamo quando abbiamo spazio · −5%', fattore: 0.95 },
 ];
 
 // Sconto pacchetto sulla parte una tantum, in base a quanti servizi (esclusa la Cura) si scelgono

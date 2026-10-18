@@ -102,6 +102,15 @@ Il bottone con i quattro puntini apre un pannellino con due sole cose, che cambi
 
 Si chiude con Invio, Esc, la × o toccando fuori. Alla prima visita compare una volta un piccolo invito sotto il bottone («Vuoi il sito con il tuo nome e il tuo colore?»), mai insieme all'avviso della lingua. Tutto resta nel browser (`localStorage gd-profilo`), niente viene inviato. Chi ha appena personalizzato non vede la finestra d'uscita: al massimo una finestra per visita. La domanda «di cosa ti occupi?» è stata tolta: il settore si chiede solo nel preventivo.
 
+### La voce: Studio Desideri, al plurale
+Tutto il sito parla come studio («facciamo», «ti rispondiamo», «scrivici»). Gabriele compare in terza persona solo in «Lo studio», come fondatore. I messaggi WhatsApp precompilati salutano lo studio («Ho visto il sito di Studio Desideri e vorrei parlarvi di un progetto»). Resta al singolare solo l'informativa privacy, dove il titolare dei dati è la persona.
+
+### Software AI: tuo, non in affitto
+Sulle pagine Software con AI, Collegamenti AI e AI per aziende c'è la sezione «Il software è tuo. I dati restano tuoi.» (`src/components/TuoSoftware.astro`):
+- il confronto tra un servizio online in abbonamento e il software consegnato da noi: installato in uno spazio intestato al cliente, con i suoi dati; codice e dati suoi anche se smette l'assistenza; pronto dal primo giorno; impostato e seguito da noi, il cliente non ci mette mai mano;
+- quattro punti sull'AI, scritti per essere veri: API professionali (non le app gratuite); nei contratti per le aziende i fornitori non usano i dati delle API per addestrare i modelli; li tengono poco (al massimo 30 giorni per i controlli di sicurezza), con conservazione zero e server in Europa quando serve; tutto per iscritto come chiede il GDPR, con la chiave dell'AI che può essere intestata al cliente.
+Il canone mensile è l'assistenza (hosting, controlli, aggiornamenti, sistemazioni), non un affitto: lo dicono il listino e le domande frequenti.
+
 ### Ogni sezione in uno schermo
 Su computer ogni sezione della home, delle pagine servizio e della pagina AI sta in una schermata: spazi, titoli e alcune scritte seguono l'altezza della finestra (`svh`), con una versione più compatta sotto gli 840 px di altezza. Verificato a 1900×870, 1440×800, 1280×760 (a 1366×700 due sezioni superano di circa 30 px). Fa eccezione il **Metodo**, che scorre di proposito: ogni passo però sta in uno schermo. Su telefono l'hero è intero nella prima schermata (occhio, titolo, frase, bottone); le altre sezioni scorrono.
 
@@ -173,16 +182,16 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
 ### Home, sezione per sezione
 1. **Loader breve** (meno di 1,2 secondi): un punto di luce che si apre. Solo alla prima visita.
 2. **Hero · Attenzione** — Occhio di particelle.
-   - Titolo: *"Trasformo chi ti guarda in chi ti **sceglie**."*
+   - Titolo: *"Trasformiamo chi ti guarda in chi ti **sceglie**."*
    - Sottotitolo: "Siti web, e-commerce, software con intelligenza artificiale e pubblicità online. Progettati con la psicologia per portare le persone dal primo sguardo al «sì»."
    - Bottoni: **Calcola il tuo preventivo** (caldo) · Guarda come funziona.
    - Riduttori di rischio: "Preventivo in 2 minuti · Risposta entro 24 ore · Milano e tutta Italia".
 3. **Il problema** — "Un sito bello non basta. Deve far venire voglia di sceglierti." Tre dolori in parole semplici: nessuno ti trova, ti trovano ma se ne vanno, ti contattano ma non comprano.
 4. **Servizi · Interesse** — 6 schede compatte: Siti web · Negozi online · Software con AI · Collegamenti AI · Pubblicità online · Cura e crescita. Ogni scheda ha "In parole semplici", "da X €" e porta alla pagina del servizio.
 5. **Calcolatore del tempo risparmiato** — "Quante ore ti rubano i lavori sempre uguali?" Dieci lavori da spuntare (rispondere alle stesse domande, copiare dati, preventivi, appuntamenti, email, documenti, testi, fatture, ordini, report), ognuno con cosa fa l'AI al posto tuo e le ore a settimana. Le ore spuntate, le persone e il costo orario danno ore ed euro risparmiati in un anno.
-6. **Il metodo · Fiducia** — Sezione bloccata con 5 passi che scorrono (Sguardo, Interesse, Fiducia, Desiderio, Azione). Per ogni passo: cosa succede nella testa del cliente + la tecnica usata + cosa fa Gabriele.
+6. **Il metodo · Fiducia** — Sezione bloccata con 5 passi che scorrono (Sguardo, Interesse, Fiducia, Desiderio, Azione). Per ogni passo: cosa succede nella testa del cliente + la tecnica usata + cosa facciamo noi.
 7. **Parlano di noi** (voce di menu "Clienti") — una scheda per cliente: anteprima del sito con il link per vederlo dal vivo, la recensione (oggi, finché non arriva, la sfida del progetto), nome, settore, pacchetto e cosa è stato fatto.
-8. **Chi sono** — Storia: ha venduto faccia a faccia (agente di commercio, team leader, consulente immobiliare), ha lanciato e-commerce suoi e per aziende, ha studiato psicologia, marketing, neuromarketing e AI. Certificazioni.
+8. **Lo studio** — «Ci chiamiamo Desideri. Di lavoro, li creiamo.» Chi è Studio Desideri e chi l'ha fondato: Gabriele Desideri, che ha provato ogni tipo di vendita a freddo per capire come decidono le persone e per allenarsi. Cinque punti (vendita provata sul campo, negozi e pubblicità, una startup da zero, psicologia applicata, oggi software con AI) e le certificazioni. Niente date e niente lavori da dipendente: si parla dello studio.
 9. **Prezzi · Desiderio** — Tre pacchetti sito (Signature, Presenza "il più scelto", Impulso), più "da X €" per tutto il resto. I tre pacchetti sono i livelli del preventivo: il bottone apre il preventivo con quel pacchetto già scelto. Servono a chi vuole vedere un prezzo subito senza comporre niente, e lo Signature messo per primo fa da "àncora" (Presenza sembra più ragionevole accanto a lui).
 10. **Garanzie** — Revisioni finché il design non ti convince · Il sito è tuo · Prezzo chiaro prima di iniziare.
 11. **Domande frequenti** — Le obiezioni, con risposte semplici.

@@ -105,8 +105,10 @@ function animaIngressi() {
   });
   // gruppi in sequenza (card, passi, prezzi)
   document.querySelectorAll('[data-sequenza]').forEach((g) => {
+    // a fine animazione tolgo transform e opacità scritti da GSAP: le card hanno una transizione CSS
+    // sul transform (l'inclinazione al passaggio del mouse) che altrimenti le lascia 40px più in basso
     gsap.from(g.children, {
-      opacity: 0, y: 40, duration: 1, ease: 'expo.out', stagger: 0.08,
+      opacity: 0, y: 40, duration: 1, ease: 'expo.out', stagger: 0.08, clearProps: 'transform,opacity',
       scrollTrigger: { trigger: g, start: 'top 85%', once: true },
     });
   });

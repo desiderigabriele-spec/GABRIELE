@@ -8,12 +8,12 @@ export const TEMI_SITO = ['blu', 'rosso', 'viola', 'verde'];
 
 const TESTI = {
   it: {
-    wa: (n) => `Ciao Gabriele, sono ${n}. Ho visto il tuo sito e vorrei parlarti di un progetto.`,
+    wa: (n) => `Ciao, sono ${n}. Ho visto il sito di Studio Desideri e vorrei parlarvi di un progetto.`,
     // saluti senza genere: vanno bene per Marco e per Giulia
     saluto: (h) => (h >= 5 && h < 14 ? 'Buongiorno ' : h >= 14 && h < 18 ? 'Ciao ' : 'Buonasera '),
   },
   en: {
-    wa: (n) => `Hi Gabriele, I'm ${n}. I saw your website and I'd like to talk about a project.`,
+    wa: (n) => `Hi, I'm ${n}. I saw the Studio Desideri website and I'd like to talk to you about a project.`,
     saluto: (h) => (h >= 5 && h < 12 ? 'Good morning, ' : h >= 12 && h < 18 ? 'Good afternoon, ' : 'Good evening, '),
   },
 }[lang];

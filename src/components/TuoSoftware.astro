@@ -1,0 +1,100 @@
+---
+// «Tuo, non in affitto»: il software AI lo consegniamo pronto, resta del cliente e i suoi dati restano suoi.
+// Sulle pagine Software, Collegamenti e AI. Le frasi sull'AI descrivono le condizioni delle API
+// professionali (niente addestramento sui dati, conservazione breve): vedi DA-CONFERMARE.md.
+import Icona from './Icona.astro';
+interface Props { lang?: 'it' | 'en'; id?: string }
+const { lang = 'it', id = 'tuo' } = Astro.props;
+const it = lang === 'it';
+const T = (a: string, b: string) => (it ? a : b);
+const affitto = it ? [
+  'I tuoi dati stanno sui server di un’altra azienda',
+  'Se smetti di pagare, perdi l’accesso e lo storico',
+  'Il programma è uguale per tutti: sei tu che ti adatti',
+  'Prezzi e regole li cambiano loro, quando vogliono',
+] : [
+  'Your data sits on another company’s servers',
+  'Stop paying and you lose access and history',
+  'The program is the same for everyone: you adapt to it',
+  'They change prices and rules whenever they like',
+];
+const tuo = it ? [
+  'Installato in uno spazio intestato a te, con i tuoi dati dentro',
+  'Codice e dati sono tuoi: se un giorno smetti l’assistenza, ti consegniamo tutto',
+  'Fatto su come lavori tu, pronto da usare dal primo giorno',
+  'Lo impostiamo noi e lo seguiamo noi: tu non devi mai metterci mano',
+] : [
+  'Installed in a space in your name, with your data inside',
+  'Code and data are yours: if you ever stop the support, we hand everything over',
+  'Built around how you work, ready to use from day one',
+  'We set it up and we look after it: you never have to touch it',
+];
+const ai = it ? [
+  ['chiave', 'API professionali, non app gratuite', 'Colleghiamo l’intelligenza artificiale (per esempio Claude di Anthropic o OpenAI) con le API per aziende, non con le app che usano tutti.'],
+  ['lucchetto', 'Non addestra l’AI con i tuoi dati', 'Nei contratti per le aziende i fornitori dell’AI si impegnano a non usare i dati che passano dalle API per addestrare i loro modelli.'],
+  ['tempi', 'Legge solo quello che serve', 'L’AI vede solo il testo di quel lavoro. Il fornitore lo tiene poco, al massimo 30 giorni per i controlli di sicurezza, poi lo cancella. Se serve: conservazione zero e server in Europa.'],
+  ['preventivo', 'Tutto scritto, come chiede il GDPR', 'Ti diamo per iscritto dove stanno i tuoi dati e chi li tratta. La chiave dell’AI può essere intestata a te: paghi il consumo reale e puoi cambiare fornitore quando vuoi.'],
+] : [
+  ['chiave', 'Business APIs, not free apps', 'We connect artificial intelligence (for example Anthropic’s Claude or OpenAI) through business APIs, not through the apps everyone uses.'],
+  ['lucchetto', 'Your data does not train the AI', 'In their business contracts AI providers commit not to use data sent through their APIs to train their models.'],
+  ['tempi', 'It only reads what it needs', 'AI only sees the text for that task. The provider keeps it briefly, at most 30 days for security checks, then deletes it. If needed: zero retention and servers in Europe.'],
+  ['preventivo', 'All in writing, as GDPR requires', 'We tell you in writing where your data is and who processes it. The AI key can be in your name: you pay actual usage and can switch provider whenever you like.'],
+];
+---
+<section class="sezione tuo-software" id={id} data-forma="3" data-lato="sinistra" data-luce="0.14" data-scala="0.8">
+  <div class="wrap">
+    <div class="testa-sezione testa-riga">
+      <span class="capitolo" data-appare>{T('Tuo, non in affitto', 'Yours, not rented')}</span>
+      <h2 data-righe>
+        <span class="riga"><span>{T('Il software è tuo.', 'The software is yours.')}</span></span>
+        <span class="riga"><span><span class="em em-firma">{T('I dati restano tuoi.', 'Your data stays yours.')}</span></span></span>
+      </h2>
+      <p class="lead" data-appare>{T(
+        'Non ti vendiamo un abbonamento al servizio online di qualcun altro. Ti consegniamo un programma tuo, già pronto e impostato da noi: tu lo usi e basta, al resto pensiamo noi.',
+        'We don’t sell you a subscription to someone else’s online service. We hand over a program of your own, ready and set up by us: you just use it, we take care of the rest.',
+      )}</p>
+    </div>
+    <div class="ts-confronto" data-sequenza>
+      <div class="card ts-colonna ts-affitto">
+        <span class="mono">{T('Un servizio online in abbonamento', 'An online subscription service')}</span>
+        <ul>{affitto.map((x) => <li>{x}</li>)}</ul>
+      </div>
+      <div class="card ts-colonna ts-tuo">
+        <span class="mono">{T('Il tuo software Studio Desideri', 'Your Studio Desideri software')}</span>
+        <ul>{tuo.map((x) => <li>{x}</li>)}</ul>
+      </div>
+    </div>
+    <div class="ts-ai" data-sequenza>
+      {ai.map(([icona, titolo, testo]) => (
+        <div class="ts-punto">
+          <span class="servizio-icona"><Icona nome={icona} /></span>
+          <strong>{titolo}</strong>
+          <p>{testo}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .ts-confronto { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 14px; }
+  .ts-colonna { display: grid; gap: .9rem; align-content: start; padding: clamp(18px, 2.4svh, 28px) clamp(20px, 2vw, 30px); }
+  .ts-colonna ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+  .ts-colonna li { position: relative; padding-left: 1.7rem; font-size: .97rem; line-height: 1.4; }
+  .ts-colonna li::before { position: absolute; left: 0; top: .05em; width: 1.15rem; height: 1.15rem; border-radius: 50%; display: grid; place-items: center; font-size: .7rem; font-weight: 700; }
+  .ts-affitto { opacity: .85; }
+  .ts-affitto li { color: var(--nebbia); }
+  .ts-affitto li::before { content: '×'; background: rgba(var(--latte-rgb), .08); color: var(--nebbia); }
+  .ts-tuo { border-color: rgba(var(--brand-rgb), .55); background: linear-gradient(180deg, rgba(var(--brand-rgb), .14), rgba(var(--sup-rgb), .9)); }
+  .ts-tuo .mono { color: var(--viola-chiaro); }
+  .ts-tuo li { color: var(--latte); }
+  .ts-tuo li::before { content: '✓'; background: var(--viola); color: var(--notte); }
+  .ts-ai { margin-top: clamp(16px, 3svh, 32px); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); }
+  .ts-punto { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .5rem .8rem; align-items: center; align-content: start; }
+  .ts-punto .servizio-icona { width: 40px; height: 40px; border-radius: 12px; }
+  .ts-punto .servizio-icona :global(svg) { width: 24px; height: 24px; }
+  .ts-punto strong { font-family: var(--f-titolo); font-size: 1.02rem; line-height: 1.25; }
+  .ts-punto p { grid-column: 1 / -1; margin: 0; color: var(--nebbia); font-size: .88rem; line-height: 1.45; }
+  @media (max-width: 1020px) { .ts-ai { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 700px) { .ts-confronto, .ts-ai { grid-template-columns: minmax(0, 1fr); } }
+</style>
