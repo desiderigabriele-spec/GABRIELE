@@ -243,10 +243,10 @@ const jsonLd = {
     </div>
   </section>
 
-  <!-- CALCOLATORE DEL TEMPO RISPARMIATO: spunti i lavori sempre uguali che fai anche tu -->
+  <!-- SOFTWARE CON AI: un assaggio che incuriosisce; il calcolo si fa in tre passi in una finestra -->
   <section class="sezione" id="risparmio" data-forma="1" data-lato="sinistra" data-luce="0.35" data-scala="0.9">
-    <div class="wrap" data-risparmio data-lang={lang}>
-      <div class="testa-sezione testa-riga">
+    <div class="wrap risparmio">
+      <div class="testa-sezione" style="margin-bottom:0">
         <span class="capitolo" data-appare>{T('Software con AI', 'AI software')}</span>
         {it ? (
           <h2 data-righe>
@@ -260,16 +260,58 @@ const jsonLd = {
           </h2>
         )}
         <p class="lead" data-appare>{T(
-          'Lavori fatti a mano ogni giorno, sempre allo stesso modo. Un programma con l’intelligenza artificiale li fa al posto tuo: tu controlli il risultato. Spunta quelli che fai anche tu.',
-          'Jobs done by hand every day, always the same way. A program with artificial intelligence does them for you: you check the result. Tick the ones you do too.',
+          'Rispondere alle stesse domande, copiare dati, preparare preventivi. Un software con l’intelligenza artificiale lo fa al posto tuo, anche di notte. Scopri in un minuto quanto tempo e quanti soldi ti restituisce.',
+          'Answering the same questions, copying data, preparing quotes. Software with artificial intelligence does it for you, even at night. Find out in a minute how much time and money it gives back.',
         )}</p>
+        <div class="hero-azioni" data-appare>
+          <button class="btn btn-azione btn-grande" type="button" data-calcolo-apri><span class="scia" aria-hidden="true"></span>{T('Calcola quanto risparmi', 'Work out what you save')} <span class="freccia" aria-hidden="true">→</span></button>
+          <a class="link-freccia" href={url('ai', lang)}>{T('Guarda l’AI al lavoro', 'See AI at work')} <span class="freccia" aria-hidden="true">→</span></a>
+        </div>
       </div>
-      <div class="risparmio">
-        <fieldset class="ripetitivi" data-appare>
-          <legend class="sr-only">{T('Lavori ripetitivi che fai anche tu', 'Repetitive jobs you do too')}</legend>
-          {ripetitivi.map(([titolo, ai, ore], i) => (
+      <!-- l'assaggio: cosa ha fatto da solo il software stanotte -->
+      <div class="stanotte" data-stanotte data-appare>
+        <div class="st-testa">
+          <span class="st-luna" aria-hidden="true"></span>
+          <span><strong>{T('Stanotte, mentre dormivi', 'Last night, while you slept')}</strong><small>{T('il tuo software ha fatto da solo:', 'your software did on its own:')}</small></span>
+        </div>
+        <ul>
+          {(it ? [
+            ['23:47', 'Risposto a Laura, che chiedeva un preventivo'],
+            ['01:12', 'Copiato 12 ordini nel gestionale'],
+            ['03:30', 'Preparato 3 preventivi da approvare'],
+            ['06:00', 'Mandato i promemoria degli appuntamenti di oggi'],
+          ] : [
+            ['23:47', 'Replied to Laura, who asked for a quote'],
+            ['01:12', 'Copied 12 orders into your software'],
+            ['03:30', 'Drafted 3 quotes for you to approve'],
+            ['06:00', 'Sent the reminders for today’s appointments'],
+          ]).map(([ora, cosa], i) => <li style={`--i:${i}`}><span class="st-ora">{ora}</span><span>{cosa}</span><span class="st-ok" aria-hidden="true"></span></li>)}
+        </ul>
+        <button class="st-domanda" type="button" data-calcolo-apri>
+          <span>{T('E a te quante ore restituirebbe?', 'And how many hours would it give you back?')}</span>
+          <strong>? {T('ore all’anno', 'hours a year')}</strong>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Il calcolo in tre passi: cosa fai a mano, quanto vale, il preventivo -->
+  <dialog class="calcolo" data-calcolo data-lang={lang} aria-labelledby="calcolo-titolo" data-lenis-prevent>
+    <div class="cl-box">
+      <div class="cl-testa">
+        <span class="mono" id="calcolo-titolo">{T('Quanto ti fa risparmiare', 'What it saves you')}</span>
+        <span class="cl-passi" aria-hidden="true"><i class="attivo"></i><i></i><i></i></span>
+        <button class="cl-chiudi" type="button" data-calcolo-chiudi aria-label={T('Chiudi', 'Close')}>×</button>
+      </div>
+
+      <section class="cl-passo" data-cl-passo="1">
+        <h3>{T('Cosa fai ancora a mano?', 'What do you still do by hand?')}</h3>
+        <p class="cl-sotto">{T('Spunta i lavori che fai tu o il tuo team. Sotto ognuno, cosa farebbe l’AI al posto tuo.', 'Tick the jobs you or your team do. Under each one, what AI would do for you.')}</p>
+        <fieldset class="ripetitivi">
+          <legend class="sr-only">{T('Lavori ripetitivi', 'Repetitive jobs')}</legend>
+          {ripetitivi.map(([titolo, ai, ore]) => (
             <label class="rip">
-              <input type="checkbox" value={ore} checked={i < 3} data-rip />
+              <input type="checkbox" value={ore} data-rip data-titolo={titolo} />
               <span class="rip-spunta" aria-hidden="true"></span>
               <span class="rip-titolo">{titolo}</span>
               <span class="rip-ore">{String(ore).replace('.', it ? ',' : '.')} h</span>
@@ -277,29 +319,47 @@ const jsonLd = {
             </label>
           ))}
         </fieldset>
-        <div class="risparmio-pannello" data-appare>
-          <p class="rs-ore"><span>{T('Ore a settimana, a persona', 'Hours a week, per person')}</span><output data-out="ore">8</output></p>
-          <div class="cursore-campo">
-            <label for="r-persone">{T('Persone che li fanno', 'People doing them')} <output data-out="persone">3</output></label>
-            <input id="r-persone" type="range" min="1" max="30" value="3" data-in="persone" />
-          </div>
-          <div class="cursore-campo">
-            <label for="r-costo">{T("Costo di un'ora di lavoro", 'Cost of one hour of work')} <output data-out="costo">{eur(25)}</output></label>
-            <input id="r-costo" type="range" min="12" max="80" value="25" data-in="costo" />
-          </div>
-          <div class="risultati" aria-live="polite">
-            <div class="risultato"><strong data-ris="ore">662</strong><span>{T('ore restituite in un anno', 'hours given back each year')}</span></div>
-            <div class="risultato caldo"><strong data-ris="euro">{eur(16550)}</strong><span>{T('di lavoro risparmiato ogni anno', 'of work saved every year')}</span></div>
-          </div>
-          <a class="btn btn-azione" href={`${preventivo}?s=software`} data-azione>{T('Voglio recuperare questo tempo', 'I want this time back')} <span class="freccia" aria-hidden="true">→</span></a>
-          <p class="nota">{T(
-            'Stima prudente: 46 settimane di lavoro e solo il 60% di quelle ore.',
-            'A cautious estimate: 46 working weeks and only 60% of those hours.',
-          )} <a class="link-freccia" href={url('ai', lang)}>{T("Guarda l'AI al lavoro", 'See AI at work')} <span class="freccia" aria-hidden="true">→</span></a></p>
+        <div class="cl-piede">
+          <p class="cl-conto" aria-live="polite"><output data-out="ore">0</output> {T('ore a settimana, a persona', 'hours a week, per person')}</p>
+          <button class="btn btn-azione" type="button" data-cl-vai="2" disabled>{T('Avanti', 'Next')} <span class="freccia" aria-hidden="true">→</span></button>
         </div>
-      </div>
+      </section>
+
+      <section class="cl-passo" data-cl-passo="2" hidden>
+        <h3>{T('Quanto vale per te?', 'What is it worth to you?')}</h3>
+        <p class="cl-sotto">{T('Due numeri e vedi quanto tempo e quanti soldi ti restituisce in un anno.', 'Two numbers and you see how much time and money it gives back in a year.')}</p>
+        <div class="cursore-campo">
+          <label for="r-persone">{T('Persone che fanno questi lavori', 'People doing these jobs')} <output data-out="persone">3</output></label>
+          <input id="r-persone" type="range" min="1" max="30" value="3" data-in="persone" />
+        </div>
+        <div class="cursore-campo">
+          <label for="r-costo">{T("Costo di un'ora di lavoro", 'Cost of one hour of work')} <output data-out="costo">{eur(25)}</output></label>
+          <input id="r-costo" type="range" min="12" max="80" value="25" data-in="costo" />
+        </div>
+        <div class="risultati" aria-live="polite">
+          <div class="risultato"><strong data-ris="ore">0</strong><span>{T('ore restituite in un anno', 'hours given back each year')}</span></div>
+          <div class="risultato caldo"><strong data-ris="euro">{eur(0)}</strong><span>{T('di lavoro risparmiato ogni anno', 'of work saved every year')}</span></div>
+        </div>
+        <p class="nota">{T('Stima prudente: 46 settimane di lavoro e solo il 60% di quelle ore. Il numero vero lo misuriamo insieme nella Diagnosi AI.', 'A cautious estimate: 46 working weeks and only 60% of those hours. We measure the real number together in the AI diagnosis.')}</p>
+        <div class="cl-piede">
+          <button class="btn btn-vetro" type="button" data-cl-vai="1"><span aria-hidden="true">←</span> {T('Indietro', 'Back')}</button>
+          <button class="btn btn-azione" type="button" data-cl-vai="3">{T('Voglio recuperarlo', 'I want it back')} <span class="freccia" aria-hidden="true">→</span></button>
+        </div>
+      </section>
+
+      <section class="cl-passo cl-fine" data-cl-passo="3" hidden>
+        <h3><span data-ris="ore-testo"></span> <span class="em em-firma">{T('di nuovo tue.', 'yours again.')}</span></h3>
+        <p class="cl-sotto">{T('Ecco cosa automatizzeremmo per te. Lo trovi già scritto nella richiesta di preventivo: ti rispondiamo entro 24 ore.', 'Here is what we would automate for you. It is already written in the quote request: we reply within 24 hours.')}</p>
+        <ul class="lista-check" data-cl-scelti></ul>
+        <p class="cl-tuo">{T('Il software te lo consegniamo pronto e resta tuo, con i tuoi dati.', 'We hand the software over ready, and it stays yours, with your data.')}</p>
+        <div class="cl-piede">
+          <a class="btn btn-azione btn-grande" href={`${preventivo}?s=software`} data-azione data-cl-preventivo>{T('Richiedi il preventivo', 'Request a quote')} <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="btn btn-vetro" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener" data-cl-wa>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
+        </div>
+        <button class="cl-indietro" type="button" data-cl-vai="2">{T('Cambia i numeri', 'Change the numbers')}</button>
+      </section>
     </div>
-  </section>
+  </dialog>
 
   <!-- 03 · FIDUCIA: IL METODO -->
   <section class="sezione" id="metodo">
@@ -564,28 +624,85 @@ const jsonLd = {
 </style>
 
 <script>
-  // Calcolatore del tempo risparmiato: le ore sono la somma dei lavori spuntati
+  // Il calcolo in tre passi, in una finestra: lavori spuntati → ore ed euro in un anno → preventivo già compilato
   import { numero, euro } from '../data/formato.js';
-  const box = document.querySelector<HTMLElement>('[data-risparmio]');
+  const box = document.querySelector<HTMLDialogElement>('[data-calcolo]');
   if (box) {
+    const html = document.documentElement;
     const lang = box.dataset.lang === 'en' ? 'en' : 'it';
+    const T = (a: string, b: string) => (lang === 'it' ? a : b);
+    const ore1 = (n: number) => String(n).replace('.', lang === 'it' ? ',' : '.');
+    const passi = [...box.querySelectorAll<HTMLElement>('[data-cl-passo]')];
+    const puntini = [...box.querySelectorAll('.cl-passi i')];
     const val = (k: string) => Number((box.querySelector(`[data-in="${k}"]`) as HTMLInputElement).value);
-    const aggiorna = () => {
+    const scelti = () => [...box.querySelectorAll<HTMLInputElement>('[data-rip]:checked')];
+    let anno = 0;
+
+    function aggiorna() {
       box.querySelectorAll<HTMLInputElement>('input[type="range"]').forEach((i) => {
-        const p = ((Number(i.value) - Number(i.min)) / (Number(i.max) - Number(i.min))) * 100;
-        i.style.setProperty('--p', `${p}%`);
+        i.style.setProperty('--p', `${((Number(i.value) - Number(i.min)) / (Number(i.max) - Number(i.min))) * 100}%`);
       });
-      const ore = [...box.querySelectorAll<HTMLInputElement>('[data-rip]:checked')].reduce((t, c) => t + Number(c.value), 0);
+      const ore = scelti().reduce((t, c) => t + Number(c.value), 0);
       const persone = val('persone'), costo = val('costo');
-      const anno = Math.round(ore * persone * 46 * 0.6);
-      box.querySelector('[data-out="ore"]')!.textContent = String(ore).replace('.', lang === 'it' ? ',' : '.');
+      anno = Math.round(ore * persone * 46 * 0.6);
+      box.querySelector('[data-out="ore"]')!.textContent = ore1(ore);
       box.querySelector('[data-out="persone"]')!.textContent = String(persone);
       box.querySelector('[data-out="costo"]')!.textContent = euro(costo, lang);
       box.querySelector('[data-ris="ore"]')!.textContent = numero(anno, lang);
       box.querySelector('[data-ris="euro"]')!.textContent = euro(anno * costo, lang);
-    };
+      (box.querySelector('[data-cl-vai="2"]') as HTMLButtonElement).disabled = ore === 0;
+    }
+
+    // il terzo passo: riepilogo, e la richiesta già scritta per il preventivo e per WhatsApp
+    function riepilogo() {
+      const lista = scelti().map((c) => c.dataset.titolo!);
+      const euroAnno = euro(anno * val('costo'), lang);
+      box.querySelector('[data-ris="ore-testo"]')!.textContent = T(`${numero(anno, lang)} ore all’anno,`, `${numero(anno, lang)} hours a year,`);
+      const ul = box.querySelector('[data-cl-scelti]')!;
+      ul.replaceChildren(...lista.map((t) => Object.assign(document.createElement('li'), { textContent: t })));
+      const testo = T(
+        `Vorrei automatizzare: ${lista.join(', ').toLowerCase()}. Siamo ${val('persone')} persone: dal calcolo sono circa ${numero(anno, lang)} ore all’anno (${euroAnno}).`,
+        `I would like to automate: ${lista.join(', ').toLowerCase()}. We are ${val('persone')} people: the calculator says about ${numero(anno, lang)} hours a year (${euroAnno}).`,
+      );
+      try { localStorage.setItem('gd-calcolo', testo); } catch (_) {}
+      const wa = box.querySelector<HTMLAnchorElement>('[data-cl-wa]')!;
+      const u = new URL(wa.href); u.searchParams.set('text', T(`Ciao Studio Desideri! ${testo}`, `Hi Studio Desideri! ${testo}`)); wa.href = u.toString();
+    }
+
+    function vai(n: number) {
+      if (n === 3) riepilogo();
+      passi.forEach((p) => { p.hidden = Number(p.dataset.clPasso) !== n; });
+      puntini.forEach((p, i) => { p.classList.toggle('attivo', i + 1 === n); p.classList.toggle('fatto', i + 1 < n); });
+      box.querySelector('.cl-box')!.scrollTop = 0;
+      const primo = passi[n - 1].querySelector<HTMLElement>('h3');
+      primo?.setAttribute('tabindex', '-1'); primo?.focus({ preventScroll: true });
+      (window as any).gdTrack?.('calcolo_passo', { passo: n });
+    }
+    box.querySelectorAll<HTMLButtonElement>('[data-cl-vai]').forEach((b) => b.addEventListener('click', () => vai(Number(b.dataset.clVai))));
+
+    function apri() {
+      if (box.open) return;
+      box.showModal();
+      html.classList.add('calcolo-aperto');
+      (window as any).gdLenis?.stop();
+      vai(1);
+      (window as any).gdTrack?.('calcolo_aperto');
+    }
+    function chiudi() { box.close(); }
+    box.addEventListener('close', () => { html.classList.remove('calcolo-aperto'); (window as any).gdLenis?.start(); });
+    box.addEventListener('click', (e) => { if (e.target === box) chiudi(); }); // clic sullo sfondo
+    box.querySelector('[data-calcolo-chiudi]')!.addEventListener('click', chiudi);
+    document.querySelectorAll('[data-calcolo-apri]').forEach((b) => b.addEventListener('click', apri));
     box.addEventListener('input', aggiorna);
     box.addEventListener('change', aggiorna);
     aggiorna();
+    if (location.hash === '#calcola') apri();
   }
+
+  // l'assaggio: le righe si spuntano una alla volta quando la scheda entra nello schermo
+  const stanotte = document.querySelector('[data-stanotte]');
+  if (stanotte && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((v) => { if (v.some((x) => x.isIntersecting)) { stanotte.classList.add('in-corso'); io.disconnect(); } }, { threshold: 0.4 });
+    io.observe(stanotte);
+  } else stanotte?.classList.add('in-corso');
 </script>

@@ -478,6 +478,12 @@ export function avviaPreventivo() {
   // il nome scelto in «Personalizza»
   const profilo = leggiProfilo();
   if (profilo.nome && !form.elements.nome.value) form.elements.nome.value = profilo.nome;
+  // i lavori scelti nel calcolo «Quanto ti fa risparmiare» della home
+  try {
+    const calcolo = localStorage.getItem('gd-calcolo');
+    if (calcolo && !form.elements.messaggio.value) form.elements.messaggio.value = calcolo;
+    localStorage.removeItem('gd-calcolo');
+  } catch (_) {}
   mostraBlocchi();
   aggiorna();
   vaiA(1, false);

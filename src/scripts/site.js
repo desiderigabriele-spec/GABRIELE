@@ -249,7 +249,7 @@ const caricata = Date.now();
 let uscitaAperta = false, focusPrima = null;
 function apriUscita(motivo) {
   // al massimo una finestra per visita: chi ha appena personalizzato il sito non la vede
-  if (!uscita || uscitaAperta || ss.get('gd-uscita') || ss.get('gd-personalizzato') || html.classList.contains('menu-aperto')) return;
+  if (!uscita || uscitaAperta || ss.get('gd-uscita') || ss.get('gd-personalizzato') || html.classList.contains('menu-aperto') || html.classList.contains('calcolo-aperto')) return;
   if (Date.now() - caricata < 6000) return; // non disturbare chi è appena arrivato
   uscitaAperta = true;
   ss.set('gd-uscita', '1');
