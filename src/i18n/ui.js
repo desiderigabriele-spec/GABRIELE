@@ -27,7 +27,8 @@ export const tr = (o, lang) => (lang === 'en' && o && o.en ? { ...o, ...o.en } :
 export const ui = {
   it: {
     lang: 'it', locale: 'it_IT', vaiContenuto: 'Vai al contenuto', menu: 'Menu',
-    nav: [['servizi', 'Servizi'], ['@ai', 'AI per aziende'], ['metodo', 'Metodo'], ['lavori', 'Clienti'], ['prezzi', 'Prezzi'], ['chi-sono', 'Lo studio']],
+    nav: [['servizi', 'Servizi'], ['@ai', 'AI per aziende'], ['metodo', 'Metodo'], ['lavori', 'Clienti'], ['chi-sono', 'Lo studio'], ['prezzi', 'Prezzi']],
+    megaTitolo: 'Sei servizi, un solo studio', megaTutti: 'Tutti i servizi in home', megaAi: 'L’AI per aziende, spiegata semplice', megaAiTesto: 'Cosa può fare nella tua attività, con un esempio dal vivo.', megaVai: 'Scopri come funziona', da: 'da', mese: '/mese', menuServizi: 'I servizi',
     navEtichetta: 'Principale', home: 'Studio Desideri, home', tagline: 'Dal primo sguardo al sì', ruolo: 'Siti web · AI · Pubblicità',
     ctaPreventivo: 'Calcola il preventivo', whatsapp: 'Scrivici su WhatsApp', personalizza: 'Personalizza',
     zona: 'Milano, Italia e Svizzera',
@@ -50,7 +51,8 @@ export const ui = {
   },
   en: {
     lang: 'en', locale: 'en_GB', vaiContenuto: 'Skip to content', menu: 'Menu',
-    nav: [['servizi', 'Services'], ['@ai', 'AI for business'], ['metodo', 'Method'], ['lavori', 'Clients'], ['prezzi', 'Pricing'], ['chi-sono', 'The studio']],
+    nav: [['servizi', 'Services'], ['@ai', 'AI for business'], ['metodo', 'Method'], ['lavori', 'Clients'], ['chi-sono', 'The studio'], ['prezzi', 'Pricing']],
+    megaTitolo: 'Six services, one studio', megaTutti: 'All services on the home page', megaAi: 'AI for business, in plain words', megaAiTesto: 'What it can do for your business, with a live example.', megaVai: 'See how it works', da: 'from', mese: '/month', menuServizi: 'Services',
     navEtichetta: 'Main', home: 'Studio Desideri, home', tagline: 'From first glance to yes', ruolo: 'Websites · AI · Advertising',
     ctaPreventivo: 'Get a quote', whatsapp: 'Message us on WhatsApp', personalizza: 'Personalise',
     zona: 'Milan · Italy and Switzerland',

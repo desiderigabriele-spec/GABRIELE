@@ -8,6 +8,8 @@ import { dati } from '../i18n/dati.js';
 import { ui, url, urlServizio } from '../i18n/ui.js';
 import marchio from '../assets/marchio.svg?raw';
 import Occhio from '../components/Occhio.astro';
+import Icona from '../components/Icona.astro';
+import { euro } from '../data/formato.js';
 
 interface Props {
   title: string;
@@ -33,7 +35,10 @@ const canonical = new URL(path, Astro.site).toString();
 const current = Astro.url.pathname.replace(/\.html$/, '');
 const isCurrent = (href: string) => (current === href ? 'page' : undefined);
 // '@pagina' = un'altra pagina del sito, altrimenti una sezione della home
-const voci = t.nav.map(([id, testo]) => ({ href: id.startsWith('@') ? url(id.slice(1), lang) : `${home}#${id}`, testo }));
+const voci = t.nav.map(([id, testo]) => ({ id, href: id.startsWith('@') ? url(id.slice(1), lang) : `${home}#${id}`, testo }));
+// la voce attiva: la pagina AI, una pagina servizio («Servizi») o, in home, la sezione in vista (site.js)
+const suServizio = current.startsWith(lang === 'en' ? '/en/services/' : '/servizi/');
+const prezzoDa = (s: { da: number; mese?: boolean }) => `${t.da} ${euro(s.da, lang)}${s.mese ? t.mese : ''}`;
 const colori = [
   { id: 'blu', c: '#3D7BFF', nome: t.colori[0] },
   { id: 'rosso', c: '#FF3347', nome: t.colori[1] },
@@ -140,8 +145,35 @@ const hrefEn = lang === 'en' ? path : alt;
             <span class="brand-nome">Desideri</span>
           </span>
         </a>
-        <nav class="nav" aria-label={t.navEtichetta}>
-          {voci.map((v) => <a href={v.href} aria-current={isCurrent(v.href)}>{v.testo}</a>)}
+        <nav class="nav" aria-label={t.navEtichetta} data-nav>
+          <span class="nav-luce" aria-hidden="true"></span>
+          {voci.map((v) => v.id === 'servizi' ? (
+            <div class="nav-mega" data-mega>
+              <button class={`nav-voce${suServizio ? ' attiva' : ''}`} type="button" aria-expanded="false" aria-controls="mega-servizi" data-mega-btn>
+                {v.testo}<svg class="nav-freccia" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" /></svg>
+              </button>
+              <div class="mega" id="mega-servizi" data-mega-pannello hidden>
+                <div class="mega-griglia">
+                  <span class="mono mega-titolo">{t.megaTitolo}</span>
+                  {servizi.map((s) => (
+                    <a class="mega-voce" href={urlServizio(s.id, lang)} aria-current={isCurrent(urlServizio(s.id, lang))} data-iride={s.id}>
+                      <span class="servizio-icona"><Icona nome={s.icona} /></span>
+                      <span class="mega-testo"><strong>{s.titolo}</strong><small>{s.semplice}</small></span>
+                      <span class="mega-prezzo">{prezzoDa(s)}</span>
+                    </a>
+                  ))}
+                </div>
+                <a class="mega-ai" href={url('ai', lang)}>
+                  <Occhio espressione="curioso" />
+                  <strong>{t.megaAi}</strong>
+                  <span>{t.megaAiTesto}</span>
+                  <span class="link-freccia">{t.megaVai} <span class="freccia" aria-hidden="true">→</span></span>
+                </a>
+              </div>
+            </div>
+          ) : (
+            <a class={`nav-voce${v.id === '@ai' ? ' nav-ai' : ''}${isCurrent(v.href) ? ' attiva' : ''}`} href={v.href} aria-current={isCurrent(v.href)} data-sezione={v.id.startsWith('@') ? undefined : v.id}>{v.testo}</a>
+          ))}
         </nav>
         <div class="header-strumenti">
           <button class="personalizza-btn" type="button" data-personalizza aria-expanded="false" aria-controls="pannello-tema" title={t.personalizza}>
@@ -186,11 +218,19 @@ const hrefEn = lang === 'en' ? path : alt;
       <button type="button" aria-label={t.chiudi} data-pt-invito-chiudi>×</button>
     </div>
 
-    <div class="menu-mobile" id="menu-mobile" data-menu inert>
-      <ul role="list">
-        {voci.map((v) => <li><a href={v.href}>{v.testo}</a></li>)}
+    <div class="menu-mobile" id="menu-mobile" data-menu inert data-lenis-prevent>
+      <ul class="mm-voci" role="list">
+        {voci.map((v, i) => <li style={`--i:${i}`}><a href={v.href}><span class="mm-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{v.testo}<span class="mm-freccia" aria-hidden="true">→</span></a></li>)}
       </ul>
-      <div style="display:grid;gap:1rem">
+      <div class="mm-servizi">
+        <span class="mono">{t.menuServizi}</span>
+        <div>
+          {servizi.map((s) => (
+            <a href={urlServizio(s.id, lang)}><span class="servizio-icona"><Icona nome={s.icona} /></span><span>{s.titolo}<small>{prezzoDa(s)}</small></span></a>
+          ))}
+        </div>
+      </div>
+      <div class="mm-azioni">
         <p class="mono">{contatti.zona}</p>
         <a class="btn btn-azione btn-grande" href={preventivo}>{t.ctaPreventivo}</a>
         <a class="btn btn-vetro" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener" data-wa>{t.whatsapp}</a>

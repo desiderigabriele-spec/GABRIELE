@@ -63,6 +63,80 @@ function suScroll() {
 window.addEventListener('scroll', suScroll, { passive: true });
 suScroll();
 
+// ---------- Menu a capsula: la luce che scivola, la sezione in vista, il pannello dei servizi ----------
+(function navigazione() {
+  const nav = document.querySelector('[data-nav]');
+  if (!nav) return;
+  const luce = nav.querySelector('.nav-luce');
+  const voci = [...nav.querySelectorAll('.nav-voce')];
+  let aperto = false, timer = 0;
+  const su = (el) => {
+    if (!el) { luce.style.opacity = '0'; return; }
+    luce.style.width = `${el.offsetWidth}px`;
+    luce.style.transform = `translateX(${el.offsetLeft + (el.offsetParent !== nav ? el.offsetParent.offsetLeft : 0)}px)`;
+    luce.style.opacity = '1';
+  };
+  const attiva = () => voci.find((v) => v.classList.contains('attiva'));
+  voci.forEach((v) => { v.addEventListener('pointerenter', () => su(v)); v.addEventListener('focus', () => su(v)); });
+  nav.addEventListener('pointerleave', () => { if (!aperto) su(attiva()); });
+  nav.addEventListener('focusout', (e) => { if (!nav.contains(e.relatedTarget)) su(attiva()); });
+
+  // in home: si accende la voce della sezione che stai guardando
+  const sezioni = voci.filter((v) => v.dataset.sezione).map((v) => [v, document.getElementById(v.dataset.sezione)]).filter(([, s]) => s);
+  const btnServizi = nav.querySelector('[data-mega-btn]');
+  const servizi = document.getElementById('servizi');
+  if (sezioni.length || servizi) {
+    const tutte = [...sezioni, ...(servizi && btnServizi ? [[btnServizi, servizi]] : [])];
+    const aggiorna = () => {
+      const y = innerHeight * 0.4;
+      let qui = null;
+      tutte.forEach(([v, s]) => { const r = s.getBoundingClientRect(); if (r.top <= y && r.bottom > y) qui = v; });
+      voci.forEach((v) => v.classList.toggle('attiva', v === qui));
+      if (!nav.matches(':hover') && !aperto) su(qui);
+    };
+    window.addEventListener('scroll', aggiorna, { passive: true });
+    aggiorna();
+  } else su(attiva());
+  window.addEventListener('resize', () => su(attiva()));
+  document.fonts?.ready.then(() => su(attiva()));
+
+  // il pannello dei servizi: si apre passandoci sopra (mouse) o con un clic / Invio
+  const mega = nav.querySelector('[data-mega]');
+  const pannello = mega?.querySelector('[data-mega-pannello]');
+  if (!mega || !pannello) return;
+  function apri() {
+    clearTimeout(timer);
+    if (aperto) return;
+    aperto = true;
+    pannello.hidden = false;
+    requestAnimationFrame(() => pannello.classList.add('aperto'));
+    btnServizi.setAttribute('aria-expanded', 'true');
+    su(btnServizi);
+  }
+  function chiudi(subito) {
+    clearTimeout(timer);
+    const fai = () => {
+      if (!aperto) return;
+      aperto = false;
+      pannello.classList.remove('aperto');
+      btnServizi.setAttribute('aria-expanded', 'false');
+      setTimeout(() => { if (!aperto) pannello.hidden = true; }, 250);
+      if (!nav.matches(':hover')) su(attiva());
+    };
+    if (subito) fai(); else timer = setTimeout(fai, 180);
+  }
+  btnServizi.addEventListener('click', () => (aperto ? chiudi(true) : apri()));
+  if (finePointer) {
+    mega.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { clearTimeout(timer); timer = setTimeout(apri, 90); } });
+    mega.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') chiudi(); });
+  }
+  mega.addEventListener('focusout', (e) => { if (!mega.contains(e.relatedTarget)) chiudi(true); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && aperto) { chiudi(true); btnServizi.focus(); } });
+  document.addEventListener('pointerdown', (e) => { if (aperto && !mega.contains(e.target)) chiudi(true); });
+  pannello.addEventListener('click', (e) => { if (e.target.closest('a')) chiudi(true); });
+  window.addEventListener('scroll', () => { if (aperto && window.scrollY > 40) chiudi(true); }, { passive: true });
+})();
+
 // ---------- Menu mobile ----------
 const toggle = document.querySelector('[data-menu-toggle]');
 const menu = document.querySelector('[data-menu]');

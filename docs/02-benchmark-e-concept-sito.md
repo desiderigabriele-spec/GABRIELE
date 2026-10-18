@@ -111,6 +111,12 @@ Sulle pagine Software con AI, Collegamenti AI e AI per aziende c'è la sezione �
 - quattro punti sull'AI, scritti per essere veri: API professionali (non le app gratuite); nei contratti per le aziende i fornitori non usano i dati delle API per addestrare i modelli; li tengono poco (al massimo 30 giorni per i controlli di sicurezza), con conservazione zero e server in Europa quando serve; tutto per iscritto come chiede il GDPR, con la chiave dell'AI che può essere intestata al cliente.
 Il canone mensile è l'assistenza (hosting, controlli, aggiornamenti, sistemazioni), non un affitto: lo dicono il listino e le domande frequenti.
 
+### Header e menu
+- Voci nello stesso ordine delle sezioni della home: **Servizi ▾ · AI per aziende · Metodo · Clienti · Lo studio · Prezzi**.
+- Su computer il menu è una capsula di vetro al centro dell'header. Una luce scivola sotto la voce su cui passi; in home si accende da sola la voce della sezione che stai guardando, sulle pagine servizio «Servizi», sulla pagina AI «AI per aziende» (che ha anche il punto rosso del logo).
+- **Servizi** apre un pannello (passandoci sopra o con un clic): i sei servizi con icona, una riga e il prezzo di partenza, più una scheda con la mascotte per la pagina «L'AI per aziende, spiegata semplice». Si chiude uscendo con il mouse, con Esc, toccando fuori o scorrendo.
+- Sotto i 1180 px il menu diventa il bottone a due righe. Il menu a tutto schermo ha le voci numerate grandi, la griglia dei sei servizi con icona e prezzo e in fondo preventivo, WhatsApp e «Personalizza».
+
 ### Ogni sezione in uno schermo
 Su computer ogni sezione della home, delle pagine servizio e della pagina AI sta in una schermata: spazi, titoli e alcune scritte seguono l'altezza della finestra (`svh`), con una versione più compatta sotto gli 840 px di altezza. Verificato a 1900×870, 1440×800, 1280×760 (a 1366×700 due sezioni superano di circa 30 px). Fa eccezione il **Metodo**, che scorre di proposito: ogni passo però sta in uno schermo. Su telefono l'hero è intero nella prima schermata (occhio, titolo, frase, bottone); le altre sezioni scorrono.
 
