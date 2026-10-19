@@ -110,6 +110,9 @@ Sulle pagine Software con AI, Collegamenti AI e AI per aziende c'è la sezione �
 - quattro punti sull'AI, scritti per essere veri: API professionali (non le app gratuite); nei contratti per le aziende i fornitori non usano i dati delle API per addestrare i modelli; li tengono poco (al massimo 30 giorni per i controlli di sicurezza), con conservazione zero e server in Europa quando serve; tutto per iscritto come chiede il GDPR, con la chiave dell'AI che può essere intestata al cliente.
 Il canone mensile è l'assistenza (hosting, controlli, aggiornamenti, sistemazioni), non un affitto: lo dicono il listino e le domande frequenti.
 
+### Cosa includono i pacchetti
+Ogni pacchetto ha la sua lista completa (`include` in `src/data/listino.js`, in inglese in `src/data/en.js`), presa dal listino di `docs/01` e scritta in parole semplici: 4-8 voci, compresi i tempi di consegna per i siti. La stessa lista compare nei prezzi della home, nelle pagine servizio e nel preventivo.
+
 ### Il puntatore
 Il puntatore è quello normale del sistema: niente cerchio, niente occhio e niente scia dietro il mouse. Resta solo un effetto sullo sfondo: passando sui bottoni d'azione l'occhio di particelle si accende.
 
@@ -238,7 +241,7 @@ Tre passi, il meno possibile da leggere e da scrivere.
 
 **Passo 1 — Cosa ti serve?** Sei schede orizzontali da toccare (icona, nome, una riga, «da X €»), anche più di una. *Un clic: facilissimo, quindi la persona inizia (effetto "piede nella porta").*
 
-**Passo 2 — Scegli il pacchetto.** Per ogni servizio tre schede con nome, prezzo e una riga; il più scelto è già selezionato. Gli extra sono chiusi in «Aggiungi extra (facoltativo)», con il numero di quelli aggiunti accanto; tempi (normale, veloce +20%, senza fretta −5%) e incontri di persona sono chiusi in un unico riquadro facoltativo.
+**Passo 2 — Scegli il pacchetto.** Per ogni servizio tre schede con nome, prezzo, una riga e la lista «Cosa include»; il più scelto è già selezionato. Gli extra sono chiusi in «Aggiungi extra (facoltativo)», con il numero di quelli aggiunti accanto; tempi (normale, veloce +20%, senza fretta −5%) e incontri di persona sono chiusi in un unico riquadro facoltativo.
 
 **Passo 3 — I contatti.** Solo nome, email *o* telefono (basta uno dei due), come preferisci essere ricontattato, un messaggio facoltativo e il consenso privacy.
 

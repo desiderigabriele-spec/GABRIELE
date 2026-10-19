@@ -103,6 +103,8 @@ const passoDi = (n: number) => T(`Passo ${n} di 3`, `Step ${n} of 3`);
                       <span class="pv-livello-riga"><span class="pv-livello-nome">{l.nome}</span>{l.top && <span class="pv-badge">{T('Il più scelto', 'Most popular')}</span>}</span>
                       <span class="pv-livello-prezzo" {...attrPrezzo(l)}>{prezzoLivello(l)}</span>
                       <span class="pv-livello-spiega">{l.spiega}</span>
+                      <span class="pv-include-titolo">{T('Cosa include', "What's included")}</span>
+                      <ul class="pv-include">{l.include.map((x) => <li>{x}</li>)}</ul>
                     </label>
                   ))}
                 </div>

@@ -180,3 +180,8 @@ html.ridotto .ill .ill-disegna { stroke-dashoffset: 0; }
   .sv-punto p { font-size: .88rem; }
   .sv-esempio-num { font-size: 2rem; }
 }
+@media (min-width: 901px) {
+  .sv-extra { margin-top: 12px; gap: .4rem .8rem; }
+  .sv-extra li { font-size: .78rem; padding: .32rem .65rem; }
+  .sv-nota { margin-top: .5rem; font-size: .78rem; }
+}

@@ -7,9 +7,9 @@ export const categorie = [
     nome: 'Sito web',
     riga: 'Ti trovano, ti capiscono, ti scrivono.',
     livelli: [
-      { id: 'impulso', nome: 'Impulso', una: 1500, spiega: 'Una sola pagina pensata per un obiettivo: farti arrivare richieste. Ideale per una promozione o per partire.', include: ['1 pagina', 'Testi che convincono', 'Modulo collegato al tuo telefono', 'Pronta in 7-10 giorni'] },
-      { id: 'presenza', nome: 'Presenza', una: 2900, top: true, spiega: 'Il sito completo della tua attività, disegnato su misura. È quello che sceglie la maggior parte delle persone.', include: ['5-7 pagine su misura', 'Testi e SEO per farti trovare', 'Richieste su Fogli, Telegram o WhatsApp', 'Google Business Profile'] },
-      { id: 'signature', nome: 'Signature', una: 7500, spiega: 'Un sito che non si dimentica: 3D, animazioni firma e un\'identità visiva tutta tua.', include: ['Tutto di Presenza', 'Scena 3D e animazioni firma', 'Identità visiva', 'Strategia scritta'] },
+      { id: 'impulso', nome: 'Impulso', una: 1500, spiega: 'Una sola pagina pensata per un obiettivo: farti arrivare richieste. Ideale per una promozione o per partire.', include: ['1 pagina pensata per un solo obiettivo', 'Strategia e testi che convincono, scritti da noi', 'Animazioni curate', 'Modulo collegato al telefono, a Fogli o a WhatsApp', 'Perfetta sul telefono', 'Statistiche di Google e Pixel di Meta', 'Pronta in 7-10 giorni'] },
+      { id: 'presenza', nome: 'Presenza', una: 2900, top: true, spiega: 'Il sito completo della tua attività, disegnato su misura. È quello che sceglie la maggior parte delle persone.', include: ['5-7 pagine disegnate su misura, niente modelli già fatti', 'Testi scritti da noi', 'SEO per farti trovare su Google, anche nella tua zona', 'Richieste su Fogli, Telegram o WhatsApp in tempo reale', 'Scheda Google Business Profile', 'Cookie e privacy in regola', 'Ti spieghiamo come gestirlo', 'Pronto in 3-5 settimane'] },
+      { id: 'signature', nome: 'Signature', una: 7500, spiega: 'Un sito che non si dimentica: 3D, animazioni firma e un\'identità visiva tutta tua.', include: ['Tutto di Presenza', 'Identità visiva: colori, caratteri e stile tutti tuoi', 'Scena 3D e animazioni firma', 'Micro-interazioni che si fanno ricordare', 'Chat guidata che porta a WhatsApp', 'Strategia scritta per il tuo marchio', 'Velocità al top (punteggio Google oltre 90)', 'Pronto in 6-8 settimane'] },
     ],
     extra: [
       { id: 'pagina', nome: 'Pagina in più', una: 290, max: 20, spiega: 'Una pagina aggiuntiva, per esempio un servizio o una zona.' },
@@ -26,9 +26,9 @@ export const categorie = [
     nome: 'Negozio online',
     riga: 'Vendi 24 ore su 24.',
     livelli: [
-      { id: 'start', nome: 'Start', una: 3900, spiega: 'Un negozio Shopify bello e pronto a vendere, con fino a 50 prodotti.', include: ['Fino a 50 prodotti', 'Pagamenti e spedizioni', 'Email essenziali', 'Tracciamento delle vendite'] },
-      { id: 'growth', nome: 'Growth', una: 7900, top: true, spiega: 'Il negozio disegnato su misura e pensato per far crescere le vendite ogni mese.', include: ['Design su misura', 'Fino a 300 prodotti', 'Schede prodotto che vendono', 'Email automatiche (carrello, benvenuto)'] },
-      { id: 'signature', nome: 'Signature', una: 14000, spiega: 'Negozio su misura con esperienze speciali, come il prodotto in 3D o un configuratore.', include: ['Tutto di Growth', 'Prodotto in 3D o configuratore', 'Collegamento al gestionale', 'Massime prestazioni'] },
+      { id: 'start', nome: 'Start', una: 3900, spiega: 'Un negozio Shopify bello e pronto a vendere, con fino a 50 prodotti.', include: ['Negozio Shopify con tema personalizzato', 'Fino a 50 prodotti caricati', 'Pagamenti e spedizioni impostati', 'Email essenziali: ordine e spedizione', 'Vendite tracciate con statistiche e Pixel'] },
+      { id: 'growth', nome: 'Growth', una: 7900, top: true, spiega: 'Il negozio disegnato su misura e pensato per far crescere le vendite ogni mese.', include: ['Design su misura', 'Fino a 300 prodotti caricati', 'Schede prodotto scritte per vendere', 'Email automatiche: benvenuto, carrello abbandonato, dopo l\'acquisto', 'Recensioni dei clienti', 'Vendite tracciate con precisione', 'SEO per farti trovare'] },
+      { id: 'signature', nome: 'Signature', una: 14000, spiega: 'Negozio su misura con esperienze speciali, come il prodotto in 3D o un configuratore.', include: ['Tutto di Growth', 'Prodotto in 3D o configuratore', 'Collegamento al gestionale', 'Massima velocità anche con tanti prodotti'] },
     ],
     extra: [
       { id: 'prodotti', nome: '+100 prodotti caricati', una: 390, max: 20, spiega: 'Carichiamo noi altri 100 prodotti con foto, testi e varianti.' },
@@ -44,9 +44,9 @@ export const categorie = [
     riga: 'In un minuto il lavoro di un\'ora.',
     ai: true,
     livelli: [
-      { id: 'assistente', nome: 'Assistente AI', una: 2400, mese: 149, spiega: 'Un assistente che risponde ai clienti sul sito o su WhatsApp, conosce la tua attività e prende appuntamenti.', include: ['Impara dai tuoi documenti', 'Sito o WhatsApp', 'Prende appuntamenti', 'Passa a te quando serve'] },
-      { id: 'processo', nome: 'AI su un processo', una: 4900, mese: 249, top: true, spiega: 'Un software che fa da solo un lavoro ripetitivo: preventivi, email, documenti, follow-up.', include: ['Un processo automatizzato', 'Collegato ai tuoi strumenti', 'Tu controlli e approvi', 'Cruscotto dei risultati'] },
-      { id: 'misura', nome: 'Software su misura', una: 9900, mese: 390, spiega: 'Una piattaforma interna con più funzioni AI, utenti e ruoli. Per reparti interi.', include: ['Più funzioni AI', 'Utenti e ruoli', 'Cruscotto completo', 'Formazione del team'] },
+      { id: 'assistente', nome: 'Assistente AI', una: 2400, mese: 149, spiega: 'Un assistente che risponde ai clienti sul sito o su WhatsApp, conosce la tua attività e prende appuntamenti.', include: ['Impara dai tuoi documenti: listini, domande frequenti, procedure', 'Risponde sul sito o su WhatsApp, giorno e notte', 'Capisce cosa vuole il cliente', 'Prende appuntamenti in agenda', 'Passa a te quando serve', 'Installato a nome tuo, con i tuoi dati', 'Nel canone: hosting, controlli e aggiornamenti'] },
+      { id: 'processo', nome: 'AI su un processo', una: 4900, mese: 249, top: true, spiega: 'Un software che fa da solo un lavoro ripetitivo: preventivi, email, documenti, follow-up.', include: ['Un lavoro ripetitivo fatto da solo: email, preventivi, documenti o richiami', 'Collegato al gestionale o al CRM', 'Tu controlli e approvi con un clic', 'Cruscotto con i risultati', 'Test e istruzioni', 'Installato a nome tuo, con i tuoi dati', 'Nel canone: assistenza continua'] },
+      { id: 'misura', nome: 'Software su misura', una: 9900, mese: 390, spiega: 'Una piattaforma interna con più funzioni AI, utenti e ruoli. Per reparti interi.', include: ['Una piattaforma interna con più funzioni AI', 'Utenti e ruoli diversi', 'Cruscotto completo', 'Collegata ai programmi che usi già', 'Formazione del team', 'Software e dati tuoi', 'Nel canone: assistenza continua'] },
     ],
     extra: [
       { id: 'diagnosi', nome: 'Diagnosi AI (si scala dal progetto)', una: 390, spiega: '90 minuti insieme per capire dove l\'AI ti fa risparmiare davvero. Se poi fai il progetto, è gratis.' },
@@ -61,9 +61,9 @@ export const categorie = [
     riga: 'L\'AI dentro gli strumenti che usi già.',
     ai: true,
     livelli: [
-      { id: 'singola', nome: 'Un collegamento', una: 1200, spiega: 'Colleghiamo due strumenti con l\'AI in mezzo. Esempio: email → AI → gestionale.', include: ['2 strumenti collegati', 'AI che legge e smista', 'Test e istruzioni'] },
-      { id: 'automazione', nome: 'Automazione completa', una: 2900, mese: 49, top: true, spiega: 'Un flusso di più passaggi che parte da solo. Esempio: richiesta dal sito → AI che la valuta → CRM → messaggio al cliente.', include: ['Flusso di più passaggi', 'Fino a 4 strumenti', 'Avvisi se qualcosa non va', 'Controllo mensile'] },
-      { id: 'sistema', nome: 'Sistema integrato', una: 4900, mese: 149, spiega: 'Tutti i tuoi strumenti parlano tra loro: sito, pubblicità, CRM, preventivi e follow-up.', include: ['Tutto collegato', 'AI che qualifica i contatti', 'Follow-up automatico', 'Cruscotto unico'] },
+      { id: 'singola', nome: 'Un collegamento', una: 1200, spiega: 'Colleghiamo due strumenti con l\'AI in mezzo. Esempio: email → AI → gestionale.', include: ['2 programmi collegati, per esempio email e gestionale', 'L\'AI legge, capisce e smista', 'Test e istruzioni scritte', 'Nessun programma da cambiare'] },
+      { id: 'automazione', nome: 'Automazione completa', una: 2900, mese: 49, top: true, spiega: 'Un flusso di più passaggi che parte da solo. Esempio: richiesta dal sito → AI che la valuta → CRM → messaggio al cliente.', include: ['Un flusso di più passaggi che parte da solo', 'Fino a 4 programmi collegati', 'Avvisi se qualcosa non va', 'Istruzioni scritte', 'Controllo ogni mese'] },
+      { id: 'sistema', nome: 'Sistema integrato', una: 4900, mese: 149, spiega: 'Tutti i tuoi strumenti parlano tra loro: sito, pubblicità, CRM, preventivi e follow-up.', include: ['Tutti i programmi collegati: sito, pubblicità, CRM, preventivi', 'L\'AI valuta chi è pronto a comprare', 'Richiami automatici ai clienti', 'Un unico cruscotto', 'Assistenza ogni mese'] },
     ],
     extra: [
       { id: 'collegamento', nome: 'Strumento in più da collegare', una: 900, max: 10, spiega: 'Un altro programma che entra nel flusso (es. Google Calendar, Fatture in Cloud, Shopify).' },
@@ -74,9 +74,9 @@ export const categorie = [
     nome: 'Pubblicità online',
     riga: 'Clienti, non solo "mi piace".',
     livelli: [
-      { id: 'start', nome: 'Start', una: 490, mese: 590, spiega: 'Un canale (per esempio Instagram e Facebook, oppure Google), con budget fino a 2.000 € al mese.', include: ['1 canale', 'Impostazione e tracciamento', 'Creatività iniziali', 'Report mensile'] },
-      { id: 'growth', nome: 'Growth', una: 790, mese: 990, top: true, spiega: 'Due canali che lavorano insieme, con budget tra 2.000 e 6.000 € al mese.', include: ['2 canali', 'Test continui sulle creatività', 'Report e call ogni mese', 'Ottimizzazione settimanale'] },
-      { id: 'scale', nome: 'Scale', una: 790, mese: 1490, spiega: 'Più canali e un percorso completo per chi investe oltre 6.000 € al mese (12% del budget, minimo 1.490 €).', include: ['Più canali', 'Percorso completo con retargeting', 'Landing dedicate', 'Priorità assoluta'] },
+      { id: 'start', nome: 'Start', una: 490, mese: 590, spiega: 'Un canale (per esempio Instagram e Facebook, oppure Google), con budget fino a 2.000 € al mese.', include: ['1 canale: Meta (Instagram e Facebook) oppure Google', 'Impostazione di account, Pixel e statistiche', 'Il pubblico giusto e le prime creatività', 'Ottimizzazione continua', 'Report chiaro ogni mese'] },
+      { id: 'growth', nome: 'Growth', una: 790, mese: 990, top: true, spiega: 'Due canali che lavorano insieme, con budget tra 2.000 e 6.000 € al mese.', include: ['2 canali che lavorano insieme', 'Impostazione completa, con tracciamento lato server', 'Prove continue sulle creatività', 'Ottimizzazione ogni settimana', 'Report e chiamata ogni mese'] },
+      { id: 'scale', nome: 'Scale', una: 790, mese: 1490, spiega: 'Più canali e un percorso completo per chi investe oltre 6.000 € al mese (12% del budget, minimo 1.490 €).', include: ['Più canali insieme', 'Percorso completo, con chi ti ha già visitato', 'Pagine dedicate alle campagne', 'Ottimizzazione continua', 'Report e chiamata ogni mese', 'Priorità assoluta'] },
     ],
     extra: [
       { id: 'canale', nome: 'Canale in più (TikTok, LinkedIn…)', mese: 290, max: 3, spiega: 'Un\'altra piattaforma dove far comparire i tuoi annunci.' },
@@ -90,9 +90,9 @@ export const categorie = [
     nome: 'Cura e crescita',
     riga: 'Sempre aggiornato, sempre migliore.',
     livelli: [
-      { id: 'cura', nome: 'Cura', mese: 59, spiega: 'Hosting, backup, sicurezza e aggiornamenti. Tu non pensi a niente.', include: ['Hosting veloce', 'Backup', 'Sicurezza e controlli'] },
-      { id: 'curaplus', nome: 'Cura+', mese: 149, top: true, spiega: 'Tutto di Cura, più un\'ora di modifiche al mese e un report chiaro.', include: ['Tutto di Cura', '1 ora di modifiche al mese', 'Report mensile'] },
-      { id: 'crescita', nome: 'Crescita', mese: 390, spiega: 'Ogni mese miglioriamo il sito per farti arrivare più richieste: test, SEO e nuovi contenuti.', include: ['Tutto di Cura+', 'Test per aumentare le richieste', 'SEO continua', '2 contenuti al mese'] },
+      { id: 'cura', nome: 'Cura', mese: 59, spiega: 'Hosting, backup, sicurezza e aggiornamenti. Tu non pensi a niente.', include: ['Hosting veloce', 'Backup', 'Sicurezza e controlli', 'Aggiornamenti', 'Se il sito si ferma, lo sappiamo subito'] },
+      { id: 'curaplus', nome: 'Cura+', mese: 149, top: true, spiega: 'Tutto di Cura, più un\'ora di modifiche al mese e un report chiaro.', include: ['Tutto di Cura', '1 ora di modifiche al mese', 'Report chiaro ogni mese'] },
+      { id: 'crescita', nome: 'Crescita', mese: 390, spiega: 'Ogni mese miglioriamo il sito per farti arrivare più richieste: test, SEO e nuovi contenuti.', include: ['Tutto di Cura+', 'Prove per farti arrivare più richieste', 'SEO continua', '2 contenuti nuovi al mese'] },
     ],
     extra: [],
   },

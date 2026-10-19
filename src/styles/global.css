@@ -874,3 +874,18 @@ html.intro-fine .intro-occhio { animation: intro-occhio-via .7s var(--ease) forw
   .hero h1 { font-size: 2.1rem; }
   .hero .lead { font-size: .98rem; }
 }
+/* liste «cosa include» dei pacchetti: complete ma compatte, così la sezione resta in uno schermo */
+@media (min-width: 901px) {
+  .piano .lista-check { gap: .28rem; }
+  .piano .lista-check li { grid-template-columns: 18px 1fr; gap: .5rem; font-size: .86rem; line-height: 1.35; }
+  .piano .lista-check li::before { width: 15px; height: 15px; margin-top: .14em; background-size: 9px; }
+  .piano { gap: clamp(.5rem, 1.1svh, .9rem); }
+  .piano-per { font-size: .86rem; line-height: 1.4; }
+}
+@media (min-width: 901px) and (max-height: 840px) {
+  .piano .lista-check li { font-size: .8rem; line-height: 1.3; }
+}
+@media (min-width: 901px) {
+  #prezzi, #pacchetti { padding-block: clamp(30px, 4.2svh, 56px); }
+  #prezzi .testa-sezione, #pacchetti .testa-sezione { margin-bottom: clamp(16px, 2.6svh, 32px); }
+}

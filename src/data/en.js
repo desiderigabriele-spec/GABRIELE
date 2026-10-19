@@ -142,9 +142,9 @@ export const en = {
       nome: 'Website',
       riga: 'They find you, understand you, contact you.',
       livelli: {
-        impulso: { nome: 'Impulse', spiega: 'A single page built for one goal: bringing you enquiries. Ideal for a promotion or to get started.', include: ['1 page', 'Copy that convinces', 'Form connected to your phone', 'Ready in 7-10 days'] },
-        presenza: { nome: 'Presence', spiega: 'The complete site for your business, designed from scratch. It\'s what most people choose.', include: ['5-7 custom pages', 'Copy and SEO so you get found', 'Enquiries to Sheets, Telegram or WhatsApp', 'Google Business Profile'] },
-        signature: { nome: 'Signature', spiega: 'A site people don\'t forget: 3D, signature animations and a visual identity all your own.', include: ['Everything in Presence', '3D scene and signature animations', 'Visual identity', 'Written strategy'] },
+        impulso: { nome: 'Impulse', spiega: 'A single page built for one goal: bringing you enquiries. Ideal for a promotion or to get started.', include: ['1 page built for a single goal', 'Strategy and persuasive copy, written by us', 'Polished animations', 'Form connected to your phone, Sheets or WhatsApp', 'Perfect on phones', 'Google analytics and Meta Pixel', 'Ready in 7-10 days'] },
+        presenza: { nome: 'Presence', spiega: 'The complete site for your business, designed from scratch. It\'s what most people choose.', include: ['5-7 custom-designed pages, no ready-made templates', 'Copy written by us', 'SEO to be found on Google, locally too', 'Enquiries on Sheets, Telegram or WhatsApp in real time', 'Google Business Profile', 'Cookies and privacy in order', 'We show you how to manage it', 'Ready in 3-5 weeks'] },
+        signature: { nome: 'Signature', spiega: 'A site people don\'t forget: 3D, signature animations and a visual identity all your own.', include: ['Everything in Presence', 'Visual identity: colours, typefaces and style all your own', '3D scene and signature animations', 'Micro-interactions people remember', 'Guided chat that leads to WhatsApp', 'Written strategy for your brand', 'Top speed (Google score above 90)', 'Ready in 6-8 weeks'] },
       },
       extra: {
         pagina: { nome: 'Extra page', spiega: 'One more page, for example a service or an area.' },
@@ -160,9 +160,9 @@ export const en = {
       nome: 'Online store',
       riga: 'Sell 24 hours a day.',
       livelli: {
-        start: { nome: 'Start', spiega: 'A beautiful Shopify store ready to sell, with up to 50 products.', include: ['Up to 50 products', 'Payments and shipping', 'Essential emails', 'Sales tracking'] },
-        growth: { nome: 'Growth', spiega: 'A custom-designed store built to grow sales every month.', include: ['Custom design', 'Up to 300 products', 'Product pages that sell', 'Automatic emails (cart, welcome)'] },
-        signature: { nome: 'Signature', spiega: 'A custom store with special experiences, like 3D products or a configurator.', include: ['Everything in Growth', '3D product or configurator', 'Connection to your management software', 'Top performance'] },
+        start: { nome: 'Start', spiega: 'A beautiful Shopify store ready to sell, with up to 50 products.', include: ['Shopify store with a customised theme', 'Up to 50 products uploaded', 'Payments and shipping set up', 'Essential emails: order and shipping', 'Sales tracked with analytics and Pixel'] },
+        growth: { nome: 'Growth', spiega: 'A custom-designed store built to grow sales every month.', include: ['Custom design', 'Up to 300 products uploaded', 'Product pages written to sell', 'Automatic emails: welcome, abandoned basket, after purchase', 'Customer reviews', 'Precise sales tracking', 'SEO to be found'] },
+        signature: { nome: 'Signature', spiega: 'A custom store with special experiences, like 3D products or a configurator.', include: ['Everything in Growth', '3D product or configurator', 'Connection to your management software', 'Top speed even with many products'] },
       },
       extra: {
         prodotti: { nome: '+100 products uploaded', spiega: 'We upload another 100 products with photos, copy and variants.' },
@@ -176,9 +176,9 @@ export const en = {
       nome: 'AI software',
       riga: 'An hour\'s work in a minute.',
       livelli: {
-        assistente: { nome: 'AI assistant', spiega: 'An assistant that answers customers on your site or on WhatsApp, knows your business and books appointments.', include: ['Learns from your documents', 'Website or WhatsApp', 'Books appointments', 'Hands over to you when needed'] },
-        processo: { nome: 'AI on one process', spiega: 'Software that does a repetitive job on its own: quotes, emails, documents, follow-ups.', include: ['One automated process', 'Connected to your tools', 'You check and approve', 'Results dashboard'] },
-        misura: { nome: 'Custom software', spiega: 'An internal platform with several AI features, users and roles. For whole departments.', include: ['Several AI features', 'Users and roles', 'Full dashboard', 'Team training'] },
+        assistente: { nome: 'AI assistant', spiega: 'An assistant that answers customers on your site or on WhatsApp, knows your business and books appointments.', include: ['Learns from your documents: price lists, FAQs, procedures', 'Answers on your site or on WhatsApp, day and night', 'Understands what the client wants', 'Books appointments in your calendar', 'Hands over to you when needed', 'Installed in your name, with your data', 'The monthly fee covers hosting, checks and updates'] },
+        processo: { nome: 'AI on one process', spiega: 'Software that does a repetitive job on its own: quotes, emails, documents, follow-ups.', include: ['One repetitive job done on its own: emails, quotes, documents or follow-ups', 'Connected to your management software or CRM', 'You check and approve with one click', 'Results dashboard', 'Testing and instructions', 'Installed in your name, with your data', 'The monthly fee covers ongoing support'] },
+        misura: { nome: 'Custom software', spiega: 'An internal platform with several AI features, users and roles. For whole departments.', include: ['An internal platform with several AI features', 'Different users and roles', 'Full dashboard', 'Connected to the programs you already use', 'Team training', 'Software and data are yours', 'The monthly fee covers ongoing support'] },
       },
       extra: {
         diagnosi: { nome: 'AI diagnosis (deducted from the project)', spiega: '90 minutes together to find where AI really saves you money. If you go ahead with the project, it\'s free.' },
@@ -191,9 +191,9 @@ export const en = {
       nome: 'AI integrations',
       riga: 'AI inside the tools you already use.',
       livelli: {
-        singola: { nome: 'One connection', spiega: 'We connect two tools with AI in the middle. Example: email → AI → management software.', include: ['2 tools connected', 'AI that reads and sorts', 'Testing and instructions'] },
-        automazione: { nome: 'Full automation', spiega: 'A multi-step flow that runs on its own. Example: website enquiry → AI scores it → CRM → message to the customer.', include: ['Multi-step flow', 'Up to 4 tools', 'Alerts if something goes wrong', 'Monthly check'] },
-        sistema: { nome: 'Integrated system', spiega: 'All your tools talk to each other: website, ads, CRM, quotes and follow-ups.', include: ['Everything connected', 'AI that qualifies leads', 'Automatic follow-up', 'One dashboard'] },
+        singola: { nome: 'One connection', spiega: 'We connect two tools with AI in the middle. Example: email → AI → management software.', include: ['2 programs connected, for example email and management software', 'AI reads, understands and sorts', 'Testing and written instructions', 'No programs to change'] },
+        automazione: { nome: 'Full automation', spiega: 'A multi-step flow that runs on its own. Example: website enquiry → AI scores it → CRM → message to the customer.', include: ['A multi-step flow that runs on its own', 'Up to 4 programs connected', 'Alerts if something goes wrong', 'Written instructions', 'Monthly check'] },
+        sistema: { nome: 'Integrated system', spiega: 'All your tools talk to each other: website, ads, CRM, quotes and follow-ups.', include: ['All your programs connected: website, ads, CRM, quotes', 'AI spots who is ready to buy', 'Automatic follow-ups to clients', 'A single dashboard', 'Monthly support'] },
       },
       extra: {
         collegamento: { nome: 'Extra tool to connect', spiega: 'Another app joins the flow (e.g. Google Calendar, Fatture in Cloud, Shopify).' },
@@ -203,9 +203,9 @@ export const en = {
       nome: 'Online advertising',
       riga: 'Customers, not just likes.',
       livelli: {
-        start: { nome: 'Start', spiega: 'One channel (for example Instagram and Facebook, or Google), with a budget of up to €2,000 a month.', include: ['1 channel', 'Setup and tracking', 'Initial creatives', 'Monthly report'] },
-        growth: { nome: 'Growth', spiega: 'Two channels working together, with a budget between €2,000 and €6,000 a month.', include: ['2 channels', 'Continuous creative testing', 'Monthly report and call', 'Weekly optimisation'] },
-        scale: { nome: 'Scale', spiega: 'More channels and a full funnel for anyone investing over €6,000 a month (12% of budget, minimum €1,490).', include: ['More channels', 'Full funnel with retargeting', 'Dedicated landing pages', 'Top priority'] },
+        start: { nome: 'Start', spiega: 'One channel (for example Instagram and Facebook, or Google), with a budget of up to €2,000 a month.', include: ['1 channel: Meta (Instagram and Facebook) or Google', 'Account, Pixel and analytics set-up', 'The right audience and first creatives', 'Ongoing optimisation', 'Clear monthly report'] },
+        growth: { nome: 'Growth', spiega: 'Two channels working together, with a budget between €2,000 and €6,000 a month.', include: ['2 channels working together', 'Full set-up, with server-side tracking', 'Constant creative testing', 'Weekly optimisation', 'Monthly report and call'] },
+        scale: { nome: 'Scale', spiega: 'More channels and a full funnel for anyone investing over €6,000 a month (12% of budget, minimum €1,490).', include: ['Several channels together', 'Full funnel, including people who already visited you', 'Dedicated campaign pages', 'Ongoing optimisation', 'Monthly report and call', 'Top priority'] },
       },
       extra: {
         canale: { nome: 'Extra channel (TikTok, LinkedIn…)', spiega: 'Another platform where your ads appear.' },
@@ -218,9 +218,9 @@ export const en = {
       nome: 'Care and growth',
       riga: 'Always up to date, always better.',
       livelli: {
-        cura: { nome: 'Care', spiega: 'Hosting, backups, security and updates. You don\'t have to think about anything.', include: ['Fast hosting', 'Backups', 'Security and monitoring'] },
-        curaplus: { nome: 'Care+', spiega: 'Everything in Care, plus one hour of changes a month and a clear report.', include: ['Everything in Care', '1 hour of changes a month', 'Monthly report'] },
-        crescita: { nome: 'Growth', spiega: 'Every month we improve the site to bring you more enquiries: testing, SEO and new content.', include: ['Everything in Care+', 'Tests to increase enquiries', 'Ongoing SEO', '2 pieces of content a month'] },
+        cura: { nome: 'Care', spiega: 'Hosting, backups, security and updates. You don\'t have to think about anything.', include: ['Fast hosting', 'Backups', 'Security and checks', 'Updates', 'If the site goes down, we know straight away'] },
+        curaplus: { nome: 'Care+', spiega: 'Everything in Care, plus one hour of changes a month and a clear report.', include: ['Everything in Care', '1 hour of changes a month', 'Clear monthly report'] },
+        crescita: { nome: 'Growth', spiega: 'Every month we improve the site to bring you more enquiries: testing, SEO and new content.', include: ['Everything in Care+', 'Tests to bring you more enquiries', 'Ongoing SEO', '2 new pieces of content a month'] },
       },
     },
   },
