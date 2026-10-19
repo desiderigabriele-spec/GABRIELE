@@ -111,7 +111,7 @@ Sulle pagine Software con AI, Collegamenti AI e AI per aziende c'è la sezione �
 Il canone mensile è l'assistenza (hosting, controlli, aggiornamenti, sistemazioni), non un affitto: lo dicono il listino e le domande frequenti.
 
 ### Cosa includono i pacchetti
-Ogni pacchetto ha la sua lista completa (`include` in `src/data/listino.js`, in inglese in `src/data/en.js`), presa dal listino di `docs/01` e scritta in parole semplici: 4-8 voci, compresi i tempi di consegna per i siti. La stessa lista compare nei prezzi della home, nelle pagine servizio e nel preventivo.
+Ogni pacchetto ha la sua lista completa (`include` in `src/data/listino.js`, in inglese in `src/data/en.js`), presa dal listino di `docs/01` e scritta in parole semplici: 4-8 voci, compresi i tempi di consegna per i siti. La stessa lista compare nei prezzi della home, nelle pagine servizio e nel preventivo. Nelle sei schede «Cosa facciamo» della home ci sono le prime 3 voci del pacchetto da cui parte il prezzo «a partire da» (2 voci sugli schermi bassi, per restare in uno schermo). Nelle schede prezzi la lista prende lo spazio libero, così i pulsanti «Scegli» stanno tutti in fondo alla stessa altezza.
 
 ### Il puntatore
 Il puntatore è quello normale del sistema: niente cerchio, niente occhio e niente scia dietro il mouse. Resta solo un effetto sullo sfondo: passando sui bottoni d'azione l'occhio di particelle si accende.

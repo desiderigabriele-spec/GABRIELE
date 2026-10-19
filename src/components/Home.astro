@@ -16,6 +16,8 @@ const preventivo = url('preventivo', lang);
 const mese = T('/mese', '/month');
 
 const sito = categorie.find((c) => c.id === 'sito')!;
+// per ogni servizio, il pacchetto da cui parte il prezzo «a partire da» (il primo livello è sempre il più economico)
+const base = Object.fromEntries(categorie.map((c) => [c.id, c.livelli[0]]).filter(([, l]) => l?.include?.length));
 const piani = ['signature', 'presenza', 'impulso'].map((id) => sito.livelli.find((l) => l.id === id)!);
 const perChi: Record<string, string> = it ? {
   signature: 'Per professionisti e brand che vogliono essere ricordati.',
@@ -233,6 +235,12 @@ const jsonLd = {
               <span class="mono">{s.numero}</span>
             </div>
             <p>{s.semplice}</p>
+            {base[s.id] && (
+              <div class="servizio-include">
+                <span class="servizio-include-titolo">{T('Già incluso in', 'Included in')} {base[s.id].nome}</span>
+                <ul class="lista-check">{base[s.id].include.slice(0, 3).map((x) => <li>{x}</li>)}</ul>
+              </div>
+            )}
             <div class="servizio-piede">
               <span class="prezzo-da">{T('A partire da', 'Starting from')}<strong>{eur(s.da)}{s.mese && <small> {mese}</small>}</strong></span>
               <span class="link-freccia" aria-hidden="true">{T('Scopri', 'Discover')} <span class="freccia">→</span></span>
