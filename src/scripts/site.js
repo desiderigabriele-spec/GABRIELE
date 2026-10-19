@@ -201,80 +201,10 @@ document.querySelectorAll('[data-conta]').forEach((el) => {
   });
 });
 
-// ---------- Il puntatore è l'occhio della mascotte ----------
-// Curioso di base: la pupilla guarda dove vai e ogni tanto sbatte le palpebre. Occhiolino sui bottoni
-// d'azione, innamorato su pacchetti e lavori, sorpreso quando stai per andare via, pensieroso se resti
-// fermo, perso nella 404. Le altre pagine possono chiedere un'espressione per un momento:
-// window.dispatchEvent(new CustomEvent('gd-occhio', { detail: { esp: 'festa', ms: 3000 } }))
-if (finePointer && !ridotto) {
-  const occhio = document.querySelector('[data-occhio]');
-  if (occhio) {
-    html.classList.add('cursore-on');
-    const facce = {};
-    occhio.querySelectorAll('.co').forEach((s) => { const e = [...s.classList].find((c) => c.startsWith('co-')); if (e) facce[e.slice(3)] = s; });
-    const base = document.querySelector('.pagina-404') ? 'perso' : 'curioso';
-    let contesto = base, momento = null, timerMomento = 0, mostrata = null;
-    let mx = -100, my = -100, x = -100, y = -100, vx = 0, vy = 0, fermoDa = performance.now();
-
-    function mostra() {
-      const fermo = performance.now() - fermoDa > 9000 && contesto === base && base === 'curioso';
-      const esp = momento || (html.classList.contains('uscita-aperta') ? 'sorpreso' : fermo ? 'pensieroso' : contesto);
-      if (esp === mostrata || !facce[esp]) return;
-      mostrata = esp;
-      Object.entries(facce).forEach(([k, s]) => s.classList.toggle('vis', k === esp));
-    }
-    window.addEventListener('gd-occhio', (e) => {
-      momento = e.detail?.esp || null;
-      clearTimeout(timerMomento);
-      const ms = e.detail?.ms ?? 1800;
-      if (momento && ms) timerMomento = setTimeout(() => { momento = null; mostra(); }, ms);
-      mostra();
-    });
-
-    window.addEventListener('pointermove', (e) => {
-      if (e.pointerType !== 'mouse') return;
-      html.classList.add('cursore-mosso');
-      vx += (e.clientX - mx - vx) * 0.35; vy += (e.clientY - my - vy) * 0.35;
-      mx = e.clientX; my = e.clientY;
-      fermoDa = performance.now();
-    }, { passive: true });
-    document.addEventListener('pointerleave', () => html.classList.remove('cursore-mosso'));
-    document.addEventListener('pointerdown', () => occhio.classList.add('premuto'));
-    document.addEventListener('pointerup', () => occhio.classList.remove('premuto'));
-    document.addEventListener('pointerover', (e) => {
-      const t = e.target;
-      occhio.classList.toggle('nascosto', !!t.closest('input:not([type="range"], [type="checkbox"], [type="radio"]), textarea, select'));
-      const az = t.closest('[data-azione], .btn-azione');
-      const amato = t.closest('.piano, .cliente-anteprima, .mega-ai, .st-domanda');
-      const link = t.closest('a, button, summary, label, input[type="range"], [role="tab"]');
-      contesto = az ? 'occhiolino' : amato ? 'innamorato' : base;
-      occhio.classList.toggle('sopra', !az && !amato && !!link);
-      if (scena) scena.battito = az ? 1 : 0;
-      mostra();
-    });
-
-    // battito di ciglia ogni 3-6 secondi
-    (function batti() {
-      setTimeout(() => {
-        if (mostrata && mostrata !== 'occhiolino') { occhio.classList.add('batte'); setTimeout(() => occhio.classList.remove('batte'), 130); }
-        batti();
-      }, 3000 + Math.random() * 3000);
-    })();
-
-    (function segui() {
-      x += (mx - x) * 0.5; y += (my - y) * 0.5;
-      occhio.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-      vx *= 0.9; vy *= 0.9;
-      const pup = facce[mostrata]?.querySelector('.m-pupilla');
-      if (pup) {
-        const d = Math.hypot(vx, vy), m = Math.min(6, d * 0.7);
-        pup.style.transform = d > 0.2 ? `translate(${(vx / d) * m}px, ${(vy / d) * m}px)` : '';
-      }
-      mostra();
-      requestAnimationFrame(segui);
-    })();
-  }
-}
+// ---------- Sui bottoni d'azione l'occhio dello sfondo si accende (il puntatore resta quello del sistema) ----------
+document.addEventListener('pointerover', (e) => {
+  if (scena) scena.battito = e.target.closest('[data-azione], .btn-azione') ? 1 : 0;
+});
 
 // ---------- Effetto magnetico sui bottoni importanti ----------
 if (finePointer && !ridotto) {
@@ -353,7 +283,7 @@ document.addEventListener('click', (e) => {
 });
 
 // ==========================================================================
-// L'occhio: colore dell'iride per servizio, sorpresa all'uscita, occhiolino a chi torna
+// L'occhio: colore dell'iride per servizio, occhiolino a chi torna
 // ==========================================================================
 // colori fissi per servizio, uguali in ogni tema
 const COLORI_SERVIZIO = { sito: '#FFB547', ecommerce: '#FF6B8A', software: '#A98BFF', integrazioni: '#B9A2FF', ads: '#5CE1E6', cura: '#4BE3A5' };
@@ -374,61 +304,6 @@ document.querySelectorAll('[data-iride]').forEach((el) => {
   // su touch il colore resta qualche secondo dopo il tocco
   el.addEventListener('touchstart', () => { tinta(el.dataset.iride); tintaTimer = setTimeout(() => tinta(null), 2600); }, { passive: true });
 });
-
-// ---------- 2. Sta per andarsene: l'occhio si spalanca e lo ferma ----------
-const uscita = document.querySelector('[data-uscita]');
-const caricata = Date.now();
-let uscitaAperta = false, focusPrima = null;
-function apriUscita(motivo) {
-  // al massimo una finestra per visita: chi ha appena personalizzato il sito non la vede
-  if (!uscita || uscitaAperta || ss.get('gd-uscita') || ss.get('gd-personalizzato') || html.classList.contains('menu-aperto') || html.classList.contains('calcolo-aperto')) return;
-  if (Date.now() - caricata < 6000) return; // non disturbare chi è appena arrivato
-  uscitaAperta = true;
-  ss.set('gd-uscita', '1');
-  focusPrima = document.activeElement;
-  uscita.hidden = false;
-  requestAnimationFrame(() => html.classList.add('uscita-aperta'));
-  if (scena) scena.sorpresa = true;
-  lenis?.stop();
-  setTimeout(() => uscita.querySelector('[data-uscita-si]')?.focus({ preventScroll: true }), 400);
-  window.gdTrack('uscita_mostrata', { motivo });
-}
-function chiudiUscita() {
-  if (!uscitaAperta) return;
-  uscitaAperta = false;
-  html.classList.remove('uscita-aperta');
-  if (scena) scena.sorpresa = false;
-  lenis?.start();
-  setTimeout(() => { uscita.hidden = true; }, 500);
-  focusPrima?.focus?.({ preventScroll: true });
-}
-if (uscita) {
-  // desktop: il mouse esce dalla finestra verso l'alto (verso la X o le schede)
-  document.addEventListener('mouseout', (e) => { if (!e.relatedTarget && e.clientY <= 8) apriUscita('mouse'); });
-  // touch: dopo aver letto metà pagina, una risalita veloce verso l'alto
-  let yPrima = window.scrollY, tPrima = performance.now(), maxLetto = 0;
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY, t = performance.now();
-    const doc = document.documentElement.scrollHeight - window.innerHeight;
-    maxLetto = Math.max(maxLetto, doc > 0 ? y / doc : 0);
-    const v = (y - yPrima) / Math.max(t - tPrima, 1); // px/ms
-    if (!finePointer && maxLetto > 0.5 && v < -3.2 && Date.now() - caricata > 20000) apriUscita('risalita');
-    yPrima = y; tPrima = t;
-  }, { passive: true });
-  uscita.querySelector('[data-uscita-chiudi]').addEventListener('click', chiudiUscita);
-  uscita.addEventListener('click', (e) => { if (e.target === uscita) chiudiUscita(); });
-  uscita.querySelector('[data-uscita-si]').addEventListener('click', () => window.gdTrack('uscita_clic'));
-  document.addEventListener('keydown', (e) => {
-    if (!uscitaAperta) return;
-    if (e.key === 'Escape') chiudiUscita();
-    if (e.key === 'Tab') {
-      const f = [...uscita.querySelectorAll('a, button')];
-      const i = f.indexOf(document.activeElement);
-      if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
-      else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
-    }
-  });
-}
 
 // ---------- 3. Chi torna riceve un occhiolino ----------
 const RITORNO = {

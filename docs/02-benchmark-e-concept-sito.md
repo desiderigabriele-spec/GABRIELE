@@ -54,7 +54,6 @@ Il **logo «Eclisse» fatto di particelle**, che fluttua nello spazio e ruota tu
 - **Cosa rappresenta:** non osserva chi visita il sito. È **l'attenzione del pubblico**, e mostra come la si cattura: va verso ciò che si muove (segue il puntatore e il dito) e si **aggancia a ciò che spicca** (bottoni, parole colorate, «sceglie.»). Quando la persona sta ferma, gira con calma verso lo stimolo più forte della pagina, il bottone "Calcola il tuo preventivo": chi guarda segue lo sguardo e arriva lì anche lui (*gaze cueing*).
 - **Pupilla:** si allarga quando l'attenzione viene catturata (bottoni, parole), ancora di più sui bottoni d'azione (Eckhard Hess: la pupilla si dilata davanti a ciò che ci interessa), si stringe a ogni clic e "respira" piano.
 - **Iride che cambia colore** secondo il servizio su cui passi (parole del titolo, card dei servizi, card del preventivo): ambra per i siti, rosa per i negozi online, viola per software e collegamenti AI, ciano per la pubblicità, verde acqua per la cura. Anche le altre forme di particelle prendono quel colore.
-- **Sorpresa all'uscita:** se il mouse esce dalla finestra verso l'alto (o su telefono, dopo metà pagina, con una risalita veloce), la pagina si spegne, la sfera torna al centro, si avvicina e guarda il bottone dell'offerta: «Prima di andare, guarda qui». Una sola volta per visita, mai nei primi 6 secondi, mai nella pagina del preventivo.
 - **Chi torna** (più di 30 minuti dopo l'ultima visita): la pupilla diventa un **cuore** per un paio di secondi e compare «Rieccoti!». Se c'era un preventivo iniziato, il link porta a riprenderlo.
 
 ### Il testo resta sempre leggibile
@@ -100,7 +99,7 @@ Il bottone con i quattro puntini apre un pannellino con due sole cose, che cambi
 1. **Come ti chiami?** Mentre scrivi, il nome compare nel titolo dell'hero, grande come il titolo, con il saluto dell'ora (Buongiorno 5-14, Ciao 14-18, Buonasera 18-5: «Buonasera Marco, trasformo…»), poi nel titolo finale, nel messaggio WhatsApp, nel «Rieccoti» e nel campo nome del preventivo. Quando hai finito, le particelle dell'occhio scrivono il nome per qualche secondo.
 2. **Il tuo colore.** Anteprima dal vivo passandoci sopra, scelta con un clic.
 
-Si chiude con Invio, Esc, la × o toccando fuori. Alla prima visita compare una volta un piccolo invito sotto il bottone («Vuoi il sito con il tuo nome e il tuo colore?»), mai insieme all'avviso della lingua. Tutto resta nel browser (`localStorage gd-profilo`), niente viene inviato. Chi ha appena personalizzato non vede la finestra d'uscita: al massimo una finestra per visita. La domanda «di cosa ti occupi?» è stata tolta: il settore si chiede solo nel preventivo.
+Si chiude con Invio, Esc, la × o toccando fuori. Alla prima visita compare una volta un piccolo invito sotto il bottone («Vuoi il sito con il tuo nome e il tuo colore?»), mai insieme all'avviso della lingua. Tutto resta nel browser (`localStorage gd-profilo`), niente viene inviato. La domanda «di cosa ti occupi?» è stata tolta: il settore si chiede solo nel preventivo.
 
 ### La voce: Studio Desideri, al plurale
 Tutto il sito parla come studio («facciamo», «ti rispondiamo», «scrivici»). Gabriele compare in terza persona solo in «Lo studio», come fondatore. I messaggi WhatsApp precompilati salutano lo studio («Ho visto il sito di Studio Desideri e vorrei parlarvi di un progetto»). Resta al singolare solo l'informativa privacy, dove il titolare dei dati è la persona.
@@ -111,12 +110,8 @@ Sulle pagine Software con AI, Collegamenti AI e AI per aziende c'è la sezione �
 - quattro punti sull'AI, scritti per essere veri: API professionali (non le app gratuite); nei contratti per le aziende i fornitori non usano i dati delle API per addestrare i modelli; li tengono poco (al massimo 30 giorni per i controlli di sicurezza), con conservazione zero e server in Europa quando serve; tutto per iscritto come chiede il GDPR, con la chiave dell'AI che può essere intestata al cliente.
 Il canone mensile è l'assistenza (hosting, controlli, aggiornamenti, sistemazioni), non un affitto: lo dicono il listino e le domande frequenti.
 
-### Il puntatore: l'occhio della mascotte
-Su computer la freccia diventa l'occhio di «Occhio» (`Base.astro` + `site.js`), con le espressioni della mascotte:
-- **curioso** di base: la pupilla guarda nella direzione in cui muovi il mouse, ogni 3-6 secondi sbatte le palpebre, al clic si stringe;
-- **più grande** su link e bottoni normali, **occhiolino** sui bottoni d'azione, **innamorato** su pacchetti prezzi, anteprime dei clienti, scheda AI del menu e «? ore all'anno»;
-- **sorpreso** quando si apre la finestra d'uscita, **pensieroso** dopo 9 secondi fermo e mentre il preventivo viene inviato, **festa** quando il preventivo è arrivato, **ok** quando si sblocca lo sconto, **perso** sulla pagina 404 e se l'invio non riesce.
-Nei campi di testo torna la stanghetta del sistema; nella finestra del calcolo torna la freccia normale. Su telefono e con «riduci movimento» il puntatore resta quello del sistema. Altre parti del sito possono chiedere un'espressione con l'evento `gd-occhio`.
+### Il puntatore
+Il puntatore è quello normale del sistema: niente cerchio, niente occhio e niente scia dietro il mouse. Resta solo un effetto sullo sfondo: passando sui bottoni d'azione l'occhio di particelle si accende.
 
 ### Header e menu
 - Voci nello stesso ordine delle sezioni della home: **Servizi ▾ · AI per aziende · Metodo · Clienti · Lo studio · Prezzi**.
@@ -139,7 +134,7 @@ Direzione **Aggancio**: un occhio che non guarda chi lo osserva, ma un **punto r
 
 ### Icone e mascotte
 - **Icone «Eclisse»** (`src/components/Icona.astro`): tratto pulito, riempimento leggero nel colore del tema e in ognuna il **punto rosso** del logo, che pulsa. Al passaggio sulla card si muovono (onde, flussi, frecce che girano, lancetta, pupilla). Servizi, garanzie, metodo e preventivo.
-- **Occhio, la mascotte** (`src/components/Occhio.astro`): le forme del logo con otto espressioni. Curioso (benvenuto), occhiolino (personalizzazione fatta), innamorato (Rieccoti), sorpreso (finestra d'uscita), pensieroso (invio in corso), festa (richiesta ricevuta), ok (sconto sbloccato), perso (404). Le stesse espressioni possono diventare sticker per WhatsApp e Instagram.
+- **Occhio, la mascotte** (`src/components/Occhio.astro`): le forme del logo con otto espressioni. Curioso (benvenuto), occhiolino (personalizzazione fatta), innamorato (Rieccoti), pensieroso (invio in corso), festa (richiesta ricevuta), ok (sconto sbloccato), perso (404). Le stesse espressioni possono diventare sticker per WhatsApp e Instagram.
 
 ### Tipografia
 - **Bricolage Grotesque** (titoli): ha personalità ma è compatta e leggibile; i dettagli delle lettere la rendono riconoscibile senza «urlare» (scelta dopo il confronto in «Prove hero Desideri»).

@@ -8,9 +8,6 @@ import { leggiProfilo } from './profilo.js';
 const ENDPOINT = import.meta.env.PUBLIC_PREVENTIVO_ENDPOINT || '';
 const CHIAVE = 'gd-preventivo';
 const traccia = (e, d) => window.gdTrack?.(e, d);
-// l'occhio-puntatore cambia espressione nei momenti importanti (site.js)
-const occhio = (esp, ms) => window.dispatchEvent(new CustomEvent('gd-occhio', { detail: { esp, ms } }));
-let serviziPrima = null; // al primo calcolo non festeggia: il progetto può arrivare già salvato
 
 const TESTI = {
   it: {
@@ -179,8 +176,6 @@ export function avviaPreventivo() {
 
     // gamification dello sconto pacchetto
     const n = r.nServizi;
-    if (serviziPrima !== null && n >= 2 && n > serviziPrima) occhio('ok', 1600);
-    serviziPrima = n;
     elScontoTesto.textContent = n >= 3 ? t.sconto3 : n === 2 ? t.sconto2 : n === 1 ? t.sconto1 : t.sconto0;
     riep.querySelector('[data-sconto]').classList.toggle('attivo', n >= 2);
 
@@ -373,7 +368,6 @@ export function avviaPreventivo() {
     btn.disabled = true;
     btn.textContent = t.invio;
     form.classList.add('invio-in-corso');
-    occhio('pensieroso', 0);
     try {
       // text/plain: richiesta "semplice", niente preflight CORS verso Google Apps Script
       const res = await fetch(ENDPOINT, {
@@ -389,7 +383,6 @@ export function avviaPreventivo() {
       fatto(d, 'modulo');
     } catch (_) {
       form.classList.remove('invio-in-corso');
-      occhio('perso', 2500);
       btn.disabled = false;
       btn.innerHTML = `${t.riprova} <span class="freccia" aria-hidden="true">→</span>`;
       const err = form.querySelector('[data-errore="3"]');
@@ -400,7 +393,6 @@ export function avviaPreventivo() {
 
   function fatto(d, via) {
     form.classList.remove('invio-in-corso');
-    occhio('festa', 3500);
     traccia('preventivo_invio', { via });
     const r = calcola(leggi());
     const testo = testoProgetto(r, d);

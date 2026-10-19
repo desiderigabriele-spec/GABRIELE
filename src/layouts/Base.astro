@@ -17,14 +17,13 @@ interface Props {
   path?: string;
   scena?: boolean;
   barra?: boolean;
-  uscita?: boolean;
   jsonLd?: Record<string, unknown> | null;
   lang?: 'it' | 'en';
   // la stessa pagina nell'altra lingua (null = non esiste)
   alt?: string | null;
 }
 
-const { title, description, path = '/', scena = true, barra = true, uscita = true, jsonLd = null, lang = 'it' } = Astro.props;
+const { title, description, path = '/', scena = true, barra = true, jsonLd = null, lang = 'it' } = Astro.props;
 const t = ui[lang];
 const altLang = lang === 'it' ? 'en' : 'it';
 const alt = Astro.props.alt === undefined ? url('home', altLang) : Astro.props.alt;
@@ -301,21 +300,6 @@ const hrefEn = lang === 'en' ? path : alt;
       </div>
     </div>
 
-    {uscita && (
-      <div class="uscita" data-uscita hidden role="dialog" aria-modal="true" aria-labelledby="uscita-titolo">
-        <div class="uscita-box">
-          <Occhio espressione="sorpreso" />
-          <span class="capitolo">{t.uscitaCapitolo}</span>
-          <h2 id="uscita-titolo"><span data-nome-prefisso></span><span data-minuscola>{t.uscitaTitolo}</span><span class="em em-firma">{t.uscitaTitoloEm}</span></h2>
-          <p>{t.uscitaTesto}</p>
-          <div class="uscita-azioni">
-            <a class="btn btn-azione btn-grande" href={preventivo} data-azione data-uscita-si>{t.uscitaSi} <span class="freccia" aria-hidden="true">→</span></a>
-            <button class="btn btn-vetro" type="button" data-uscita-chiudi>{t.uscitaNo}</button>
-          </div>
-        </div>
-      </div>
-    )}
-
     <div class="ritorno" data-ritorno hidden role="status">
       <Occhio espressione="innamorato" />
       <p><strong data-ritorno-titolo>{t.bentornato}!</strong> <span data-ritorno-testo>{t.bentornatoTesto}</span></p>
@@ -331,12 +315,6 @@ const hrefEn = lang === 'en' ? path : alt;
       </div>
     )}
 
-    <!-- il puntatore è l'occhio della mascotte: cambia espressione con quello che fai (site.js) -->
-    <div class="cursore-occhio" aria-hidden="true" data-occhio>
-      <div class="co-corpo">
-        {(['curioso', 'occhiolino', 'innamorato', 'sorpreso', 'pensieroso', 'festa', 'ok', 'perso'] as const).map((e) => <Occhio espressione={e} class={`co co-${e}`} />)}
-      </div>
-    </div>
 
     <script>
       import '../scripts/site.js';

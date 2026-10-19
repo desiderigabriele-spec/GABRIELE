@@ -274,26 +274,6 @@ html.intro-fine .intro-punto { animation: intro-esplodi .7s var(--ease) forwards
   .barra-pollice .btn-vetro { flex: 0 0 auto; }
 }
 
-/* ---------- Il puntatore: l'occhio della mascotte (solo mouse) ---------- */
-.cursore-occhio { display: none; }
-@media (hover: hover) and (pointer: fine) {
-  html.cursore-on:not(.calcolo-aperto), html.cursore-on:not(.calcolo-aperto) * { cursor: none !important; }
-  /* nei campi di testo torna la stanghetta del sistema, per scrivere comodi */
-  html.cursore-on:not(.calcolo-aperto) :is(input:not([type='range'], [type='checkbox'], [type='radio']), textarea, select) { cursor: auto !important; }
-  html.cursore-on .cursore-occhio { display: block; position: fixed; left: 0; top: 0; z-index: 99; width: 40px; height: 40px; margin: -22.4px 0 0 -17.6px; pointer-events: none; opacity: 0; transition: opacity .25s; will-change: transform; }
-  html.cursore-mosso .cursore-occhio { opacity: 1; }
-  html.calcolo-aperto .cursore-occhio, .cursore-occhio.nascosto { opacity: 0 !important; }
-  .co-corpo { position: absolute; inset: 0; transform-origin: 44% 56%; transition: transform .35s var(--ease); }
-  .cursore-occhio.sopra .co-corpo { transform: scale(1.22); }
-  .cursore-occhio.premuto .co-corpo { transform: scale(.8); transition-duration: .12s; }
-  .cursore-occhio .co { position: absolute; inset: 0; width: 100%; height: 100%; display: none; overflow: visible; filter: drop-shadow(0 4px 10px rgba(0,0,0,.55)); transform-origin: 44% 56%; transition: transform .1s; }
-  .cursore-occhio .co.vis { display: block; animation: co-cambia .3s var(--ease); }
-  @keyframes co-cambia { from { transform: scale(.7); } }
-  .cursore-occhio.batte .co.vis { transform: scaleY(.1); }
-  .cursore-occhio .m-vivace { animation: none; }
-  .cursore-occhio .m-pupilla { transition: transform .15s linear; }
-}
-
 /* ---------- Hero ---------- */
 .hero { position: relative; min-height: 100svh; display: flex; align-items: center; padding-top: calc(var(--header-h) + 40px); padding-bottom: 80px; }
 .hero-testo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.8rem; max-width: 820px; }
@@ -611,18 +591,6 @@ html.js:not(.ridotto) [data-appare] { opacity: 0; transform: translateY(28px); }
 .parola-iride[data-iride='ads'] { --c: #5ce1e6; }
 .parola-iride:hover { color: var(--c); background-size: 100% 2px; }
 
-/* ---------- Uscita: la pagina si spegne, resta l'occhio che ti guarda ---------- */
-main, .site-footer, .site-header, .barra-pollice, .nastro { transition: opacity .7s var(--ease), filter .7s var(--ease); }
-html.uscita-aperta main, html.uscita-aperta .site-footer, html.uscita-aperta .site-header, html.uscita-aperta .barra-pollice, html.uscita-aperta .cookie, html.uscita-aperta .ritorno { opacity: .05; filter: blur(6px); pointer-events: none; }
-.uscita { position: fixed; inset: 0; z-index: 80; display: flex; align-items: flex-end; justify-content: center; padding: 0 var(--gutter) 9vh; }
-.uscita[hidden] { display: none; }
-.uscita-box { width: 100%; max-width: 640px; display: grid; gap: 1.1rem; justify-items: center; text-align: center; opacity: 0; transform: translateY(24px); transition: opacity .6s var(--ease) .25s, transform .8s var(--ease) .25s; }
-html.uscita-aperta .uscita-box { opacity: 1; transform: none; }
-.uscita-box h2 { font-size: clamp(2.2rem, 5vw, 3.8rem); }
-.uscita-box p { color: var(--nebbia); font-size: 1.08rem; max-width: 30em; }
-.uscita-azioni { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; margin-top: .6rem; }
-@media (max-width: 600px) { .uscita { padding-bottom: calc(5vh + env(safe-area-inset-bottom)); } .uscita-azioni .btn { width: 100%; } }
-
 /* ---------- Bentornato ---------- */
 .ritorno { position: fixed; z-index: 55; left: 16px; bottom: 16px; max-width: 380px; display: grid; grid-template-columns: auto 1fr auto; gap: .3rem .9rem; align-items: center; padding: 1rem 1.1rem; border-radius: var(--r); background: rgba(var(--sup-rgb),.94); border: 1px solid rgba(255,181,71,.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 20px 60px -20px rgba(var(--azione-rgb),.45); transform: translateY(20px); opacity: 0; transition: opacity .6s var(--ease), transform .6s var(--ease); }
 .ritorno[hidden] { display: none; }
@@ -739,7 +707,6 @@ html.ridotto .mascotte *, html.ridotto .ico * { animation: none !important; }
 
 /* dove compare */
 .ritorno .mascotte { grid-row: span 2; width: 52px; height: 52px; }
-.uscita-box .mascotte { width: 92px; height: 92px; margin: 0 auto -.4rem; }
 .pagina-404 .mascotte { width: min(46vw, 200px); height: auto; margin: 0 auto; }
 
 /* ==========================================================================
@@ -778,14 +745,14 @@ html.ridotto .mascotte *, html.ridotto .ico * { animation: none !important; }
 .guida a.qui { background: var(--segnale); border-color: var(--segnale); box-shadow: 0 0 12px var(--segnale); transform: scale(1.15); }
 .guida a span { position: absolute; left: 20px; top: 50%; transform: translate(-6px, -50%); white-space: nowrap; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--nebbia); opacity: 0; transition: opacity .3s, transform .3s var(--ease); pointer-events: none; }
 .guida a:hover span, .guida a:focus-visible span { opacity: 1; transform: translate(0, -50%); }
-html.uscita-aperta .guida, html.menu-aperto .guida { opacity: 0; pointer-events: none; }
+html.menu-aperto .guida { opacity: 0; pointer-events: none; }
 
 /* 6 · la parola firma del titolo nasce dalle stelle (una volta per visita) */
 html.stelle-titolo [data-stelle] { opacity: 0; }
 [data-stelle] { transition: opacity .6s var(--ease); }
 .stelle-tela { position: absolute; pointer-events: none; z-index: 5; }
 
-/* 7 + 8 · stelline al clic e polvere dietro il cursore */
+/* 7 · stelline al clic sui bottoni d'azione */
 .tela-effetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 95; }
 
 /* 10 · sottolineatura a cometa sulle parole colorate */

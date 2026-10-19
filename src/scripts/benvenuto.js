@@ -3,7 +3,6 @@
 import { leggiProfilo, salvaProfilo, pulisciNome, impostaTema, applicaProfilo, TEMI_SITO } from './profilo.js';
 
 const traccia = (e, d) => window.gdTrack?.(e, d);
-const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} } };
 
 export function avviaPersonalizza(scena) {
   const html = document.documentElement;
@@ -20,7 +19,6 @@ export function avviaPersonalizza(scena) {
 
   const salva = () => { salvaProfilo(p); applicaProfilo(p); };
   const segnaColore = () => colori.forEach((c) => c.setAttribute('aria-checked', String(c.dataset.temaScelta === (p.tema || 'blu'))));
-  const usato = () => ss.set('gd-personalizzato', '1'); // niente finestra d'uscita per chi ha appena personalizzato
 
   // il pannello si apre sotto il bottone dell'header (su telefono, sotto la barra in alto)
   function posiziona() {
@@ -61,7 +59,6 @@ export function avviaPersonalizza(scena) {
     nomeScritto = p.nome || '';
   }
   input.addEventListener('input', () => {
-    usato();
     p.nome = pulisciNome(input.value);
     p.fatto = true;
     salva();
@@ -75,7 +72,6 @@ export function avviaPersonalizza(scena) {
     c.addEventListener('focus', () => impostaTema(c.dataset.temaScelta));
     c.addEventListener('click', () => {
       if (!TEMI_SITO.includes(c.dataset.temaScelta)) return;
-      usato();
       p.tema = c.dataset.temaScelta; p.fatto = true; salva();
       impostaTema(p.tema); segnaColore();
       traccia('personalizza_colore', { tema: p.tema });

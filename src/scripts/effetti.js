@@ -1,8 +1,7 @@
-// Effetti di luce sopra la pagina: stelline al clic sui bottoni d'azione, polvere di stelle dietro il cursore,
+// Effetti di luce sopra la pagina: stelline al clic sui bottoni d'azione,
 // la parola firma del titolo che nasce dalle stelle e il percorso dei capitoli sul bordo sinistro.
 const html = document.documentElement;
 const ridotto = html.classList.contains('ridotto');
-const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 const rnd = (a, b) => a + Math.random() * (b - a);
 const liscia = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
 const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} } };
@@ -68,17 +67,6 @@ function stelline() {
     e.preventDefault();
     setTimeout(() => location.assign(url.href), 220);
   });
-  // 8 · polvere di stelle dietro il cursore, leggera e solo su computer
-  if (!finePointer) return;
-  let ultimo = 0;
-  window.addEventListener('pointermove', (e) => {
-    if (e.pointerType !== 'mouse' || html.classList.contains('uscita-aperta')) return;
-    const ora = performance.now();
-    if (ora - ultimo < 28) return;
-    ultimo = ora;
-    preparaTela();
-    aggiungi({ x: e.clientX + rnd(-3, 3), y: e.clientY + rnd(-3, 3), vx: rnd(-0.25, 0.25), vy: rnd(-0.1, 0.35), vita: 0, durata: rnd(380, 600), r: rnd(0.7, 1.5), c: Math.random() < 0.18 ? '#ff3347' : '#cfe8ff', stella: false, g: 0.008, alone: 6 });
-  }, { passive: true });
 }
 
 // ---------- 6 · la parola firma del titolo nasce dalle stelle ----------
