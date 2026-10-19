@@ -273,6 +273,7 @@ Tre passi, il meno possibile da leggere e da scrivere.
 - **Astro** (sito statico, velocissimo) + **three.js** (particelle, shader scritti a mano) + **GSAP ScrollTrigger** + **Lenis**.
 - Particelle: circa 14.000 su desktop e 6.000 su mobile. Si spengono se il dispositivo è lento o se è attivo "riduci movimento". La scena si carica **dopo** il testo.
 - Deploy su **Vercel**, come il sito di Lorenzo.
+- **CSS dentro ogni pagina** (`inlineStylesheets: 'always'` in `astro.config.mjs`): non c'è un file di stile da scaricare a parte. Così una pagina non può mai comparire «nuda», cioè bianca, con il logo gigante e senza stile. Succedeva su un browser che aveva tenuto in cache, per un anno, un CSS vecchio o non trovato. JS e font stanno in `/_sd/` con cache lunga: hanno nomi con l'impronta del contenuto, quindi a ogni modifica cambia anche il nome.
 - Obiettivi: Lighthouse > 90 su mobile, testo leggibile prima di 1,5 secondi.
 
 ## 7. Da confermare prima di andare online
