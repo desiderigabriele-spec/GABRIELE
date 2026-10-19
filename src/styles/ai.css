@@ -28,7 +28,7 @@
 .demo-azioni.visto { opacity: 1; }
 .demo-tu { display: inline-flex; align-items: center; gap: .55rem; font-weight: 600; font-size: .95rem; }
 .demo-tu .mascotte { width: 34px; height: 34px; }
-.demo-avviso { margin: 1.2rem 0 0; font-size: .8rem; color: var(--nebbia-2); }
+.demo-avviso { margin: 1.2rem 0 0; display: block; font-size: .8rem; color: var(--nebbia-2); }
 
 /* Esempi per settore */
 .settori { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
@@ -91,3 +91,4 @@
 .prezzi-ai { width: 100%; max-width: 900px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 820px) { .prezzi-ai { grid-template-columns: minmax(0, 1fr); } }
 .prezzi-ai .intero { white-space: nowrap; }
+.ai-demo-link { display: inline-flex; margin-top: .7rem; }

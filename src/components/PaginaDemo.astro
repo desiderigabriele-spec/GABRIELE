@@ -1,0 +1,83 @@
+---
+// La pagina delle demo guidate (/demo e /en/demo): tre esempi completi da far avanzare un passo alla volta.
+import Base from '../layouts/Base.astro';
+import Icona from './Icona.astro';
+import Demo from './Demo.astro';
+import { dati } from '../i18n/dati.js';
+import { url } from '../i18n/ui.js';
+import { euro } from '../data/formato.js';
+import { demo, ORDINE_DEMO } from '../data/demo.js';
+
+interface Props { lang?: 'it' | 'en' }
+const { lang = 'it' } = Astro.props;
+const it = lang === 'it';
+const T = (a: string, b: string) => (it ? a : b);
+const { categorie, contatti } = dati(lang);
+const preventivo = url('preventivo', lang);
+const diagnosi = categorie.find((c) => c.id === 'software')!.extra.find((e) => e.id === 'diagnosi')!;
+const waTesto = T('Ciao! Ho visto le demo di Studio Desideri e vorrei capire cosa si può fare nella mia attività.', 'Hi! I saw the Studio Desideri demos and I’d like to know what could work in my business.');
+---
+<Base
+  lang={lang}
+  path={url('demo', lang)}
+  alt={url('demo', it ? 'en' : 'it')}
+  title={T('Demo dal vivo: l’AI al lavoro · Studio Desideri', 'Live demos: AI at work · Studio Desideri')}
+  description={T(
+    'Tre demo guidate passo per passo: un messaggio WhatsApp che finisce da solo in agenda, un preventivo da una foto, un assistente che risponde ai clienti. Con spiegazioni semplici.',
+    'Three step-by-step guided demos: a WhatsApp message that lands in the calendar on its own, a quote from a photo, an assistant that answers customers. Explained simply.',
+  )}
+>
+  <section class="hero demo-hero" data-forma="1" data-lato="destra" data-luce="0.2" data-scala="0.8" data-luce-mobile="0.1">
+    <div class="wrap">
+      <div class="hero-testo">
+        <span class="capitolo" data-appare>{T('Demo dal vivo', 'Live demos')}</span>
+        <h1 data-righe>
+          <span class="riga"><span>{T('Non fidarti sulla parola:', 'Don’t take our word for it:')}</span></span>
+          <span class="riga"><span><span class="em em-firma">{T('guardalo lavorare.', 'watch it work.')}</span></span></span>
+        </h1>
+        <p class="lead" data-appare="0.2">{T(
+          'Tre esempi completi di quello che costruiamo con l’intelligenza artificiale. Li fai avanzare tu, un passo alla volta: a ogni passo ti spieghiamo cosa succede e cosa c’è dietro.',
+          'Three complete examples of what we build with artificial intelligence. You move them forward one step at a time: at every step we explain what’s happening and what’s behind it.',
+        )}</p>
+      </div>
+      <ol class="demo-indice" data-sequenza>
+        {ORDINE_DEMO.map((id, i) => {
+          const d = demo[lang][id];
+          return (
+            <li>
+              <a class="card demo-voce" href={`#demo-${id}`}>
+                <span class="servizio-icona"><Icona nome={d.icona} /></span>
+                <span class="demo-voce-testo">
+                  <span class="mono">Demo {i + 1} · {d.etichetta}</span>
+                  <strong>{d.breve}</strong>
+                  <small>{d.passi.length} {T('passi · 2 minuti', 'steps · 2 minutes')}</small>
+                </span>
+                <span class="freccia" aria-hidden="true">↓</span>
+              </a>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  </section>
+
+  {ORDINE_DEMO.map((id, i) => <Demo id={id as 'whatsapp'} lang={lang} numero={i + 1} forma={String(i + 1)} />)}
+
+  <section class="sezione finale" id="azione" data-forma="4" data-luce="0.7" data-luce-mobile="0.45" data-scala="1.15">
+    <div class="wrap finale-testo">
+      <span class="capitolo" data-appare>{T('E nella tua attività?', 'And in your business?')}</span>
+      <h2 data-righe>
+        <span class="riga"><span>{T('La prossima demo', 'The next demo')}</span></span>
+        <span class="riga"><span class="em em-firma">{T('la facciamo con te.', 'we build with you.')}</span></span>
+      </h2>
+      <p class="lead" data-appare>{T(
+        `Nella Diagnosi AI (${euro(diagnosi.una!, lang)}, scalati se poi fai il progetto) guardiamo insieme il lavoro che ti ruba più tempo e ti mostriamo come funzionerebbe da te, con i tuoi programmi.`,
+        `In the AI Diagnosis (${euro(diagnosi.una!, lang)}, deducted if you go ahead with the project) we look together at the job that eats most of your time and show you how it would work for you, with your programs.`,
+      )}</p>
+      <div class="hero-azioni" data-appare style="justify-content:center">
+        <a class="btn btn-azione btn-grande" href={`${preventivo}?s=software`} data-azione><span class="scia" aria-hidden="true"></span>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
+        <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
+      </div>
+    </div>
+  </section>
+</Base>

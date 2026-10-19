@@ -52,11 +52,6 @@
   .flusso li { grid-template-columns: 72px minmax(0, 1fr); column-gap: 1.1rem; }
   .flusso-tappa { grid-row: span 2; margin: 0; }
 }
-.sv-ai { margin-top: clamp(24px, 4svh, 44px); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 1rem; align-items: center; text-decoration: none; color: inherit; padding: 18px 22px; }
-.sv-ai strong { display: block; font-family: var(--f-titolo); font-size: 1.15rem; }
-.sv-ai span:nth-child(2) { color: var(--nebbia); font-size: .95rem; }
-.sv-ai .freccia { color: var(--ambra); font-size: 1.3rem; transition: transform .4s var(--ease); }
-.sv-ai:hover .freccia { transform: translateX(4px); }
 
 /* esempi */
 .sv-esempi { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }

@@ -7,6 +7,7 @@ const PERCORSI = {
   preventivo: { it: '/preventivo', en: '/en/quote' },
   privacy: { it: '/privacy', en: '/en/privacy' },
   ai: { it: '/intelligenza-artificiale', en: '/en/ai' },
+  demo: { it: '/demo', en: '/en/demo' },
 };
 export const url = (pagina, lang = 'it') => (PERCORSI[pagina] || PERCORSI.home)[lang];
 
@@ -34,7 +35,7 @@ export const ui = {
     zona: 'Milano, Italia e Svizzera',
     footerClaim: 'Desideri di nome, risultati di fatto.',
     footerServizi: 'Servizi', footerParliamone: 'Parliamone',
-    footerAi: 'AI per aziende, spiegata semplice', footerPreventivo: 'Preventivo automatico',
+    footerAi: 'AI per aziende, spiegata semplice', footerDemo: 'Demo dal vivo', footerPreventivo: 'Preventivo automatico',
     privacy: 'Privacy e cookie', preferenzeCookie: 'Preferenze cookie',
     cookie: 'Usiamo cookie di statistica e pubblicità solo se ci dai il permesso: servono a capire cosa funziona e a non sprecare annunci. Il sito funziona benissimo anche senza.',
     dettagli: 'Dettagli', cookieNo: 'No, grazie', cookieSi: 'Va bene',
@@ -55,7 +56,7 @@ export const ui = {
     zona: 'Milan · Italy and Switzerland',
     footerClaim: 'Desideri by name, results by design.',
     footerServizi: 'Services', footerParliamone: "Let's talk",
-    footerAi: 'AI for business, in plain words', footerPreventivo: 'Instant quote',
+    footerAi: 'AI for business, in plain words', footerDemo: 'Live demos', footerPreventivo: 'Instant quote',
     privacy: 'Privacy and cookies', preferenzeCookie: 'Cookie preferences',
     cookie: 'We only use analytics and advertising cookies if you allow it: they help us see what works and avoid wasting ad money. The site works perfectly without them.',
     dettagli: 'Details', cookieNo: 'No, thanks', cookieSi: 'OK',

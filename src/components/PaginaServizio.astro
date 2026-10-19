@@ -5,6 +5,7 @@ import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
 import Illustrazione from './Illustrazione.astro';
 import TuoSoftware from './TuoSoftware.astro';
+import Demo from './Demo.astro';
 import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -26,6 +27,8 @@ const prezzoLivello = (l: { una?: number; mese?: number }) =>
   l.una && l.mese ? `${eur(l.una)} + ${eur(l.mese)}${mese}` : l.mese ? `${eur(l.mese)}${mese}` : eur(l.una!);
 const altri = servizi.filter((x) => x.id !== id);
 const ai = id === 'software' || id === 'integrazioni';
+// la demo guidata che fa vedere il servizio al lavoro
+const demoId = id === 'software' ? 'preventivo' : id === 'integrazioni' ? 'whatsapp' : null;
 const waTesto = T(`Ciao! Ho visto la pagina «${s.titolo}» di Studio Desideri e vorrei parlarvi di un progetto.`, `Hi! I saw the Studio Desideri “${s.titolo}” page and I'd like to talk to you about a project.`);
 
 const jsonLd = {
@@ -112,15 +115,10 @@ const jsonLd = {
         ))}
       </ol>
       </div>
-      {ai && (
-        <a class="sv-ai card" href={url('ai', lang)}>
-          <span class="servizio-icona"><Icona nome="sguardo" /></span>
-          <span><strong>{T('Guardalo al lavoro', 'See it at work')}</strong>{T('Un esempio animato: arriva una richiesta, l’AI la capisce e scrive la risposta.', 'An animated example: a request comes in, AI understands it and writes the reply.')}</span>
-          <span class="freccia" aria-hidden="true">→</span>
-        </a>
-      )}
     </div>
   </section>
+
+  {demoId && <Demo id={demoId} lang={lang} tutte />}
 
   {ai && <TuoSoftware lang={lang} />}
 

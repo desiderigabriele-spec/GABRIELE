@@ -225,11 +225,23 @@ File: `src/components/PaginaAI.astro` · `src/styles/ai.css` · pagine `src/page
 Una pagina per servizio, stessa struttura, testi in `src/data/pagine-servizi.js` (italiano e inglese), prezzi e pacchetti presi da `listino.js`.
 1. **Hero** — titolo, frase semplice, "a partire da", bottoni preventivo (con il servizio già scelto) e WhatsApp. A destra un'illustrazione animata del servizio (`src/components/Illustrazione.astro`): il sito con il cursore che clicca e la richiesta che arriva; la scheda prodotto con il carrello che conta e l'ordine; il cruscotto «Buongiorno, Marco» con l'assistente che ha preparato i preventivi; i programmi collegati all'occhio in mezzo; il telefono con l'annuncio, il bersaglio e i numeri; il grafico che sale con il report del mese. Su telefono l'illustrazione va sopra il titolo.
 2. **Cosa ottieni** — sei punti con icona.
-3. **Come funziona** — quattro tappe unite da una linea con una luce che scorre. Per software e collegamenti c'è il rimando all'esempio animato della pagina AI.
+3. **Come funziona** — quattro tappe unite da una linea con una luce che scorre.
+   - **Demo guidata** (solo Software con AI e Collegamenti AI): subito dopo, la demo del servizio, uguale a quella della pagina `/demo` (vedi sotto), con il rimando a tutte le demo.
 4. **Per esempio** — tre situazioni tipo (non clienti veri).
 5. **Pacchetti e prezzi** — i tre livelli del listino con il bottone che apre il preventivo già impostato, gli extra e la nota del listino.
 6. **Domande** — quattro domande sul servizio.
 7. **Il prossimo passo** — bottoni e gli altri cinque servizi.
+
+### Pagina «Demo dal vivo» (`/demo`, `/en/demo`)
+Non abbiamo ancora lavori di AI da mostrare, quindi li facciamo **vedere funzionare**. Ci sono tre demo guidate, con attività inventate (lo dice sempre la nota sotto ogni demo) e strumenti veri. Testi in `src/data/demo.js`, componente `src/components/Demo.astro`, motore `src/scripts/demo.js`, stile `src/styles/demo.css`.
+- **Come funziona una demo.** A sinistra la guida: «Passo 2/5», il titolo, la spiegazione semplice e il riquadro «Dietro le quinte», che dice con quali strumenti lo facciamo. Sotto ci sono i pulsanti «Avanti» e «Indietro», i puntini per saltare a un passo e «Guarda da solo», che avanza ogni 6,5 secondi. Funzionano anche le frecce della tastiera. All'ultimo passo compaiono il prima/dopo («a mano 45 minuti, con il software 3»), gli strumenti usati e il link al preventivo con il pacchetto già scelto. A destra il «palco», con i programmi finti: i riquadri del passo sono in primo piano, gli altri restano attenuati. I messaggi arrivano con i puntini «sta scrivendo» e l'AI evidenzia le parole che ha capito.
+- **Le tre demo.**
+  1. *Da WhatsApp all'agenda* (Collegamenti AI). Un centro estetico riceve un messaggio alle 21:40. L'AI estrae i dati e guarda l'agenda, poi risponde e fissa l'appuntamento. Infine scrive la cliente nel foglio Google, avvisa la titolare e programma il promemoria.
+  2. *Il preventivo da una foto* (Software con AI, «AI su un processo»). Un'impresa edile riceve foto e misure del bagno. L'AI riconosce i lavori e li abbina al listino, poi scrive la bozza con il totale che sale. Il visitatore preme lui «Approva e invia».
+  3. *L'assistente che risponde* (Software con AI, «Assistente AI»). È la chat del sito di uno studio dentistico: risponde citando la fonte e propone gli orari liberi, e il visitatore ne sceglie uno. Sulla domanda medica passa la conversazione allo studio. Il cruscotto della mattina dopo chiude la demo.
+- **Su telefono** il palco va sopra la guida e mostra solo il riquadro principale del passo (il primo della lista `fuoco`). «Avanti» resta sempre a portata di dito, sopra la barra in basso.
+- **Dove sono collegate.** Nella pagina Software c'è la demo del preventivo, nella pagina Collegamenti quella di WhatsApp. Ci arrivano anche il link «Guarda le demo dal vivo» nella sezione AI della home, quello sotto l'esempio della pagina AI e la voce «Demo dal vivo» nel footer.
+- **Pagina:** hero con i tre ingressi, le tre demo (ognuna in uno schermo) e un invito finale: «La prossima demo la facciamo con te», che porta alla Diagnosi AI.
 
 ---
 
