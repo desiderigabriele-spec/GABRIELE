@@ -593,6 +593,7 @@ html.js:not(.ridotto) [data-appare] { opacity: 0; transform: translateY(28px); }
 .parola-iride[data-iride='sito'] { --c: #ffb547; }
 .parola-iride[data-iride='ecommerce'] { --c: #ff6b8a; }
 .parola-iride[data-iride='software'] { --c: #a98bff; }
+.parola-iride[data-iride='gestionale'] { --c: #b9a2ff; }
 .parola-iride[data-iride='ads'] { --c: #5ce1e6; }
 .parola-iride:hover { color: var(--c); background-size: 100% 2px; }
 

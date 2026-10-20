@@ -1,7 +1,7 @@
 // Testi in inglese dei dati condivisi, per id. Prezzi, icone e struttura restano in sito.js e listino.js.
 export const en = {
   contatti: {
-    ruolo: 'Websites · AI software · Online advertising',
+    ruolo: 'Websites · AI · Management software · Advertising',
     zona: 'Milan · Italy and Switzerland',
   },
 
@@ -17,14 +17,14 @@ export const en = {
       esempio: 'Product pages written to sell and automatic emails for anyone who leaves their cart.',
     },
     software: {
-      titolo: 'AI software',
-      semplice: 'Custom tools that do in one minute the work you now do by hand in an hour.',
-      esempio: 'Quotes that write themselves, invoices read automatically, emails with the reply already drafted.',
+      titolo: 'AI & automation',
+      semplice: 'Repetitive work does itself: AI answers, sorts and drafts for you.',
+      esempio: 'A WhatsApp message that books itself into the calendar, a quote drafted from a photo.',
     },
-    integrazioni: {
-      titolo: 'AI integrations',
-      semplice: 'Artificial intelligence inside the tools you already use: email, management software, WhatsApp.',
-      esempio: 'A customer writes on WhatsApp and their details go straight into your system, no copying.',
+    gestionale: {
+      titolo: 'Custom software',
+      semplice: 'Your company\'s own program, built the way you work. With AI inside, if you want.',
+      esempio: 'From quote to invoice without spreadsheets, and AI that drafts documents when you want it.',
     },
     ads: {
       titolo: 'Online advertising',
@@ -173,31 +173,37 @@ export const en = {
       nota: 'Shopify subscription, apps and payment fees are separate and paid directly to them.',
     },
     software: {
-      nome: 'AI software',
-      riga: 'An hour\'s work in a minute.',
+      nome: 'AI & automation',
+      riga: 'Repetitive work that does itself.',
       livelli: {
+        automazione: { nome: 'Automation', spiega: 'Your programs talk to each other on their own, with AI in the middle. Example: WhatsApp → AI → calendar.', include: ['2 programs connected, for example WhatsApp and calendar', 'AI reads, understands and sorts', 'Alerts if something gets stuck', 'Testing and written instructions', 'No programs to change', 'Ready in 1-2 weeks'] },
         assistente: { nome: 'AI assistant', spiega: 'An assistant that answers customers on your site or on WhatsApp, knows your business and books appointments.', include: ['Learns from your documents: price lists, FAQs, procedures', 'Answers on your site or on WhatsApp, day and night', 'Understands what the client wants', 'Books appointments in your calendar', 'Hands over to you when needed', 'Installed in your name, with your data', 'The monthly fee covers hosting, checks and updates'] },
-        processo: { nome: 'AI on one process', spiega: 'Software that does a repetitive job on its own: quotes, emails, documents, follow-ups.', include: ['One repetitive job done on its own: emails, quotes, documents or follow-ups', 'Connected to your management software or CRM', 'You check and approve with one click', 'Results dashboard', 'Testing and instructions', 'Installed in your name, with your data', 'The monthly fee covers ongoing support'] },
-        misura: { nome: 'Custom software', spiega: 'An internal platform with several AI features, users and roles. For whole departments.', include: ['An internal platform with several AI features', 'Different users and roles', 'Full dashboard', 'Connected to the programs you already use', 'Team training', 'Software and data are yours', 'The monthly fee covers ongoing support'] },
+        processo: { nome: 'AI on one process', spiega: 'Software that does a repetitive job on its own: quotes, emails, documents, follow-ups.', include: ['A repetitive job done on its own: quotes, emails or documents', 'Connected to your management software or CRM', 'You check and approve with one click', 'Results dashboard', 'Testing and instructions', 'Installed in your name, with your data', 'The monthly fee covers ongoing support'] },
       },
       extra: {
         diagnosi: { nome: 'AI diagnosis (deducted from the project)', spiega: '90 minutes together to find where AI really saves you money. If you go ahead with the project, it\'s free.' },
+        collegamento: { nome: 'Extra program', spiega: 'Another app joins the flow (e.g. Google Calendar, Fatture in Cloud, Shopify).' },
+        controllo: { nome: 'Monthly check', spiega: 'Every month we check everything runs and fix whatever changes in the connected programs.' },
         copilota: { nome: 'Company copilot', spiega: 'An assistant for your team that knows price lists, procedures and spec sheets and answers in chat.' },
-        formazione: { nome: 'AI training for your team (half day)', spiega: 'We teach your team to use Claude and ChatGPT in their everyday work.' },
+        formazione: { nome: 'AI training (half day)', spiega: 'We teach your team to use Claude and ChatGPT in their everyday work.' },
       },
       nota: 'The software and your data are yours. The monthly fee is the support: hosting, monitoring, updates and fixes. AI usage above €30/month is billed separately, at cost.',
     },
-    integrazioni: {
-      nome: 'AI integrations',
-      riga: 'AI inside the tools you already use.',
+    gestionale: {
+      nome: 'Custom software',
+      riga: 'Your company\'s own program, built the way you work.',
       livelli: {
-        singola: { nome: 'One connection', spiega: 'We connect two tools with AI in the middle. Example: email → AI → management software.', include: ['2 programs connected, for example email and management software', 'AI reads, understands and sorts', 'Testing and written instructions', 'No programs to change'] },
-        automazione: { nome: 'Full automation', spiega: 'A multi-step flow that runs on its own. Example: website enquiry → AI scores it → CRM → message to the customer.', include: ['A multi-step flow that runs on its own', 'Up to 4 programs connected', 'Alerts if something goes wrong', 'Written instructions', 'Monthly check'] },
-        sistema: { nome: 'Integrated system', spiega: 'All your tools talk to each other: website, ads, CRM, quotes and follow-ups.', include: ['All your programs connected: website, ads, CRM, quotes', 'AI spots who is ready to buy', 'Automatic follow-ups to clients', 'A single dashboard', 'Monthly support'] },
+        essenziale: { nome: 'Essential', spiega: 'Simple management software for one part of the work: clients and quotes, orders or stock.', include: ['1 custom area: e.g. clients and quotes, or stock', 'Up to 5 users', 'Works on computer, tablet and phone', 'We import your data from Excel', 'PDF documents with your logo', 'Installed in your name, with your data', 'Ready in 4-6 weeks'] },
+        completo: { nome: 'Complete', spiega: 'All your work in one place, with every part connected: from first contact to invoice.', include: ['Up to 4 connected areas: clients, quotes, orders, stock, deadlines', 'Different users and permissions: owner, office, warehouse', 'Dashboard with the numbers that matter', 'Connected to e-invoicing, your website or online store', 'Automatic reminders and deadlines', 'Team training', 'Ready in 8-10 weeks'] },
+        conai: { nome: 'Complete + AI', spiega: 'The complete system with artificial intelligence built in: it drafts documents, reads emails and answers your questions.', include: ['Everything in Complete', 'Quotes and documents drafted by AI, you approve', 'Emails, invoices and PDFs read and filed on their own', 'Ask in chat: "how much did we invoice in March?"', 'Smart alerts: clients to call back, stock running low', 'Unlimited users', 'Ready in 10-12 weeks'] },
       },
       extra: {
-        collegamento: { nome: 'Extra tool to connect', spiega: 'Another app joins the flow (e.g. Google Calendar, Fatture in Cloud, Shopify).' },
+        area: { nome: 'Extra area', spiega: 'Another part of the work inside the system, for example shifts, vehicles or customer support.' },
+        funzioneai: { nome: 'Extra AI feature', spiega: 'One more smart feature, for example reading delivery notes or writing payment reminders.' },
+        migrazione: { nome: 'Move from your old software', spiega: 'We bring in clients, products and history from the program you use today.' },
+        app: { nome: 'Phone app', spiega: 'The system as an installable app, also for people working out of the office: sites, deliveries, visits.' },
       },
+      nota: 'The software and the data are yours. The monthly fee is the support: hosting, backups, updates and fixes. AI usage above €30/month is billed separately, at cost.',
     },
     ads: {
       nome: 'Online advertising',

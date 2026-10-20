@@ -18,9 +18,9 @@ const { categorie, contatti, voucher } = dati(lang);
 const eur = (n: number) => euro(n, lang);
 const preventivo = url('preventivo', lang);
 const prezzo = (cat: string, liv: string) => categorie.find((c) => c.id === cat)!.livelli.find((l) => l.id === liv)!;
-const pCollegamento = prezzo('integrazioni', 'singola');
+const pCollegamento = prezzo('software', 'automazione');
 const pAssistente = prezzo('software', 'assistente');
-const pMisura = prezzo('software', 'misura');
+const pMisura = prezzo('gestionale', 'essenziale');
 
 // Esempi per settore: com'è oggi e come diventa
 const settori = it ? [
@@ -357,7 +357,7 @@ const demo = it ? {
       <div class="altri-prezzi prezzi-ai" data-appare>
         <div><span>{T('Un collegamento tra due programmi', 'One connection between two programs')}</span><strong>{T('da', 'from')} {eur(pCollegamento.una!)}</strong></div>
         <div><span>{T('Un assistente per i clienti', 'A customer assistant')}</span><strong><span class="intero">{T('da', 'from')} {eur(pAssistente.una!)}</span> <span class="intero">+ {eur(pAssistente.mese!)}{T('/mese', '/month')}</span></strong></div>
-        <div><span>{T('Un programma interno su misura', 'A custom internal program')}</span><strong>{T('da', 'from')} {eur(pMisura.una!)}</strong></div>
+        <div><span>{T('Un gestionale su misura', 'Custom management software')}</span><strong>{T('da', 'from')} {eur(pMisura.una!)}</strong></div>
       </div>
       <p class="lead" data-appare>{T(
         `In Lombardia il Voucher Doppia Transizione può coprire fino al ${voucher.percentuale * 100}% dei progetti con AI da almeno ${eur(voucher.soglia)}. Verifichiamo insieme se è ancora disponibile.`,

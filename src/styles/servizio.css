@@ -154,7 +154,7 @@
 @keyframes ill-onda { 0%, 44% { opacity: 0; transform: scale(.4); } 46% { opacity: .9; } 60%, 100% { opacity: 0; transform: scale(1.8); } }
 .ill .ill-notifica { animation: ill-notifica 6s var(--ease) infinite; }
 @keyframes ill-notifica { 0%, 48% { opacity: 0; transform: translateY(-10px); } 56%, 90% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
-.ill-software .ill-notifica, .ill-ads .ill-notifica { animation-name: ill-notifica-sotto; }
+.ill-gestionale .ill-notifica, .ill-ads .ill-notifica { animation-name: ill-notifica-sotto; }
 @keyframes ill-notifica-sotto { 0%, 40% { opacity: 0; transform: translateY(12px); } 50%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
 .ill .ill-conta-a { animation: ill-conta-a 6s steps(1) infinite; }
 .ill .ill-conta-b { animation: ill-conta-b 6s steps(1) infinite; }

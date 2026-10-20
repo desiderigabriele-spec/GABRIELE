@@ -28,14 +28,14 @@ const perChi: Record<string, string> = it ? {
   presenza: 'For businesses and professionals who want enquiries every week.',
   impulso: 'To get started fast or launch a promotion.',
 };
-const altri = ['ecommerce', 'software', 'integrazioni', 'ads', 'cura'].map((id) => {
+const altri = ['ecommerce', 'software', 'gestionale', 'ads', 'cura'].map((id) => {
   const c = categorie.find((x) => x.id === id)!;
   const l = c.livelli[0];
   return { nome: c.nome, prezzo: l.una ? eur(l.una) : eur(l.mese!) + mese };
 });
 const parole = it
-  ? ['Siti web', 'Negozi online', 'Software con AI', 'Collegamenti AI', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Neuromarketing', 'Copy che vende', 'Esperienze 3D']
-  : ['Websites', 'Online stores', 'AI software', 'AI integrations', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Neuromarketing', 'Copy that sells', '3D experiences'];
+  ? ['Siti web', 'Negozi online', 'Automazioni e AI', 'Gestionali su misura', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Neuromarketing', 'Copy che vende', 'Esperienze 3D']
+  : ['Websites', 'Online stores', 'AI & automation', 'Custom software', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Neuromarketing', 'Copy that sells', '3D experiences'];
 
 // Il calcolatore: lavori sempre uguali, cosa fa l'AI al posto tuo, ore a settimana (stima prudente)
 const ripetitivi: [string, string, number][] = it ? [
@@ -255,7 +255,7 @@ const jsonLd = {
   <section class="sezione" id="risparmio" data-forma="1" data-lato="sinistra" data-luce="0.35" data-scala="0.9">
     <div class="wrap risparmio">
       <div class="testa-sezione" style="margin-bottom:0">
-        <span class="capitolo" data-appare>{T('Software con AI', 'AI software')}</span>
+        <span class="capitolo" data-appare>{T('Automazioni e AI', 'AI & automation')}</span>
         {it ? (
           <h2 data-righe>
             <span class="riga"><span>Quante ore ti rubano</span></span>

@@ -26,9 +26,9 @@ const preventivo = url('preventivo', lang);
 const prezzoLivello = (l: { una?: number; mese?: number }) =>
   l.una && l.mese ? `${eur(l.una)} + ${eur(l.mese)}${mese}` : l.mese ? `${eur(l.mese)}${mese}` : eur(l.una!);
 const altri = servizi.filter((x) => x.id !== id);
-const ai = id === 'software' || id === 'integrazioni';
-// la demo guidata che fa vedere il servizio al lavoro
-const demoId = id === 'software' ? 'preventivo' : id === 'integrazioni' ? 'whatsapp' : null;
+const ai = id === 'software' || id === 'gestionale';
+// le demo guidate che fanno vedere il servizio al lavoro
+const demoIds = id === 'software' ? (['whatsapp', 'preventivo'] as const) : [];
 const waTesto = T(`Ciao! Ho visto la pagina «${s.titolo}» di Studio Desideri e vorrei parlarvi di un progetto.`, `Hi! I saw the Studio Desideri “${s.titolo}” page and I'd like to talk to you about a project.`);
 
 const jsonLd = {
@@ -118,7 +118,7 @@ const jsonLd = {
     </div>
   </section>
 
-  {demoId && <Demo id={demoId} lang={lang} tutte />}
+  {demoIds.map((d, i) => <Demo id={d} lang={lang} numero={i + 1} tutte={i === demoIds.length - 1} />)}
 
   {ai && <TuoSoftware lang={lang} />}
 

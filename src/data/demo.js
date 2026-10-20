@@ -1,4 +1,4 @@
-// Le tre demo guidate: pagina /demo (/en/demo) e pagine Software con AI e Collegamenti AI.
+// Le tre demo guidate: pagina /demo (/en/demo) e pagina Automazioni e AI.
 // Attività, persone e prezzi sono inventati. Nei testi, [[...]] è la parte che l'AI «evidenzia».
 // Ogni passo: fuoco = i riquadri del palco in primo piano; sul telefono si vede solo il primo della lista.
 export const ORDINE_DEMO = ['whatsapp', 'preventivo', 'assistente'];
@@ -6,8 +6,8 @@ export const ORDINE_DEMO = ['whatsapp', 'preventivo', 'assistente'];
 export const demo = {
   it: {
     whatsapp: {
-      servizio: 'integrazioni', livello: 'automazione', icona: 'nodi',
-      etichetta: 'Collegamenti AI',
+      servizio: 'software', livello: 'automazione', icona: 'nodi',
+      etichetta: 'Automazione',
       breve: 'Da WhatsApp all’agenda',
       titolo: ['Da WhatsApp all’agenda,', 'senza toccare niente.'],
       sotto: 'Un centro estetico riceve una prenotazione alle 21:40, a negozio chiuso. Guarda passo per passo cosa succede, da solo, dentro i programmi che usa già.',
@@ -41,7 +41,7 @@ export const demo = {
     },
     preventivo: {
       servizio: 'software', livello: 'processo', icona: 'preventivo',
-      etichetta: 'Software con AI',
+      etichetta: 'AI su un processo',
       breve: 'Il preventivo da una foto',
       titolo: ['Dalla foto al preventivo,', 'in 4 minuti.'],
       sotto: 'Un’impresa edile riceve una richiesta con foto e misure. Il software prepara il preventivo con il listino dell’impresa: il titolare lo controlla e lo manda.',
@@ -72,7 +72,7 @@ export const demo = {
     },
     assistente: {
       servizio: 'software', livello: 'assistente', icona: 'chat',
-      etichetta: 'Software con AI',
+      etichetta: 'Assistente AI',
       breve: 'L’assistente che risponde',
       titolo: ['Risponde ai clienti,', 'anche alle 23.'],
       sotto: 'Uno studio dentistico mette sul sito un assistente che conosce listino, orari e agenda. Fai tu le domande, passo per passo, e guarda come risponde.',
@@ -108,8 +108,8 @@ export const demo = {
   },
   en: {
     whatsapp: {
-      servizio: 'integrazioni', livello: 'automazione', icona: 'nodi',
-      etichetta: 'AI integrations',
+      servizio: 'software', livello: 'automazione', icona: 'nodi',
+      etichetta: 'Automation',
       breve: 'From WhatsApp to the calendar',
       titolo: ['WhatsApp to calendar,', 'hands-free.'],
       sotto: 'A beauty salon gets a booking at 9:40 pm, after closing. Watch step by step what happens on its own, inside the programs it already uses.',
@@ -143,7 +143,7 @@ export const demo = {
     },
     preventivo: {
       servizio: 'software', livello: 'processo', icona: 'preventivo',
-      etichetta: 'AI software',
+      etichetta: 'AI on one process',
       breve: 'A quote from a photo',
       titolo: ['From photo to quote,', 'in 4 minutes.'],
       sotto: 'A building firm gets an enquiry with a photo and measurements. The software drafts the quote with the firm’s own price list: the owner checks it and sends it.',
@@ -174,7 +174,7 @@ export const demo = {
     },
     assistente: {
       servizio: 'software', livello: 'assistente', icona: 'chat',
-      etichetta: 'AI software',
+      etichetta: 'AI assistant',
       breve: 'The assistant that answers',
       titolo: ['It answers customers,', 'even at 11 pm.'],
       sotto: 'A dental practice adds an assistant to its website that knows the price list, opening hours and calendar. Ask the questions yourself, step by step, and see how it answers.',

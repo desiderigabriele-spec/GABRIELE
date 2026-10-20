@@ -14,7 +14,7 @@ const it = lang === 'it';
 const T = (a: string, b: string) => (it ? a : b);
 const { categorie, tempi, incontri, cambio, contatti } = dati(lang);
 const tasso = it ? String(cambio.CHF).replace('.', ',') : String(cambio.CHF);
-const icone: Record<string, string> = { sito: 'finestra', ecommerce: 'borsa', software: 'chip', integrazioni: 'nodi', ads: 'onda', cura: 'scudo' };
+const icone: Record<string, string> = { sito: 'finestra', ecommerce: 'borsa', software: 'chip', gestionale: 'gestionale', ads: 'onda', cura: 'scudo' };
 const prezzoLivello = (l: { una?: number; mese?: number }) =>
   [l.una ? euro(l.una, lang) : '', l.mese ? `${euro(l.mese, lang)}${T('/mese', '/month')}` : ''].filter(Boolean).join(' + ');
 // prezzi con gli importi negli attributi: lo script li riscrive in franchi se il visitatore lo chiede
@@ -27,8 +27,8 @@ const passoDi = (n: number) => T(`Passo ${n} di 3`, `Step ${n} of 3`);
   lang={lang}
   title={T('Calcola il tuo preventivo · Studio Desideri', 'Get your quote · Studio Desideri')}
   description={T(
-    'Componi il tuo progetto: sito web, negozio online, software con AI, pubblicità. Vedi subito il prezzo e invia la richiesta in 2 minuti.',
-    'Build your project: website, online store, AI software, advertising. See the price instantly and send your request in 2 minutes.',
+    'Componi il tuo progetto: sito web, negozio online, automazioni e AI, gestionale su misura, pubblicità. Vedi subito il prezzo e invia la richiesta in 2 minuti.',
+    'Build your project: website, online store, AI & automation, custom software, advertising. See the price instantly and send your request in 2 minutes.',
   )}
   path={url('preventivo', lang)}
   alt={url('preventivo', it ? 'en' : 'it')}

@@ -15,8 +15,8 @@ export const url = (pagina, lang = 'it') => (PERCORSI[pagina] || PERCORSI.home)[
 export const SLUG_SERVIZI = {
   sito: { it: 'siti-web', en: 'websites' },
   ecommerce: { it: 'negozi-online', en: 'online-stores' },
-  software: { it: 'software-ai', en: 'ai-software' },
-  integrazioni: { it: 'collegamenti-ai', en: 'ai-integrations' },
+  software: { it: 'automazioni-ai', en: 'ai-automation' },
+  gestionale: { it: 'gestionale-su-misura', en: 'custom-software' },
   ads: { it: 'pubblicita-online', en: 'online-advertising' },
   cura: { it: 'cura-e-crescita', en: 'care-and-growth' },
 };
