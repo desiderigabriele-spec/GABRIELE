@@ -71,7 +71,8 @@ suScroll();
   const voci = [...nav.querySelectorAll('.nav-voce')];
   let aperto = false, timer = 0;
   const su = (el) => {
-    if (!el) { luce.style.opacity = '0'; return; }
+    // sul telefono il menu è nascosto: niente da misurare
+    if (!el || !el.offsetParent) { luce.style.opacity = '0'; return; }
     luce.style.width = `${el.offsetWidth}px`;
     luce.style.transform = `translateX(${el.offsetLeft + (el.offsetParent !== nav ? el.offsetParent.offsetLeft : 0)}px)`;
     luce.style.opacity = '1';
@@ -262,7 +263,9 @@ const canvas = document.querySelector('[data-scena]');
 avviaPersonalizza(() => scena);
 function caricaScena() {
   if (!canvas || scena) return;
-  import('./scena.js').then((m) => { scena = m.avviaScena(canvas) || null; if (scena) html.classList.add('scena-on'); }).catch(() => {});
+  // se la scena 3D non parte (telefono vecchio, WebGL spento), al suo posto si vede l'occhio disegnato
+  const senza = () => html.classList.add('scena-no');
+  import('./scena.js').then((m) => { scena = m.avviaScena(canvas) || null; if (scena) html.classList.add('scena-on'); else senza(); }).catch(senza);
 }
 
 function avvio() {

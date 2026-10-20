@@ -2,6 +2,7 @@
 // La home in italiano (/) e in inglese (/en/): stessa struttura, testi nella lingua della pagina.
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
+import Occhio from './Occhio.astro';
 import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -106,7 +107,7 @@ const jsonLd = {
   <section class="hero" id="inizio" data-forma="0" data-lato="destra" data-x="1.13" data-scala="0.86" data-y-mobile="0.3" data-scala-mobile="0.42" data-luce-mobile="1">
     <div class="wrap">
       <div class="hero-testo">
-        <div class="hero-spazio-occhio" aria-hidden="true"></div>
+        <div class="hero-spazio-occhio" aria-hidden="true"><Occhio espressione="curioso" class="occhio-riserva" /></div>
         <span class="capitolo" data-appare>{T('Capitolo 01 · Attenzione', 'Chapter 01 · Attention')}</span>
         {it ? (
           <h1 data-righe>

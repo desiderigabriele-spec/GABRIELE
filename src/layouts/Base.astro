@@ -77,6 +77,9 @@ const hrefEn = lang === 'en' ? path : alt;
       (function () {
         var h = document.documentElement;
         h.classList.add('js');
+        // .at() per Safari prima della 15.4 (iPhone vecchi): lo usa la scena 3D
+        var at = function (n) { n = Math.trunc(n) || 0; if (n < 0) n += this.length; return this[n]; };
+        [Array, String, Float32Array, Uint8Array, Uint16Array, Uint32Array, Int32Array].forEach(function (C) { if (C && !C.prototype.at) Object.defineProperty(C.prototype, 'at', { value: at, writable: true, configurable: true }); });
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) h.classList.add('ridotto');
         // colore scelto in «Personalizza» (il blu è quello predefinito)
         try {
