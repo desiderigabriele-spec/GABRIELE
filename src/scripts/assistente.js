@@ -183,12 +183,28 @@ export function avviaAssistente() {
 
   // ---------- lo sguardo ----------
   let mano = -1e9;
+  // dove sta il punto (x, y) rispetto all'occhio: la direzione, più decisa quando è lontano
+  const verso = (x, y) => {
+    const r = bolla.getBoundingClientRect();
+    const dx = x - (r.left + r.width / 2), dy = y - (r.top + r.height / 2), d = Math.max(1, Math.hypot(dx, dy));
+    const forza = Math.min(1, d / 260);
+    return [(dx / d) * forza, (-dy / d) * forza];
+  };
+  // segue il mouse
   window.addEventListener('pointermove', (e) => {
     if (!occhio || aperta || e.pointerType === 'touch') return;
-    const r = bolla.getBoundingClientRect();
-    const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
     mano = performance.now();
-    occhio.guarda(dx / 500, -dy / 400);
+    occhio.guarda(...verso(e.clientX, e.clientY));
+  }, { passive: true });
+  // dove clicchi o tocchi col dito, guarda lì e la pupilla si allarga un attimo
+  let tGuarda = 0;
+  window.addEventListener('pointerdown', (e) => {
+    if (!occhio || aperta || box.contains(e.target)) return;
+    mano = performance.now();
+    occhio.guarda(...verso(e.clientX, e.clientY));
+    occhio.umore('interessato');
+    clearTimeout(tGuarda);
+    tGuarda = setTimeout(() => { occhio.umore('riposo'); }, 1400);
   }, { passive: true });
   // a riposo guarda il bottone rosso più vicino: chi visita segue lo sguardo (gaze cueing)
   function guardaBottone() {

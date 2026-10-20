@@ -1,7 +1,7 @@
 /* Focus, l'assistente: il tondino in basso a destra, la nuvoletta e la chat. */
 .focus { position: fixed; z-index: 58; right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
 .focus[hidden] { display: none; }
-.focus-bolla { position: relative; width: 60px; height: 60px; padding: 0; border-radius: 50% !important; border: 1px solid #444; background: var(--notte); cursor: pointer; overflow: hidden; display: block;
+.focus-bolla { position: relative; width: 68px; height: 68px; padding: 0; border-radius: 50% !important; border: 1px solid #444; background: var(--notte); cursor: pointer; overflow: hidden; display: block;
   transform: scale(0); transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), border-color .3s; box-shadow: 0 16px 34px -12px rgba(0, 0, 0, .9); }
 .focus.su .focus-bolla { transform: none; }
 .focus-bolla:hover, .focus-bolla:focus-visible { border-color: var(--latte); outline: none; }
@@ -10,13 +10,13 @@
 .focus-x { position: absolute; inset: 0; display: grid; place-items: center; font-size: 28px; line-height: 1; color: var(--latte); background: var(--notte); opacity: 0; transition: opacity .25s; }
 .focus.aperta .focus-x { opacity: 1; }
 /* la nuvoletta */
-.focus-fumetto { position: absolute; right: 74px; bottom: 10px; width: max-content; max-width: min(260px, calc(100vw - 110px)); opacity: 0; transform: translateX(8px); transition: opacity .35s var(--ease), transform .35s var(--ease); }
+.focus-fumetto { position: absolute; right: 82px; bottom: 12px; width: max-content; max-width: min(260px, calc(100vw - 110px)); opacity: 0; transform: translateX(8px); transition: opacity .35s var(--ease), transform .35s var(--ease); }
 .focus-fumetto.su { opacity: 1; transform: none; }
 .focus-fumetto-testo { display: block; background: var(--latte); color: var(--notte); border: 0; text-align: left; font: inherit; font-size: .88rem; font-weight: 600; line-height: 1.35; padding: .7rem 2.1rem .7rem .85rem; cursor: pointer; }
 .focus-fumetto-testo::after { content: ""; position: absolute; right: -6px; bottom: 16px; border: 6px solid transparent; border-right: 0; border-left-color: var(--latte); }
 .focus-fumetto-chiudi { position: absolute; right: 2px; top: 2px; width: 30px; height: 30px; border: 0; background: none; color: #555; font-size: 1.1rem; cursor: pointer; }
 /* la chat */
-.focus-pannello { position: absolute; right: 0; bottom: 74px; width: min(380px, calc(100vw - 40px)); height: min(560px, calc(100svh - 120px)); display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto;
+.focus-pannello { position: absolute; right: 0; bottom: 82px; width: min(380px, calc(100vw - 40px)); height: min(560px, calc(100svh - 120px)); display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto;
   background: #0d0d0d; border: 1px solid var(--linea-forte); border-top: 3px solid var(--rosso); box-shadow: 0 30px 70px -25px rgba(0, 0, 0, .95);
   opacity: 0; transform: translateY(10px); transform-origin: bottom right; transition: opacity .25s var(--ease), transform .25s var(--ease); }
 .focus-pannello[hidden] { display: none; }
@@ -64,8 +64,8 @@ html:has(.cookie:not([hidden])) .focus:not(.aperta) { opacity: 0; pointer-events
 /* telefono: solo il tondino, fisso in basso a destra (preventivo e WhatsApp sono dentro la chat) */
 @media (max-width: 900px) {
   .focus { right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 45; }
-  .focus-bolla { width: 56px; height: 56px; }
-  .focus-fumetto { right: 0; bottom: 70px; }
+  .focus-bolla { width: 64px; height: 64px; }
+  .focus-fumetto { right: 0; bottom: 78px; }
   .focus-fumetto-testo::after { right: 18px; bottom: -6px; border: 6px solid transparent; border-bottom: 0; border-top-color: var(--latte); }
   .focus-pannello { position: fixed; left: 0; right: 0; bottom: 0; width: auto; height: min(86svh, 640px); z-index: 70; transform: translateY(20px); }
   .focus.aperta { z-index: 70; }

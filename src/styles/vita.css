@@ -29,7 +29,7 @@
   /* su telefono tutto resta dentro il riquadro, sopra al titolo */
   .bz-scena { inset: 3% 4% 4% 4%; }
   .bz-voto { left: 0; top: 60%; } .bz-chat { right: 0; top: 10%; } .bz-grafico { right: 0; bottom: 0; width: 32%; }
-  .bozza.animata .bz-foto i { animation: bz-respira 4.8s ease-in-out infinite calc(var(--k) * -.4s); }
+  .bozza.animata .bz-foto i { animation: bz-gira .8s cubic-bezier(.2, .8, .2, 1) both calc(var(--k) * .12s), bz-respira 4.8s ease-in-out infinite calc(1.5s + var(--k) * .4s); }
   .bozza.animata .bz-btn::after { animation: bz-luce 4s ease-in-out infinite 1s; }
   .bozza.animata .bz-grafico span i { animation: bz-barra 1s cubic-bezier(.2,.8,.2,1) both calc(.4s + var(--k) * .08s); }
   .bozza.animata .bz-chat { animation: bz-galleggia 6s ease-in-out infinite; }
@@ -54,9 +54,14 @@
 .bz-titolo { font-size: 5.6cqw; font-weight: 800; line-height: .94; letter-spacing: -0.05em; }
 .bz-btn { justify-self: start; background: var(--rosso); color: #fff; font-size: 1.8cqw; font-weight: 600; padding: 1.5cqw 2.4cqw; position: relative; overflow: hidden; }
 .bz-btn::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.35) 50%, transparent 70%); transform: translateX(-120%); }
-.bz-foto { min-height: 0; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr); gap: .5cqw; transform-style: preserve-3d; }
-.bz-foto i { background: linear-gradient(135deg, #e4e1db, #b9b5ad); }
-.bz-foto i:nth-child(3n) { background: linear-gradient(135deg, #d6d2cb, #a9a59d); }
+.bz-foto { min-height: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: .5cqw; transform-style: preserve-3d; perspective: 600px; }
+.bz-foto i { background: linear-gradient(135deg, #efe6d6, #c9b89c); backface-visibility: hidden; }
+.bz-foto i:nth-child(2n) { background: linear-gradient(135deg, #e6dccb, #bfae91); }
+/* con la foto: ogni tassello mostra il suo pezzo, e insieme fanno l'immagine */
+.bz-foto.con-foto i { background: #c9b89c url("/img/bozza-piatto.webp") calc(var(--c) * 50%) calc(var(--r) * 100%) / 300% 200% no-repeat; }
+/* i sei tasselli si girano uno dopo l'altro e compongono la foto */
+.bozza.viva .bz-foto i { animation: bz-gira .8s cubic-bezier(.2, .8, .2, 1) both calc(.3s + var(--k) * .12s); }
+@keyframes bz-gira { from { transform: rotateY(-180deg); } }
 .bz-schede { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2cqw; padding: 0 3.6cqw 3cqw; transform-style: preserve-3d; }
 .bz-scheda { border: 1px solid #262626; padding: 1.8cqw; display: grid; gap: 1cqw; background: #121212; }
 .bz-scheda i { width: 3.4cqw; height: 3.4cqw; border: 1.5px solid var(--rosso); }
@@ -85,7 +90,7 @@ html.vita-on .bozza:not(.viva) [data-bz] { opacity: 0; }
 .bozza.inclinata .bz-chat { transform: translateZ(120px); }
 .bozza.inclinata .bz-grafico { transform: translateZ(70px); }
 .bozza.inclinata .bz-sx, .bozza.inclinata .bz-foto, .bozza.inclinata .bz-schede, .bozza.inclinata .bz-voto, .bozza.inclinata .bz-chat, .bozza.inclinata .bz-grafico { transition: transform 1.4s var(--ease), opacity .6s var(--ease); }
-.bozza.inclinata .bz-foto i { animation: bz-piastrella 4.8s ease-in-out infinite calc(var(--k) * -.4s); }
+.bozza.inclinata .bz-foto i { animation: bz-gira .8s cubic-bezier(.2, .8, .2, 1) both calc(var(--k) * .12s), bz-piastrella 4.8s ease-in-out infinite calc(1.5s + var(--k) * .4s); }
 @keyframes bz-piastrella { 0%, 100% { transform: translateZ(0); } 50% { transform: translateZ(18px); filter: brightness(1.08); } }
 .bozza.inclinata .bz-btn::after { animation: bz-luce 4s ease-in-out infinite 1s; }
 @keyframes bz-luce { 0%, 60% { transform: translateX(-120%); } 85%, 100% { transform: translateX(120%); } }
