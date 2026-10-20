@@ -142,7 +142,7 @@ Il nome è **Desideri & Code**. «Studio Desideri» era già usato da un concorr
 - **Icona:** un quadrato nero con «D&» sopra e «C» sotto, bianchi in basso a sinistra, più il quadratino rosso. Serve per favicon, social e app.
 - **Colori:** nero `#0A0A0A`, rosso `#E30613`, bianco `#FFFFFF`. La mascotte (l'occhio) resta il personaggio del sito: intro, scena 3D, demo e messaggi. Non fa più da logo.
 - **File:** le lettere sono tracciati, quindi non serve il font. Si generano con uno script che non è nel repo (gira in una cartella di lavoro, con il font Inter Tight).
-  - `src/assets/logo-scritta.svg` è la scritta per header e footer: le lettere prendono il colore del testo (`currentColor`), il quadratino resta rosso.
+  - `src/assets/logo-scritta.svg` e `src/assets/logo-icona.svg` sono la scritta e l'icona del sito, con lettere e quadrato nel colore del testo (`currentColor`) e il quadratino sempre rosso. Nell'header l'icona sta accanto alla scritta, in piccolo. Nel footer l'icona sta sopra la scritta; su telefono il marchio chiude il footer, in fondo e centrato.
   - In `public/brand/` ci sono la scritta nera e bianca, l'icona (nera, chiara, con angoli arrotondati per le app, PNG a 1024 px), il logo completo nero e bianco e la mascotte.
   - `public/favicon.svg`, `public/img/icona-512.png` e `apple-touch-icon.png` sono l'icona. `public/img/og.jpg` e `og-en.jpg` sono le anteprime per i link.
 - Nei titoli delle pagine il nome va dopo il punto: «Siti web · Desideri & Code». In fattura: «Desideri & Code di Gabriele Desideri».
