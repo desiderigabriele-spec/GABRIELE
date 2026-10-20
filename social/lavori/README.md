@@ -1,4 +1,4 @@
-# Video «Lavori» · Studio Desideri
+# Video «Lavori» · Desideri & Code
 
 Video in motion graphics che mostrano i siti fatti per i clienti, con effetti sonori sintetizzati da zero (nessun diritto da pagare).
 

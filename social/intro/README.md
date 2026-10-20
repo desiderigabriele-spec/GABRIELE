@@ -1,4 +1,4 @@
-# Intro social · Studio Desideri
+# Intro social · Desideri & Code
 
 Video di 12 secondi in motion graphics, senza audio (la musica si aggiunge in Instagram o TikTok).
 

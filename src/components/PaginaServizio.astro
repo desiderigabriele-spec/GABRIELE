@@ -29,7 +29,7 @@ const altri = servizi.filter((x) => x.id !== id);
 const ai = id === 'software' || id === 'gestionale';
 // le demo guidate che fanno vedere il servizio al lavoro
 const demoIds = id === 'software' ? (['whatsapp', 'preventivo'] as const) : [];
-const waTesto = T(`Ciao! Ho visto la pagina «${s.titolo}» di Studio Desideri e vorrei parlarvi di un progetto.`, `Hi! I saw the Studio Desideri “${s.titolo}” page and I'd like to talk to you about a project.`);
+const waTesto = T(`Ciao! Ho visto la pagina «${s.titolo}» di Desideri & Code e vorrei parlarvi di un progetto.`, `Hi! I saw the Desideri & Code “${s.titolo}” page and I'd like to talk to you about a project.`);
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -46,7 +46,7 @@ const jsonLd = {
   lang={lang}
   path={urlServizio(id, lang)}
   alt={urlServizio(id, it ? 'en' : 'it')}
-  title={`${s.titolo} · Studio Desideri`}
+  title={`${s.titolo} · Desideri & Code`}
   description={p.meta}
   jsonLd={jsonLd}
 >

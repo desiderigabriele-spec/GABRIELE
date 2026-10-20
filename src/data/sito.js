@@ -1,7 +1,7 @@
 // Dati di contatto e contenuti condivisi. Quelli segnati "da confermare" sono in DA-CONFERMARE.md.
 export const contatti = {
   nome: 'Gabriele Desideri',
-  studio: 'Studio Desideri', // il nome commerciale: in fattura «Studio Desideri di Gabriele Desideri»
+  studio: 'Desideri & Code', // il nome commerciale: in fattura «Desideri & Code di Gabriele Desideri»
   ruolo: 'Siti web · AI · Gestionali · Pubblicità online',
   email: 'desiderigabriele@gmail.com',
   telefono: '+39 338 342 4098',

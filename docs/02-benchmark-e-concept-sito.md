@@ -101,8 +101,8 @@ Il bottone con i quattro puntini apre un pannellino con due sole cose, che cambi
 
 Si chiude con Invio, Esc, la × o toccando fuori. Alla prima visita compare una volta un piccolo invito sotto il bottone («Vuoi il sito con il tuo nome e il tuo colore?»), mai insieme all'avviso della lingua. Tutto resta nel browser (`localStorage gd-profilo`), niente viene inviato. La domanda «di cosa ti occupi?» è stata tolta: il settore si chiede solo nel preventivo.
 
-### La voce: Studio Desideri, al plurale
-Tutto il sito parla come studio («facciamo», «ti rispondiamo», «scrivici»). Gabriele compare in terza persona solo in «Lo studio», come fondatore. I messaggi WhatsApp precompilati salutano lo studio («Ho visto il sito di Studio Desideri e vorrei parlarvi di un progetto»). Resta al singolare solo l'informativa privacy, dove il titolare dei dati è la persona.
+### La voce: Desideri & Code, al plurale
+Tutto il sito parla come studio («facciamo», «ti rispondiamo», «scrivici»). Gabriele compare in terza persona solo in «Lo studio», come fondatore. I messaggi WhatsApp precompilati salutano lo studio («Ho visto il sito di Desideri & Code e vorrei parlarvi di un progetto»). Resta al singolare solo l'informativa privacy, dove il titolare dei dati è la persona.
 
 ### Automazioni e AI, Gestionale su misura
 Prima c'erano due servizi, «Software con AI» e «Collegamenti AI»: usavano la stessa tecnica e per il cliente erano difficili da distinguere. Ora sono uno solo, **Automazioni e AI** (`/servizi/automazioni-ai`), con tre livelli che crescono:
@@ -137,11 +137,15 @@ Su computer ogni sezione della home, delle pagine servizio e della pagina AI sta
 Italiano predefinito (`/`), inglese su pagine vere (`/en`, `/en/quote`, `/en/privacy`) con `hreflang`, così Google mostra la versione giusta. Il selettore IT / EN è nell'header; chi ha il browser in un'altra lingua riceve un avviso discreto («Prefer English?»). Testi dell'interfaccia in `src/i18n/ui.js`, testi dei dati in `src/data/en.js`.
 
 ### Logo
-Direzione **Aggancio**: un occhio che non guarda chi lo osserva, ma un **punto rosso** accanto a sé, lo stimolo che ha catturato la sua attenzione. È il messaggio del brand in un segno: chi cattura l'attenzione vince.
-- Versione definitiva **Eclisse flat**: sfera avorio `#F2F4F8`, palpebra blu `#3D7BFF`, iride ambra `#FFB547` con la pupilla rivolta verso il punto. Solo colori pieni, leggibile fino a 32 px. Pupilla e fessure sono trasparenti, così il logo prende il fondo di ogni tema.
-- **Punto rosso** (`--segnale`, `#FF3347`): il colore universale del segnale d'attenzione (spia "REC", diretta, notifiche). Sul sito pulsa piano ogni 2,4 secondi, mai con lampeggi veloci; fermo con "riduci movimento".
-- Nome: **Studio Desideri**. Nel logo si legge dall'alto: «STUDIO» piccolo e spaziato sopra «Desideri», con la D maiuscola. «Studio» comprende siti, AI e pubblicità e suona curato senza far credere a una grande agenzia. Nei titoli delle pagine si aggiunge «Siti web, AI e pubblicità». In fattura: «Studio Desideri di Gabriele Desideri».
-- File: `public/brand/` (marchio, logo orizzontale, logo per fondi chiari, simbolo quadrato), `src/assets/marchio.svg` (header e footer, senza id), `public/favicon.svg`, `public/img/icona-512.png` e `apple-touch-icon.png`.
+Il nome è **Desideri & Code**. «Studio Desideri» era già usato da un concorrente. «Desideri» è il cognome del fondatore e dice cosa vogliono le persone; «Code» è la tecnologia: siti, AI, gestionali.
+- **Scritta:** «Desideri&Code» su una riga, in Inter Tight ExtraBold, molto compatta (−0,05 em), con un **quadratino rosso** come punto finale. Il quadratino è il segnale che cattura l'attenzione.
+- **Icona:** un quadrato nero con «D&» sopra e «C» sotto, bianchi in basso a sinistra, più il quadratino rosso. Serve per favicon, social e app.
+- **Colori:** nero `#0A0A0A`, rosso `#E30613`, bianco `#FFFFFF`. La mascotte (l'occhio) resta il personaggio del sito: intro, scena 3D, demo e messaggi. Non fa più da logo.
+- **File:** le lettere sono tracciati, quindi non serve il font. Si generano con uno script che non è nel repo (gira in una cartella di lavoro, con il font Inter Tight).
+  - `src/assets/logo-scritta.svg` è la scritta per header e footer: le lettere prendono il colore del testo (`currentColor`), il quadratino resta rosso.
+  - In `public/brand/` ci sono la scritta nera e bianca, l'icona (nera, chiara, con angoli arrotondati per le app, PNG a 1024 px), il logo completo nero e bianco e la mascotte.
+  - `public/favicon.svg`, `public/img/icona-512.png` e `apple-touch-icon.png` sono l'icona. `public/img/og.jpg` e `og-en.jpg` sono le anteprime per i link.
+- Nei titoli delle pagine il nome va dopo il punto: «Siti web · Desideri & Code». In fattura: «Desideri & Code di Gabriele Desideri».
 
 ### Icone e mascotte
 - **Icone «Eclisse»** (`src/components/Icona.astro`): tratto pulito, riempimento leggero nel colore del tema e in ognuna il **punto rosso** del logo, che pulsa. Al passaggio sulla card si muovono (onde, flussi, frecce che girano, lancetta, pupilla). Servizi, garanzie, metodo e preventivo.
@@ -161,7 +165,7 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
 - Cursore personalizzato (desktop) che diventa una lente sui bottoni e "aspira" verso le call to action (effetto magnetico).
 - Card con inclinazione 3D e bagliore che segue il mouse.
 - Contatori che salgono quando entrano nello schermo.
-- **Effetti** (scelti dalla prova «Effetti Studio Desideri», codice in `src/scripts/effetti.js`, `scena.js`, `global.css`):
+- **Effetti** (scelti dalla prova «Effetti Desideri & Code», codice in `src/scripts/effetti.js`, `scena.js`, `global.css`):
   1. scia luminosa che gira sul bordo del bottone dell'hero, del piano "Il più scelto" e del riepilogo del preventivo;
   2. sulle card si accende il tratto di bordo vicino al mouse;
   3. corona d'eclisse attorno all'occhio quando l'attenzione va su un bottone d'azione;
@@ -210,7 +214,7 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
 5. **Software con AI: quanto ti fa risparmiare** — Nella home solo un assaggio che incuriosisce: «Quante ore ti rubano i lavori sempre uguali?» e la scheda «Stanotte, mentre dormivi, il tuo software ha fatto da solo:» con quattro lavori che si spuntano uno alla volta e la domanda «E a te quante ore restituirebbe? ? ore all'anno». Il bottone «Calcola quanto risparmi» apre una finestra in tre passi: 1) cosa fai ancora a mano (dieci lavori da spuntare, ognuno con cosa farebbe l'AI e le ore a settimana); 2) quanto vale (persone e costo orario → ore ed euro all'anno); 3) il riepilogo con i lavori scelti e «Richiedi il preventivo», che apre il preventivo con il software già scelto e i lavori già scritti nel campo obiettivo (oppure WhatsApp con lo stesso testo). Si apre anche da `/#calcola`.
 6. **Il metodo · Fiducia** — Sezione bloccata con 5 passi che scorrono (Sguardo, Interesse, Fiducia, Desiderio, Azione). Per ogni passo: cosa succede nella testa del cliente + la tecnica usata + cosa facciamo noi.
 7. **Parlano di noi** (voce di menu "Clienti") — una scheda per cliente: anteprima del sito con il link per vederlo dal vivo, la recensione (oggi, finché non arriva, la sfida del progetto), nome, settore, pacchetto e cosa è stato fatto.
-8. **Lo studio** — «Desideri di nome, risultati di fatto.» Chi è Studio Desideri e chi l'ha fondato: Gabriele Desideri, che ha provato ogni tipo di vendita a freddo per capire come decidono le persone e per allenarsi. Cinque punti (vendita provata sul campo, negozi e pubblicità, una startup da zero, psicologia applicata, oggi software con AI) e le certificazioni. Niente date e niente lavori da dipendente: si parla dello studio.
+8. **Lo studio** — «Desideri di nome, risultati di fatto.» Chi è Desideri & Code e chi l'ha fondato: Gabriele Desideri, che ha provato ogni tipo di vendita a freddo per capire come decidono le persone e per allenarsi. Cinque punti (vendita provata sul campo, negozi e pubblicità, una startup da zero, psicologia applicata, oggi software con AI) e le certificazioni. Niente date e niente lavori da dipendente: si parla dello studio.
 9. **Prezzi · Desiderio** — Tre pacchetti sito (Signature, Presenza "il più scelto", Impulso), più "da X €" per tutto il resto. I tre pacchetti sono i livelli del preventivo: il bottone apre il preventivo con quel pacchetto già scelto. Servono a chi vuole vedere un prezzo subito senza comporre niente, e lo Signature messo per primo fa da "àncora" (Presenza sembra più ragionevole accanto a lui).
 10. **Garanzie** — Revisioni finché il design non ti convince · Il sito è tuo · Prezzo chiaro prima di iniziare.
 11. **Domande frequenti** — Le obiezioni, con risposte semplici.

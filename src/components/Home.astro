@@ -63,7 +63,7 @@ const ripetitivi: [string, string, number][] = it ? [
   ['Writing reports and summaries', 'Every Monday the week’s summary arrives, in plain words.', 1.5],
 ];
 
-const waTesto = T('Ciao! Ho visto il sito di Studio Desideri e vorrei parlarvi di un progetto.', "Hi! I saw the Studio Desideri website and I'd like to talk to you about a project.");
+const waTesto = T('Ciao! Ho visto il sito di Desideri & Code e vorrei parlarvi di un progetto.', "Hi! I saw the Desideri & Code website and I'd like to talk to you about a project.");
 const descrizione = T(
   'Siti web, e-commerce, software con intelligenza artificiale e pubblicità online progettati con psicologia e neuromarketing.',
   'Websites, e-commerce, AI software and online advertising designed with psychology and neuromarketing.',
@@ -87,7 +87,7 @@ const jsonLd = {
   lang={lang}
   path={url('home', lang)}
   alt={url('home', it ? 'en' : 'it')}
-  title={T('Studio Desideri · Siti web, AI e pubblicità che portano clienti', 'Studio Desideri · Websites, AI and ads that bring clients')}
+  title={T('Desideri & Code · Siti web, AI e pubblicità che portano clienti', 'Desideri & Code · Websites, AI and ads that bring clients')}
   description={T(
     'Siti web, e-commerce, software con intelligenza artificiale e pubblicità online, progettati con la psicologia per portare le persone dal primo sguardo al «sì». Milano, Italia e Svizzera.',
     'Websites, e-commerce, AI software and online advertising, designed with psychology to take people from first glance to "yes". Based in Milan, working across Italy and Switzerland.',
@@ -476,13 +476,13 @@ const jsonLd = {
         )}
         {it ? (
           <>
-            <p data-appare><strong>Studio Desideri</strong> è uno studio di Milano che unisce design, vendita e intelligenza artificiale. L’ha fondato <strong>Gabriele Desideri</strong>, che prima di disegnare siti ha provato <strong>ogni tipo di vendita a freddo</strong>: per capire come decidono le persone e per allenarsi, perché è una cosa che gli piace.</p>
+            <p data-appare><strong>Desideri & Code</strong> è uno studio di Milano che unisce design, vendita e intelligenza artificiale. L’ha fondato <strong>Gabriele Desideri</strong>, che prima di disegnare siti ha provato <strong>ogni tipo di vendita a freddo</strong>: per capire come decidono le persone e per allenarsi, perché è una cosa che gli piace.</p>
             <p data-appare>Da lì viene la lezione su cui lavoriamo ogni giorno: <strong>le persone non comprano un prodotto, comprano come si sentono quando lo scelgono.</strong> Per questo studiamo psicologia, marketing, neuromarketing e intelligenza artificiale, e proviamo ogni tecnica sul campo prima di usarla per un cliente.</p>
             <p data-appare>Quello che amiamo è tutto il viaggio: <strong>dal primo sguardo alla conversione.</strong> Ogni colore, ogni parola e ogni movimento di un nostro progetto ha un motivo preciso.</p>
           </>
         ) : (
           <>
-            <p data-appare><strong>Studio Desideri</strong> is a Milan studio that brings together design, sales and artificial intelligence. It was founded by <strong>Gabriele Desideri</strong>, who before designing websites tried <strong>every kind of cold selling</strong>: to understand how people decide and to train, because it is something he enjoys.</p>
+            <p data-appare><strong>Desideri & Code</strong> is a Milan studio that brings together design, sales and artificial intelligence. It was founded by <strong>Gabriele Desideri</strong>, who before designing websites tried <strong>every kind of cold selling</strong>: to understand how people decide and to train, because it is something he enjoys.</p>
             <p data-appare>That is where the lesson we work on every day comes from: <strong>people don't buy a product, they buy how they feel when they choose it.</strong> That is why we study psychology, marketing, neuromarketing and artificial intelligence, and test every technique in the field before using it for a client.</p>
             <p data-appare>What we love is the whole journey: <strong>from first glance to conversion.</strong> Every colour, every word and every movement in our projects is there for a reason.</p>
           </>
@@ -673,7 +673,7 @@ const jsonLd = {
       );
       try { localStorage.setItem('gd-calcolo', testo); } catch (_) {}
       const wa = box.querySelector<HTMLAnchorElement>('[data-cl-wa]')!;
-      const u = new URL(wa.href); u.searchParams.set('text', T(`Ciao Studio Desideri! ${testo}`, `Hi Studio Desideri! ${testo}`)); wa.href = u.toString();
+      const u = new URL(wa.href); u.searchParams.set('text', T(`Ciao Desideri & Code! ${testo}`, `Hi Desideri & Code! ${testo}`)); wa.href = u.toString();
     }
 
     function vai(n: number) {

@@ -6,7 +6,7 @@ import '@fontsource/instrument-serif/400-italic.css';
 import '../styles/global.css';
 import { dati } from '../i18n/dati.js';
 import { ui, url, urlServizio } from '../i18n/ui.js';
-import marchio from '../assets/marchio.svg?raw';
+import logoScritta from '../assets/logo-scritta.svg?raw';
 import Occhio from '../components/Occhio.astro';
 import Icona from '../components/Icona.astro';
 import { euro } from '../data/formato.js';
@@ -141,11 +141,7 @@ const hrefEn = lang === 'en' ? path : alt;
     <header class="site-header" data-header>
       <div class="wrap header-bar">
         <a class="brand" href={home} aria-label={t.home}>
-          <span class="brand-mark" set:html={marchio} />
-          <span class="brand-testo">
-            <span class="brand-nome-piccolo">Studio</span>
-            <span class="brand-nome">Desideri</span>
-          </span>
+          <span class="brand-logo" set:html={logoScritta} />
         </a>
         <nav class="nav" aria-label={t.navEtichetta} data-nav>
           <span class="nav-luce" aria-hidden="true"></span>
@@ -251,11 +247,7 @@ const hrefEn = lang === 'en' ? path : alt;
         <div class="footer-grid">
           <div>
             <a class="brand" href={home} aria-label={t.home}>
-              <span class="brand-mark" set:html={marchio} />
-              <span class="brand-testo">
-                <span class="brand-nome-piccolo">Studio</span>
-                <span class="brand-nome">Desideri</span>
-              </span>
+              <span class="brand-logo" set:html={logoScritta} />
             </a>
             <span class="brand-ruolo">{t.ruolo}</span>
             <p class="footer-claim">{t.footerClaim}</p>

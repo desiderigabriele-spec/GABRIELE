@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Studio Desideri — stile globale
+   Desideri & Code — stile globale
    Regola dei colori: i freddi servono a capire, i caldi ad agire.
    Il caldo (fuoco → ambra) compare SOLO sui punti di conversione.
    ========================================================================== */
@@ -180,11 +180,10 @@ html.intro-fine .intro-punto { animation: intro-esplodi .7s var(--ease) forwards
 .site-header.nascosto { transform: translateY(-100%); }
 .header-bar { display: flex; align-items: center; gap: 2rem; width: 100%; }
 .brand { display: inline-flex; align-items: center; gap: .8rem; text-decoration: none; margin-right: auto; }
-.brand-mark { width: 42px; height: 33px; flex: none; }
-.brand-mark svg { width: 100%; height: 100%; overflow: visible; }
-.brand-testo { display: grid; gap: .12rem; }
-.brand-nome-piccolo { font-family: var(--f-testo); font-weight: 500; font-size: .58rem; letter-spacing: .42em; text-transform: uppercase; line-height: 1; color: var(--latte); }
-.brand-nome { font-family: var(--f-titolo); font-weight: 800; font-size: 1.4rem; letter-spacing: -0.04em; line-height: .9; display: block; }
+/* logo «Desideri&Code»: lettere nel colore del testo, quadratino rosso fisso (public/brand per gli altri usi) */
+.brand-logo { display: block; color: var(--latte); line-height: 0; }
+.brand-logo svg { display: block; height: 22px; width: auto; }
+@media (max-width: 480px) { .site-header .brand-logo svg { height: 17px; } }
 /* Il punto rosso del logo: lo stimolo che cattura l'attenzione. Pulsa piano, come la spia "REC". */
 .punto-segnale { transform-box: fill-box; transform-origin: center; animation: segnale 2.4s ease-in-out infinite; }
 @keyframes segnale { 0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 3px rgba(255, 51, 71, .9)); } 50% { opacity: .35; transform: scale(.82); filter: drop-shadow(0 0 0 rgba(255, 51, 71, 0)); } }
@@ -192,9 +191,7 @@ html.intro-fine .intro-punto { animation: intro-esplodi .7s var(--ease) forwards
 @media (max-width: 900px) { .site-header .punto-segnale { scale: 1.7; } }
 .footer-grid a.brand { color: var(--latte); }
 .footer-grid .brand-ruolo { margin-top: .9rem; font-size: .68rem; }
-.footer-grid .brand-mark { width: 60px; height: 48px; }
-.footer-grid .brand-nome { font-size: 1.9rem; }
-.footer-grid .brand-nome-piccolo { font-size: .66rem; }
+.footer-grid .brand-logo svg { height: 32px; }
 .brand-ruolo { display: block; font-family: var(--f-mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--nebbia); margin-top: .3rem; }
 /* Menu a capsula: una luce scivola sotto la voce che guardi; in home si accende la sezione in vista */
 .nav { position: relative; display: flex; align-items: center; gap: 2px; padding: 5px; border-radius: 999px; border: 1px solid var(--linea); background: rgba(var(--sup-rgb),.45); backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3); box-shadow: inset 0 1px 0 rgba(var(--latte-rgb),.06); }
@@ -725,7 +722,7 @@ html.ridotto .mascotte *, html.ridotto .ico * { animation: none !important; }
 .pagina-404 .mascotte { width: min(46vw, 200px); height: auto; margin: 0 auto; }
 
 /* ==========================================================================
-   Effetti (prova «Effetti Studio Desideri»): 1-13
+   Effetti (prova «Effetti Desideri & Code»): 1-13
    ========================================================================== */
 @property --ang { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
 
