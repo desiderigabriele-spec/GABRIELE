@@ -59,47 +59,106 @@ function cursoreCheScrive() {
   giro();
 }
 
-// ---------- 02 · Griglia magnetica: lo sfondo dell'hero è la griglia del logo, che si accende dove guardi ----------
+// ---------- 02 · Dietro all'hero: il logo gigante e la griglia di puntini ----------
+// Con il mouse: puntini bianchi che si gonfiano sotto il puntatore, rossi i più vicini. Su telefono
+// (niente puntatore) un'onda lenta in diagonale. In entrambi i casi i puntini non entrano nelle lettere del logo.
 function grigliaMagnetica() {
   const box = document.querySelector('[data-griglia-magnetica]');
   if (!box) return;
+  const hero = box.parentElement;
+  const logo = hero.querySelector('[data-logo-gigante]');
+  const lettere = logo && window.Path2D ? new Path2D(logo.querySelector('path').getAttribute('d')) : null;
   const tela = document.createElement('canvas');
   box.appendChild(tela);
   const ctx = tela.getContext('2d');
-  let W = 0, H = 0, dpr = 1;
-  const P = 30;
+  let W = 0, H = 0, dpr = 1, punti = [];
+  const P = finePointer ? 30 : 26;
   const misura = () => {
     const r = box.getBoundingClientRect();
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = r.width; H = r.height;
     tela.width = W * dpr; tela.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // i puntini che cadono dentro le lettere (con un margine) non si disegnano mai
+    const l = logo?.getBoundingClientRect(), k = l ? l.width / 512 : 1;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.lineWidth = 18;
+    punti = [];
+    for (let y = P / 2; y < H; y += P) for (let x = P / 2; x < W; x += P) {
+      if (lettere && l) {
+        const lx = (x + r.left - l.left) / k, ly = (y + r.top - l.top) / k;
+        if (lx > -20 && ly > -20 && lx < 532 && ly < 532 && (ctx.isPointInPath(lettere, lx, ly) || ctx.isPointInStroke(lettere, lx, ly))) continue;
+      }
+      punti.push(x, y);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   };
   misura();
   window.addEventListener('resize', misura);
   const p = { x: -999, y: -999 }, g = { x: -999, y: -999 };
-  let mano = 0;
-  const segui = (cx, cy) => { const r = box.getBoundingClientRect(); p.x = cx - r.left; p.y = cy - r.top; mano = performance.now(); };
-  window.addEventListener('pointermove', (e) => segui(e.clientX, e.clientY), { passive: true });
-  window.addEventListener('touchmove', (e) => { const t = e.touches[0]; if (t) segui(t.clientX, t.clientY); }, { passive: true });
-  let forza = 0;
+  let mano = -1e9, forza = 0;
+  if (finePointer) window.addEventListener('pointermove', (e) => { const r = box.getBoundingClientRect(); p.x = e.clientX - r.left; p.y = e.clientY - r.top; mano = performance.now(); }, { passive: true });
   mentreVisibile(box, (t) => {
-    // solo puntini bianchi: si gonfiano sotto il mouse e, quando il mouse si ferma, tornano piatti
-    const fermo = t - mano > 1800;
-    forza += ((fermo ? 0 : 1) - forza) * (fermo ? 0.03 : 0.2);
-    g.x += (p.x - g.x) * 0.25; g.y += (p.y - g.y) * 0.25;
     ctx.clearRect(0, 0, W, H);
-    const R = Math.min(190, W * 0.3);
-    ctx.fillStyle = tinte.testo;
-    for (let y = P / 2; y < H; y += P) for (let x = P / 2; x < W; x += P) {
-      const d = Math.hypot(x - g.x, y - g.y);
-      const k = Math.max(0, 1 - d / R) * forza;
-      const s = 1.6 + 6 * k * k;
-      ctx.globalAlpha = 0.09 + 0.5 * k;
-      ctx.beginPath(); ctx.arc(x, y, s / 2, 0, 6.283); ctx.fill();
+    if (finePointer) {
+      const fermo = t - mano > 1800;
+      forza += ((fermo ? 0 : 1) - forza) * (fermo ? 0.03 : 0.2);
+      g.x += (p.x - g.x) * 0.25; g.y += (p.y - g.y) * 0.25;
+      const R = Math.min(190, W * 0.3);
+      for (let i = 0; i < punti.length; i += 2) {
+        const x = punti[i], y = punti[i + 1], d = Math.hypot(x - g.x, y - g.y);
+        const k = Math.max(0, 1 - d / R) * forza, s = 1.6 + 6 * k * k;
+        ctx.globalAlpha = 0.09 + 0.5 * k;
+        ctx.fillStyle = d < 54 && forza > 0.3 ? tinte.accento : tinte.testo;
+        ctx.beginPath(); ctx.arc(x, y, s / 2, 0, 6.283); ctx.fill();
+      }
+    } else {
+      ctx.fillStyle = tinte.testo;
+      const tt = t / 1000;
+      for (let i = 0; i < punti.length; i += 2) {
+        const x = punti[i], y = punti[i + 1];
+        const o = Math.max(0, Math.sin((x + y) / W * 4 - tt * 0.7)), k = o * o * o;
+        ctx.globalAlpha = 0.08 + 0.26 * k;
+        const r = 0.9 + 1.6 * k;
+        ctx.fillRect(x - r, y - r, r * 2, r * 2);
+      }
     }
     ctx.globalAlpha = 1;
   });
+}
+
+// ---------- Il sito che si disegna: linee bianche, poi la bozza prende vita in 3D ----------
+function bozza() {
+  const el = document.querySelector('[data-bozza]');
+  if (!el) return;
+  const svg = el.querySelector('.bz-linee');
+  const pezzi = [...el.querySelectorAll('[data-bz]')];
+  pezzi.forEach((p, i) => p.style.setProperty('--i', i));
+  const parti = () => {
+    if (!el.offsetParent) return;
+    // i rettangoli si prendono dalla bozza vera, così le linee combaciano con quello che comparirà
+    const b = el.getBoundingClientRect();
+    svg.setAttribute('viewBox', `0 0 ${b.width} ${b.height}`);
+    svg.innerHTML = pezzi.map((p) => { const r = p.getBoundingClientRect(); return `<rect x="${(r.left - b.left).toFixed(1)}" y="${(r.top - b.top).toFixed(1)}" width="${r.width.toFixed(1)}" height="${r.height.toFixed(1)}" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>`; }).join('');
+    const rett = [...svg.querySelectorAll('rect')];
+    rett.forEach((r, i) => r.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 650, delay: i * 210, easing: 'cubic-bezier(.6,0,.3,1)', fill: 'forwards' }));
+    const fine = rett.length * 210 + 650;
+    setTimeout(() => el.classList.add('viva'), fine);
+    setTimeout(() => { el.classList.add('inclinata'); inclina(); }, fine + 500);
+  };
+  // la bozza segue il mouse (pochi gradi); su telefono ondeggia piano da sola
+  function inclina() {
+    const base = { x: -16, y: 8 };
+    let tx = base.x, ty = base.y, x = base.x, y = base.y;
+    if (finePointer) window.addEventListener('pointermove', (e) => { tx = base.x + (e.clientX / innerWidth - 0.5) * 16; ty = base.y - (e.clientY / innerHeight - 0.5) * 10; }, { passive: true });
+    mentreVisibile(el, (t) => {
+      if (!finePointer) { tx = base.x * 0.6 + Math.sin(t / 2600) * 7; ty = base.y * 0.6 + Math.cos(t / 3300) * 3; }
+      x += (tx - x) * 0.06; y += (ty - y) * 0.06;
+      el.style.setProperty('--ry', `${x.toFixed(2)}deg`); el.style.setProperty('--rx', `${y.toFixed(2)}deg`);
+    });
+  }
+  const parti2 = () => quandoVisibile(el, () => setTimeout(parti, 300), 0.3);
+  if (html.classList.contains('intro-attiva')) window.addEventListener('gd-intro-fine', parti2, { once: true }); else parti2();
 }
 
 // ---------- 04 · Testo che si decodifica: le etichette dei capitoli entrano come codice ----------
@@ -146,46 +205,21 @@ function raggiX() {
   });
 }
 
-// ---------- 08 · Il filo rosso: un solo quadratino accompagna da un capitolo all'altro ----------
-function filoRosso() {
-  const capitoli = [...document.querySelectorAll('main .capitolo')];
-  if (capitoli.length < 2) return;
-  const filo = document.createElement('span');
-  filo.className = 'filo-rosso';
-  filo.setAttribute('aria-hidden', 'true');
-  document.body.appendChild(filo);
-  const pos = { x: -50, y: -50, vx: 0, vy: 0, a: 0 };
-  let qui = null, primo = true;
-  function giro() {
-    requestAnimationFrame(giro);
-    if (html.classList.contains('menu-aperto') || html.classList.contains('uscita-aperta')) { filo.style.opacity = '0'; return; }
-    const h = innerHeight;
-    let migliore = null, dist = Infinity;
-    for (const c of capitoli) {
-      if (!c.offsetParent) continue;
-      const r = c.getBoundingClientRect();
-      if (r.bottom < h * 0.05 || r.top > h * 0.8) continue;
-      const d = Math.abs(r.top - h * 0.35);
-      if (d < dist) { dist = d; migliore = c; }
-    }
-    if (!migliore) { filo.style.opacity = '0'; if (qui) { qui.classList.remove('filo-qui'); qui = null; } return; }
-    const r = migliore.getBoundingClientRect();
-    const op = parseFloat(getComputedStyle(migliore).opacity) || 0;
-    const tx = r.left, ty = r.top + r.height / 2 - 5;
-    if (primo) { pos.x = tx; pos.y = ty; primo = false; }
-    const nx = pos.x + (tx - pos.x) * 0.16, ny = pos.y + (ty - pos.y) * 0.16;
-    pos.vx = nx - pos.x; pos.vy = ny - pos.y; pos.x = nx; pos.y = ny;
-    // in viaggio si allunga nel verso in cui va
-    const sx = 1 + Math.min(7, Math.abs(pos.vx) / 3), sy = 1 + Math.min(9, Math.abs(pos.vy) / 3);
-    filo.style.transform = `translate(${pos.x}px, ${pos.y}px) scale(${sx}, ${sy})`;
-    filo.style.transformOrigin = `${pos.vx < 0 ? 0 : 100}% ${pos.vy < 0 ? 0 : 100}%`;
-    filo.style.opacity = String(op);
-    const arrivato = Math.abs(tx - pos.x) < 1.5 && Math.abs(ty - pos.y) < 1.5;
-    if (qui !== migliore) { qui?.classList.remove('filo-qui'); qui = null; }
-    if (arrivato && !qui) { qui = migliore; qui.classList.add('filo-qui'); }
-  }
-  requestAnimationFrame(giro);
-  html.classList.add('filo-attivo');
+// ---------- 08 · Il punto che compare: il quadratino rosso chiude il titolo quando la sezione entra ----------
+function puntoTitoli() {
+  document.querySelectorAll('main .testa-sezione h2, main .sezione > .wrap > h2').forEach((h) => {
+    const t = testi(h).pop();
+    if (!t || !/\.\s*$/.test(t.textContent) || /\.\.\s*$/.test(t.textContent)) return;
+    t.textContent = t.textContent.replace(/\.\s*$/, '');
+    const q = document.createElement('span');
+    q.className = 'punto-titolo';
+    q.setAttribute('aria-hidden', 'true');
+    t.after(q);
+    // il punto resta per i lettori di schermo
+    const sr = document.createElement('span'); sr.className = 'sr-only'; sr.textContent = '.';
+    q.after(sr);
+    quandoVisibile(h, () => q.classList.add('arrivato'), 0.6);
+  });
 }
 
 // ---------- 09 · Il tabellone: i prezzi girano come le palette delle stazioni ----------
@@ -317,18 +351,44 @@ function peso() {
   });
 }
 
-// ---------- 16 · La griglia viva: le schede atterrano al loro posto, una dopo l'altra ----------
+// ---------- 16 · Le schede dei servizi: salgono, le spunte si spuntano una alla volta, il prezzo conta ----------
 function grigliaViva() {
+  const lingua = html.lang === 'en' ? 'en-US' : 'it-IT';
   document.querySelectorAll('[data-griglia-viva]').forEach((g) => {
-    [...g.children].forEach((c, i) => c.style.setProperty('--i', i));
+    const schede = [...g.children];
+    schede.forEach((c, i) => {
+      c.style.setProperty('--i', i);
+      c.querySelectorAll('.lista-check li').forEach((li, k) => li.style.setProperty('--k', k));
+    });
+    // il numero del prezzo: si conta da zero mantenendo il resto del testo (valuta, «/mese»)
+    const prezzi = schede.map((c) => {
+      const n = c.querySelector('.prezzo-da strong')?.firstChild;
+      const m = n?.nodeType === 3 && n.textContent.match(/\d[\d.,]*/);
+      return m ? { n, prima: n.textContent.slice(0, m.index), dopo: n.textContent.slice(m.index + m[0].length), val: Number(m[0].replace(/[.,]/g, '')) } : null;
+    });
+    const scrivi = (p, v) => { p.n.textContent = p.prima + v.toLocaleString(lingua) + p.dopo; };
+    prezzi.forEach((p) => p && scrivi(p, 0));
     quandoVisibile(g, () => {
       g.classList.add('atterra');
-      setTimeout(() => g.classList.add('atterrata'), 2600);
+      const t0 = performance.now();
+      const conta = (t) => {
+        let finito = true;
+        prezzi.forEach((p, i) => {
+          if (!p) return;
+          const k = Math.min(1, Math.max(0, (t - t0 - 600 - i * 120) / 1100));
+          if (k < 1) finito = false;
+          const e = 1 - Math.pow(1 - k, 3);
+          scrivi(p, k < 1 ? Math.round((p.val * e) / (p.val >= 100 ? 10 : 1)) * (p.val >= 100 ? 10 : 1) : p.val);
+        });
+        if (!finito) requestAnimationFrame(conta);
+      };
+      requestAnimationFrame(conta);
+      setTimeout(() => g.classList.add('atterrata'), 3600);
     }, 0.04);
   });
 }
 
-// ---------- 03 · Mappa dell'attenzione: dove si posa lo sguardo, con l'ordine 1, 2, 3 ----------
+// ---------- 03 · Il percorso dello sguardo: quadratini numerati collegati da una linea, l'ultimo sul bottone ----------
 function mappaAttenzione() {
   document.querySelectorAll('[data-mappa]').forEach((box) => {
     const tela = document.createElement('canvas');
@@ -339,37 +399,44 @@ function mappaAttenzione() {
     const misura = () => { const r = box.getBoundingClientRect(); W = r.width; H = r.height; const d = Math.min(devicePixelRatio || 1, 2); tela.width = W * d; tela.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0); };
     misura();
     window.addEventListener('resize', misura);
-    const punti = [];
     const fiss = [...box.querySelectorAll('[data-fissa]')];
     const tappe = fiss.map((f) => f.dataset.fissa.split(',').map(Number));
-    let mano = 0, t0 = 0, gx = W * 0.2, gy = H * 0.3;
-    if (finePointer) box.addEventListener('pointermove', (e) => {
-      const r = box.getBoundingClientRect(); mano = performance.now();
-      punti.push([e.clientX - r.left, e.clientY - r.top, mano]);
-      fiss.forEach((f) => f.classList.remove('visto'));
-    });
+    const PASSO = 1300, CICLO = PASSO * tappe.length + 3200;
+    let t0 = 0;
     mentreVisibile(box, (t) => {
       if (!t0) t0 = t;
-      if (t - mano > 2000) {
-        // percorso tipico dello sguardo: titolo, immagine, titolo, bottone (6 s, poi ricomincia)
-        const ciclo = ((t - t0) % 7000) / 7000;
-        const i = Math.min(tappe.length - 1, Math.floor(ciclo * (tappe.length + 1)));
-        const [tx, ty] = tappe[i] || [50, 50];
-        gx += ((tx / 100) * W - gx) * 0.06; gy += ((ty / 100) * H - gy) * 0.06;
-        if (ciclo < 0.02) { punti.length = 0; fiss.forEach((f) => f.classList.remove('visto')); }
-        if (ciclo < 0.92) punti.push([gx + (Math.random() - 0.5) * 14, gy + (Math.random() - 0.5) * 14, t]);
-        fiss.forEach((f, j) => f.classList.toggle('visto', j < i || (j === i && ciclo * (tappe.length + 1) - i > 0.5)));
-      }
-      while (punti.length > 160) punti.shift();
+      const c = (t - t0) % CICLO;
+      const via = c > CICLO - 700 ? 1 - (c - (CICLO - 700)) / 700 : 1;
       ctx.clearRect(0, 0, W, H);
-      ctx.globalCompositeOperation = 'lighter';
-      for (const [x, y, nato] of punti) {
-        const vita = Math.max(0, 1 - (t - nato) / 9000);
-        const g = ctx.createRadialGradient(x, y, 0, x, y, 46);
-        g.addColorStop(0, `rgba(${tinte.accentoRgb},${0.22 * vita})`); g.addColorStop(1, `rgba(${tinte.accentoRgb},0)`);
-        ctx.fillStyle = g; ctx.fillRect(x - 46, y - 46, 92, 92);
-      }
-      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = via;
+      ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.lineWidth = 1;
+      tappe.forEach(([x, y], i) => {
+        const k = Math.min(1, Math.max(0, (c - 300 - i * PASSO) / 500));
+        fiss[i].classList.toggle('visto', k >= 1 && via > 0.5);
+        if (!i || !k) return;
+        const [px, py] = tappe[i - 1], e = 1 - Math.pow(1 - k, 3);
+        ctx.beginPath(); ctx.moveTo(px / 100 * W, py / 100 * H);
+        ctx.lineTo((px + (x - px) * e) / 100 * W, (py + (y - py) * e) / 100 * H); ctx.stroke();
+      });
+      ctx.globalAlpha = 1;
+    });
+  });
+}
+
+// ---------- 15 · Prima / dopo da trascinare: si muove da solo finché non lo tocchi ----------
+function primaDopo() {
+  document.querySelectorAll('[data-prima-dopo]').forEach((box) => {
+    const r = box.querySelector('[data-pd-cursore]');
+    let mano = false;
+    const metti = (x) => box.style.setProperty('--x', `${x}%`);
+    r.addEventListener('input', () => { mano = true; metti(r.value); });
+    r.addEventListener('pointerdown', () => { mano = true; });
+    let t0 = 0;
+    mentreVisibile(box, (t) => {
+      if (mano) return;
+      if (!t0) t0 = t;
+      const x = 50 - 36 * Math.sin((t - t0) / 1800);
+      metti(x.toFixed(2)); r.value = Math.round(x);
     });
   });
 }
@@ -413,13 +480,15 @@ export function avviaVita() {
   html.classList.add('vita-on');
   cursoreCheScrive();
   grigliaMagnetica();
+  bozza();
   decodifica();
   raggiX();
-  filoRosso();
+  puntoTitoli();
   tabellone();
   cinetica();
   peso();
   grigliaViva();
   mappaAttenzione();
+  primaDopo();
   righeCheSiScrivono();
 }

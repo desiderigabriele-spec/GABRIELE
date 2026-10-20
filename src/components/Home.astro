@@ -2,9 +2,10 @@
 // La home in italiano (/) e in inglese (/en/): stessa struttura, testi nella lingua della pagina.
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
-import Cursore from './Cursore.astro';
 import PrimaDopo from './PrimaDopo.astro';
 import Mappa from './Mappa.astro';
+import Bozza from './Bozza.astro';
+import LogoGigante from './LogoGigante.astro';
 import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -109,11 +110,12 @@ const jsonLd = {
   </nav>
 
   <!-- 01 · ATTENZIONE -->
-  <section class="hero" id="inizio" data-forma="0" data-lato="destra" data-x="1.13" data-scala="0.86" data-y-mobile="0.3" data-scala-mobile="0.42" data-luce-mobile="1">
+  <section class="hero" id="inizio" data-forma="0" data-luce="0" data-lato="destra" data-x="1.13" data-scala="0.86" data-y-mobile="0.3" data-scala-mobile="0.42" data-luce-mobile="1">
+    <LogoGigante />
     <div class="griglia-magnetica" data-griglia-magnetica aria-hidden="true"></div>
     <div class="wrap">
       <div class="hero-testo">
-        <div class="hero-spazio-occhio" aria-hidden="true"><Cursore stato="griglia" class="occhio-riserva" /></div>
+        <div class="hero-spazio-occhio" aria-hidden="true"><Bozza lang={lang} /></div>
         <span class="capitolo" data-appare>{T('Capitolo 01 · Attenzione', 'Chapter 01 · Attention')}</span>
         {it ? (
           <h1 data-righe>

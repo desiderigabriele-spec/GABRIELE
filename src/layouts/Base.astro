@@ -191,11 +191,12 @@ const hrefEn = lang === 'en' ? path : alt;
         <h2 id="cn-titolo">{t.cnTitolo}</h2>
         <p>{t.cnTesto}</p>
         <label class="sr-only" for="cn-nome">{t.ptNome}</label>
-        <input id="cn-nome" name="nome" type="text" autocomplete="given-name" maxlength="24" placeholder={t.ptNomeSegnaposto} enterkeyhint="go" data-cn-nome />
+        <input id="cn-nome" name="nome" type="text" autocomplete="given-name" maxlength="24" placeholder={t.ptNomeSegnaposto} enterkeyhint="go" data-cn-nome autofocus />
         <div class="cn-azioni">
           <button class="btn btn-azione" type="submit" value="si" data-cn-si>{t.cnEntra} <span class="freccia" aria-hidden="true">→</span></button>
-          <button class="cn-salta" type="submit" value="no" formnovalidate>{t.cnSalta}</button>
         </div>
+        <!-- dopo i bottoni: così Invio nel campo vale «Entra» -->
+        <button class="cn-chiudi" type="submit" value="no" formnovalidate aria-label={t.cnChiudi}><span aria-hidden="true">×</span></button>
       </form>
     </dialog>
 

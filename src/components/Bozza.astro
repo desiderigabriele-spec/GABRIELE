@@ -1,0 +1,31 @@
+---
+// Il sito che si disegna (hero): linee bianche disegnano un sito pezzo per pezzo ([data-bz]),
+// poi la bozza prende vita in 3D: si inclina col mouse, la foto è fatta di piastrelle che respirano,
+// e davanti galleggiano il voto, il messaggio WhatsApp e il grafico. Logica in vita.js (bozza), stili in vita.css.
+interface Props { lang?: 'it' | 'en' }
+const { lang = 'it' } = Astro.props;
+const T = (a: string, b: string) => (lang === 'it' ? a : b);
+---
+<div class="bozza" data-bozza aria-hidden="true">
+  <div class="bz-scena">
+    <div class="bz-finestra" data-bz>
+      <div class="bz-barra" data-bz><i></i><i></i><i></i><span>rossibagni.it</span></div>
+      <div class="bz-testa" data-bz><b>Rossi Bagni<span class="bz-q"></span></b><span class="bz-nav"><i></i><i></i><i></i></span></div>
+      <div class="bz-hero">
+        <div class="bz-sx">
+          <span class="bz-occhiello" data-bz>{T('Bagni chiavi in mano · Milano', 'Turnkey bathrooms · Milan')}</span>
+          <b class="bz-titolo" data-bz>{T('Il bagno nuovo', 'A new bathroom')}<br>{T('in 10 giorni', 'in 10 days')}<span class="bz-q"></span></b>
+          <span class="bz-btn" data-bz>{T('Calcola il prezzo', 'Get the price')} →</span>
+        </div>
+        <div class="bz-foto" data-bz>{Array.from({ length: 12 }, (_, i) => <i style={`--k:${i}`}></i>)}</div>
+      </div>
+      <div class="bz-schede">
+        {[0, 1, 2].map((i) => <span class="bz-scheda" data-bz style={`--k:${i}`}><i></i><b></b><b></b></span>)}
+      </div>
+    </div>
+    <div class="bz-voto" data-bz><b>4,9</b><span>★★★★★</span><small>Google</small></div>
+    <div class="bz-chat" data-bz><small>WHATSAPP · {T('ORA', 'NOW')}</small>{T('Quanto costa un bagno di 6 m²?', 'How much for a 6 m² bathroom?')}</div>
+    <div class="bz-grafico" data-bz><small>{T('RICHIESTE', 'REQUESTS')} <b>+38%</b></small><span>{[40, 55, 48, 70, 64, 88, 100].map((h, k) => <i style={`--h:${h}%;--k:${k}`}></i>)}</span></div>
+  </div>
+  <svg class="bz-linee"></svg>
+</div>

@@ -1,25 +1,38 @@
 ---
-// 15 · Prima / dopo: un sito «uguale a tutti» viene riscritto nello stile che fa scegliere (stili in vita.css)
+// 15 · Prima / dopo da trascinare: a sinistra un sito del 2014 ordinato ma vecchio, a destra quello che facciamo noi.
+// Si muove da solo finché non lo tocchi (vita.js, primaDopo). Stili in vita.css; misure in cqw, così scala con il riquadro.
 interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
 const T = (a: string, b: string) => (lang === 'it' ? a : b);
 ---
 <figure class="prima-dopo-box" style="margin:0">
-  <div class="prima-dopo" role="img" aria-label={T('Animazione: un sito qualunque si trasforma in un sito chiaro, con un titolo che dice il risultato e un bottone rosso', 'Animation: a generic website turns into a clear one, with a headline that states the result and a red button')}>
-    <div class="pd-prima" aria-hidden="true">
-      <div class="pd-barra"><b>IMPRESA ROSSI SRL</b><span>Home · {T('Chi siamo', 'About us')} · {T('Servizi', 'Services')} · {T('Contatti', 'Contact')}</span></div>
-      <div class="pd-foto">[{T('foto di repertorio', 'stock photo')}]</div>
-      <div class="pd-h">{T('Benvenuti nel nostro sito', 'Welcome to our website')}</div>
-      <div class="pd-p">{T('Professionalità, qualità e cortesia dal 1998', 'Professionalism, quality and courtesy since 1998')}</div>
-      <span class="pd-b">{T('Scopri di più', 'Learn more')}</span>
+  <div class="prima-dopo" data-prima-dopo role="img" aria-label={T('Confronto: a sinistra il vecchio sito di Idraulica Rossi, blu e grigio, con un testo lungo e un link piccolo. A destra il sito nuovo, Rossi Bagni: nero, titolo grande con il risultato, bottone rosso, foto del bagno, voto Google e chat WhatsApp.', 'Comparison: on the left the old Idraulica Rossi website, blue and grey, with long copy and a tiny link. On the right the new Rossi Bagni site: black, a big headline with the result, red button, bathroom photo, Google rating and WhatsApp chat.')}>
+    <div class="pd-strato pd-prima" aria-hidden="true">
+      <div class="v-testa"><span class="v-logo">R</span><span class="v-nome">Idraulica Rossi s.n.c.<small>{T('Impianti idraulici e termici dal 1987', 'Plumbing and heating since 1987')}</small></span><span class="v-tel">{T('Chiamaci!', 'Call us!')}<br><b>02 1234567</b></span></div>
+      <div class="v-menu"><span>Home</span><span>{T('Chi siamo', 'About us')}</span><span>{T('Servizi', 'Services')}</span><span>{T('Galleria', 'Gallery')}</span><span>{T('Contatti', 'Contact')}</span></div>
+      <div class="v-corpo">
+        <div class="v-foto"><span>{T('Foto: i nostri lavori', 'Photo: our work')}</span></div>
+        <div class="v-testo"><b>{T('Benvenuti nel nostro sito!', 'Welcome to our website!')}</b><p>{T('La ditta Idraulica Rossi opera da oltre trent’anni nel settore idraulico e termoidraulico, offrendo ai propri clienti professionalità, qualità e cortesia. Realizziamo bagni completi, impianti di riscaldamento e manutenzioni.', 'Idraulica Rossi has worked in plumbing and heating for over thirty years, offering its customers professionalism, quality and courtesy. We build complete bathrooms, heating systems and maintenance.')}</p><u>{T('Clicca qui per contattarci', 'Click here to contact us')}</u></div>
+      </div>
+      <div class="v-piede"><span>© 2014 Idraulica Rossi s.n.c. · P.IVA 01234567890</span><span>{T('Visitatori', 'Visitors')}: <b>004512</b></span></div>
+      <span class="pd-etichetta">{T('PRIMA', 'BEFORE')}</span>
     </div>
-    <div class="pd-dopo" aria-hidden="true">
-      <div class="pd-barra"><b>Rossi Bagni</b><span>{T('Preventivo in 2 minuti', 'Quote in 2 minutes')}</span></div>
-      <div class="pd-h">{T('Il bagno nuovo', 'Your new bathroom')}<br>{T('in 10 giorni,', 'in 10 days,')}<br>{T('prezzo bloccato.', 'fixed price.')}</div>
-      <span class="pd-b">{T('Calcola il prezzo →', 'Get the price →')}</span>
-      <span class="pd-r">★ 4,8 · {T('risposta entro 24 ore', 'reply within 24 hours')}</span>
-      <span class="pd-foto"></span>
+    <div class="pd-strato pd-dopo" aria-hidden="true">
+      <div class="n-testa"><b>Rossi Bagni<i class="n-q"></i></b><span><span>{T('Lavori', 'Work')}</span><span>{T('Prezzi', 'Prices')}</span><em>{T('Chiedi il prezzo', 'Get a price')}</em></span></div>
+      <div class="n-sx">
+        <span class="n-occhiello">{T('BAGNI CHIAVI IN MANO · MILANO', 'TURNKEY BATHROOMS · MILAN')}</span>
+        <b class="n-tit">{T('Il bagno nuovo', 'A new bathroom')}<br>{T('in 10 giorni', 'in 10 days')}<span>,</span><br>{T('prezzo fisso', 'fixed price')}<i class="n-q"></i></b>
+        <span class="n-sub">{T('Un sopralluogo, un preventivo scritto in 24 ore. Il prezzo che firmi è quello che paghi.', 'One visit, a written quote within 24 hours. The price you sign is the price you pay.')}</span>
+        <span class="n-azioni"><span class="n-btn">{T('Calcola il prezzo', 'Get the price')} →</span><span class="n-btn2">{T('Guarda i lavori', 'See our work')}</span></span>
+        <span class="n-spunte"><span>{T('Prezzo bloccato', 'Locked price')}</span><span>{T('Garanzia 10 anni', '10-year warranty')}</span></span>
+      </div>
+      <div class="n-foto">
+        <span class="n-chat"><small>WHATSAPP · {T('ORA', 'NOW')}</small>{T('Ciao! Per un bagno di 6 m² servono circa 10 giorni. Ti mando il prezzo?', 'Hi! A 6 m² bathroom takes about 10 days. Shall I send you the price?')}</span>
+        <span class="n-voto"><b>4,9<i>★★★★★</i></b><span>{T('recensioni Google', 'Google reviews')}</span></span>
+      </div>
+      <span class="pd-etichetta">{T('DOPO', 'AFTER')}</span>
     </div>
+    <input class="pd-cursore" type="range" min="0" max="100" value="50" aria-label={T('Sposta il confronto tra prima e dopo', 'Move the before/after comparison')} data-pd-cursore>
     <span class="pd-lama" aria-hidden="true"></span>
   </div>
   <figcaption class="pd-etichette"><span>{T('Prima · un sito qualunque', 'Before · a generic website')}</span><b>{T('Dopo · un sito che fa scegliere', 'After · a website that gets chosen')}</b></figcaption>

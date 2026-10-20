@@ -45,7 +45,7 @@ export const ui = {
     avvisoLingua: 'Prefer English?', avvisoLinguaLink: 'Switch to English',
     ptTitolo: 'Il tuo nome', ptNome: 'Come ti chiami?', ptNomeSegnaposto: 'Il tuo nome',
     ptNota: 'Lo usiamo solo per parlarti meglio. Resta sul tuo dispositivo.', ptInvito: '',
-    cnTitolo: 'Prima di iniziare: come ti chiami?', cnTesto: 'Così ti parliamo come si deve. Il nome resta solo sul tuo dispositivo.', cnEntra: 'Entra', cnSalta: 'Preferisco di no',
+    cnTitolo: 'Prima di iniziare: come ti chiami?', cnTesto: 'Così ti parliamo come si deve. Il nome resta solo sul tuo dispositivo.', cnEntra: 'Entra', cnChiudi: 'Chiudi',
   },
   en: {
     lang: 'en', locale: 'en_GB', vaiContenuto: 'Skip to content', menu: 'Menu',
@@ -66,6 +66,6 @@ export const ui = {
     avvisoLingua: 'Preferisci l\'italiano?', avvisoLinguaLink: 'Passa all\'italiano',
     ptTitolo: 'Your name', ptNome: "What's your name?", ptNomeSegnaposto: 'Your first name',
     ptNota: 'We only use it to talk to you better. It stays on your device.', ptInvito: '',
-    cnTitolo: 'Before we start: what’s your name?', cnTesto: 'So we can talk to you properly. Your name stays on your device only.', cnEntra: 'Enter', cnSalta: 'I’d rather not',
+    cnTitolo: 'Before we start: what’s your name?', cnTesto: 'So we can talk to you properly. Your name stays on your device only.', cnEntra: 'Enter', cnChiudi: 'Close',
   },
 };

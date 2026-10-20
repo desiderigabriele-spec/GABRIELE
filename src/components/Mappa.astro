@@ -1,6 +1,7 @@
 ---
 // 03 · Mappa dell'attenzione: come in uno studio di eye-tracking, dove si posa lo sguardo e in che ordine.
-// Il calore lo disegna vita.js; data-fissa = dove cade lo sguardo (x,y in % del riquadro).
+// I quadratini numerati compaiono in ordine e vita.js li collega con una linea; l'ultimo, sul bottone, è rosso.
+// data-fissa = centro del quadratino (x,y in % del riquadro), data-tempo = quanto ci resta l'occhio.
 interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
 const T = (a: string, b: string) => (lang === 'it' ? a : b);
@@ -12,10 +13,10 @@ const T = (a: string, b: string) => (lang === 'it' ? a : b);
     <span class="mappa-righe" aria-hidden="true"><i></i><i style="width:80%"></i></span>
     <span class="mappa-bottone" aria-hidden="true">{T('Chiedi il prezzo', 'Ask for the price')}</span>
     <span class="mappa-foto" aria-hidden="true"></span>
-    <span data-fissa="22,30" style="left:30%;top:14%" aria-hidden="true">1</span>
-    <span data-fissa="76,48" style="left:82%;top:34%" aria-hidden="true">2</span>
-    <span data-fissa="18,44" style="left:26%;top:44%" aria-hidden="true">3</span>
-    <span data-fissa="18,76" style="left:37%;top:68%" aria-hidden="true">4</span>
+    <span data-fissa="40,22" data-tempo="1,4 s" style="left:40%;top:22%" aria-hidden="true">1</span>
+    <span data-fissa="76,50" data-tempo="1,1 s" style="left:76%;top:50%" aria-hidden="true">2</span>
+    <span data-fissa="22,54" data-tempo="0,6 s" style="left:22%;top:54%" aria-hidden="true">3</span>
+    <span data-fissa="20,76" data-tempo={T('0,9 s · decide qui', '0.9 s · decides here')} style="left:20%;top:76%" aria-hidden="true">4</span>
   </div>
-  <figcaption class="mappa-nota">{T('Dove guardano davvero · passa il mouse sulla pagina', 'Where people really look · move your mouse over the page')}</figcaption>
+  <figcaption class="mappa-nota">{T('Dove guardano davvero, e in che ordine', 'Where people really look, and in what order')}</figcaption>
 </figure>

@@ -1,0 +1,11 @@
+---
+// D · Il logo gigante dietro all'hero: solo le lettere, quasi trasparenti. vita.js legge il tracciato
+// per non far passare i puntini della griglia dentro le lettere.
+import logo from '../assets/logo-icona.svg?raw';
+const lettere = logo.match(/<path[^>]*\sd="([^"]+)"/)?.[1] ?? '';
+const q = logo.match(/<rect x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)" fill="#E30613"/);
+---
+<svg class="logo-gigante" viewBox="0 0 512 512" aria-hidden="true" data-logo-gigante>
+  <path d={lettere} />
+  {q && <rect x={q[1]} y={q[2]} width={q[3]} height={q[4]} />}
+</svg>

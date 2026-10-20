@@ -102,13 +102,13 @@ Il sito ha una sola versione: sfondo nero `#0A0A0A`, testo bianco e il rosso del
 
 **Il verde smeraldo** `#10B981` compare in un solo posto: le spunte («incluso», «fatto») nelle card dei servizi, dei piani e del preventivo. Così il verde vuol dire sempre «questo è tuo» e non compete con il rosso, che resta per le azioni.
 
-**Le icone dei servizi** sono tasselli bianchi con il disegno nero, un riempimento rosato e il punto rosso del logo; passandoci sopra il tassello diventa rosso.
+**Le icone dei servizi** hanno un bordo rosso e il disegno bianco, con il punto rosso del logo; passandoci sopra il riquadro si riempie di rosso.
 
-**Lampeggi e rosso, con misura:** lampeggia un solo cursore, quello del titolo, e si ferma dopo un giro di parole; il quadratino della scena lampeggia solo nei primi secondi; tutti gli altri quadratini stanno fermi. La griglia dietro al titolo è fatta solo di puntini bianchi: si gonfiano sotto il mouse e tornano piatti quando il mouse si ferma (niente puntini rossi che girano da soli dietro al testo). La tendina tra le pagine ha il colore dello sfondo e diventa rossa solo quando è piccola, così non c'è mai uno schermo tutto rosso.
+**Lampeggi e rosso, con misura:** lampeggia un solo cursore, quello del titolo, e si ferma dopo un giro di parole; il quadratino della scena lampeggia solo nei primi secondi; tutti gli altri quadratini stanno fermi. Dietro all'hero c'è il logo gigante, quasi trasparente, e una griglia di puntini che non entra mai nelle lettere: con il mouse i puntini si gonfiano e i più vicini diventano rossi; su telefono (senza puntatore) passa un'onda lenta, solo bianca. Niente si muove da solo dietro al testo. La tendina tra le pagine ha il colore dello sfondo e diventa rossa solo quando è piccola, così non c'è mai uno schermo tutto rosso.
 
 ### Il nome, chiesto all'ingresso
-Alla prima visita, dopo l'intro, si apre un riquadro: «Prima di iniziare: come ti chiami?», con «Entra» e «Preferisco di no» (anche Esc o un tocco fuori valgono come no). Si chiede una volta sola (`localStorage gd-nome-chiesto`). Il nome poi compare solo nei punti dove serve sentirsi chiamati in causa:
-1. il titolo dell'hero, in rosso, con il saluto dell'ora (Buongiorno 5-14, Ciao 14-18, Buonasera 18-5: «Buonasera Marta, trasformiamo…»), mentre le particelle scrivono il nome per qualche secondo;
+Alla prima visita, dopo l'intro, si apre un riquadro: «Prima di iniziare: come ti chiami?», con «Entra» e la × in alto a destra per chiudere (anche Esc o un tocco fuori lo chiudono). Si chiede una volta sola (`localStorage gd-nome-chiesto`). Il nome poi compare solo nei punti dove serve sentirsi chiamati in causa:
+1. il titolo dell'hero, in rosso, con il saluto dell'ora (Buongiorno 5-14, Ciao 14-18, Buonasera 18-5: «Buonasera Marta, trasformiamo…»);
 2. il titolo del preventivo («Marta, componi il tuo sito»);
 3. il titolo finale e il messaggio WhatsApp precompilato;
 4. il «Rieccoti» alla visita dopo.
@@ -178,21 +178,22 @@ Scelte dal canvas «Idee di animazione Desideri & Code» e messe tutte nel sito,
 | # | Idea | Dove |
 |---|---|---|
 | 01 | **Il cursore che scrive**: il quadratino rosso riscrive l'ultima parola del titolo (sceglie, scrive, chiama, compra) | Hero della home |
-| 02 | **Griglia magnetica**: dietro all'hero i puntini crescono e diventano rossi dove passi; senza mouse gira un «visitatore finto» | Hero della home |
-| 03 | **Mappa dell'attenzione**: come in uno studio di eye-tracking, il calore dello sguardo e l'ordine 1-2-3-4 (`Mappa.astro`) | Metodo, passo «Prima ti devono notare» |
+| 02 | **Logo gigante e griglia**: dietro all'hero il logo enorme e quasi trasparente; i puntini crescono e diventano rossi dove passi col mouse, su telefono un'onda; mai dentro le lettere | Hero della home |
+| 02b | **Il sito che si disegna** (`Bozza.astro`): accanto al titolo (su telefono sopra) linee bianche disegnano un sito pezzo per pezzo; poi diventa la bozza vera di «Rossi Bagni» in 3D: si inclina col mouse, piastrelle che respirano, voto Google, messaggio WhatsApp e grafico che galleggiano davanti. Prende il posto della forma 3D nell'hero (`data-luce="0"`) | Hero della home |
+| 03 | **Il percorso dello sguardo**: quadratini numerati 1-2-3-4 con i secondi, collegati da una linea sottile; l'ultimo, sul bottone, è rosso («decide qui») (`Mappa.astro`) | Metodo, passo «Prima ti devono notare» |
 | 04 | **Testo che si decodifica**: le etichette dei capitoli entrano come codice e diventano parole | Tutte le pagine |
 | 05 | **Il sito si compila**: a sinistra il codice, a destra il sito che appare pezzo per pezzo (`Compila.astro`) | Pagina Siti web, al posto dell'illustrazione |
 | 06 | **Raggi X**: sulle anteprime dei lavori una lama rossa mostra il «codice» del progetto | Home, Clienti veri |
 | 07 | **Il terminale**: un comando crea il software del centro estetico, riga per riga (`Terminale.astro`) | Pagina Demo, in alto |
-| 08 | **Il filo rosso**: un solo quadratino accompagna da un capitolo all'altro e si allunga mentre viaggia | Tutte le pagine |
+| 08 | **Il punto che compare**: il punto finale dei titoli delle sezioni diventa il quadratino rosso, che compare al suo posto quando la sezione entra (al posto del quadratino che viaggiava) | Tutte le pagine |
 | 09 | **Il tabellone**: le cifre dei prezzi girano come le palette delle stazioni | Prezzi e «a partire da» |
 | 10 | **Pixel che cambiano forma**: le forme della scena 3D sono a pixel | Scena 3D |
 | 11 | **Tendina rossa**: tra una pagina e l'altra il quadratino copre tutto e si richiude sul logo | Ogni cambio pagina |
 | 12 | **Tipografia cinetica**: tre righe giganti che scorrono e si inclinano quando scorri veloce | Home, sotto l'hero (al posto del nastro) |
 | 13 | **Lettere che prendono peso**: vicino al mouse le lettere diventano più spesse; su telefono passa un'onda | Home, titolo finale |
 | 14 | **Cursori al lavoro**: Gabriele sposta, l'AI scrive, il cliente approva (`Cursori.astro`) | Pagina Demo, in fondo |
-| 15 | **Prima / dopo**: un sito «uguale a tutti» viene riscritto (`PrimaDopo.astro`) | Home, Il problema |
-| 16 | **La griglia viva**: compaiono le colonne con le misure e le schede atterrano al loro posto | Home, Cosa facciamo |
+| 15 | **Prima / dopo da trascinare**: a sinistra un sito del 2014 credibile (Idraulica Rossi), a destra quello nuovo (Rossi Bagni); si muove da solo finché non lo tocchi (`PrimaDopo.astro`) | Home, Il problema |
+| 16 | **Le spunte che si spuntano**: le schede dei servizi salgono, le spunte verdi si accendono una alla volta e il prezzo conta fino alla cifra | Home, Cosa facciamo |
 | 17 | **Il cubo dei servizi**: un cubo 3D con un servizio per faccia, l'ultima rossa (`Cubo.astro`) | Preventivo, su computer |
 
 ### Movimento
