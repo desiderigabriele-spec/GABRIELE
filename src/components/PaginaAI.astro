@@ -3,7 +3,7 @@
 // programma su misura, come lavoriamo, paure comuni. Italiano (/intelligenza-artificiale) e inglese (/en/ai).
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
-import Occhio from './Occhio.astro';
+import Cursore from './Cursore.astro';
 import TuoSoftware from './TuoSoftware.astro';
 import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
@@ -144,7 +144,7 @@ const demo = it ? {
   <section class="hero ai-hero" data-forma="1" data-lato="destra" data-x="1.05" data-scala="0.8" data-y-mobile="0.22" data-scala-mobile="0.55" data-luce-mobile="0.7">
     <div class="wrap">
       <div class="hero-testo">
-        <div class="hero-spazio-occhio" aria-hidden="true"><Occhio espressione="curioso" class="occhio-riserva" /></div>
+        <div class="hero-spazio-occhio" aria-hidden="true"><Cursore stato="griglia" class="occhio-riserva" /></div>
         <span class="icona-titolo"><Icona nome="chip" /></span>
         <span class="capitolo" data-appare>{T('Intelligenza artificiale per aziende', 'AI for business')}</span>
         {it ? (
@@ -213,7 +213,7 @@ const demo = it ? {
             <p class="demo-testo" data-demo-risposta data-testo={demo.risposta}>{demo.risposta}</p>
           </article>
           <div class="demo-azioni" data-demo-fine>
-            <span class="demo-tu"><Occhio espressione="ok" /> {T('Tu controlli e premi «Invia»', 'You check it and press "Send"')}</span>
+            <span class="demo-tu"><Cursore stato="fatto" /> {T('Tu controlli e premi «Invia»', 'You check it and press "Send"')}</span>
             <button class="btn btn-vetro btn-piccolo" type="button" data-demo-ripeti>{T('Guarda di nuovo', 'Watch again')}</button>
           </div>
         </div>
@@ -300,7 +300,7 @@ const demo = it ? {
           <div class="cr-scheda"><span class="mono">{T('In scadenza', 'Due soon')}</span><strong>{eur(1240)}</strong><span>{T('fatture da incassare', 'invoices to collect')}</span></div>
           <div class="cr-scheda"><span class="mono">{T('Risparmiato', 'Saved')}</span><strong>{T('11 ore', '11 hours')}</strong><span>{T('questa settimana', 'this week')}</span></div>
         </div>
-        <div class="cr-avviso"><Occhio espressione="curioso" /><p>{T('Il cliente Rossi ha chiesto un preventivo ieri sera: la bozza è pronta, manca solo il tuo ok.', 'Mr Rossi asked for a quote last night: the draft is ready, it just needs your OK.')}</p></div>
+        <div class="cr-avviso"><Cursore stato="aspetta" /><p>{T('Il cliente Rossi ha chiesto un preventivo ieri sera: la bozza è pronta, manca solo il tuo ok.', 'Mr Rossi asked for a quote last night: the draft is ready, it just needs your OK.')}</p></div>
       </div>
     </div>
   </section>

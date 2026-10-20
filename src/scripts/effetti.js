@@ -43,7 +43,7 @@ function ciclo(ora) {
 }
 function aggiungi(p) { parti.push(p); if (!inCorso) { inCorso = true; requestAnimationFrame(ciclo); } }
 
-const COLORI = ['#ffffff', '#9fe8ff', '#5cc8ff', '#ffb547', '#ff3347'];
+const COLORI = ['#ffffff', '#ffffff', '#d4d4d4', '#e30613', '#e30613'];
 function scoppio(x, y) {
   preparaTela();
   for (let i = 0; i < 26; i++) {
@@ -86,18 +86,14 @@ function titoloDalleStelle() {
   document.body.appendChild(c);
   const g = c.getContext('2d');
   g.setTransform(d, 0, 0, d, 0, 0);
-  // disegno la parola con lo stesso carattere e la stessa sfumatura, poi prendo i pixel pieni come stelle
-  const cs = getComputedStyle(el), radice = getComputedStyle(html);
+  // disegno la parola con lo stesso carattere, poi prendo i pixel pieni come stelle
+  const cs = getComputedStyle(el);
   const off = document.createElement('canvas'); off.width = w; off.height = h;
   const o = off.getContext('2d');
   o.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
   if ('letterSpacing' in o) o.letterSpacing = cs.letterSpacing;
   const m = o.measureText(el.textContent);
-  const grad = o.createLinearGradient(pad, 0, pad + r.width, 0);
-  grad.addColorStop(0, `rgb(${radice.getPropertyValue('--brand-rgb')})`);
-  grad.addColorStop(0.55, `rgb(${radice.getPropertyValue('--dati-rgb')})`);
-  grad.addColorStop(1, '#e6f8ff');
-  o.fillStyle = grad;
+  o.fillStyle = cs.color;
   o.fillText(el.textContent, pad, pad + (m.fontBoundingBoxAscent || r.height * 0.8));
   const px = o.getImageData(0, 0, w, h).data;
   const punti = [];

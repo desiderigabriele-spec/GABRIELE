@@ -202,7 +202,7 @@ document.querySelectorAll('[data-conta]').forEach((el) => {
   });
 });
 
-// ---------- Sui bottoni d'azione l'occhio dello sfondo si accende (il puntatore resta quello del sistema) ----------
+// ---------- Sui bottoni d'azione il fuoco dello sfondo si accende (il puntatore resta quello del sistema) ----------
 document.addEventListener('pointerover', (e) => {
   if (scena) scena.battito = e.target.closest('[data-azione], .btn-azione') ? 1 : 0;
 });
@@ -263,7 +263,7 @@ const canvas = document.querySelector('[data-scena]');
 avviaPersonalizza(() => scena);
 function caricaScena() {
   if (!canvas || scena) return;
-  // se la scena 3D non parte (telefono vecchio, WebGL spento), al suo posto si vede l'occhio disegnato
+  // se la scena 3D non parte (telefono vecchio, WebGL spento), al suo posto si vede la griglia disegnata
   const senza = () => html.classList.add('scena-no');
   import('./scena.js').then((m) => { scena = m.avviaScena(canvas) || null; if (scena) html.classList.add('scena-on'); else senza(); }).catch(senza);
 }
@@ -286,14 +286,14 @@ document.addEventListener('click', (e) => {
 });
 
 // ==========================================================================
-// L'occhio: colore dell'iride per servizio, occhiolino a chi torna
+// Il fuoco: i puntini si accendono di rosso sul servizio che guardi, un cuore a chi torna
 // ==========================================================================
-// colori fissi per servizio, uguali in ogni tema
-const COLORI_SERVIZIO = { sito: '#FFB547', ecommerce: '#FF6B8A', software: '#A98BFF', gestionale: '#B9A2FF', ads: '#5CE1E6', cura: '#4BE3A5' };
+// un solo colore per tutti i servizi: il rosso del logo
+const COLORI_SERVIZIO = { sito: '#E30613', ecommerce: '#E30613', software: '#E30613', gestionale: '#E30613', ads: '#E30613', cura: '#E30613' };
 const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} } };
 const ls = { get: (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} } };
 
-// ---------- 1. L'iride prende il colore del servizio che guardi ----------
+// ---------- 1. I puntini prendono il rosso quando guardi un servizio ----------
 let tintaTimer = 0;
 function tinta(id) {
   clearTimeout(tintaTimer);

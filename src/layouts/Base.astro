@@ -1,14 +1,13 @@
 ---
-import '@fontsource-variable/bricolage-grotesque/opsz.css';
+import '@fontsource-variable/inter-tight';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
-import '@fontsource/instrument-serif/400-italic.css';
 import '../styles/global.css';
 import { dati } from '../i18n/dati.js';
 import { ui, url, urlServizio } from '../i18n/ui.js';
 import logoScritta from '../assets/logo-scritta.svg?raw';
 import logoIcona from '../assets/logo-icona.svg?raw';
-import Occhio from '../components/Occhio.astro';
+import Cursore from '../components/Cursore.astro';
 import Icona from '../components/Icona.astro';
 import { euro } from '../data/formato.js';
 
@@ -39,12 +38,6 @@ const voci = t.nav.map(([id, testo]) => ({ id, href: id.startsWith('@') ? url(id
 // la voce attiva: la pagina AI, una pagina servizio («Servizi») o, in home, la sezione in vista (site.js)
 const suServizio = current.startsWith(lang === 'en' ? '/en/services/' : '/servizi/');
 const prezzoDa = (s: { da: number; mese?: boolean }) => `${t.da} ${euro(s.da, lang)}${s.mese ? t.mese : ''}`;
-const colori = [
-  { id: 'blu', c: '#3D7BFF', nome: t.colori[0] },
-  { id: 'rosso', c: '#FF3347', nome: t.colori[1] },
-  { id: 'viola', c: '#8B6CFF', nome: t.colori[2] },
-  { id: 'verde', c: '#22D47E', nome: t.colori[3] },
-];
 const hrefIt = lang === 'it' ? path : alt;
 const hrefEn = lang === 'en' ? path : alt;
 ---
@@ -56,7 +49,7 @@ const hrefEn = lang === 'en' ? path : alt;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="theme-color" content="#05070F" />
+    <meta name="theme-color" content="#0A0A0A" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/img/icona-512.png" type="image/png" sizes="512x512" />
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
@@ -82,13 +75,12 @@ const hrefEn = lang === 'en' ? path : alt;
         var at = function (n) { n = Math.trunc(n) || 0; if (n < 0) n += this.length; return this[n]; };
         [Array, String, Float32Array, Uint8Array, Uint16Array, Uint32Array, Int32Array].forEach(function (C) { if (C && !C.prototype.at) Object.defineProperty(C.prototype, 'at', { value: at, writable: true, configurable: true }); });
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) h.classList.add('ridotto');
-        // colore scelto in «Personalizza» (il blu è quello predefinito)
+        // nome scelto in «Personalizza»
         try {
           var p = JSON.parse(localStorage.getItem('gd-profilo') || 'null');
-          if (p && ['rosso', 'viola', 'verde'].indexOf(p.tema) > -1) h.dataset.tema = p.tema;
           if (p && p.nome) h.classList.add('ha-nome');
         } catch (e) {}
-        // Intro col punto di luce: solo alla prima pagina della visita
+        // Intro col cursore rosso: solo alla prima pagina della visita
         try { if (!sessionStorage.getItem('gd-intro')) h.classList.add('intro-attiva'); } catch (e) {}
         try { if (!sessionStorage.getItem('gd-stelle') && !h.classList.contains('ridotto')) h.classList.add('stelle-titolo'); } catch (e) {}
       })();
@@ -97,30 +89,15 @@ const hrefEn = lang === 'en' ? path : alt;
   </head>
   <body>
     <div class="intro" aria-hidden="true">
-      <Occhio espressione="curioso" apertura class="intro-occhio" />
+      <span class="intro-cursore"></span>
     </div>
     <script is:inline>
-      // Intro della prima visita: l'occhio si apre, sbatte le palpebre, ti guarda e si gira verso il titolo
+      // Intro della prima visita: il cursore rosso lampeggia, poi si allarga e apre la pagina
       (function () {
         var h = document.documentElement;
         if (!h.classList.contains('intro-attiva')) return;
         var t0 = performance.now(), chiusa = false;
-        var ridotto = h.classList.contains('ridotto'), minimo = ridotto ? 200 : 2000;
-        var svg = document.querySelector('.intro-occhio');
-        var ap = svg && svg.querySelector('.m-apertura'), pup = svg && svg.querySelector('.m-pupilla'), palp = svg && svg.querySelectorAll('.m-palpebra');
-        var liscia = function (x) { return x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x); };
-        function anima(ora) {
-          if (chiusa || !ap) return;
-          var t = (ora - t0) / 1000;
-          var a = ridotto ? 1 : liscia((t - 0.25) / 0.6);
-          if (!ridotto && t > 1.05 && t < 1.33) a *= Math.abs(Math.cos(((t - 1.05) / 0.28) * Math.PI));
-          ap.setAttribute('ry', (0.5 + a * 33).toFixed(2));
-          for (var i = 0; i < palp.length; i++) palp[i].setAttribute('transform', 'translate(' + ((1 - a) * -3).toFixed(2) + ' ' + ((1 - a) * 9).toFixed(2) + ')');
-          var g = liscia((t - 1.45) / 0.45);
-          if (pup) pup.setAttribute('transform', 'translate(' + (-3 - g * 6).toFixed(2) + ' ' + (4 + g * 1).toFixed(2) + ')');
-          requestAnimationFrame(anima);
-        }
-        requestAnimationFrame(anima);
+        var ridotto = h.classList.contains('ridotto'), minimo = ridotto ? 200 : 1700;
         function chiudi() {
           if (chiusa) return; chiusa = true;
           h.classList.add('intro-fine');
@@ -164,7 +141,7 @@ const hrefEn = lang === 'en' ? path : alt;
                   ))}
                 </div>
                 <a class="mega-ai" href={url('ai', lang)}>
-                  <Occhio espressione="curioso" />
+                  <Cursore stato="pensa" />
                   <strong>{t.megaAi}</strong>
                   <span>{t.megaAiTesto}</span>
                   <span class="link-freccia">{t.megaVai} <span class="freccia" aria-hidden="true">→</span></span>
@@ -177,7 +154,7 @@ const hrefEn = lang === 'en' ? path : alt;
         </nav>
         <div class="header-strumenti">
           <button class="personalizza-btn" type="button" data-personalizza aria-expanded="false" aria-controls="pannello-tema" title={t.personalizza}>
-            <span class="tavolozza" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <span class="tuo-nome" aria-hidden="true">Aa<i></i></span>
             <span class="sr-only">{t.personalizza}</span>
           </button>
           {alt && (
@@ -194,23 +171,15 @@ const hrefEn = lang === 'en' ? path : alt;
       </div>
     </header>
 
-    <!-- Personalizza: nome e colore, cambiano subito mentre scegli -->
+    <!-- Personalizza: il nome del visitatore, compare subito mentre lo scrive -->
     <div class="pannello-tema" id="pannello-tema" data-pannello-tema hidden role="dialog" aria-labelledby="pt-titolo">
       <div class="pt-testa">
-        <Occhio espressione="curioso" />
+        <Cursore stato="aspetta" />
         <span class="mono" id="pt-titolo">{t.ptTitolo}</span>
         <button class="pt-chiudi" type="button" data-pt-chiudi aria-label={t.chiudi}>×</button>
       </div>
       <label class="pt-domanda" for="pt-nome">{t.ptNome}</label>
       <input id="pt-nome" type="text" autocomplete="given-name" maxlength="24" placeholder={t.ptNomeSegnaposto} enterkeyhint="done" data-pt-nome />
-      <p class="pt-domanda" id="pt-colore">{t.ptColore}</p>
-      <div class="pt-colori" role="radiogroup" aria-labelledby="pt-colore">
-        {colori.map((c) => (
-          <button class="pt-colore" type="button" role="radio" aria-checked="false" data-tema-scelta={c.id} style={`--c:${c.c}`}>
-            <i aria-hidden="true"></i><span>{c.nome}</span>
-          </button>
-        ))}
-      </div>
       <p class="pt-nota">{t.ptNota}</p>
     </div>
     <div class="pt-invito" data-pt-invito hidden role="status">
@@ -235,7 +204,7 @@ const hrefEn = lang === 'en' ? path : alt;
         <a class="btn btn-azione btn-grande" href={preventivo}>{t.ctaPreventivo}</a>
         <a class="btn btn-vetro" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener" data-wa>{t.whatsapp}</a>
         <button class="btn btn-vetro" type="button" data-personalizza aria-controls="pannello-tema">
-          <span class="tavolozza" aria-hidden="true"><i></i><i></i><i></i><i></i></span> {t.personalizza}
+          <span class="tuo-nome" aria-hidden="true">Aa<i></i></span> {t.personalizza}
         </button>
       </div>
     </div>
@@ -305,7 +274,7 @@ const hrefEn = lang === 'en' ? path : alt;
     </div>
 
     <div class="ritorno" data-ritorno hidden role="status">
-      <Occhio espressione="innamorato" />
+      <Cursore stato="saluta" />
       <p><strong data-ritorno-titolo>{t.bentornato}!</strong> <span data-ritorno-testo>{t.bentornatoTesto}</span></p>
       <a class="link-freccia" href={preventivo} data-ritorno-link>{t.ctaPreventivo} <span class="freccia" aria-hidden="true">→</span></a>
       <button class="ritorno-chiudi" type="button" aria-label={t.chiudi} data-ritorno-chiudi>×</button>

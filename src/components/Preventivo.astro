@@ -2,7 +2,7 @@
 // Il preventivo automatico in italiano (/preventivo) e in inglese (/en/quote).
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
-import Occhio from './Occhio.astro';
+import Cursore from './Cursore.astro';
 import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
 import '../styles/preventivo.css';
@@ -198,7 +198,7 @@ const passoDi = (n: number) => T(`Passo ${n} di 3`, `Step ${n} of 3`);
             )}</p>
             <div class="pv-nav">
               <button class="btn btn-vetro" type="button" data-indietro>← {T('Indietro', 'Back')}</button>
-              <span class="pv-attesa" aria-hidden="true"><Occhio espressione="pensieroso" /></span>
+              <span class="pv-attesa" aria-hidden="true"><Cursore stato="pensa" /></span>
               <div class="pv-invio">
                 <button class="btn btn-azione btn-grande" type="submit" data-invia>{T('Invia la richiesta', 'Send request')} <span class="freccia" aria-hidden="true">→</span></button>
               </div>
@@ -208,7 +208,7 @@ const passoDi = (n: number) => T(`Passo ${n} di 3`, `Step ${n} of 3`);
 
           <!-- FATTO -->
           <div class="pv-passo pv-fatto" data-passo="4" hidden tabindex="-1">
-            <Occhio espressione="festa" class="pv-fatto-occhio" />
+            <Cursore stato="festa" class="pv-fatto-occhio" />
             <h2>{T('Ricevuto.', 'Received.')} <span class="em em-firma">{T('Grazie!', 'Thank you!')}</span></h2>
             <p class="lead" data-fatto-testo>{T(
               'Abbiamo ricevuto il tuo progetto. Ti scriviamo entro 24 ore con il preventivo definitivo.',

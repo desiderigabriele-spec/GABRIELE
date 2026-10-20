@@ -43,9 +43,8 @@ export const ui = {
     riprendi: 'Riprendi il preventivo', chiudi: 'Chiudi',
     altraLingua: 'English', altraLinguaBreve: 'EN', questaLinguaBreve: 'IT', cambiaLingua: 'Read this site in English',
     avvisoLingua: 'Prefer English?', avvisoLinguaLink: 'Switch to English',
-    ptTitolo: 'Rendi tuo il sito', ptNome: 'Come ti chiami?', ptNomeSegnaposto: 'Il tuo nome', ptColore: 'Il tuo colore',
-    ptNota: 'Cambia subito. Resta solo sul tuo dispositivo.', ptInvito: 'Vuoi il sito con il tuo nome e il tuo colore? Tocca qui.',
-    colori: ['Blu', 'Rosso', 'Viola', 'Verde'],
+    ptTitolo: 'Rendi tuo il sito', ptNome: 'Come ti chiami?', ptNomeSegnaposto: 'Il tuo nome',
+    ptNota: 'Compare subito nel sito. Resta solo sul tuo dispositivo.', ptInvito: 'Vuoi il sito con il tuo nome? Tocca qui.',
   },
   en: {
     lang: 'en', locale: 'en_GB', vaiContenuto: 'Skip to content', menu: 'Menu',
@@ -64,8 +63,7 @@ export const ui = {
     riprendi: 'Resume your quote', chiudi: 'Close',
     altraLingua: 'Italiano', altraLinguaBreve: 'IT', questaLinguaBreve: 'EN', cambiaLingua: 'Leggi il sito in italiano',
     avvisoLingua: 'Preferisci l\'italiano?', avvisoLinguaLink: 'Passa all\'italiano',
-    ptTitolo: 'Make this site yours', ptNome: "What's your name?", ptNomeSegnaposto: 'Your first name', ptColore: 'Your colour',
-    ptNota: 'Changes right away. Stays on your device only.', ptInvito: 'Want the site with your name and your colour? Tap here.',
-    colori: ['Blue', 'Red', 'Purple', 'Green'],
+    ptTitolo: 'Make this site yours', ptNome: "What's your name?", ptNomeSegnaposto: 'Your first name',
+    ptNota: 'Shows up on the site right away. Stays on your device only.', ptInvito: 'Want the site with your name on it? Tap here.',
   },
 };

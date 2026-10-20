@@ -1,6 +1,6 @@
 // La Costellazione dei Desideri: migliaia di punti di luce che cambiano forma
 // a ogni capitolo del percorso dal primo sguardo al sì.
-//   0 OCCHIO     → attenzione (l'iride segue il mouse)
+//   0 FUOCO      → attenzione: puntini in griglia e il quadratino rosso del logo (si gira verso ciò che guardi)
 //   1 RETE       → interesse e intelligenza artificiale (impulsi lungo le connessioni)
 //   2 SPIRALE    → fiducia, il percorso che porta al cliente
 //   3 CUORE      → desiderio (batte)
@@ -44,88 +44,81 @@ uniform vec3 uTinta;
 uniform float uAspect;
 uniform vec3 uColA[5];
 uniform vec3 uColB[5];
-uniform vec3 uIride[5];          // colori dell'iride dal centro al bordo (cambiano con il tema)
-uniform vec3 uPelle, uAnello, uAlone;
+uniform vec3 uPelle, uRosso, uAlone;
+uniform float uRaduna;            // 0 = punti sparsi (all'arrivo), 1 = raccolti nella griglia
 uniform float uScritta;            // 0 = forme normali, 1 = i punti scrivono il nome del visitatore
 attribute vec3 aP1, aP2, aP3, aP4;
 attribute vec4 aP5;                // punto della scritta (w = 1 se fa parte delle lettere)
 attribute float aRand, aT;
-attribute vec4 aOcchio;             // tipo di punto dell'occhio, due parametri, dimensione
+attribute vec4 aOcchio;             // tipo di punto del fuoco, due parametri, dimensione
 varying vec3 vCol;
 varying float vLuce, vVis;
 ${NOISE}
 
-// ---------- L'OCCHIO ----------
-// Il logo «Eclisse» fatto di luce: sfera avorio, iride ambra con la pupilla grande,
-// palpebra a mezzaluna e una fessura scura attorno. Ruota tutto insieme verso ciò che guarda.
-const float RS = 1.25;    // raggio della sfera
-const float RI = 0.74;    // raggio dell'iride (nel logo è grande, più di metà della sfera)
-const float RV = 0.88;    // fessura scura: attorno all'iride la sfera non si vede
+// ---------- IL FUOCO ----------
+// L'icona del logo fatta di luce: una griglia di 12 × 12 puntini bianchi, più grandi vicino
+// al quadratino rosso in basso a destra. Il quadratino lampeggia come un cursore.
+// Tutto il quadro si inclina verso ciò che cattura l'attenzione.
+const float G = 12.0;      // puntini per lato
+const float P = 0.17;      // distanza tra i puntini
+const vec2 G0 = vec2(-1.135, 0.935);              // primo puntino in alto a sinistra
+const vec2 RC = vec2(0.985, -0.815);              // centro del quadratino rosso
+const float RQ = 0.3;                              // lato del quadratino
 vec3 ruotaSguardo(vec3 p){
-  float cp = cos(uSguardo.y), sp = sin(uSguardo.y);
+  vec2 sg = uSguardo * 0.7;
+  float cp = cos(sg.y), sp = sin(sg.y);
   p = vec3(p.x, p.y * cp + p.z * sp, -p.y * sp + p.z * cp);
-  float cy = cos(uSguardo.x), sy = sin(uSguardo.x);
+  float cy = cos(sg.x), sy = sin(sg.x);
   return vec3(p.x * cy + p.z * sy, p.y, -p.x * sy + p.z * cy);
 }
-// punto sulla superficie, davanti, a distanza d dal centro dell'iride
-vec3 superficie(vec2 d){ return ruotaSguardo(vec3(d, sqrt(max(RS * RS - dot(d, d), 0.0)))); }
-// bordo della pupilla: cerchio che può diventare un cuore (chi torna sul sito)
-vec2 bordoPupilla(float a, float r){
-  vec2 cerchio = vec2(cos(a), sin(a)) * r;
-  float t = 1.5707963 - a;
-  float st = sin(t);
-  vec2 cuore = vec2(16.0 * st * st * st, 13.0 * cos(t) - 5.0 * cos(2.0 * t) - 2.0 * cos(3.0 * t) - cos(4.0 * t)) / 17.0 * r * 1.35 + vec2(0.0, r * 0.12);
-  return mix(cerchio, cuore, uCuore);
-}
-vec3 colIride0(float b);
-// l'iride prende il colore del servizio che stai guardando
-vec3 colIride(float b){
-  vec3 tinta = mix(uTinta * 1.25 + 0.12, uTinta * 0.85, smoothstep(0.1, 1.0, b));
-  return mix(colIride0(b), tinta, uTintaForza);
-}
-vec3 colIride0(float b){
-  if (b < 0.12) return mix(uIride[0], uIride[1], b / 0.12);
-  if (b < 0.3) return mix(uIride[1], uIride[2], (b - 0.12) / 0.18);
-  if (b < 0.62) return mix(uIride[2], uIride[3], (b - 0.3) / 0.32) * 1.15;
-  return mix(uIride[3], uIride[4], (b - 0.62) / 0.38) * 1.3;
+// per chi torna il quadratino diventa per un attimo un cuore
+vec2 cuoreDa(vec2 q){
+  float ang = atan(q.y, q.x), rr = max(abs(q.x), abs(q.y)) * 2.0;
+  float t = 1.5707963 - ang, st = sin(t);
+  vec2 c = vec2(16.0 * st * st * st, 13.0 * cos(t) - 5.0 * cos(2.0 * t) - 2.0 * cos(3.0 * t) - cos(4.0 * t)) / 17.0;
+  return c * rr * RQ * 0.62 + vec2(0.0, RQ * 0.06);
 }
 vec3 eCol; float eVis; float eSize;
 vec3 occhio(){
-  float tipo = aOcchio.x, a = aOcchio.y, b = aOcchio.z;
+  float tipo = aOcchio.x;
   eVis = 1.0; eSize = aOcchio.w;
   vec3 p;
-  if (tipo < 0.5) {            // sfera avorio, piena come nel logo
-    float ct = b, st = sqrt(max(1.0 - ct * ct, 0.0));
-    vec3 q = vec3(cos(a) * st, sin(a) * st, ct) * RS;   // posizione prima della rotazione
-    p = ruotaSguardo(q);
-    float z = p.z / RS;                       // 1 davanti, -1 dietro
-    eCol = uPelle * (0.5 + 0.22 * smoothstep(-0.3, 1.0, z));
-    eVis = mix(0.04, 1.0, smoothstep(-0.25, 0.2, z));
-    // fessura scura: attorno all'iride la sfera sparisce, così l'occhio si stacca come nel logo
-    if (q.z > 0.0) eVis *= smoothstep(RV, RV + 0.05, length(q.xy));
-  } else if (tipo < 6.5) {     // iride ambra: fibre radiali leggermente ondulate, la pupilla le comprime
-    float ang = a + 0.05 * sin(b * 9.0 + a * 5.0);
-    vec2 interno = bordoPupilla(ang, uPupilla + 0.012);
-    p = superficie(mix(interno, vec2(cos(ang), sin(ang)) * (RI - 0.02), b));
-    eCol = colIride(b) * (0.5 + 0.4 * aRand);
-  } else if (tipo < 7.5) {     // palpebra: mezzaluna sopra l'iride, verso l'alto a destra
-    float ang = 0.95 + a * 1.15;
-    float spessore = 0.17 * (1.0 - a * a);  // si assottiglia alle punte
-    p = superficie(vec2(cos(ang), sin(ang)) * (RI + 0.035 + b * spessore));
-    eCol = uAnello * (0.75 + 0.4 * aRand);
-  } else if (tipo < 8.5) {     // bordo della pupilla
-    p = superficie(bordoPupilla(a, uPupilla + b * 0.012));
-    eCol = vec3(1.0, 0.75, 0.42);
-  } else if (tipo < 9.5) {     // riflesso: un puntino bianco sul bordo della pupilla, come nel logo
-    p = superficie(vec2(0.42, 0.62) * uPupilla + vec2(a, b) * 0.35);
-    p.z += 0.02;
-    eCol = vec3(1.0);
+  float dilata = uPupilla / 0.3;    // la pupilla di prima: si allarga sui bottoni, si stringe al clic
+  if (tipo < 0.5) {            // puntino della griglia
+    float cella = aOcchio.y;
+    float col = mod(cella, G), riga = floor(cella / G);
+    vec2 c = G0 + vec2(col, -riga) * P;
+    float vicino = 1.0 - smoothstep(0.0, 2.6, distance(c, RC));
+    float r = mix(0.01, 0.034, vicino) * dilata;
+    p = vec3(c + aOcchio.zw * r, 0.0);
+    eCol = mix(uPelle * (0.62 + 0.25 * vicino), uTinta * 1.1, uTintaForza);
+    eSize = mix(0.75, 1.15, vicino);
+  } else if (tipo < 1.5) {     // il quadratino rosso
+    vec2 q = aOcchio.zw;        // -0.5..0.5
+    vec2 quadro = q * (RQ - 0.03);
+    p = vec3(RC + mix(quadro, cuoreDa(q), uCuore) * (0.9 + 0.1 * dilata), 0.02);
+    eCol = uRosso * (0.85 + 0.3 * aRand);
+    // cursore: acceso 0,55 s, spento 0,55 s (fermo e acceso con «riduci movimento»)
+    eVis = mix(0.18, 1.0, 1.0 - step(0.5, fract(uTime / 0.66)));
+    eVis = max(eVis, uCuore);
+    eSize = 0.95;
   } else {                     // polvere attorno, appena accennata
+    float a = aOcchio.y, b = aOcchio.z;
     p = vec3(cos(a) * b, sin(a) * b, (aRand - 0.5) * 0.8);
-    eCol = uAlone * 0.25;
+    eCol = uAlone * 0.22;
+    eSize = 0.7;
   }
-  p.z -= RS - 0.25;
-  return p;
+  // all'arrivo i punti sono sparsi e si raccolgono girando verso il quadratino
+  float k = smoothstep(0.0, 1.0, clamp((uRaduna - aRand * 0.35) / 0.65, 0.0, 1.0));
+  if (k < 1.0) {
+    vec3 sparso = vec3(p.xy - RC, 0.0) * (2.2 + 2.6 * aRand);
+    float g = (aRand - 0.5) * 2.4 * (1.0 - k);
+    sparso.xy = mat2(cos(g), -sin(g), sin(g), cos(g)) * sparso.xy;
+    sparso += vec3(RC, (aRand - 0.5) * 3.0);
+    p = mix(sparso, p, k);
+    eVis *= mix(0.35, 1.0, k);
+  }
+  return ruotaSguardo(p);
 }
 vec3 eye;
 vec3 forma(int i){
@@ -142,7 +135,9 @@ vec3 colore(int i){
   else if (i == 2) { a = uColA[2]; b = uColB[2]; }
   else if (i == 3) { a = uColA[3]; b = uColB[3]; }
   else if (i == 4) { a = uColA[4]; b = uColB[4]; }
-  return mix(mix(a, b, aRand), uTinta * (0.8 + 0.4 * aRand), uTintaForza * 0.65);
+  // solo bianco e rosso: niente mescole rosa, ogni punto è dell'uno o dell'altro colore
+  vec3 c = aRand > 0.86 ? b : a * (0.65 + 0.35 * aRand);
+  return mix(c, uTinta * (0.8 + 0.4 * aRand), uTintaForza * 0.65);
 }
 mat2 ruota(float a){ float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
 
@@ -186,8 +181,9 @@ void main(){
   float volo = max(sin(t * 3.14159), sin(s * 3.14159) * 0.7);
   vec3 n = vec3(snoise(p * 0.8 + aRand * 10.0), snoise(p * 0.8 + 31.0), snoise(p * 0.8 + 57.0));
   p += n * volo * 0.55;
-  // respiro continuo
-  p += vec3(snoise(p * 1.3 + uTime * 0.15)) * 0.025;
+  // respiro continuo (quasi fermo sul fuoco: i puntini e il quadratino devono restare netti)
+  float calma = i0 == 0 ? mix(0.1, 1.0, t) : 1.0;
+  p += vec3(snoise(p * 1.3 + uTime * 0.15)) * 0.025 * calma;
 
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
   vec4 clip = projectionMatrix * mv;
@@ -197,7 +193,7 @@ void main(){
   vec2 d = ndc - uMouse;
   d.x *= uAspect;
   float dist = length(d);
-  // sull'occhio niente spinta: deve restare nitido mentre guarda
+  // sul fuoco niente spinta: deve restare nitido
   float spinta = (1.0 - smoothstep(0.0, 0.28, dist)) * 0.09 * smoothstep(0.0, 0.8, f);
   ndc += normalize(d + 1e-5) * spinta * vec2(1.0 / uAspect, 1.0);
   // scorrendo veloce: scia verticale
@@ -209,7 +205,7 @@ void main(){
   if (i0 == 1 || i1 == 1) pulse = pow(fract(aT - uTime * 0.35), 18.0) * (i0 == 1 ? 1.0 - t : t);
   vLuce = 0.55 + aRand * 0.45 + pulse * 2.0 + spinta * 6.0;
   vCol = mix(colore(i0), colore(i1), t);
-  vCol = mix(vCol, mix(uColB[0], vec3(1.0), 0.45) * (0.75 + 0.5 * aRand), s);
+  vCol = mix(vCol, vec3(0.85 + 0.3 * aRand), s);
   float vis = i0 == 0 ? mix(eVis, 1.0, t) : 1.0;
   vis = mix(vis, lettera ? 1.0 : 0.1, s);
   // dietro ai blocchi di testo la luce cala con una sfumatura ampia (velo morbido, nessun contorno)
@@ -244,37 +240,19 @@ void main(){
 const rnd = (a = -1, b = 1) => a + Math.random() * (b - a);
 function gauss() { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
 
-// tipi: 0 sfera · 6 iride · 7 palpebra · 8 bordo pupilla · 9 riflesso · 10 polvere
-const QUOTE = [[0, 0.48, 1.9], [6, 0.33, 1.25], [7, 0.1, 1.2], [8, 0.04, 0.75], [9, 0.004, 0.9], [10, 0.046, 0.7]];
-const hash = (n) => { const x = Math.sin(n * 127.1) * 43758.5453; return x - Math.floor(x); };
+// tipi: 0 puntino della griglia · 1 quadratino rosso · 2 polvere
+const QUOTE = [[0, 0.7], [1, 0.18], [2, 0.12]];
+function disco() { const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()); return [Math.cos(a) * r, Math.sin(a) * r]; }
 function occhio(N, out, attr) {
   let i = 0;
-  for (const [tipo, quota, dim] of QUOTE) {
-    const n = tipo === 10 ? N - i : Math.round(N * quota);
+  for (const [tipo, quota] of QUOTE) {
+    const n = tipo === 2 ? N - i : Math.round(N * quota);
     for (let k = 0; k < n && i < N; k++, i++) {
-      let a = 0, b = 0;
-      if (tipo === 0) {
-        // sfera piena: quasi tutti i punti uniformi sul disco che si vede davanti, gli altri sul resto della sfera
-        a = Math.random() * Math.PI * 2;
-        b = Math.random() < 0.85 ? Math.sqrt(1 - Math.random()) : rnd(-1, 1);
-      }
-      else if (tipo === 6) {
-        // fibre radiali + collaretto + piccole "cripte" vuote
-        for (let tent = 0; tent < 6; tent++) {
-          a = Math.random() < 0.72 ? (((Math.random() * 260) | 0) / 260) * Math.PI * 2 + gauss() * 0.003 : Math.random() * Math.PI * 2;
-          const r = Math.random();
-          // densità uniforme su tutta l'iride (ambra piena come nel logo), con un collaretto appena più fitto
-          b = r < 0.12 ? 0.32 + gauss() * 0.035 : Math.sqrt(Math.random());
-          b = Math.min(Math.max(b, 0), 1);
-          const cella = Math.floor((a / (Math.PI * 2)) * 40) * 7 + Math.floor(b * 7);
-          if (!(b > 0.4 && hash(cella) < 0.15 && Math.random() < 0.6)) break;
-        }
-      }
-      else if (tipo === 7) { a = rnd(-1, 1); b = Math.random(); }
-      else if (tipo === 8) { a = Math.random() * Math.PI * 2; b = gauss(); }
-      else if (tipo === 9) { const g = Math.random() < 0.75; a = g ? rnd(-0.05, 0.05) : 0.11 + gauss() * 0.01; b = g ? rnd(-0.04, 0.04) : -0.1 + gauss() * 0.01; }
-      else { a = Math.random() * Math.PI * 2; b = 1.5 + Math.random() * 1.3; }
-      attr[i * 4] = tipo; attr[i * 4 + 1] = a; attr[i * 4 + 2] = b; attr[i * 4 + 3] = dim;
+      let a = 0, b = 0, c = 0;
+      if (tipo === 0) { a = k % 144; [b, c] = disco(); }
+      else if (tipo === 1) { b = Math.random() - 0.5; c = Math.random() - 0.5; }
+      else { a = Math.random() * Math.PI * 2; b = 1.7 + Math.random() * 1.2; }
+      attr[i * 4] = tipo; attr[i * 4 + 1] = a; attr[i * 4 + 2] = b; attr[i * 4 + 3] = c;
       out[i * 3] = 0; out[i * 3 + 1] = 0; out[i * 3 + 2] = 0;
     }
   }
@@ -362,7 +340,7 @@ function stella(N, out) {
 function scritta(nome, N, out, larghezza, quota) {
   const tela = document.createElement('canvas');
   const ctx = tela.getContext('2d', { willReadFrequently: true });
-  const font = (px) => `800 ${px}px 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif`;
+  const font = (px) => `800 ${px}px 'Inter Tight Variable', 'Inter Tight', system-ui, sans-serif`;
   const alto = 140;
   ctx.font = font(alto);
   const w = Math.ceil(ctx.measureText(nome).width) + 20;
@@ -386,29 +364,11 @@ function scritta(nome, N, out, larghezza, quota) {
   }
 }
 
-// Iride ambra uguale in ogni tema, come nel logo (dal centro al bordo)
-const IRIDE = ['#FFE6A8', '#FFD27A', '#FFC25E', '#FFB547', '#F5A23A'];
-// Colori delle particelle per tema: A/B = le due tinte di ogni forma (occhio, rete, spirale, cuore, stella)
-export const TEMI = {
-  blu: {
-    A: ['#3D7BFF', '#3D7BFF', '#3D7BFF', '#FF3347', '#FFB547'], B: ['#5CC8FF', '#5CC8FF', '#9FE8FF', '#FF6A8A', '#FFE2B0'],
-    iride: IRIDE, pelle: '#F2F4F8', anello: '#3D7BFF', alone: '#5C8DFF', stelle: '#9CC0FF',
-  },
-  rosso: {
-    A: ['#FF3347', '#FF6A3D', '#FF3347', '#FF3347', '#FFB547'], B: ['#FFB547', '#FFD27A', '#FFB547', '#FF6A3D', '#FFE2B0'],
-    iride: IRIDE, pelle: '#F6EFE6', anello: '#FF3347', alone: '#FF7352', stelle: '#FFCFAE',
-  },
-  viola: {
-    A: ['#8B6CFF', '#8B6CFF', '#8B6CFF', '#FF5E3A', '#FFB547'], B: ['#5CE1E6', '#5CE1E6', '#FF7A59', '#FF4D8D', '#FFE2B0'],
-    iride: IRIDE, pelle: '#F4F1EA', anello: '#8B6CFF', alone: '#8B73FF', stelle: '#B6A3FF',
-  },
-  verde: {
-    A: ['#22D47E', '#22D47E', '#22D47E', '#FF5E3A', '#FFB547'], B: ['#C6F36B', '#8FF0B4', '#C6F36B', '#FF7A59', '#FFE2B0'],
-    iride: IRIDE, pelle: '#EEF5F0', anello: '#22D47E', alone: '#3DDB8F', stelle: '#9EF0C2',
-  },
+// I colori del logo: bianco e il rosso del quadratino. A/B = le due tinte di ogni forma (fuoco, rete, spirale, cuore, stella)
+const COLORI = {
+  A: ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#E30613', '#FFFFFF'], B: ['#E30613', '#E30613', '#E30613', '#FF5A63', '#E30613'],
+  pelle: '#FFFFFF', rosso: '#E30613', alone: '#9A9A9A', stelle: '#C8C8C8',
 };
-const temaIniziale = () => TEMI[document.documentElement.dataset.tema] ? document.documentElement.dataset.tema : 'blu';
-const COLORI = TEMI[temaIniziale()];
 
 export function avviaScena(canvas) {
   const ridotto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -453,13 +413,12 @@ export function avviaScena(canvas) {
     uTime: { value: 0 }, uForma: { value: 0 }, uSize: { value: mobile ? 30 : 34 }, uPR: { value: pr },
     uVel: { value: 0 }, uBattito: { value: 0 }, uOpacity: { value: 0 }, uAspect: { value: 1 },
     uMouse: { value: new THREE.Vector2(9, 9) }, uSguardo: { value: new THREE.Vector2() },
-    uPupilla: { value: 0.3 }, uCuore: { value: 0 }, uScritta: { value: 0 },
+    uPupilla: { value: 0.3 }, uCuore: { value: 0 }, uScritta: { value: 0 }, uRaduna: { value: 0 },
     uRis: { value: new THREE.Vector2(1, 1) }, uTesto: { value: Array.from({ length: 32 }, () => new THREE.Vector4()) }, uNTesto: { value: 0 },
-    uTinta: { value: new THREE.Color('#FF3347') }, uTintaForza: { value: 0 },
+    uTinta: { value: new THREE.Color('#E30613') }, uTintaForza: { value: 0 },
     uColA: { value: COLORI.A.map((c) => new THREE.Color(c)) },
     uColB: { value: COLORI.B.map((c) => new THREE.Color(c)) },
-    uIride: { value: COLORI.iride.map((c) => new THREE.Color(c)) },
-    uPelle: { value: new THREE.Color(COLORI.pelle) }, uAnello: { value: new THREE.Color(COLORI.anello) }, uAlone: { value: new THREE.Color(COLORI.alone) },
+    uPelle: { value: new THREE.Color(COLORI.pelle) }, uRosso: { value: new THREE.Color(COLORI.rosso) }, uAlone: { value: new THREE.Color(COLORI.alone) },
   };
   const mat = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
   const punti = new THREE.Points(geo, mat);
@@ -539,8 +498,7 @@ export function avviaScena(canvas) {
         if (d > 0.5) discard;
         float a = pow(smoothstep(0.5, 0.0, d), 1.8) * (vStira > 1.05 ? smoothstep(0.5, 0.15, abs(q.y)) : 1.0);
         vec3 c = uColore;
-        if (vTinta > 0.86) c = mix(c, vec3(1.0, 0.85, 0.65), 0.6);      // stelle calde
-        else if (vTinta < 0.2) c = mix(c, vec3(1.0), 0.55);              // stelle bianche
+        if (vTinta < 0.2) c = mix(c, vec3(1.0), 0.55);                   // qualche stella più bianca
         gl_FragColor = vec4(c * vLuce, a * uOpacita);
       }`,
   });
@@ -759,35 +717,10 @@ export function avviaScena(canvas) {
   document.addEventListener('toggle', () => setTimeout(misuraTesto, 50), true); // domande che si aprono
 
   const centro = new THREE.Vector3();
-  const bordoOcchio = new THREE.Vector3(), asseX = new THREE.Vector3(), centroSfera = new THREE.Vector3();
-  const corona = { el: document.createElement('div'), k: 0 };
-  corona.el.className = 'corona-eclisse';
-  corona.el.setAttribute('aria-hidden', 'true');
-  canvas.parentElement?.appendChild(corona.el);
   const colTinta = new THREE.Color();
   const sguardo = new THREE.Vector2();
 
   let ultimoScroll = window.scrollY, vel = 0;
-
-  // ---------- Cambio di tema: i colori sfumano verso quelli nuovi ----------
-  let temaObiettivo = null;
-  function preparaTema(nome) {
-    const t = TEMI[nome] || TEMI.blu;
-    temaObiettivo = {
-      A: t.A.map((c) => new THREE.Color(c)), B: t.B.map((c) => new THREE.Color(c)), iride: t.iride.map((c) => new THREE.Color(c)),
-      pelle: new THREE.Color(t.pelle), anello: new THREE.Color(t.anello), alone: new THREE.Color(t.alone), stelle: new THREE.Color(t.stelle),
-    };
-  }
-  window.addEventListener('gd-tema', (e) => preparaTema(e.detail));
-  function sfumaTema(k) {
-    if (!temaObiettivo) return;
-    const o = temaObiettivo;
-    uniforms.uColA.value.forEach((c, i) => c.lerp(o.A[i], k));
-    uniforms.uColB.value.forEach((c, i) => c.lerp(o.B[i], k));
-    uniforms.uIride.value.forEach((c, i) => c.lerp(o.iride[i], k));
-    uniforms.uPelle.value.lerp(o.pelle, k); uniforms.uAnello.value.lerp(o.anello, k); uniforms.uAlone.value.lerp(o.alone, k);
-    suni.uColore.value.lerp(o.stelle, k);
-  }
 
   // ---------- Ciclo ----------
   const orologio = new THREE.Clock();
@@ -814,7 +747,8 @@ export function avviaScena(canvas) {
     uniforms.uVel.value = ridotto ? 0 : THREE.MathUtils.clamp(vel, -1.5, 1.5);
     uniforms.uBattito.value = morbido(uniforms.uBattito.value, segnali.battito, 6);
     uniforms.uMouse.value.lerp(mouse, 1 - Math.exp(-8 * dt));
-    sfumaTema(1 - Math.exp(-4 * dt));
+    // all'arrivo i punti si raccolgono in 2,4 s
+    uniforms.uRaduna.value = ridotto ? 1 : Math.min(1, tReale / 2.4);
 
     // sguardo: dal punto sullo schermo alla rotazione del bulbo
     const fermo = !toccoAttivo && ora() - ultimoInput > (dita ? 2500 : 4500);
@@ -872,28 +806,7 @@ export function avviaScena(canvas) {
     gruppo.rotation.x = morbido(gruppo.rotation.x, -my * 0.15 * peso, 3);
     // cielo stellato: scintillio, deriva, salita con lo scroll e un filo di parallasse col mouse
     suni.uTime.value = t;
-    {
-      // dove sta l'occhio sullo schermo, per nascondere le stelle che gli passano dietro
-      // il centro vero della sfera è un po' dietro il centro del gruppo (vedi occhio() nello shader)
-      const raggio = 1.25 * gruppo.scale.x;
-      centroSfera.copy(gruppo.position); centroSfera.z -= 1.0 * gruppo.scale.x;
-      bordoOcchio.copy(centroSfera).add(asseX.set(raggio, 0, 0)).project(camera);
-      centroSfera.project(camera);
-      const sx = (centroSfera.x + 1) * 0.5 * W, sy2 = (1 - centroSfera.y) * 0.5 * H;
-      const r = Math.abs(bordoOcchio.x - centroSfera.x) * 0.5 * W;
-      const quanto = Math.max(0, 1 - uniforms.uForma.value) * (1 - uniforms.uScritta.value) * Math.min(uniforms.uOpacity.value * 1.5, 1);
-      suni.uOcchio.value.set(sx, sy2, r, quanto);
-      // corona d'eclisse: si accende attorno all'occhio quando l'attenzione va sul bottone d'azione
-      corona.k = morbido(corona.k, segnali.battito > 0.5 && quanto > 0.3 && !segnali.sorpresa ? 1 : 0, 4);
-      if (corona.k > 0.01) {
-        const lato = r * 2 * (1.16 + 0.05 * corona.k);
-        corona.el.style.width = corona.el.style.height = `${lato}px`;
-        // left/top e non transform: la corona ruota su se stessa e la rotazione non deve spostarla
-        corona.el.style.left = `${sx - lato / 2}px`;
-        corona.el.style.top = `${sy2 - lato / 2}px`;
-      }
-      corona.el.style.opacity = (corona.k * 0.7).toFixed(3);
-    }
+    suni.uOcchio.value.set(0, 0, 0, 0); // il fuoco è fatto di puntini: le stelle dietro restano visibili
     // velocità della luce
     suni.uWarp.value = morbido(suni.uWarp.value, ridotto ? 0 : THREE.MathUtils.smoothstep(Math.abs(vel), 0.18, 1.3), 6);
     suni.uScroll.value = (sy / H) * 0.6;

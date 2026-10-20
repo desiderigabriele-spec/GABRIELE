@@ -39,7 +39,7 @@ Tutto il sito è il percorso AIDA reso visibile: un **campo di migliaia di parti
 
 | Capitolo | Forma delle particelle | Messaggio |
 |---|---|---|
-| 01 · Attenzione | **Un occhio** che va dove c'è uno stimolo | "L'attenzione è la moneta più preziosa di oggi. Chi la cattura, vince." |
+| 01 · Attenzione | **L'icona del logo**: una griglia di puntini e il quadratino rosso, che si gira verso ciò che spicca | "L'attenzione è la moneta più preziosa di oggi. Chi la cattura, vince." |
 | 02 · Interesse | **Una rete neurale** che pulsa | Cosa faccio, spiegato semplice: siti, e-commerce, AI, pubblicità |
 | 03 · Fiducia | **Un percorso a spirale** (il funnel) | Il metodo, i lavori, chi sono |
 | 04 · Desiderio | **Un cuore** che batte | Prezzi chiari, risultati, garanzie |
@@ -47,14 +47,15 @@ Tutto il sito è il percorso AIDA reso visibile: un **campo di migliaia di parti
 
 Il visitatore vive sulla propria pelle quello che Gabriele farà per i suoi clienti: **il sito è la prova del metodo**.
 
-### L'occhio del primo capitolo
-Il **logo «Eclisse» fatto di particelle**, che fluttua nello spazio e ruota tutto verso ciò che guarda.
-- **Come il logo:** sfera avorio piena, iride ambra grande, pupilla scura con un riflesso bianco sul bordo, palpebra a mezzaluna sopra l'iride e una fessura scura attorno all'occhio.
-- **Colori:** sfera e iride restano uguali in ogni tema, come il logo. La palpebra prende il colore del tema scelto: blu, rosso, viola o verde.
-- **Cosa rappresenta:** non osserva chi visita il sito. È **l'attenzione del pubblico**, e mostra come la si cattura: va verso ciò che si muove (segue il puntatore e il dito) e si **aggancia a ciò che spicca** (bottoni, parole colorate, «sceglie.»). Quando la persona sta ferma, gira con calma verso lo stimolo più forte della pagina, il bottone "Calcola il tuo preventivo": chi guarda segue lo sguardo e arriva lì anche lui (*gaze cueing*).
-- **Pupilla:** si allarga quando l'attenzione viene catturata (bottoni, parole), ancora di più sui bottoni d'azione (Eckhard Hess: la pupilla si dilata davanti a ciò che ci interessa), si stringe a ogni clic e "respira" piano.
-- **Iride che cambia colore** secondo il servizio su cui passi (parole del titolo, card dei servizi, card del preventivo): ambra per i siti, rosa per i negozi online, viola per automazioni e AI e lilla per il gestionale, ciano per la pubblicità, verde acqua per la cura. Anche le altre forme di particelle prendono quel colore.
-- **Chi torna** (più di 30 minuti dopo l'ultima visita): la pupilla diventa un **cuore** per un paio di secondi e compare «Rieccoti!». Se c'era un preventivo iniziato, il link porta a riprenderlo.
+### Il fuoco del primo capitolo
+L'**icona del logo fatta di particelle**: una griglia di 12 × 12 puntini bianchi e, in basso a destra, il **quadratino rosso** che lampeggia come un cursore. Prima c'era un occhio, preso dal vecchio logo «Eclisse»; con il logo nuovo non c'entrava più.
+- **All'arrivo** i punti sono sparsi e sfocati e in 2,4 secondi si raccolgono girando verso il quadratino: l'attenzione che si concentra su un punto.
+- **Puntini:** più grandi vicino al quadratino, come se ne fossero attirati.
+- **Cosa rappresenta:** è **l'attenzione del pubblico**, e mostra come la si cattura. Il quadro si inclina verso ciò che si muove (puntatore e dito) e si **aggancia a ciò che spicca** (bottoni, parole dei servizi, «sceglie»). Quando la persona sta ferma, si gira con calma verso il bottone "Calcola il tuo preventivo": chi guarda segue la direzione e arriva lì anche lui (*gaze cueing*).
+- **Sui bottoni** i puntini si allargano (come la pupilla di prima: Eckhard Hess), a ogni clic si stringono.
+- **Sui servizi** (parole del titolo, card dei servizi, card del preventivo) i puntini diventano rossi.
+- **Chi torna** (più di 30 minuti dopo l'ultima visita): il quadratino diventa un **cuore** per un paio di secondi e compare «Rieccoti!». Se c'era un preventivo iniziato, il link porta a riprenderlo.
+- **Senza scena 3D** (WebGL spento, telefoni molto vecchi) al suo posto c'è lo stesso disegno fermo (`Cursore stato="griglia"`).
 
 ### Il testo resta sempre leggibile
 Niente ritagli attorno alle lettere. Le regole sono tre:
@@ -62,44 +63,43 @@ Niente ritagli attorno alle lettere. Le regole sono tre:
 - **Velo morbido:** se una forma passa dietro a un blocco di testo, lì la sua luce cala con una sfumatura ampia (fino a un quarto), senza contorni.
 - **Sezioni piene di testo** (servizi, prezzi, garanzie, domande): forme più tenui. Piene solo nei capitoli d'apertura e nel finale. Su telefono, fuori dall'hero, le forme restano molto tenui e non stanno mai davanti alla lettura.
 
-Su telefono l'occhio sta sopra il titolo, a piena luce. Sotto l'occhio c'è la sua didascalia: «L'attenzione è la moneta più preziosa di oggi. Chi la cattura, vince.», con l'invito «Passa sulle parole e guarda dove va l'attenzione» (sparisce dopo il primo gesto).
+Su telefono la griglia sta sopra il titolo, a piena luce. Su computer, sotto la griglia, c'è la sua didascalia: «L'attenzione è la moneta più preziosa di oggi. Chi la cattura, vince.», con l'invito «Passa sulle parole e guarda dove va l'attenzione» (sparisce dopo il primo gesto).
 
 ### Tono di voce
 - Frasi corte. Parole di tutti i giorni. Niente inglese inutile (se serve una parola tecnica, la si spiega subito: *"funnel, cioè il percorso che porta un visitatore a comprare"*).
 - Si parla di **risultati per il cliente**, non di tecnologia.
 - Seconda persona ("tu"), caldo ma professionale.
-- Ogni tecnica psicologica viene **dichiarata e spiegata**: "Questo bottone è arancione perché è l'unica cosa calda della pagina. Si chiama effetto Von Restorff." È trasparente e dimostra competenza.
+- Ogni tecnica psicologica viene **dichiarata e spiegata**: "Questo bottone è rosso perché è l'unica cosa colorata della pagina. Si chiama effetto Von Restorff." È trasparente e dimostra competenza.
 
 ---
 
 ## 3. Identità visiva
 
-### Colori (ruolo prima del gusto)
-Palette d'apertura **C · Blu**, scelta dopo il confronto in «Palette Desideri a confronto». Il blu è freddo e calmo: fa da sfondo, e così il punto rosso del logo e i bottoni caldi spiccano ancora di più (effetto Von Restorff).
+### Colori: quelli del logo
+Il sito ha lo stesso stile del logo: **nero, bianco e un solo rosso**, angoli dritti, niente sfumature. Prima c'erano un blu, quattro temi a scelta e bottoni sfumati rosso → arancio: con il logo svizzero non andavano d'accordo. Il rosso è l'unico colore della pagina, quindi spicca da solo (effetto Von Restorff).
 
 | Token | Colore | Ruolo |
 |---|---|---|
-| `--notte` | `#05070F` | Sfondo: notte blu |
-| `--superficie` | `#0D111C` | Card, pannelli |
-| `--latte` | `#F2F4F8` | Testo principale |
-| `--nebbia` | `#9FA8BD` | Testo secondario |
-| `--viola` (nome storico) | `#3D7BFF` | **Blu del brand**: accenti, parole in evidenza, dettagli |
-| `--viola-chiaro` | `#9CC0FF` | Etichette, capitoli |
-| `--ciano` (nome storico) | `#5CC8FF` | Dati, numeri, spunte |
-| `--segnale` | `#FF3347` | **Fisso**: il punto rosso del logo che pulsa |
-| `--caldo` | `#FF3347 → #FF8A3D` | **Fisso**: bottoni d'azione, la cosa più calda della pagina |
+| `--notte` | `#0A0A0A` | Sfondo |
+| `--superficie` | `#121212` | Card, pannelli |
+| `--latte` | `#FFFFFF` | Testo principale, accenti |
+| `--nebbia` | `#A3A3A3` | Testo secondario, seconda parte dei titoli |
+| `--rosso` | `#E30613` | Il quadratino del logo, i bottoni d'azione, i quadratini delle etichette |
+| `--rosso-testo` | `#FF2D3A` | Il rosso per le parole (un filo più chiaro, per il contrasto AA su nero) |
 
-**Regola:** i freddi servono a capire, i caldi ad agire. Il gradiente blu → azzurro (le parole come *sceglie.*) è la firma; il caldo compare solo dove si clicca.
+I nomi storici (`--viola`, `--ciano`, `--ambra`) restano nel codice ma ora valgono bianco. Sullo sfondo ci sono quattro colonne sottili, appena visibili, come in una griglia svizzera.
 
-### Temi scelti dal visitatore
-Dal bottone dei colori nell'header chi visita sceglie l'atmosfera: **blu** (fiducia, predefinito), **rosso** (energia), **viola** (creatività), **verde** (crescita). Cambiano sfondo, accenti e particelle dell'occhio (`html[data-tema]` in `global.css`, `TEMI` in `scena.js`). Restano sempre uguali il punto rosso del logo e i bottoni d'azione: il marchio resta riconoscibile e il punto di conversione resta il più caldo della pagina.
+**Regole:**
+- Nei titoli la seconda parte è grigia (`.em`), la parola chiave rossa (`.em-firma`). Il titolo della home finisce con il quadratino rosso al posto del punto.
+- Bottone principale: rosso pieno, testo bianco; passandoci sopra diventa bianco con testo nero. Bottone secondario: bordo bianco sottile.
+- Angoli dritti ovunque (`border-radius: 0` in `global.css`). Fa eccezione solo il telefono finto delle demo, che imita WhatsApp.
+- Elenchi, etichette e capitoli hanno un quadratino rosso al posto del pallino.
 
-### Personalizzazione (bottone dei colori nell'header)
-Il bottone con i quattro puntini apre un pannellino con due sole cose, che cambiano subito mentre scegli:
-1. **Come ti chiami?** Mentre scrivi, il nome compare nel titolo dell'hero, grande come il titolo, con il saluto dell'ora (Buongiorno 5-14, Ciao 14-18, Buonasera 18-5: «Buonasera Marco, trasformo…»), poi nel titolo finale, nel messaggio WhatsApp, nel «Rieccoti» e nel campo nome del preventivo. Quando hai finito, le particelle dell'occhio scrivono il nome per qualche secondo.
-2. **Il tuo colore.** Anteprima dal vivo passandoci sopra, scelta con un clic.
+### Personalizzazione (bottone «Aa» nell'header)
+Il bottone «Aa» con il cursore rosso apre un pannellino con una domanda:
+1. **Come ti chiami?** Mentre scrivi, il nome compare nel titolo dell'hero, grande come il titolo e in rosso, con il saluto dell'ora (Buongiorno 5-14, Ciao 14-18, Buonasera 18-5: «Buonasera Marco, trasformiamo…»), poi nel titolo finale, nel messaggio WhatsApp, nel «Rieccoti» e nel campo nome del preventivo. Quando hai finito, le particelle scrivono il nome per qualche secondo.
 
-Si chiude con Invio, Esc, la × o toccando fuori. Alla prima visita compare una volta un piccolo invito sotto il bottone («Vuoi il sito con il tuo nome e il tuo colore?»), mai insieme all'avviso della lingua. Tutto resta nel browser (`localStorage gd-profilo`), niente viene inviato. La domanda «di cosa ti occupi?» è stata tolta: il settore si chiede solo nel preventivo.
+La scelta del colore è stata tolta insieme ai temi. Si chiude con Invio, Esc, la × o toccando fuori. Alla prima visita compare una volta un piccolo invito sotto il bottone («Vuoi il sito con il tuo nome?»), mai insieme all'avviso della lingua. Tutto resta nel browser (`localStorage gd-profilo`), niente viene inviato.
 
 ### La voce: Desideri & Code, al plurale
 Tutto il sito parla come studio («facciamo», «ti rispondiamo», «scrivici»). Gabriele compare in terza persona solo in «Lo studio», come fondatore. I messaggi WhatsApp precompilati salutano lo studio («Ho visto il sito di Desideri & Code e vorrei parlarvi di un progetto»). Resta al singolare solo l'informativa privacy, dove il titolare dei dati è la persona.
@@ -122,16 +122,16 @@ Il canone mensile è l'assistenza (hosting, controlli, aggiornamenti, sistemazio
 Ogni pacchetto ha la sua lista completa (`include` in `src/data/listino.js`, in inglese in `src/data/en.js`), presa dal listino di `docs/01` e scritta in parole semplici: 4-8 voci, compresi i tempi di consegna per i siti. La stessa lista compare nei prezzi della home, nelle pagine servizio e nel preventivo. Nelle sei schede «Cosa facciamo» della home ci sono le prime 3 voci del pacchetto da cui parte il prezzo «a partire da» (2 voci sugli schermi bassi, per restare in uno schermo). Nelle schede prezzi la lista prende lo spazio libero, così i pulsanti «Scegli» stanno tutti in fondo alla stessa altezza.
 
 ### Il puntatore
-Il puntatore è quello normale del sistema: niente cerchio, niente occhio e niente scia dietro il mouse. Resta solo un effetto sullo sfondo: passando sui bottoni d'azione l'occhio di particelle si accende.
+Il puntatore è quello normale del sistema: niente cerchio, niente occhio e niente scia dietro il mouse. Resta solo un effetto sullo sfondo: passando sui bottoni d'azione i puntini della griglia si allargano.
 
 ### Header e menu
 - Voci nello stesso ordine delle sezioni della home: **Servizi ▾ · AI per aziende · Metodo · Clienti · Lo studio · Prezzi**.
-- Su computer il menu è una capsula di vetro al centro dell'header. Una luce scivola sotto la voce su cui passi; in home si accende da sola la voce della sezione che stai guardando, sulle pagine servizio «Servizi», sulla pagina AI «AI per aziende» (che ha anche il punto rosso del logo).
-- **Servizi** apre un pannello (passandoci sopra o con un clic): i sei servizi con icona, una riga e il prezzo di partenza, più una scheda con la mascotte per la pagina «L'AI per aziende, spiegata semplice». Si chiude uscendo con il mouse, con Esc, toccando fuori o scorrendo.
-- Sotto i 1180 px il menu diventa il bottone a due righe. Il menu a tutto schermo ha le voci numerate grandi, la griglia dei sei servizi con icona e prezzo e in fondo preventivo, WhatsApp e «Personalizza».
+- Su computer il menu è un rettangolo al centro dell'header. Una luce con una riga rossa sotto scivola sotto la voce su cui passi; in home si accende da sola la voce della sezione che stai guardando, sulle pagine servizio «Servizi», sulla pagina AI «AI per aziende» (che ha anche il punto rosso del logo).
+- **Servizi** apre un pannello (passandoci sopra o con un clic): i sei servizi con icona, una riga e il prezzo di partenza, più una scheda con il cursore che «pensa» per la pagina «L'AI per aziende, spiegata semplice». Si chiude uscendo con il mouse, con Esc, toccando fuori o scorrendo.
+- Tra 1181 e 1340 px le voci si stringono un po', così non toccano il logo. Sotto i 1180 px il menu diventa il bottone a due righe. Il menu a tutto schermo ha le voci numerate grandi, la griglia dei sei servizi con icona e prezzo e in fondo preventivo, WhatsApp e «Personalizza».
 
 ### Ogni sezione in uno schermo
-Su computer ogni sezione della home, delle pagine servizio e della pagina AI sta in una schermata: spazi, titoli e alcune scritte seguono l'altezza della finestra (`svh`), con una versione più compatta sotto gli 840 px di altezza. Verificato a 1900×870, 1440×800, 1280×760 (a 1366×700 due sezioni superano di circa 30 px). Fa eccezione il **Metodo**, che scorre di proposito: ogni passo però sta in uno schermo. Su telefono l'hero è intero nella prima schermata (occhio, titolo, frase, bottone); le altre sezioni scorrono.
+Su computer ogni sezione della home, delle pagine servizio e della pagina AI sta in una schermata: spazi, titoli e alcune scritte seguono l'altezza della finestra (`svh`), con una versione più compatta sotto gli 840 px di altezza. Verificato a 1900×870, 1440×800, 1280×760 (a 1366×700 due sezioni superano di circa 30 px). Fa eccezione il **Metodo**, che scorre di proposito: ogni passo però sta in uno schermo. Su telefono l'hero è intero nella prima schermata (griglia, titolo, frase, bottone); le altre sezioni scorrono.
 
 ### Lingue
 Italiano predefinito (`/`), inglese su pagine vere (`/en`, `/en/quote`, `/en/privacy`) con `hreflang`, così Google mostra la versione giusta. Il selettore IT / EN è nell'header; chi ha il browser in un'altra lingua riceve un avviso discreto («Prefer English?»). Testi dell'interfaccia in `src/i18n/ui.js`, testi dei dati in `src/data/en.js`.
@@ -140,22 +140,21 @@ Italiano predefinito (`/`), inglese su pagine vere (`/en`, `/en/quote`, `/en/pri
 Il nome è **Desideri & Code**. «Studio Desideri» era già usato da un concorrente. «Desideri» è il cognome del fondatore e dice cosa vogliono le persone; «Code» è la tecnologia: siti, AI, gestionali.
 - **Scritta:** «Desideri&Code» su una riga, in Inter Tight ExtraBold, molto compatta (−0,05 em), con un **quadratino rosso** come punto finale. Il quadratino è il segnale che cattura l'attenzione.
 - **Icona:** un quadrato nero con «D&» sopra e «C» sotto, bianchi in basso a sinistra, più il quadratino rosso. Serve per favicon, social e app.
-- **Colori:** nero `#0A0A0A`, rosso `#E30613`, bianco `#FFFFFF`. La mascotte (l'occhio) resta il personaggio del sito: intro, scena 3D, demo e messaggi. Non fa più da logo.
+- **Colori:** nero `#0A0A0A`, rosso `#E30613`, bianco `#FFFFFF`, gli stessi di tutto il sito. Il quadratino rosso è anche la mascotte (vedi sotto).
 - **File:** le lettere sono tracciati, quindi non serve il font. Si generano con uno script che non è nel repo (gira in una cartella di lavoro, con il font Inter Tight).
   - `src/assets/logo-scritta.svg` e `src/assets/logo-icona.svg` sono la scritta e l'icona del sito, con lettere e quadrato nel colore del testo (`currentColor`) e il quadratino sempre rosso. Nell'header l'icona sta accanto alla scritta, in piccolo. Nel footer l'icona sta sopra la scritta; su telefono il marchio chiude il footer, in fondo e centrato.
-  - In `public/brand/` ci sono la scritta nera e bianca, l'icona (nera, chiara, con angoli arrotondati per le app, PNG a 1024 px), il logo completo nero e bianco e la mascotte.
+  - In `public/brand/` ci sono la scritta nera e bianca, l'icona (nera, chiara, con angoli arrotondati per le app, PNG a 1024 px), il logo completo nero e bianco e la vecchia mascotte (l'occhio, `mascotte.svg`, non più usata nel sito).
   - `public/favicon.svg`, `public/img/icona-512.png` e `apple-touch-icon.png` sono l'icona. `public/img/og.jpg` e `og-en.jpg` sono le anteprime per i link.
 - Nei titoli delle pagine il nome va dopo il punto: «Siti web · Desideri & Code». In fattura: «Desideri & Code di Gabriele Desideri».
 
 ### Icone e mascotte
-- **Icone «Eclisse»** (`src/components/Icona.astro`): tratto pulito, riempimento leggero nel colore del tema e in ognuna il **punto rosso** del logo, che pulsa. Al passaggio sulla card si muovono (onde, flussi, frecce che girano, lancetta, pupilla). Servizi, garanzie, metodo e preventivo.
-- **Occhio, la mascotte** (`src/components/Occhio.astro`): le forme del logo con otto espressioni. Curioso (benvenuto), occhiolino (personalizzazione fatta), innamorato (Rieccoti), pensieroso (invio in corso), festa (richiesta ricevuta), ok (sconto sbloccato), perso (404). Le stesse espressioni possono diventare sticker per WhatsApp e Instagram.
+- **Icone** (`src/components/Icona.astro`): tratto pulito, riempimento leggero bianco e in ognuna il **punto rosso**, che pulsa. Al passaggio sulla card si muovono (onde, flussi, frecce che girano, lancetta). Servizi, garanzie, metodo e preventivo. Nelle illustrazioni dei servizi, al centro, c'è l'icona del logo in piccolo.
+- **Cursore, la mascotte** (`src/components/Cursore.astro`): il quadratino rosso del logo, il cursore di chi scrive codice. Al posto delle espressioni dell'occhio ha sei stati: **aspetta** (lampeggia: personalizzazione), **pensa** (tre quadratini che saltano: invio in corso, menu AI), **fatto** (spunta), **festa** (quadratini che schizzano: richiesta ricevuta), **perso** (punto di domanda: 404), **saluta** (cuore: Rieccoti). Più **griglia**, il disegno della prima schermata quando la scena 3D non parte.
 
 ### Tipografia
-- **Bricolage Grotesque** (titoli): ha personalità ma è compatta e leggibile; i dettagli delle lettere la rendono riconoscibile senza «urlare» (scelta dopo il confronto in «Prove hero Desideri»).
-- **Instrument Serif corsivo** (parole emotive: *desideri*, *sì*, *clienti*): il tocco umano ed elegante dentro la tecnologia.
+- **Inter Tight ExtraBold** (titoli): lo stesso carattere del logo, molto compatto (−0,04/−0,05 em). Niente più corsivi: le parole in evidenza si distinguono per colore (grigio o rosso).
 - **Inter** (testi): massima leggibilità.
-- **JetBrains Mono** (etichette, numeri dei capitoli, prezzi tecnici): il lato "ingegnere".
+- **JetBrains Mono** (etichette, numeri dei capitoli, prezzi tecnici): il lato «Code».
 
 Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più veloce e conforme al GDPR).
 
@@ -168,16 +167,16 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
 - **Effetti** (scelti dalla prova «Effetti Desideri & Code», codice in `src/scripts/effetti.js`, `scena.js`, `global.css`):
   1. scia luminosa che gira sul bordo del bottone dell'hero, del piano "Il più scelto" e del riepilogo del preventivo;
   2. sulle card si accende il tratto di bordo vicino al mouse;
-  3. corona d'eclisse attorno all'occhio quando l'attenzione va su un bottone d'azione;
+  3. (tolto: era la corona d'eclisse attorno all'occhio);
   4. velocità della luce: scorrendo forte le stelle si allungano in strisce;
   5. linea dei capitoli sul bordo sinistro (schermi larghi), con il capitolo attuale in rosso; i punti portano alle sezioni;
-  6. «sceglie.» nasce dalle stelle alla prima visita;
+  6. «sceglie» nasce dalle stelle alla prima visita;
   7. stelline al clic sui bottoni d'azione (se il bottone apre un'altra pagina, si aspettano 0,2 s per vederle);
   8. polvere di stelle dietro il cursore, solo su computer;
   9. totali del preventivo che girano come un contachilometri;
   10. cometa lungo la sottolineatura delle parole colorate;
   11. passaggio sfumato tra le pagine (View Transitions, nei browser che le supportano);
-  12. intro: l'occhio si apre, sbatte le palpebre, ti guarda e si gira verso il titolo;
+  12. intro: il cursore rosso lampeggia al centro dello schermo, poi si allarga e apre la pagina;
   13. «Desideri» grande nel footer con le stelle che scorrono dentro le lettere.
   Tutto fermo o spento con «riduci movimento».
 - **Cielo stellato** sullo sfondo: ogni stella brilla col suo ritmo, scorre piano verso sinistra (le vicine più veloci, effetto profondità), sale quando si scorre la pagina e si sposta appena col mouse. Ogni 10-25 secondi una stella cadente discreta nella parte alta. Tutto fermo con «riduci movimento».
@@ -204,7 +203,7 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
 
 ### Home, sezione per sezione
 1. **Loader breve** (meno di 1,2 secondi): un punto di luce che si apre. Solo alla prima visita.
-2. **Hero · Attenzione** — Occhio di particelle.
+2. **Hero · Attenzione** — Griglia di particelle con il quadratino rosso.
    - Titolo: *"Trasformiamo chi ti guarda in chi ti **sceglie**."*
    - Sottotitolo: "Siti web, e-commerce, software con intelligenza artificiale e pubblicità online. Progettati con la psicologia per portare le persone dal primo sguardo al «sì»."
    - Bottoni: **Calcola il tuo preventivo** (caldo) · Guarda come funziona.
@@ -235,7 +234,7 @@ File: `src/components/PaginaAI.astro` · `src/styles/ai.css` · pagine `src/page
 
 ### Pagine dei servizi, sezione per sezione
 Una pagina per servizio, stessa struttura, testi in `src/data/pagine-servizi.js` (italiano e inglese), prezzi e pacchetti presi da `listino.js`.
-1. **Hero** — titolo, frase semplice, "a partire da", bottoni preventivo (con il servizio già scelto) e WhatsApp. A destra un'illustrazione animata del servizio (`src/components/Illustrazione.astro`): il sito con il cursore che clicca e la richiesta che arriva; la scheda prodotto con il carrello che conta e l'ordine; il cruscotto «Buongiorno, Marco» con l'assistente che ha preparato i preventivi; i programmi collegati all'occhio in mezzo; il telefono con l'annuncio, il bersaglio e i numeri; il grafico che sale con il report del mese. Su telefono l'illustrazione va sopra il titolo.
+1. **Hero** — titolo, frase semplice, "a partire da", bottoni preventivo (con il servizio già scelto) e WhatsApp. A destra un'illustrazione animata del servizio (`src/components/Illustrazione.astro`): il sito con il cursore che clicca e la richiesta che arriva; la scheda prodotto con il carrello che conta e l'ordine; il cruscotto «Buongiorno, Marco» con l'assistente che ha preparato i preventivi; i programmi collegati all'icona del logo in mezzo; il telefono con l'annuncio, il bersaglio e i numeri; il grafico che sale con il report del mese. Su telefono l'illustrazione va sopra il titolo.
 2. **Cosa ottieni** — sei punti con icona.
 3. **Come funziona** — quattro tappe unite da una linea con una luce che scorre.
    - **Demo guidate** (solo Automazioni e AI): subito dopo, due demo uguali a quelle della pagina `/demo` (vedi sotto): «Da WhatsApp all'agenda» e «Il preventivo da una foto», con il rimando a tutte le demo.
@@ -286,7 +285,7 @@ Tre passi, il meno possibile da leggere e da scrivere.
 - Particelle: circa 14.000 su desktop e 6.000 su mobile. Si spengono se il dispositivo è lento o se è attivo "riduci movimento". La scena si carica **dopo** il testo.
 - Deploy su **Vercel**, come il sito di Lorenzo.
 - **Telefoni vecchi e pieghevoli:**
-  - **iOS 14 e 15.** Il codice è compilato per Safari e iOS 14 in su (`vite.build.target` in `astro.config.mjs`), quindi la scena 3D gira anche su un iPhone 7. Se la scena non parte, al suo posto compare l'occhio disegnato. Ogni misura in `svh` ha anche la versione in `vh` per chi non la capisce, e `.at()` è aggiunto per Safari prima della 15.4.
+  - **iOS 14 e 15.** Il codice è compilato per Safari e iOS 14 in su (`vite.build.target` in `astro.config.mjs`), quindi la scena 3D gira anche su un iPhone 7. Se la scena non parte, al suo posto compare la griglia disegnata. Ogni misura in `svh` ha anche la versione in `vh` per chi non la capisce, e `.at()` è aggiunto per Safari prima della 15.4.
   - **iPhone Duo.** Lo schermo interno misura 626×890 punti in verticale e 890×626 in orizzontale, quello esterno 466×678. Dai 600 px i servizi stanno su 2 colonne. Tra 600 e 900 px la barra in basso resta larga al massimo 520 px. In orizzontale con poca altezza l'hero è compatto e senza le didascalie sopra l'occhio. Sugli schermi bassi come quello esterno l'occhio ha più spazio e il testo è più compatto.
 - **CSS dentro ogni pagina** (`inlineStylesheets: 'always'` in `astro.config.mjs`): non c'è un file di stile da scaricare a parte. Così una pagina non può mai comparire «nuda», cioè bianca, con il logo gigante e senza stile. Succedeva su un browser che aveva tenuto in cache, per un anno, un CSS vecchio o non trovato. JS e font stanno in `/_sd/` con cache lunga: hanno nomi con l'impronta del contenuto, quindi a ogni modifica cambia anche il nome.
 - Obiettivi: Lighthouse > 90 su mobile, testo leggibile prima di 1,5 secondi.

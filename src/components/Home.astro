@@ -2,7 +2,7 @@
 // La home in italiano (/) e in inglese (/en/): stessa struttura, testi nella lingua della pagina.
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
-import Occhio from './Occhio.astro';
+import Cursore from './Cursore.astro';
 import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -107,21 +107,21 @@ const jsonLd = {
   <section class="hero" id="inizio" data-forma="0" data-lato="destra" data-x="1.13" data-scala="0.86" data-y-mobile="0.3" data-scala-mobile="0.42" data-luce-mobile="1">
     <div class="wrap">
       <div class="hero-testo">
-        <div class="hero-spazio-occhio" aria-hidden="true"><Occhio espressione="curioso" class="occhio-riserva" /></div>
+        <div class="hero-spazio-occhio" aria-hidden="true"><Cursore stato="griglia" class="occhio-riserva" /></div>
         <span class="capitolo" data-appare>{T('Capitolo 01 · Attenzione', 'Chapter 01 · Attention')}</span>
         {it ? (
           <h1 data-righe>
             <span class="riga riga-nome" data-riga-nome hidden><span><span data-saluto></span><span data-nome></span>,</span></span>
             <span class="riga"><span data-minuscola>Trasformiamo</span></span>
             <span class="riga"><span>chi ti guarda</span></span>
-            <span class="riga"><span>in chi ti <span class="em em-firma" data-stelle>sceglie.</span></span></span>
+            <span class="riga"><span>in chi ti <span class="parola-punto" data-stelle>sceglie<span class="quadratino" aria-hidden="true"></span></span></span></span>
           </h1>
         ) : (
           <h1 data-righe>
             <span class="riga riga-nome" data-riga-nome hidden><span><span data-saluto></span><span data-nome></span>,</span></span>
             <span class="riga"><span>We turn</span></span>
             <span class="riga"><span>attention</span></span>
-            <span class="riga"><span>into <span class="em em-firma" data-stelle>clients.</span></span></span>
+            <span class="riga"><span>into <span class="parola-punto" data-stelle>clients<span class="quadratino" aria-hidden="true"></span></span></span></span>
           </h1>
         )}
         {it ? (
@@ -165,7 +165,7 @@ const jsonLd = {
     <div class="nastro-traccia">
       {[0, 1].map(() => (
         <div class="nastro-gruppo">
-          {parole.map((p) => <span>{p}<i>✦</i></span>)}
+          {parole.map((p) => <span>{p}<i></i></span>)}
         </div>
       ))}
     </div>
@@ -626,7 +626,7 @@ const jsonLd = {
   .nastro-traccia { display: flex; width: max-content; animation: nastro 38s linear infinite; }
   .nastro-gruppo { display: flex; }
   .nastro span { display: inline-flex; align-items: center; gap: 2.2rem; padding-right: 2.2rem; font-family: var(--f-titolo); font-size: clamp(1.1rem, 2vw, 1.6rem); font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; color: var(--nebbia); }
-  .nastro i { font-style: normal; color: var(--viola); font-size: .8em; }
+  .nastro i { width: .32em; height: .32em; background: var(--rosso); }
   @keyframes nastro { to { transform: translateX(-50%); } }
 </style>
 

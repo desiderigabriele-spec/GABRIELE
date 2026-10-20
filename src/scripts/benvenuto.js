@@ -1,6 +1,6 @@
-// «Personalizza»: un pannellino sotto il bottone dei colori, con il nome e il colore.
-// Tutto cambia mentre scegli: il nome compare nei titoli, il colore su tutto il sito.
-import { leggiProfilo, salvaProfilo, pulisciNome, impostaTema, applicaProfilo, TEMI_SITO } from './profilo.js';
+// «Personalizza»: un pannellino sotto il bottone «Aa», con il nome del visitatore.
+// Cambia mentre scrivi: il nome compare nei titoli e nei messaggi.
+import { leggiProfilo, salvaProfilo, pulisciNome, applicaProfilo } from './profilo.js';
 
 const traccia = (e, d) => window.gdTrack?.(e, d);
 
@@ -12,13 +12,11 @@ export function avviaPersonalizza(scena) {
   if (!box) return;
 
   const input = box.querySelector('[data-pt-nome]');
-  const colori = [...box.querySelectorAll('[data-tema-scelta]')];
   const bottoni = [...document.querySelectorAll('[data-personalizza]')];
   const invito = document.querySelector('[data-pt-invito]');
   let aperto = false, origine = null, nomeScritto = p.nome || '';
 
   const salva = () => { salvaProfilo(p); applicaProfilo(p); };
-  const segnaColore = () => colori.forEach((c) => c.setAttribute('aria-checked', String(c.dataset.temaScelta === (p.tema || 'blu'))));
 
   // il pannello si apre sotto il bottone dell'header (su telefono, sotto la barra in alto)
   function posiziona() {
@@ -33,7 +31,6 @@ export function avviaPersonalizza(scena) {
     origine = da || null;
     p = leggiProfilo();
     input.value = p.nome || '';
-    segnaColore();
     posiziona();
     box.hidden = false;
     requestAnimationFrame(() => box.classList.add('aperto'));
@@ -46,7 +43,6 @@ export function avviaPersonalizza(scena) {
     if (!aperto) return;
     aperto = false;
     scriviNome();
-    impostaTema(p.tema);
     box.classList.remove('aperto');
     bottoni.forEach((b) => b.setAttribute('aria-expanded', 'false'));
     setTimeout(() => { if (!aperto) box.hidden = true; }, 250);
@@ -65,21 +61,6 @@ export function avviaPersonalizza(scena) {
   });
   input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); chiudi(); } });
   input.addEventListener('change', scriviNome);
-
-  // il colore: anteprima passandoci sopra, scelta con il clic
-  colori.forEach((c) => {
-    c.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') impostaTema(c.dataset.temaScelta); });
-    c.addEventListener('focus', () => impostaTema(c.dataset.temaScelta));
-    c.addEventListener('click', () => {
-      if (!TEMI_SITO.includes(c.dataset.temaScelta)) return;
-      p.tema = c.dataset.temaScelta; p.fatto = true; salva();
-      impostaTema(p.tema); segnaColore();
-      traccia('personalizza_colore', { tema: p.tema });
-    });
-  });
-  const gruppo = box.querySelector('.pt-colori');
-  gruppo.addEventListener('pointerleave', () => impostaTema(p.tema));
-  gruppo.addEventListener('focusout', (e) => { if (!gruppo.contains(e.relatedTarget)) impostaTema(p.tema); });
 
   bottoni.forEach((b) => b.addEventListener('click', (e) => {
     e.preventDefault();

@@ -1,10 +1,8 @@
-// Il profilo che il visitatore sceglie in «Personalizza»: nome e colore.
+// Il profilo che il visitatore sceglie in «Personalizza»: il nome.
 // Resta solo nel suo browser (localStorage) e serve a rendere il sito più suo.
 const CHIAVE = 'gd-profilo';
 const html = document.documentElement;
 export const lang = html.lang === 'en' ? 'en' : 'it';
-
-export const TEMI_SITO = ['blu', 'rosso', 'viola', 'verde'];
 
 const TESTI = {
   it: {
@@ -29,12 +27,6 @@ export function salvaProfilo(p) {
 export function pulisciNome(v) {
   const n = String(v || '').replace(/[^\p{L}\s'’-]/gu, '').replace(/\s+/g, ' ').trim().slice(0, 24);
   return n ? n.charAt(0).toLocaleUpperCase(lang) + n.slice(1) : '';
-}
-
-export function impostaTema(tema) {
-  const t = TEMI_SITO.includes(tema) ? tema : 'blu';
-  if (t === 'blu') delete html.dataset.tema; else html.dataset.tema = t;
-  window.dispatchEvent(new CustomEvent('gd-tema', { detail: t }));
 }
 
 // Applica il profilo alla pagina: nome nei titoli e nei messaggi
