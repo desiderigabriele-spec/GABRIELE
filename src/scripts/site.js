@@ -290,7 +290,7 @@ document.addEventListener('click', (e) => {
 // ==========================================================================
 // Il fuoco: i puntini si accendono di rosso sul servizio che guardi, un cuore a chi torna
 // ==========================================================================
-// un solo colore per tutti i servizi: il colore d'accento scelto
+// un solo colore per tutti i servizi: il rosso del logo
 const accento = () => getComputedStyle(html).getPropertyValue('--rosso').trim() || '#e30613';
 const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} } };
 const ls = { get: (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} } };

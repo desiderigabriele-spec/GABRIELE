@@ -1,4 +1,4 @@
-// Il profilo che il visitatore sceglie nel pannello «Il tuo sito»: il nome, chiaro o scuro, il colore d'accento.
+// Il profilo del visitatore: il nome, chiesto all'ingresso (o cambiato da «Aa»).
 // Resta solo nel suo browser (localStorage) e serve a rendere il sito più suo.
 const CHIAVE = 'gd-profilo';
 const html = document.documentElement;
@@ -15,26 +15,6 @@ const TESTI = {
     saluto: (h) => (h >= 5 && h < 12 ? 'Good morning, ' : h >= 12 && h < 18 ? 'Good afternoon, ' : 'Good evening, '),
   },
 }[lang];
-
-export const ASPETTI = ['scuro', 'chiaro'];
-export const ACCENTI = ['rosso', 'blu', 'verde', 'rosa', 'viola'];
-const sistemaChiaro = () => window.matchMedia?.('(prefers-color-scheme: light)').matches;
-
-// chiaro o scuro: quello scelto, altrimenti quello del telefono o del computer; il colore: quello scelto, altrimenti il rosso
-export function applicaAspetto(p = leggiProfilo()) {
-  const aspetto = ASPETTI.includes(p.aspetto) ? p.aspetto : sistemaChiaro() ? 'chiaro' : 'scuro';
-  const accento = ACCENTI.includes(p.accento) ? p.accento : 'rosso';
-  if (aspetto === 'chiaro') html.dataset.tema = 'chiaro'; else delete html.dataset.tema;
-  if (accento === 'rosso') delete html.dataset.accento; else html.dataset.accento = accento;
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', aspetto === 'chiaro' ? '#FAFAF8' : '#0A0A0A');
-  window.dispatchEvent(new CustomEvent('gd-aspetto', { detail: { aspetto, accento } }));
-  return { aspetto, accento };
-}
-// se il visitatore non ha scelto, il sito segue il sistema anche quando cambia (per esempio di sera)
-window.matchMedia?.('(prefers-color-scheme: light)').addEventListener?.('change', () => { if (!leggiProfilo().aspetto) applicaAspetto(); });
-// il colore d'accento in uso, per chi disegna su canvas (scena 3D, griglia, mappa)
-export const coloreAccento = () => getComputedStyle(html).getPropertyValue('--rosso').trim() || '#e30613';
-export const coloreTesto = () => getComputedStyle(html).getPropertyValue('--latte').trim() || '#ffffff';
 
 export function leggiProfilo() {
   try { return JSON.parse(localStorage.getItem(CHIAVE) || 'null') || {}; } catch (_) { return {}; }

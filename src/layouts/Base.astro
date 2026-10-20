@@ -39,8 +39,6 @@ const voci = t.nav.map(([id, testo]) => ({ id, href: id.startsWith('@') ? url(id
 // la voce attiva: la pagina AI, una pagina servizio («Servizi») o, in home, la sezione in vista (site.js)
 const suServizio = current.startsWith(lang === 'en' ? '/en/services/' : '/servizi/');
 const prezzoDa = (s: { da: number; mese?: boolean }) => `${t.da} ${euro(s.da, lang)}${s.mese ? t.mese : ''}`;
-// i colori d'accento del pannello «Il tuo sito» (stessi valori di global.css)
-const accenti = [{ id: 'rosso', c: '#E30613' }, { id: 'blu', c: '#1F5EFF' }, { id: 'verde', c: '#16A34A' }, { id: 'rosa', c: '#FF4F9A' }, { id: 'viola', c: '#7C3AED' }];
 const hrefIt = lang === 'it' ? path : alt;
 const hrefEn = lang === 'en' ? path : alt;
 ---
@@ -78,13 +76,10 @@ const hrefEn = lang === 'en' ? path : alt;
         var at = function (n) { n = Math.trunc(n) || 0; if (n < 0) n += this.length; return this[n]; };
         [Array, String, Float32Array, Uint8Array, Uint16Array, Uint32Array, Int32Array].forEach(function (C) { if (C && !C.prototype.at) Object.defineProperty(C.prototype, 'at', { value: at, writable: true, configurable: true }); });
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) h.classList.add('ridotto');
-        // nome, chiaro o scuro e colore scelti in «Il tuo sito» (senza scelta: chiaro o scuro come il sistema, colore rosso)
+        // il nome scelto all'ingresso o in «Aa»
         try {
           var p = JSON.parse(localStorage.getItem('gd-profilo') || 'null') || {};
           if (p.nome) h.classList.add('ha-nome');
-          var chiaro = p.aspetto ? p.aspetto === 'chiaro' : window.matchMedia('(prefers-color-scheme: light)').matches;
-          if (chiaro) h.dataset.tema = 'chiaro';
-          if (['blu', 'verde', 'rosa', 'viola'].indexOf(p.accento) > -1) h.dataset.accento = p.accento;
         } catch (e) {}
         // Intro col cursore rosso: solo alla prima pagina della visita
         try { if (!sessionStorage.getItem('gd-intro')) h.classList.add('intro-attiva'); } catch (e) {}
@@ -187,24 +182,22 @@ const hrefEn = lang === 'en' ? path : alt;
       </div>
       <label class="pt-domanda" for="pt-nome">{t.ptNome}</label>
       <input id="pt-nome" type="text" autocomplete="given-name" maxlength="24" placeholder={t.ptNomeSegnaposto} enterkeyhint="done" data-pt-nome />
-      <p class="pt-domanda" id="pt-aspetto">{t.ptAspetto}</p>
-      <div class="pt-aspetti" role="radiogroup" aria-labelledby="pt-aspetto">
-        {[['scuro', t.ptScuro], ['chiaro', t.ptChiaro]].map(([id, nome]) => (
-          <button class="pt-aspetto" type="button" role="radio" aria-checked="false" data-aspetto-scelta={id}><i aria-hidden="true" class={`pt-anteprima pt-${id}`}></i>{nome}</button>
-        ))}
-      </div>
-      <p class="pt-domanda" id="pt-colore">{t.ptColore}</p>
-      <div class="pt-colori" role="radiogroup" aria-labelledby="pt-colore">
-        {accenti.map((c, i) => (
-          <button class="pt-colore" type="button" role="radio" aria-checked="false" data-accento-scelta={c.id} style={`--c:${c.c}`} aria-label={t.ptColori[i]}><i aria-hidden="true"></i></button>
-        ))}
-      </div>
       <p class="pt-nota">{t.ptNota}</p>
     </div>
-    <div class="pt-invito" data-pt-invito hidden role="status">
-      <span>{t.ptInvito}</span>
-      <button type="button" aria-label={t.chiudi} data-pt-invito-chiudi>×</button>
-    </div>
+    <!-- All'ingresso: il nome, chiesto una volta sola. Poi compare solo nei punti che contano (titolo, preventivo, finale, messaggi). -->
+    <dialog class="chiedi-nome" data-chiedi-nome aria-labelledby="cn-titolo">
+      <form method="dialog" class="cn-box" data-cn-form>
+        <Cursore stato="aspetta" />
+        <h2 id="cn-titolo">{t.cnTitolo}</h2>
+        <p>{t.cnTesto}</p>
+        <label class="sr-only" for="cn-nome">{t.ptNome}</label>
+        <input id="cn-nome" name="nome" type="text" autocomplete="given-name" maxlength="24" placeholder={t.ptNomeSegnaposto} enterkeyhint="go" data-cn-nome />
+        <div class="cn-azioni">
+          <button class="btn btn-azione" type="submit" value="si" data-cn-si>{t.cnEntra} <span class="freccia" aria-hidden="true">→</span></button>
+          <button class="cn-salta" type="submit" value="no" formnovalidate>{t.cnSalta}</button>
+        </div>
+      </form>
+    </dialog>
 
     <div class="menu-mobile" id="menu-mobile" data-menu inert data-lenis-prevent>
       <ul class="mm-voci" role="list">

@@ -43,7 +43,7 @@ function ciclo(ora) {
 }
 function aggiungi(p) { parti.push(p); if (!inCorso) { inCorso = true; requestAnimationFrame(ciclo); } }
 
-// i colori del tema in uso: il testo (bianco o nero) e il colore d'accento scelto
+// i colori del sito: il bianco del testo e il rosso del logo
 function scoppio(x, y) {
   preparaTela();
   const cs = getComputedStyle(html);

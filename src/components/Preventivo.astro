@@ -40,14 +40,13 @@ const passoDi = (n: number) => T(`Passo ${n} di 3`, `Step ${n} of 3`);
       <header class="pv-testa">
         <span class="capitolo">{T('Preventivo automatico', 'Instant quote')}</span>
         <h1 data-righe>
-          <span class="riga"><span>{T('Componi il tuo', 'Build your')}</span></span>
+          <span class="riga"><span><span data-nome-prefisso></span><span data-minuscola>{T('Componi il tuo', 'Build your')}</span></span></span>
           <span class="riga"><span><span class="em em-firma">{T('progetto.', 'project.')}</span></span></span>
         </h1>
         <p class="lead">{T(
           'Tre passi, due minuti, nessun impegno. Il prezzo si aggiorna mentre scegli.',
           'Three steps, two minutes, no commitment. The price updates as you choose.',
         )}</p>
-        <p class="pv-varianti">{T('Anche il tuo sito può avere più versioni di colore, come questo:', 'Your website can also come in several colour versions, like this one:')} <button type="button" data-personalizza aria-controls="pannello-tema">{T('prova a cambiarlo', 'try changing it')}</button>.</p>
         <p class="pv-svizzera" data-svizzera hidden>
           {T('Sei in Svizzera?', 'Are you in Switzerland?')} <button type="button" data-valuta-scegli="CHF">{T('Mostra i prezzi anche in franchi', 'Show prices in Swiss francs too')}</button>
         </p>

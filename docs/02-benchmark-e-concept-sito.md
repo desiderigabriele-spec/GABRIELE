@@ -78,7 +78,7 @@ Su telefono la griglia sta sopra il titolo, a piena luce. Su computer, sotto la 
 ## 3. Identità visiva
 
 ### Colori: quelli del logo
-Il sito ha lo stesso stile del logo: **nero, bianco e un solo colore d'accento** (rosso di partenza, vedi sotto), angoli dritti, niente sfumature. Prima c'erano un blu, quattro temi a scelta e bottoni sfumati rosso → arancio: con il logo svizzero non andavano d'accordo. Il rosso è l'unico colore della pagina, quindi spicca da solo (effetto Von Restorff).
+Il sito ha lo stesso stile del logo: **nero, bianco e rosso**, angoli dritti, niente sfumature. Prima c'erano un blu, quattro temi a scelta e bottoni sfumati rosso → arancio: con il logo svizzero non andavano d'accordo. Il rosso è l'unico colore forte della pagina, quindi spicca da solo (effetto Von Restorff); il verde smeraldo compare solo nelle spunte.
 
 | Token | Colore | Ruolo |
 |---|---|---|
@@ -97,18 +97,23 @@ I nomi storici (`--viola`, `--ciano`, `--ambra`) restano nel codice ma ora valgo
 - Angoli dritti ovunque (`border-radius: 0` in `global.css`). Fa eccezione solo il telefono finto delle demo, che imita WhatsApp.
 - Elenchi, etichette e capitoli hanno un quadratino rosso al posto del pallino.
 
-### Chiaro o scuro, e il colore a scelta
-Il sito ha due versioni: **scura** (nero `#0A0A0A`) e **chiara** (`#FAFAF8`, colori invertiti). Senza una scelta segue il telefono o il computer di chi visita (`prefers-color-scheme`), anche quando cambia di sera. Il colore d'accento si sceglie tra **rosso** (quello di partenza), **blu**, **verde**, **rosa** e **viola**: cambia bottoni, quadratini, parole in evidenza, particelle e filo rosso. Ogni colore ha due toni per le parole (uno per il fondo scuro, uno per il chiaro) e il testo del bottone bianco o nero, così il contrasto resta AA (`html[data-accento]` e `html[data-tema='chiaro']` in `global.css`). Il messaggio: «Ti diamo più versioni e scegli tu. Lo facciamo anche per il tuo sito».
+### Solo nero e rosso
+Il sito ha una sola versione: sfondo nero `#0A0A0A`, testo bianco e il rosso del logo `#E30613`. La versione chiara e i colori a scelta sono stati provati e tolti: il sito deve essere riconoscibile sempre allo stesso modo. Nei **video social** il quadratino del logo può ancora cambiare colore (da rivedere quando si rifanno i video).
 
-**Il logo resta sempre rosso** `#E30613`: è scritto nei file SVG e non segue l'accento. Gli «schermi» disegnati (codice, terminale, finte app) restano scuri anche nella versione chiara. Nei **video social** invece il quadratino del logo cambia colore, per dire che ci adattiamo ai gusti di chi ci sceglie.
+**Il verde smeraldo** `#10B981` compare in un solo posto: le spunte («incluso», «fatto») nelle card dei servizi, dei piani e del preventivo. Così il verde vuol dire sempre «questo è tuo» e non compete con il rosso, che resta per le azioni.
 
-**Lampeggi e rosso, con misura:** lampeggia un solo cursore, quello del titolo, e si ferma dopo un giro di parole; il quadratino della scena lampeggia solo nei primi secondi; tutti gli altri quadratini stanno fermi. La tendina tra le pagine ha il colore dello sfondo e prende il colore d'accento solo quando è piccola, così non c'è mai uno schermo tutto rosso.
+**Le icone dei servizi** sono tasselli bianchi con il disegno nero, un riempimento rosato e il punto rosso del logo; passandoci sopra il tassello diventa rosso.
 
-### Personalizzazione (bottone «Aa» nell'header: «Il tuo sito»)
-Il bottone «Aa» apre il pannellino «Il tuo sito» con tre scelte: il nome, chiaro o scuro, il colore. Anche nel preventivo una riga lo ricorda («Anche il tuo sito può avere più versioni di colore, come questo: prova a cambiarlo»).
-1. **Come ti chiami?** Mentre scrivi, il nome compare nel titolo dell'hero, grande come il titolo e in rosso, con il saluto dell'ora (Buongiorno 5-14, Ciao 14-18, Buonasera 18-5: «Buonasera Marco, trasformiamo…»), poi nel titolo finale, nel messaggio WhatsApp, nel «Rieccoti» e nel campo nome del preventivo. Quando hai finito, le particelle scrivono il nome per qualche secondo.
+**Lampeggi e rosso, con misura:** lampeggia un solo cursore, quello del titolo, e si ferma dopo un giro di parole; il quadratino della scena lampeggia solo nei primi secondi; tutti gli altri quadratini stanno fermi. La griglia dietro al titolo è fatta solo di puntini bianchi: si gonfiano sotto il mouse e tornano piatti quando il mouse si ferma (niente puntini rossi che girano da soli dietro al testo). La tendina tra le pagine ha il colore dello sfondo e diventa rossa solo quando è piccola, così non c'è mai uno schermo tutto rosso.
 
-Si chiude con Invio, Esc, la × o toccando fuori. Alla prima visita compare una volta un piccolo invito sotto il bottone («Scegli i colori del sito: lo facciamo anche con il tuo progetto»), mai insieme all'avviso della lingua. Tutto resta nel browser (`localStorage gd-profilo`: `nome`, `aspetto`, `accento`), niente viene inviato.
+### Il nome, chiesto all'ingresso
+Alla prima visita, dopo l'intro, si apre un riquadro: «Prima di iniziare: come ti chiami?», con «Entra» e «Preferisco di no» (anche Esc o un tocco fuori valgono come no). Si chiede una volta sola (`localStorage gd-nome-chiesto`). Il nome poi compare solo nei punti dove serve sentirsi chiamati in causa:
+1. il titolo dell'hero, in rosso, con il saluto dell'ora (Buongiorno 5-14, Ciao 14-18, Buonasera 18-5: «Buonasera Marta, trasformiamo…»), mentre le particelle scrivono il nome per qualche secondo;
+2. il titolo del preventivo («Marta, componi il tuo sito»);
+3. il titolo finale e il messaggio WhatsApp precompilato;
+4. il «Rieccoti» alla visita dopo.
+
+Il bottone «Aa» nell'header apre il pannellino «Il tuo nome» per cambiarlo. Tutto resta nel browser (`localStorage gd-profilo`: `nome`), niente viene inviato.
 
 ### La voce: Desideri & Code, al plurale
 Tutto il sito parla come studio («facciamo», «ti rispondiamo», «scrivici»). Gabriele compare in terza persona solo in «Lo studio», come fondatore. I messaggi WhatsApp precompilati salutano lo studio («Ho visto il sito di Desideri & Code e vorrei parlarvi di un progetto»). Resta al singolare solo l'informativa privacy, dove il titolare dei dati è la persona.

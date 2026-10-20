@@ -6,16 +6,8 @@ const ridotto = html.classList.contains('ridotto');
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} }, via: (k) => { try { sessionStorage.removeItem(k); } catch (_) {} } };
 const SEGNI = '01<>/{}[]#$%&*+=?;:_';
-// i colori del tema in uso (cambiano dal pannello «Il tuo sito»)
+// i colori del sito: il rosso del logo e il bianco
 const tinte = { accento: '#e30613', accentoRgb: '227, 6, 19', testo: '#ffffff' };
-function leggiTinte() {
-  const cs = getComputedStyle(html);
-  tinte.accento = cs.getPropertyValue('--rosso').trim() || '#e30613';
-  tinte.accentoRgb = cs.getPropertyValue('--rosso-rgb').trim() || '227, 6, 19';
-  tinte.testo = cs.getPropertyValue('--latte').trim() || '#ffffff';
-}
-leggiTinte();
-window.addEventListener('gd-aspetto', leggiTinte);
 
 // chiama fn la prima volta che el entra nello schermo
 function quandoVisibile(el, fn, soglia = 0.25) {
@@ -90,20 +82,20 @@ function grigliaMagnetica() {
   const segui = (cx, cy) => { const r = box.getBoundingClientRect(); p.x = cx - r.left; p.y = cy - r.top; mano = performance.now(); };
   window.addEventListener('pointermove', (e) => segui(e.clientX, e.clientY), { passive: true });
   window.addEventListener('touchmove', (e) => { const t = e.touches[0]; if (t) segui(t.clientX, t.clientY); }, { passive: true });
+  let forza = 0;
   mentreVisibile(box, (t) => {
-    // senza mouse un «visitatore finto» gira sulla griglia
+    // solo puntini bianchi: si gonfiano sotto il mouse e, quando il mouse si ferma, tornano piatti
     const fermo = t - mano > 1800;
-    const tx = fermo ? W * (0.5 + 0.38 * Math.cos(t / 2600)) : p.x;
-    const ty = fermo ? H * (0.55 + 0.3 * Math.sin(t / 1300)) : p.y;
-    g.x += (tx - g.x) * (fermo ? 0.04 : 0.25); g.y += (ty - g.y) * (fermo ? 0.04 : 0.25);
+    forza += ((fermo ? 0 : 1) - forza) * (fermo ? 0.03 : 0.2);
+    g.x += (p.x - g.x) * 0.25; g.y += (p.y - g.y) * 0.25;
     ctx.clearRect(0, 0, W, H);
     const R = Math.min(190, W * 0.3);
+    ctx.fillStyle = tinte.testo;
     for (let y = P / 2; y < H; y += P) for (let x = P / 2; x < W; x += P) {
       const d = Math.hypot(x - g.x, y - g.y);
-      const k = Math.max(0, 1 - d / R);
+      const k = Math.max(0, 1 - d / R) * forza;
       const s = 1.6 + 6 * k * k;
       ctx.globalAlpha = 0.09 + 0.5 * k;
-      ctx.fillStyle = d < 54 ? tinte.accento : tinte.testo;
       ctx.beginPath(); ctx.arc(x, y, s / 2, 0, 6.283); ctx.fill();
     }
     ctx.globalAlpha = 1;
@@ -228,7 +220,7 @@ function tabellone() {
 // ---------- 11 · Tendina rossa: tra una pagina e l'altra il quadratino copre tutto e si richiude ----------
 function tendina() {
   // arrivo: la pagina nasce coperta di rosso (classe messa nel <head>), il rosso si richiude sul logo
-  // la tendina ha il colore dello sfondo; diventa del colore d'accento solo quando è piccola (niente schermo rosso)
+  // la tendina ha il colore dello sfondo; diventa rossa solo quando è piccola (niente schermo rosso)
   if (html.classList.contains('tendina-arrivo')) {
     const velo = document.createElement('span');
     velo.className = 'tendina';

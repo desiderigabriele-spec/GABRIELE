@@ -9,7 +9,7 @@ type Stato = 'aspetta' | 'pensa' | 'fatto' | 'festa' | 'perso' | 'saluta' | 'gri
 interface Props { stato?: Stato; class?: string }
 const { stato = 'aspetta', class: classe = '' } = Astro.props;
 
-// il colore d'accento scelto nel pannello «Il tuo sito» (rosso se non c'è)
+// il rosso del logo (dalla variabile del sito)
 const ROSSO = 'var(--rosso, #E30613)';
 const q = (x: number, y: number, l: number, cls = '', fill = ROSSO) => `<rect class="${cls}" x="${x}" y="${y}" width="${l}" height="${l}" style="fill:${fill}"/>`;
 let s = '';
