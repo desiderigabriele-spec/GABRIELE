@@ -212,10 +212,25 @@ function raggiX() {
   });
 }
 
-// ---------- I tre problemi: una riga rossa barra la frase vecchia, sotto compare cosa facciamo noi ----------
-function barrate() {
-  document.querySelectorAll('[data-barrate]').forEach((box) => {
-    [...box.children].forEach((r) => quandoVisibile(r, () => setTimeout(() => r.classList.add('on'), 250), 0.7));
+// ---------- I tre problemi: le schede si girano da sole una alla volta, finché non ne tocchi una ----------
+function giraSchede() {
+  document.querySelectorAll('[data-giro]').forEach((box) => {
+    const carte = [...box.querySelectorAll('.carta')];
+    let mano = false, i = 0;
+    const gira = (c, si) => { c.classList.toggle('girata', si); c.setAttribute('aria-pressed', String(si)); };
+    carte.forEach((c) => c.addEventListener('click', () => { mano = true; gira(c, !c.classList.contains('girata')); }));
+    if (ridotto) return;
+    let id = 0;
+    new IntersectionObserver(([v]) => {
+      clearInterval(id);
+      if (!v.isIntersecting || mano) return;
+      id = setInterval(() => {
+        if (mano) { clearInterval(id); return; }
+        // una girata alla volta, poi tutte e tre davanti
+        carte.forEach((c, k) => gira(c, k === i % (carte.length + 1)));
+        i++;
+      }, 1900);
+    }, { threshold: 0.4 }).observe(box);
   });
 }
 
@@ -496,6 +511,7 @@ function righeCheSiScrivono() {
 
 export function avviaVita() {
   tendina();
+  giraSchede(); // le schede si girano col tocco anche con «riduci movimento»
   if (ridotto) return;
   html.classList.add('vita-on');
   cursoreCheScrive();
@@ -504,7 +520,6 @@ export function avviaVita() {
   decodifica();
   raggiX();
   puntoTitoli();
-  barrate();
   tabellone();
   cinetica();
   peso();

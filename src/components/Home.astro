@@ -196,20 +196,22 @@ const jsonLd = {
           </h2>
         )}
       </div>
-      <!-- i tre problemi: la frase vecchia si barra in rosso, sotto compare cosa facciamo noi (vita.js, barrate) -->
-      <ul class="barrate" data-barrate role="list">
+      <!-- i tre problemi: schede che si girano, davanti il problema, dietro cosa facciamo (vita.js, giraSchede) -->
+      <ul class="giro" data-giro role="list">
         {(it ? [
-          ['Online sei invisibile.', 'Ti trovano su Google, nella tua zona.'],
-          ['Chiudono la pagina in 3 secondi.', 'Capiscono subito cosa fai e restano.'],
-          ['Visite tante, richieste poche.', 'Un percorso chiaro fino al «ti scrivo».'],
+          ['Online sei invisibile.', 'Ti portiamo su Google nella tua zona, dove ti cercano.'],
+          ['Chiudono in 3 secondi.', 'Un sito veloce che dice subito cosa fai e per chi.'],
+          ['Ti guardano, ma non scrivono.', 'Prezzi chiari, recensioni in vista e un bottone solo.'],
         ] : [
-          ["Online you're invisible.", 'They find you on Google, in your area.'],
-          ['They close the page in 3 seconds.', 'They get what you do straight away and stay.'],
-          ['Lots of visits, few enquiries.', 'A clear path all the way to "let\'s talk".'],
-        ]).map(([vecchia, nuova]) => (
-          <li class="ba-riga">
-            <s class="ba-vecchia"><span class="sr-only">{T('Prima: ', 'Before: ')}</span>{vecchia}</s>
-            <span class="ba-nuova"><span class="sr-only">{T('Con noi: ', 'With us: ')}</span>{nuova}</span>
+          ["Online you're invisible.", 'We get you onto Google in your area, where people search.'],
+          ['They leave in 3 seconds.', 'A fast site that says straight away what you do and for whom.'],
+          ["They look, but don't write.", 'Clear prices, reviews in sight and a single button.'],
+        ]).map(([problema, soluzione], i) => (
+          <li>
+            <button class="carta" type="button" aria-pressed="false" aria-label={`${problema} ${T('Cosa facciamo:', 'What we do:')} ${soluzione}`}>
+              <span class="faccia f1" aria-hidden="true"><b>0{i + 1}</b><span>{problema}</span><small>{T('Tocca', 'Tap')}</small></span>
+              <span class="faccia f2" aria-hidden="true"><small>{T('Cosa facciamo', 'What we do')}</small><span>{soluzione}</span></span>
+            </button>
           </li>
         ))}
       </ul>

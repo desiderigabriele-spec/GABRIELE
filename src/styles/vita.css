@@ -331,17 +331,22 @@ html.ridotto .cursori-testo span { width: auto; }
 .cursori-box { max-width: 100%; overflow: hidden; }
 
 
-/* i tre problemi: la frase vecchia si barra, sotto compare cosa facciamo noi */
-.barrate { list-style: none; margin: clamp(20px, 4svh, 48px) 0 0; padding: 0; display: grid; gap: clamp(16px, 3svh, 30px); }
-.ba-riga { display: grid; gap: .35rem; }
-.ba-vecchia { position: relative; justify-self: start; text-decoration: none; font-family: var(--f-titolo); font-size: clamp(1.6rem, min(4.2vw, 6svh), 3.2rem); font-weight: 800; letter-spacing: -0.045em; line-height: 1.04; color: var(--nebbia-2); }
-.ba-vecchia::after { content: ""; position: absolute; left: -1.5%; right: -1.5%; top: 54%; height: max(3px, .08em); background: var(--rosso); transform-origin: left; }
-.ba-nuova { display: flex; gap: .6rem; align-items: center; font-size: clamp(1rem, 1.4vw, 1.25rem); font-weight: 600; color: var(--latte); }
-.ba-nuova::before { content: ""; width: 20px; height: 20px; flex: none; background: var(--smeraldo) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='3.6' stroke-linecap='square'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 13px no-repeat; }
-html.vita-on .ba-riga:not(.on) .ba-vecchia::after { transform: scaleX(0); }
-html.vita-on .ba-riga:not(.on) .ba-nuova { opacity: 0; transform: translateY(8px); }
-html.vita-on .ba-vecchia::after { transition: transform .65s cubic-bezier(.6, 0, .2, 1); }
-html.vita-on .ba-nuova { transition: opacity .5s var(--ease) .55s, transform .5s var(--ease) .55s; }
+/* i tre problemi: schede che si girano (davanti il problema, dietro cosa facciamo) */
+.giro { list-style: none; margin: clamp(20px, 4svh, 44px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; perspective: 1200px; }
+.giro li { min-width: 0; }
+.carta { position: relative; display: block; width: 100%; height: clamp(170px, 26svh, 220px); border: 0; padding: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; transform-style: preserve-3d; transition: transform .7s cubic-bezier(.6, 0, .2, 1); }
+.carta.girata { transform: rotateY(180deg); }
+.carta:focus-visible { outline: 2px solid var(--latte); outline-offset: 3px; }
+.faccia { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; padding: clamp(16px, 2.4vw, 24px); display: grid; align-content: space-between; border: 1px solid var(--linea-forte); }
+.faccia.f1 { background: rgba(var(--sup-rgb), .9); }
+.faccia.f1 b { font-family: var(--f-titolo); font-size: clamp(2.4rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.05em; color: var(--rosso); line-height: .9; }
+.faccia.f1 span { font-family: var(--f-titolo); font-size: clamp(1.2rem, 1.8vw, 1.5rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; }
+.faccia small { font-family: var(--f-mono); font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: var(--nebbia-2); }
+.faccia.f2 { background: var(--latte); color: var(--notte); transform: rotateY(180deg); }
+.faccia.f2 span { font-size: clamp(1.02rem, 1.4vw, 1.2rem); font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; }
+.faccia.f2 small { color: #666; }
+@media (max-width: 820px) { .giro { grid-template-columns: minmax(0, 1fr); } .carta { height: 150px; } }
+html.ridotto .carta { transition: none; }
 
 /* le garanzie: una fila di badge */
 .garanzie-fila { list-style: none; margin: 0; padding: clamp(18px, 3svh, 28px) 0; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px 32px; border-block: 1px solid var(--linea); }

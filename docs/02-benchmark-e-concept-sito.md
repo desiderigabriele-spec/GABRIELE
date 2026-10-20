@@ -123,7 +123,7 @@ Focus è un occhio vero, in bianco e grigio, che vive nel tondino in basso a des
 - **Domande scritte:** per ora vanno a Gabriele su WhatsApp, con la domanda già nel messaggio. Per l'AI vera serve una funzione su Vercel con una chiave API (da decidere).
 
 ### I tre problemi e le garanzie
-- **Il problema:** tre frasi grandi in grigio («Online sei invisibile.»…); quando arrivi, una riga rossa le barra e sotto compare cosa facciamo noi, con la spunta verde.
+- **Il problema:** tre schede che si girano. Davanti il numero rosso e il problema in quattro parole («Online sei invisibile.»), dietro, su fondo bianco, cosa facciamo noi. Si girano da sole una alla volta finché non ne tocchi una; col tocco si girano anche con «riduci movimento».
 - **Le garanzie:** una fila sola di tre badge (icona con bordo rosso, tre parole, una riga sotto): ritocchi finché ti convince, tutto è tuo, prezzo firmato.
 - **Prima / dopo:** le due foto sono generate con l'AI (`public/img/pd-prima.webp`, bagno datato col flash; `pd-dopo.webp`, bagno nuovo da rivista).
 
