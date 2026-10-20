@@ -4,6 +4,7 @@
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
 import Illustrazione from './Illustrazione.astro';
+import Compila from './Compila.astro';
 import TuoSoftware from './TuoSoftware.astro';
 import Demo from './Demo.astro';
 import { dati } from '../i18n/dati.js';
@@ -66,7 +67,7 @@ const jsonLd = {
           <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
         </div>
       </div>
-      <div class="sv-ill" data-appare="0.15"><Illustrazione id={id} lang={lang} /></div>
+      <div class="sv-ill" data-appare="0.15">{id === 'sito' ? <Compila lang={lang} /> : <Illustrazione id={id} lang={lang} />}</div>
     </div>
   </section>
 

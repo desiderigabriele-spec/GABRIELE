@@ -1,0 +1,26 @@
+---
+// 15 · Prima / dopo: un sito «uguale a tutti» viene riscritto nello stile che fa scegliere (stili in vita.css)
+interface Props { lang?: 'it' | 'en' }
+const { lang = 'it' } = Astro.props;
+const T = (a: string, b: string) => (lang === 'it' ? a : b);
+---
+<figure class="prima-dopo-box" style="margin:0">
+  <div class="prima-dopo" role="img" aria-label={T('Animazione: un sito qualunque si trasforma in un sito chiaro, con un titolo che dice il risultato e un bottone rosso', 'Animation: a generic website turns into a clear one, with a headline that states the result and a red button')}>
+    <div class="pd-prima" aria-hidden="true">
+      <div class="pd-barra"><b>IMPRESA ROSSI SRL</b><span>Home · {T('Chi siamo', 'About us')} · {T('Servizi', 'Services')} · {T('Contatti', 'Contact')}</span></div>
+      <div class="pd-foto">[{T('foto di repertorio', 'stock photo')}]</div>
+      <div class="pd-h">{T('Benvenuti nel nostro sito', 'Welcome to our website')}</div>
+      <div class="pd-p">{T('Professionalità, qualità e cortesia dal 1998', 'Professionalism, quality and courtesy since 1998')}</div>
+      <span class="pd-b">{T('Scopri di più', 'Learn more')}</span>
+    </div>
+    <div class="pd-dopo" aria-hidden="true">
+      <div class="pd-barra"><b>Rossi Bagni</b><span>{T('Preventivo in 2 minuti', 'Quote in 2 minutes')}</span></div>
+      <div class="pd-h">{T('Il bagno nuovo', 'Your new bathroom')}<br>{T('in 10 giorni,', 'in 10 days,')}<br>{T('prezzo bloccato.', 'fixed price.')}</div>
+      <span class="pd-b">{T('Calcola il prezzo →', 'Get the price →')}</span>
+      <span class="pd-r">★ 4,8 · {T('risposta entro 24 ore', 'reply within 24 hours')}</span>
+      <span class="pd-foto"></span>
+    </div>
+    <span class="pd-lama" aria-hidden="true"></span>
+  </div>
+  <figcaption class="pd-etichette"><span>{T('Prima · un sito qualunque', 'Before · a generic website')}</span><b>{T('Dopo · un sito che fa scegliere', 'After · a website that gets chosen')}</b></figcaption>
+</figure>

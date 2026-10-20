@@ -1,0 +1,21 @@
+---
+// 03 · Mappa dell'attenzione: come in uno studio di eye-tracking, dove si posa lo sguardo e in che ordine.
+// Il calore lo disegna vita.js; data-fissa = dove cade lo sguardo (x,y in % del riquadro).
+interface Props { lang?: 'it' | 'en' }
+const { lang = 'it' } = Astro.props;
+const T = (a: string, b: string) => (lang === 'it' ? a : b);
+---
+<figure style="margin:0">
+  <div class="mappa" data-mappa role="img" aria-label={T('Mappa dell’attenzione su una pagina di esempio: lo sguardo va prima al titolo, poi alla foto, poi torna al titolo e infine al bottone rosso.', 'Attention map on a sample page: the eye goes first to the headline, then the photo, back to the headline and finally to the red button.')}>
+    <span class="mappa-barra" aria-hidden="true"><i style="width:10%;background:#fff"></i><i style="width:18%"></i><i style="width:26%;margin-left:auto"></i></span>
+    <span class="mappa-titolo" aria-hidden="true">{T('Il bagno nuovo', 'A new bathroom')}<br>{T('in 10 giorni.', 'in 10 days.')}</span>
+    <span class="mappa-righe" aria-hidden="true"><i></i><i style="width:80%"></i></span>
+    <span class="mappa-bottone" aria-hidden="true">{T('Chiedi il prezzo', 'Ask for the price')}</span>
+    <span class="mappa-foto" aria-hidden="true"></span>
+    <span data-fissa="22,30" style="left:30%;top:14%" aria-hidden="true">1</span>
+    <span data-fissa="76,48" style="left:82%;top:34%" aria-hidden="true">2</span>
+    <span data-fissa="18,44" style="left:26%;top:44%" aria-hidden="true">3</span>
+    <span data-fissa="18,76" style="left:37%;top:68%" aria-hidden="true">4</span>
+  </div>
+  <figcaption class="mappa-nota">{T('Dove guardano davvero · passa il mouse sulla pagina', 'Where people really look · move your mouse over the page')}</figcaption>
+</figure>

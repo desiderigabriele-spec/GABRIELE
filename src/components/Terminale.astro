@@ -1,0 +1,19 @@
+---
+// 07 · Il terminale: una riga di comando «crea» il progetto, con i passaggi che compaiono uno alla volta.
+// vita.js scrive le righe ([data-riga]); quelle con data-riga="subito" compaiono intere, come l'uscita di un comando.
+interface Props { lang?: 'it' | 'en' }
+const { lang = 'it' } = Astro.props;
+const T = (a: string, b: string) => (lang === 'it' ? a : b);
+---
+<div class="terminale" data-scrittura="30" role="img" aria-label={T('Animazione: in un terminale il comando crea il software per un centro estetico: legge WhatsApp, segna gli appuntamenti in agenda, aggiorna il foglio clienti. Alla fine è al lavoro.', 'Animation: in a terminal the command builds the software for a beauty salon: it reads WhatsApp, books appointments in the calendar, updates the client sheet. At the end it is up and running.')}>
+  <div class="terminale-barra" aria-hidden="true"><i></i><i></i><i></i><span style="margin-left:8px">DESIDERI &amp; CODE — {T('TERMINALE', 'TERMINAL')}</span></div>
+  <div class="terminale-righe" aria-hidden="true">
+    <span data-riga>$ desideri crea --{T('attività', 'business')} "{T('centro estetico', 'beauty salon')}"</span>
+    <span data-riga="subito">  ✓ {T('collegato a WhatsApp Business', 'connected to WhatsApp Business')}</span>
+    <span data-riga="subito">  ✓ {T('l’AI legge le richieste e capisce il servizio', 'AI reads requests and understands the service')}</span>
+    <span data-riga="subito">  ✓ {T('appuntamenti segnati in agenda, senza doppioni', 'appointments booked, no double bookings')}</span>
+    <span data-riga="subito">  ✓ {T('foglio clienti aggiornato', 'client sheet updated')}</span>
+    <span data-riga="subito" class="r">  → {T('installato a tuo nome', 'installed in your name')}  ██████████ 100%</span>
+  </div>
+  <div class="terminale-fine" data-fine aria-hidden="true">{T('Al lavoro, anche di notte', 'At work, even at night')}<span class="quadratino"></span></div>
+</div>

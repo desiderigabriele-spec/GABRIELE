@@ -1,0 +1,18 @@
+---
+// 17 · Il cubo dei servizi: ogni faccia è un servizio, l'ultima (rossa) è il preventivo. Stili in vita.css.
+import { dati } from '../i18n/dati.js';
+import { euro } from '../data/formato.js';
+interface Props { lang?: 'it' | 'en' }
+const { lang = 'it' } = Astro.props;
+const T = (a: string, b: string) => (lang === 'it' ? a : b);
+const { servizi } = dati(lang);
+const facce = servizi.filter((s) => s.id !== 'cura').slice(0, 5);
+---
+<div class="cubo-scena" aria-hidden="true">
+  <div class="cubo">
+    {facce.map((s) => (
+      <span class="cubo-f"><span>{s.numero}</span><b>{s.titolo}</b><small>{T('da', 'from')} {euro(s.da, lang)}{s.mese ? T('/mese', '/month') : ''}</small></span>
+    ))}
+    <span class="cubo-f rossa"><span>06</span><b>{T('Il tuo progetto, in 2 minuti', 'Your project, in 2 minutes')}</b><small>{T('prezzo subito', 'price straight away')}</small></span>
+  </div>
+</div>

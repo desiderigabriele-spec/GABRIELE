@@ -40,10 +40,12 @@ Tutto il sito è il percorso AIDA reso visibile: un **campo di migliaia di parti
 | Capitolo | Forma delle particelle | Messaggio |
 |---|---|---|
 | 01 · Attenzione | **L'icona del logo**: una griglia di puntini e il quadratino rosso, che si gira verso ciò che spicca | "L'attenzione è la moneta più preziosa di oggi. Chi la cattura, vince." |
-| 02 · Interesse | **Una rete neurale** che pulsa | Cosa faccio, spiegato semplice: siti, e-commerce, AI, pubblicità |
-| 03 · Fiducia | **Un percorso a spirale** (il funnel) | Il metodo, i lavori, chi sono |
-| 04 · Desiderio | **Un cuore** che batte | Prezzi chiari, risultati, garanzie |
-| 05 · Azione | **Una stella** che esplode in luce | "Componi il tuo progetto" → preventivo |
+| 02 · Interesse | **Un bersaglio a pixel**, con il centro rosso | Cosa faccio, spiegato semplice: siti, e-commerce, AI, pubblicità |
+| 03 · Fiducia | **Una spunta a pixel**, con il quadratino rosso del logo | Il metodo, i lavori, chi sono |
+| 04 · Desiderio | **Un cuore a pixel**, rosso, che batte | Prezzi chiari, risultati, garanzie |
+| 05 · Azione | **Una freccia a pixel** che spinge in avanti | "Componi il tuo progetto" → preventivo |
+
+Le forme dei capitoli 02-05 sono fatte di pixel quadrati (una griglia 16 × 16), come i pixel di uno schermo: si ricompongono da una forma all'altra e qualche pixel si accende a turno.
 
 Il visitatore vive sulla propria pelle quello che Gabriele farà per i suoi clienti: **il sito è la prova del metodo**.
 
@@ -158,6 +160,29 @@ Il nome è **Desideri & Code**. «Studio Desideri» era già usato da un concorr
 
 Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più veloce e conforme al GDPR).
 
+### La vita del sito: le 17 idee animate
+Scelte dal canvas «Idee di animazione Desideri & Code» e messe tutte nel sito, ognuna dove serve. Codice in `src/scripts/vita.js` e `src/styles/vita.css`; con «riduci movimento» sono tutte ferme (resta la pagina normale).
+
+| # | Idea | Dove |
+|---|---|---|
+| 01 | **Il cursore che scrive**: il quadratino rosso riscrive l'ultima parola del titolo (sceglie, scrive, chiama, compra) | Hero della home |
+| 02 | **Griglia magnetica**: dietro all'hero i puntini crescono e diventano rossi dove passi; senza mouse gira un «visitatore finto» | Hero della home |
+| 03 | **Mappa dell'attenzione**: come in uno studio di eye-tracking, il calore dello sguardo e l'ordine 1-2-3-4 (`Mappa.astro`) | Metodo, passo «Prima ti devono notare» |
+| 04 | **Testo che si decodifica**: le etichette dei capitoli entrano come codice e diventano parole | Tutte le pagine |
+| 05 | **Il sito si compila**: a sinistra il codice, a destra il sito che appare pezzo per pezzo (`Compila.astro`) | Pagina Siti web, al posto dell'illustrazione |
+| 06 | **Raggi X**: sulle anteprime dei lavori una lama rossa mostra il «codice» del progetto | Home, Clienti veri |
+| 07 | **Il terminale**: un comando crea il software del centro estetico, riga per riga (`Terminale.astro`) | Pagina Demo, in alto |
+| 08 | **Il filo rosso**: un solo quadratino accompagna da un capitolo all'altro e si allunga mentre viaggia | Tutte le pagine |
+| 09 | **Il tabellone**: le cifre dei prezzi girano come le palette delle stazioni | Prezzi e «a partire da» |
+| 10 | **Pixel che cambiano forma**: le forme della scena 3D sono a pixel | Scena 3D |
+| 11 | **Tendina rossa**: tra una pagina e l'altra il quadratino copre tutto e si richiude sul logo | Ogni cambio pagina |
+| 12 | **Tipografia cinetica**: tre righe giganti che scorrono e si inclinano quando scorri veloce | Home, sotto l'hero (al posto del nastro) |
+| 13 | **Lettere che prendono peso**: vicino al mouse le lettere diventano più spesse; su telefono passa un'onda | Home, titolo finale |
+| 14 | **Cursori al lavoro**: Gabriele sposta, l'AI scrive, il cliente approva (`Cursori.astro`) | Pagina Demo, in fondo |
+| 15 | **Prima / dopo**: un sito «uguale a tutti» viene riscritto (`PrimaDopo.astro`) | Home, Il problema |
+| 16 | **La griglia viva**: compaiono le colonne con le misure e le schede atterrano al loro posto | Home, Cosa facciamo |
+| 17 | **Il cubo dei servizi**: un cubo 3D con un servizio per faccia, l'ultima rossa (`Cubo.astro`) | Preventivo, su computer |
+
 ### Movimento
 - Scroll fluido (Lenis) e animazioni legate allo scroll (GSAP ScrollTrigger).
 - Testi che entrano riga per riga dal basso, come una tenda che si alza.
@@ -170,12 +195,12 @@ Tutti i font sono ospitati sul sito stesso (niente Google Fonts esterni: più ve
   3. (tolto: era la corona d'eclisse attorno all'occhio);
   4. velocità della luce: scorrendo forte le stelle si allungano in strisce;
   5. linea dei capitoli sul bordo sinistro (schermi larghi), con il capitolo attuale in rosso; i punti portano alle sezioni;
-  6. «sceglie» nasce dalle stelle alla prima visita;
-  7. stelline al clic sui bottoni d'azione (se il bottone apre un'altra pagina, si aspettano 0,2 s per vederle);
+  6. (tolto: ora la parola finale la scrive il cursore, idea 01);
+  7. stelline al clic sui bottoni d'azione (il cambio pagina poi lo fa la tendina rossa);
   8. polvere di stelle dietro il cursore, solo su computer;
   9. totali del preventivo che girano come un contachilometri;
   10. cometa lungo la sottolineatura delle parole colorate;
-  11. passaggio sfumato tra le pagine (View Transitions, nei browser che le supportano);
+  11. passaggio tra le pagine con la tendina rossa (idea 11);
   12. intro: il cursore rosso lampeggia al centro dello schermo, poi si allarga e apre la pagina;
   13. «Desideri» grande nel footer con le stelle che scorrono dentro le lettere.
   Tutto fermo o spento con «riduci movimento».

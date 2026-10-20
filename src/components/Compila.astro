@@ -1,0 +1,28 @@
+---
+// 05 · Il sito si compila: a sinistra si scrive il codice, a destra il sito prende forma nello stesso istante.
+// vita.js scrive le righe ([data-riga]) una alla volta e accende i pezzi ([data-pezzo] = numero della riga).
+interface Props { lang?: 'it' | 'en' }
+const { lang = 'it' } = Astro.props;
+const T = (a: string, b: string) => (lang === 'it' ? a : b);
+---
+<div class="compila" data-scrittura="24" role="img" aria-label={T('Animazione: il codice di un sito si scrive riga per riga e accanto il sito appare pezzo per pezzo, fino a quando è online.', 'Animation: the code of a website is written line by line and next to it the site appears piece by piece, until it is online.')}>
+  <div class="compila-codice" aria-hidden="true">
+    <span class="mono">rossi-bagni.astro</span>
+    <span data-riga>&lt;header logo="Rossi" /&gt;</span>
+    <span data-riga>&lt;h1&gt;{T('Il bagno nuovo in 10 giorni', 'A new bathroom in 10 days')}&lt;/h1&gt;</span>
+    <span data-riga class="g">&lt;p&gt;{T('Preventivo gratis in 24 ore', 'Free quote within 24 hours')}&lt;/p&gt;</span>
+    <span data-riga class="r">&lt;button rosso&gt;{T('Chiedi il prezzo', 'Ask for the price')}&lt;/button&gt;</span>
+    <span data-riga class="g">&lt;foto src="bagno.jpg" /&gt;</span>
+    <span data-riga class="r">&lt;ai risponde="whatsapp" /&gt;</span>
+    <span data-riga>$ deploy → online ✓</span>
+  </div>
+  <div class="compila-sito" aria-hidden="true">
+    <div class="cs-barra" data-pezzo="0"><i></i>Rossi Bagni</div>
+    <div class="cs-titolo" data-pezzo="1">{T('Il bagno nuovo', 'A new bathroom')}<br>{T('in 10 giorni.', 'in 10 days.')}</div>
+    <div class="cs-testo" data-pezzo="2">{T('Preventivo gratis in 24 ore', 'Free quote within 24 hours')}</div>
+    <div class="cs-bottone" data-pezzo="3">{T('Chiedi il prezzo', 'Ask for the price')}</div>
+    <div class="cs-foto" data-pezzo="4"></div>
+    <div class="cs-chat" data-pezzo="5"><b>{T('Assistente', 'Assistant')}:</b> {T('Ciao! Per un bagno di 6 m² serve circa una settimana. Ti preparo il preventivo?', 'Hi! A 6 m² bathroom takes about a week. Shall I prepare a quote?')}</div>
+    <div class="cs-online" data-pezzo="6"><i></i>{T('ONLINE', 'LIVE')} · rossibagni.it</div>
+  </div>
+</div>

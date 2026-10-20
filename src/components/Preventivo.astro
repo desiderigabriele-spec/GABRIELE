@@ -3,6 +3,7 @@
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
 import Cursore from './Cursore.astro';
+import Cubo from './Cubo.astro';
 import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
 import '../styles/preventivo.css';
@@ -50,6 +51,7 @@ const passoDi = (n: number) => T(`Passo ${n} di 3`, `Step ${n} of 3`);
           {T('Sei in Svizzera?', 'Are you in Switzerland?')} <button type="button" data-valuta-scegli="CHF">{T('Mostra i prezzi anche in franchi', 'Show prices in Swiss francs too')}</button>
         </p>
       </header>
+      <div class="pv-cubo"><Cubo lang={lang} /></div>
 
       <noscript>
         {it

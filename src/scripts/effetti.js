@@ -54,18 +54,13 @@ function scoppio(x, y) {
 
 function stelline() {
   if (ridotto) return;
-  // 7 · al clic su un bottone d'azione parte una pioggia di stelline; se porta a un'altra pagina, la si lascia vedere un attimo
+  // 7 · al clic su un bottone d'azione parte una pioggia di stelline (il cambio pagina lo fa la tendina rossa, vita.js)
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-azione], .btn-azione, a[data-wa]');
     if (!b) return;
     const r = b.getBoundingClientRect();
     const x = e.clientX || r.left + r.width / 2, y = e.clientY || r.top + r.height / 2;
     scoppio(x, y);
-    if (e.defaultPrevented || b.tagName !== 'A' || b.target === '_blank' || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
-    const url = new URL(b.href, location.href);
-    if (url.origin !== location.origin || (url.pathname === location.pathname && url.hash)) return;
-    e.preventDefault();
-    setTimeout(() => location.assign(url.href), 220);
   });
 }
 

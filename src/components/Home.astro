@@ -3,6 +3,8 @@
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
 import Cursore from './Cursore.astro';
+import PrimaDopo from './PrimaDopo.astro';
+import Mappa from './Mappa.astro';
 import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -34,9 +36,12 @@ const altri = ['ecommerce', 'software', 'gestionale', 'ads', 'cura'].map((id) =>
   const l = c.livelli[0];
   return { nome: c.nome, prezzo: l.una ? eur(l.una) : eur(l.mese!) + mese };
 });
-const parole = it
-  ? ['Siti web', 'Negozi online', 'Automazioni e AI', 'Gestionali su misura', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Neuromarketing', 'Copy che vende', 'Esperienze 3D']
-  : ['Websites', 'Online stores', 'AI & automation', 'Custom software', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Neuromarketing', 'Copy that sells', '3D experiences'];
+// 12 · tipografia cinetica: tre righe giganti al posto del nastro
+const cinetica = it
+  ? [['Siti web', 'Negozi online', 'Automazioni e AI', 'Gestionali'], ['Attenzione', 'Interesse', 'Fiducia', 'Desiderio', 'Azione'], ['Neuromarketing', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Copy che vende']]
+  : [['Websites', 'Online stores', 'AI & automation', 'Custom software'], ['Attention', 'Interest', 'Trust', 'Desire', 'Action'], ['Neuromarketing', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Copy that sells']];
+// 01 · le parole che il cursore scrive in fondo al titolo
+const scrive = it ? 'sceglie,scrive,chiama,compra' : 'clients,buyers,bookings,fans';
 
 // Il calcolatore: lavori sempre uguali, cosa fa l'AI al posto tuo, ore a settimana (stima prudente)
 const ripetitivi: [string, string, number][] = it ? [
@@ -105,6 +110,7 @@ const jsonLd = {
 
   <!-- 01 · ATTENZIONE -->
   <section class="hero" id="inizio" data-forma="0" data-lato="destra" data-x="1.13" data-scala="0.86" data-y-mobile="0.3" data-scala-mobile="0.42" data-luce-mobile="1">
+    <div class="griglia-magnetica" data-griglia-magnetica aria-hidden="true"></div>
     <div class="wrap">
       <div class="hero-testo">
         <div class="hero-spazio-occhio" aria-hidden="true"><Cursore stato="griglia" class="occhio-riserva" /></div>
@@ -114,14 +120,14 @@ const jsonLd = {
             <span class="riga riga-nome" data-riga-nome hidden><span><span data-saluto></span><span data-nome></span>,</span></span>
             <span class="riga"><span data-minuscola>Trasformiamo</span></span>
             <span class="riga"><span>chi ti guarda</span></span>
-            <span class="riga"><span>in chi ti <span class="parola-punto" data-stelle>sceglie<span class="quadratino" aria-hidden="true"></span></span></span></span>
+            <span class="riga"><span>in chi ti <span class="sr-only">sceglie.</span><span class="parola-punto" data-scrive={scrive} aria-hidden="true"><span class="scrive-testo">sceglie</span><span class="quadratino"></span></span></span></span>
           </h1>
         ) : (
           <h1 data-righe>
             <span class="riga riga-nome" data-riga-nome hidden><span><span data-saluto></span><span data-nome></span>,</span></span>
             <span class="riga"><span>We turn</span></span>
             <span class="riga"><span>attention</span></span>
-            <span class="riga"><span>into <span class="parola-punto" data-stelle>clients<span class="quadratino" aria-hidden="true"></span></span></span></span>
+            <span class="riga"><span>into <span class="sr-only">clients.</span><span class="parola-punto" data-scrive={scrive} aria-hidden="true"><span class="scrive-testo">clients</span><span class="quadratino"></span></span></span></span>
           </h1>
         )}
         {it ? (
@@ -161,18 +167,16 @@ const jsonLd = {
     </a>
   </section>
 
-  <div class="nastro" aria-hidden="true">
-    <div class="nastro-traccia">
-      {[0, 1].map(() => (
-        <div class="nastro-gruppo">
-          {parole.map((p) => <span>{p}<i></i></span>)}
-        </div>
-      ))}
-    </div>
+  <div class="cinetica" data-cinetica aria-hidden="true">
+    {cinetica.map((riga, r) => (
+      <div class={`cinetica-riga ${r === 1 ? 'cinetica-dx cinetica-vuota' : 'cinetica-sx'}`}>
+        <div>{[0, 1].map(() => <span>{riga.map((p, k) => <>{r === 2 && k === 0 ? <span class="cinetica-rossa">{p}</span> : p}<span class="q"></span></>)}</span>)}</div>
+      </div>
+    ))}
   </div>
 
   <!-- IL PROBLEMA -->
-  <section class="sezione" id="problema" data-forma="0" data-lato="destra" data-y="0.2" data-luce="0.5" data-scala="0.62">
+  <section class="sezione" id="problema" data-forma="0" data-lato="destra" data-y="0.34" data-luce="0.22" data-scala="0.5">
     <div class="wrap">
       <div class="testa-sezione">
         <span class="capitolo" data-appare>{T('Il problema', 'The problem')}</span>
@@ -207,9 +211,12 @@ const jsonLd = {
           </div>
         ))}
       </div>
-      <p class="svolta" data-appare>
-        {T('Noi costruiamo quel percorso.', 'We build that path.')} <span class="em em-firma">{T('Dal primo sguardo al sì.', 'From first glance to yes.')}</span>
-      </p>
+      <div class="svolta-riga">
+        <p class="svolta" data-appare>
+          {T('Noi costruiamo quel percorso.', 'We build that path.')} <span class="em em-firma">{T('Dal primo sguardo al sì.', 'From first glance to yes.')}</span>
+        </p>
+        <PrimaDopo lang={lang} />
+      </div>
     </div>
   </section>
 
@@ -227,7 +234,7 @@ const jsonLd = {
           "Six services that work together. Pick just one or let them talk to each other: that's where results multiply. Tap a card to see how it works.",
         )}</p>
       </div>
-      <div class="servizi-griglia" data-sequenza>
+      <div class="servizi-griglia" data-griglia-viva>
         {servizi.map((s) => (
           <article class="card servizio" data-iride={s.id}>
             <div class="servizio-top">
@@ -408,6 +415,7 @@ const jsonLd = {
               <span class="mono">{T('Tecnica', 'Technique')} · {m.tecnica}</span>
               <p>{m.spiega}</p>
             </div>
+            {i === 0 && <Mappa lang={lang} />}
           </article>
         ))}
       </div>
@@ -434,8 +442,15 @@ const jsonLd = {
           const iniziali = l.cliente.replace(/^Dott\.\s*/, '').split(' ').map((p) => p[0]).slice(0, 2).join('');
           return (
             <article class="card cliente" data-lavoro={l.id}>
-              <a class="cliente-anteprima" href={l.url} target="_blank" rel="noopener" aria-label={T(`Apri il sito di ${l.cliente}`, `Open ${l.cliente}'s website`)}>
+              <a class="cliente-anteprima" href={l.url} target="_blank" rel="noopener" aria-label={T(`Apri il sito di ${l.cliente}`, `Open ${l.cliente}'s website`)} data-raggi>
                 <span class="browser" aria-hidden="true"><i></i><i></i><i></i><span>{dominio}</span></span>
+                <span class="raggi" aria-hidden="true">
+                  <b>&lt;sito</b> cliente=<em>"{l.cliente}"</em> pacchetto=<em>"{l.pacchetto}"</em><b>&gt;</b><br />
+                  {l.fatto.map((f) => <>&nbsp;&nbsp;&lt;!-- {f} --&gt;<br /></>)}
+                  &nbsp;&nbsp;<b>&lt;bottone</b> colore=<em>"rosso"</em> azione=<em>"contatto"</em> <b>/&gt;</b><br />
+                  <b>&lt;/sito&gt;</b>
+                </span>
+                <span class="raggi-lama" aria-hidden="true"></span>
                 <img src={l.img} alt={T(`La home del sito di ${l.cliente}`, `The home page of ${l.cliente}'s website`)} width="1440" height="900" loading="lazy" decoding="async" />
                 <span class="cliente-guarda" aria-hidden="true">{T('Guarda il sito', 'View the site')} ↗</span>
               </a>
@@ -599,7 +614,7 @@ const jsonLd = {
   <section class="sezione finale" id="azione" data-forma="4" data-luce="0.75" data-luce-mobile="0.5" data-scala="1.15">
     <div class="wrap finale-testo">
       <span class="capitolo" data-appare>{T('Capitolo 05 · Azione', 'Chapter 05 · Action')}</span>
-      <h2 data-righe>
+      <h2 data-righe data-peso>
         <span class="riga riga-nome" data-riga-nome hidden><span><span data-nome></span>,</span></span>
         <span class="riga"><span data-minuscola>{T('Il tuo prossimo cliente', 'Your next client')}</span></span>
         <span class="riga"><span>{T('ti sta', 'is')} <span class="em em-firma">{T('già cercando.', 'already looking for you.')}</span></span></span>
@@ -622,12 +637,7 @@ const jsonLd = {
 </Base>
 
 <style>
-  .nastro { position: relative; z-index: 2; border-block: 1px solid var(--linea); background: rgba(var(--notte-rgb),.55); overflow: hidden; padding: 1.1rem 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
-  .nastro-traccia { display: flex; width: max-content; animation: nastro 38s linear infinite; }
-  .nastro-gruppo { display: flex; }
-  .nastro span { display: inline-flex; align-items: center; gap: 2.2rem; padding-right: 2.2rem; font-family: var(--f-titolo); font-size: clamp(1.1rem, 2vw, 1.6rem); font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; color: var(--nebbia); }
-  .nastro i { width: .32em; height: .32em; background: var(--rosso); }
-  @keyframes nastro { to { transform: translateX(-50%); } }
+  
 </style>
 
 <script>

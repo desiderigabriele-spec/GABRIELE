@@ -1,10 +1,11 @@
 // La Costellazione dei Desideri: migliaia di punti di luce che cambiano forma
 // a ogni capitolo del percorso dal primo sguardo al sì.
 //   0 FUOCO      → attenzione: puntini in griglia e il quadratino rosso del logo (si gira verso ciò che guardi)
-//   1 RETE       → interesse e intelligenza artificiale (impulsi lungo le connessioni)
-//   2 SPIRALE    → fiducia, il percorso che porta al cliente
-//   3 CUORE      → desiderio (batte)
-//   4 STELLA     → azione, il «sì»
+// Gli altri capitoli sono forme a pixel quadrati, come i pixel di uno schermo (idea 10):
+//   1 BERSAGLIO  → interesse, tutto converge sul punto rosso
+//   2 SPUNTA     → fiducia, con il quadratino rosso del logo
+//   3 CUORE      → desiderio (batte), tutto rosso
+//   4 FRECCIA    → azione, il passo verso il «sì»
 // La forma attiva la decide la sezione al centro dello schermo ([data-forma]).
 import * as THREE from 'three';
 
@@ -50,6 +51,7 @@ uniform float uScritta;            // 0 = forme normali, 1 = i punti scrivono il
 attribute vec3 aP1, aP2, aP3, aP4;
 attribute vec4 aP5;                // punto della scritta (w = 1 se fa parte delle lettere)
 attribute float aRand, aT;
+attribute vec4 aRossi;            // per le forme a pixel 1-4: 1 se il punto sta in un pixel rosso
 attribute vec4 aOcchio;             // tipo di punto del fuoco, due parametri, dimensione
 varying vec3 vCol;
 varying float vLuce, vVis;
@@ -131,12 +133,14 @@ vec3 forma(int i){
 vec3 colore(int i){
   if (i == 0) return eCol;
   vec3 a = uColA[0], b = uColB[0];
-  if (i == 1) { a = uColA[1]; b = uColB[1]; }
-  else if (i == 2) { a = uColA[2]; b = uColB[2]; }
-  else if (i == 3) { a = uColA[3]; b = uColB[3]; }
-  else if (i == 4) { a = uColA[4]; b = uColB[4]; }
-  // solo bianco e rosso: niente mescole rosa, ogni punto è dell'uno o dell'altro colore
-  vec3 c = aRand > 0.86 ? b : a * (0.65 + 0.35 * aRand);
+  float rosso = 0.0;
+  if (i == 1) { a = uColA[1]; b = uColB[1]; rosso = aRossi.x; }
+  else if (i == 2) { a = uColA[2]; b = uColB[2]; rosso = aRossi.y; }
+  else if (i == 3) { a = uColA[3]; b = uColB[3]; rosso = aRossi.z; }
+  else if (i == 4) { a = uColA[4]; b = uColB[4]; rosso = aRossi.w; }
+  if (rosso > 0.5) return mix(b * (0.85 + 0.3 * aRand), uTinta, uTintaForza * 0.3);
+  // solo bianco e rosso: niente mescole rosa, il rosso sta solo nei pixel rossi
+  vec3 c = a * (0.65 + 0.35 * aRand);
   return mix(c, uTinta * (0.8 + 0.4 * aRand), uTintaForza * 0.65);
 }
 mat2 ruota(float a){ float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
@@ -144,17 +148,13 @@ mat2 ruota(float a){ float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
 // Animazioni proprie di ogni forma
 vec3 vivi(vec3 p, int i){
   if (i == 0) return p;
-  if (i == 1) {
-    p.xz = ruota(uTime * 0.08) * p.xz;
-  } else if (i == 2) {
-    p.xz = ruota(uTime * 0.25 + p.y * 0.3) * p.xz;
-  } else if (i == 3) {
+  // le forme a pixel oscillano piano, senza mai girarsi di taglio: devono restare leggibili
+  p.xz = ruota(sin(uTime * 0.45 + float(i)) * 0.32) * p.xz;
+  if (i == 3) {
     float b = pow(sin(uTime * 2.4) * 0.5 + 0.5, 6.0);
     p *= 1.0 + b * 0.07 + uBattito * 0.06;
-    p.xz = ruota(sin(uTime * 0.4) * 0.35) * p.xz;
-  } else {
-    p.xy = ruota(uTime * 0.05) * p.xy;
-    p *= 1.0 + sin(uTime * 1.3 + aRand * 6.28) * 0.03;
+  } else if (i == 4) {
+    p.x += sin(uTime * 2.0) * 0.06;               // la freccia «spinge» in avanti
   }
   return p;
 }
@@ -182,7 +182,7 @@ void main(){
   vec3 n = vec3(snoise(p * 0.8 + aRand * 10.0), snoise(p * 0.8 + 31.0), snoise(p * 0.8 + 57.0));
   p += n * volo * 0.55;
   // respiro continuo (quasi fermo sul fuoco: i puntini e il quadratino devono restare netti)
-  float calma = i0 == 0 ? mix(0.1, 1.0, t) : 1.0;
+  float calma = i0 == 0 ? mix(0.1, 0.35, t) : 0.35;
   p += vec3(snoise(p * 1.3 + uTime * 0.15)) * 0.025 * calma;
 
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
@@ -202,7 +202,8 @@ void main(){
   gl_Position = clip;
 
   float pulse = 0.0;
-  if (i0 == 1 || i1 == 1) pulse = pow(fract(aT - uTime * 0.35), 18.0) * (i0 == 1 ? 1.0 - t : t);
+  // qualche pixel si accende a turno, come uno schermo vivo
+  if (i0 > 0 || i1 > 0) pulse = pow(fract(aT - uTime * 0.35), 24.0) * (i0 > 0 ? 1.0 : t);
   vLuce = 0.55 + aRand * 0.45 + pulse * 2.0 + spinta * 6.0;
   vCol = mix(colore(i0), colore(i1), t);
   vCol = mix(vCol, vec3(0.85 + 0.3 * aRand), s);
@@ -258,80 +259,29 @@ function occhio(N, out, attr) {
   }
 }
 
-function rete(N, out, tt) {
-  const nodi = [];
-  for (let i = 0; i < 46; i++) {
-    const v = new THREE.Vector3(gauss(), gauss() * 0.75, gauss() * 0.8).normalize().multiplyScalar(0.5 + Math.random() * 1.1);
-    nodi.push(v);
+// Forme a pixel: una griglia 16 × 16 di quadratini; ogni punto finisce dentro un quadratino acceso.
+// f(u, v) con u, v da -1 a 1 (v verso il basso) dà 0 spento, 1 bianco, 2 rosso.
+const LATO = 16, CELLA = 0.19;
+const segmento = (px, py, ax, ay, bx, by) => { const dx = bx - ax, dy = by - ay; const t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy))); return Math.hypot(px - ax - t * dx, py - ay - t * dy); };
+const FORME_PIXEL = [
+  (u, v) => { const m = Math.max(Math.abs(u), Math.abs(v)); return m < 0.2 ? 2 : Math.abs(m - 0.86) < 0.12 || Math.abs(m - 0.52) < 0.1 ? 1 : 0; },
+  (u, v) => { if (u > 0.62 && v > 0.62) return 2; return Math.min(segmento(u, v, -0.72, 0, -0.22, 0.48), segmento(u, v, -0.22, 0.48, 0.72, -0.56)) < 0.17 ? 1 : 0; },
+  (u, v) => { const x = u * 1.25, y = -v * 1.25 + 0.3; return Math.pow(x * x + y * y - 1, 3) - x * x * y * y * y < 0 ? 2 : 0; },
+  (u, v) => ((Math.abs(v) < 0.17 && u > -0.86 && u < 0.3) || (u >= 0.1 && u < 0.86 && Math.abs(v) < (0.86 - u) * 1.05) ? 1 : 0),
+];
+function pixel(N, out, rossi, k) {
+  const celle = [];
+  for (let r = 0; r < LATO; r++) for (let c = 0; c < LATO; c++) {
+    const u = (c - (LATO - 1) / 2) / ((LATO - 1) / 2), v = (r - (LATO - 1) / 2) / ((LATO - 1) / 2);
+    const on = FORME_PIXEL[k](u, v);
+    if (on) celle.push([(c - (LATO - 1) / 2) * CELLA, -(r - (LATO - 1) / 2) * CELLA, on === 2 ? 1 : 0]);
   }
-  const archi = [];
-  nodi.forEach((a, i) => {
-    nodi.map((b, j) => [j, a.distanceTo(b)]).filter(([j]) => j !== i).sort((p, q) => p[1] - q[1]).slice(0, 3)
-      .forEach(([j]) => { if (i < j) archi.push([a, nodi[j]]); });
-  });
-  const tmp = new THREE.Vector3();
   for (let i = 0; i < N; i++) {
-    if (Math.random() < 0.3) {
-      const n = nodi[(Math.random() * nodi.length) | 0];
-      tmp.set(n.x + gauss() * 0.045, n.y + gauss() * 0.045, n.z + gauss() * 0.045);
-      tt[i] = Math.random();
-    } else {
-      const [a, b] = archi[(Math.random() * archi.length) | 0];
-      const u = Math.random();
-      tmp.lerpVectors(a, b, u).add(new THREE.Vector3(gauss() * 0.01, gauss() * 0.01, gauss() * 0.01));
-      tt[i] = u;
-    }
-    tmp.multiplyScalar(1.15);
-    out[i * 3] = tmp.x; out[i * 3 + 1] = tmp.y; out[i * 3 + 2] = tmp.z;
-  }
-}
-
-function spirale(N, out) {
-  const bracci = 3;
-  for (let i = 0; i < N; i++) {
-    const t = Math.pow(Math.random(), 0.85);
-    const braccio = i % bracci;
-    const y = 1.45 - t * 2.9;
-    const r = 1.65 * Math.pow(1 - t, 1.25) + 0.06;
-    const a = t * Math.PI * 7 + (braccio / bracci) * Math.PI * 2;
-    const sparso = Math.random() < 0.15 ? 0.25 : 0.035;
-    out[i * 3] = Math.cos(a) * r + gauss() * sparso;
-    out[i * 3 + 1] = y + gauss() * sparso * 0.6;
-    out[i * 3 + 2] = Math.sin(a) * r + gauss() * sparso;
-  }
-}
-
-function cuore(N, out) {
-  for (let i = 0; i < N; i++) {
-    const t = Math.random() * Math.PI * 2;
-    const hx = 16 * Math.pow(Math.sin(t), 3);
-    const hy = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
-    const guscio = Math.random() < 0.55;
-    const s = guscio ? 1 + gauss() * 0.012 : Math.pow(Math.random(), 0.5);
-    const x = (hx / 17) * s * 1.35, y = (hy / 17) * s * 1.35 + 0.12;
-    const spessore = Math.sqrt(Math.max(0, 1 - s * s)) * 0.55 + 0.04;
-    out[i * 3] = x; out[i * 3 + 1] = y; out[i * 3 + 2] = (Math.random() < 0.5 ? -1 : 1) * Math.random() * spessore;
-  }
-}
-
-function stella(N, out) {
-  const raggi = 14;
-  for (let i = 0; i < N; i++) {
-    const r = Math.random();
-    if (r < 0.3) {
-      const v = new THREE.Vector3(gauss(), gauss(), gauss()).normalize().multiplyScalar(Math.pow(Math.random(), 2) * 0.32);
-      out[i * 3] = v.x; out[i * 3 + 1] = v.y; out[i * 3 + 2] = v.z;
-    } else if (r < 0.85) {
-      const k = i % raggi, a = (k / raggi) * Math.PI * 2 + (k % 2) * 0.1;
-      const lungo = (k % 2 ? 1.25 : 2.1) * Math.pow(Math.random(), 1.8) + 0.12;
-      out[i * 3] = Math.cos(a) * lungo + gauss() * 0.02 * lungo;
-      out[i * 3 + 1] = Math.sin(a) * lungo + gauss() * 0.02 * lungo;
-      out[i * 3 + 2] = gauss() * 0.05;
-    } else {
-      // anello: il cerchio che si chiude
-      const a = Math.random() * Math.PI * 2, rr = 1.05 + gauss() * 0.015;
-      out[i * 3] = Math.cos(a) * rr; out[i * 3 + 1] = Math.sin(a) * rr; out[i * 3 + 2] = gauss() * 0.02;
-    }
+    const [x, y, rosso] = celle[(Math.random() * celle.length) | 0];
+    out[i * 3] = x + (Math.random() - 0.5) * CELLA * 0.74;
+    out[i * 3 + 1] = y + (Math.random() - 0.5) * CELLA * 0.74;
+    out[i * 3 + 2] = gauss() * 0.03;
+    rossi[i * 4 + k] = rosso;
   }
 }
 
@@ -364,9 +314,9 @@ function scritta(nome, N, out, larghezza, quota) {
   }
 }
 
-// I colori del logo: bianco e il rosso del quadratino. A/B = le due tinte di ogni forma (fuoco, rete, spirale, cuore, stella)
+// I colori del logo: bianco e il rosso del quadratino. A = i pixel bianchi, B = i pixel rossi di ogni forma (fuoco, bersaglio, spunta, cuore, freccia)
 const COLORI = {
-  A: ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#E30613', '#FFFFFF'], B: ['#E30613', '#E30613', '#E30613', '#FF5A63', '#E30613'],
+  A: ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF'], B: ['#E30613', '#E30613', '#E30613', '#E30613', '#E30613'],
   pelle: '#FFFFFF', rosso: '#E30613', alone: '#9A9A9A', stelle: '#C8C8C8',
 };
 
@@ -394,8 +344,9 @@ export function avviaScena(canvas) {
   const N = mobile ? (debole ? 4500 : 7000) : (debole ? 9000 : 15000);
   const p0 = new Float32Array(N * 3), p1 = new Float32Array(N * 3), p2 = new Float32Array(N * 3), p3 = new Float32Array(N * 3), p4 = new Float32Array(N * 3);
   const occ = new Float32Array(N * 4), tt = new Float32Array(N), ra = new Float32Array(N);
-  occhio(N, p0, occ); rete(N, p1, tt); spirale(N, p2); cuore(N, p3); stella(N, p4);
-  for (let i = 0; i < N; i++) ra[i] = Math.random();
+  const rossi = new Float32Array(N * 4);
+  occhio(N, p0, occ); pixel(N, p1, rossi, 0); pixel(N, p2, rossi, 1); pixel(N, p3, rossi, 2); pixel(N, p4, rossi, 3);
+  for (let i = 0; i < N; i++) { ra[i] = Math.random(); tt[i] = Math.random(); }
 
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.BufferAttribute(p0, 3));
@@ -405,6 +356,7 @@ export function avviaScena(canvas) {
   geo.setAttribute('aP4', new THREE.BufferAttribute(p4, 3));
   geo.setAttribute('aOcchio', new THREE.BufferAttribute(occ, 4));
   geo.setAttribute('aT', new THREE.BufferAttribute(tt, 1));
+  geo.setAttribute('aRossi', new THREE.BufferAttribute(rossi, 4));
   geo.setAttribute('aRand', new THREE.BufferAttribute(ra, 1));
   const p5 = new Float32Array(N * 4);
   geo.setAttribute('aP5', new THREE.BufferAttribute(p5, 4));

@@ -748,12 +748,7 @@ html.stelle-titolo [data-stelle] { opacity: 0; }
 .parola-iride:hover::after, .parola-iride:focus-visible::after { opacity: 1; animation: cometa .9s ease-out forwards; }
 @keyframes cometa { from { background-position: 100% 0; } to { background-position: 0 0; opacity: .2; } }
 
-/* 11 · passaggio tra le pagine: la pagina si dissolve e la nuova arriva dal cielo */
-@view-transition { navigation: auto; }
-::view-transition-old(root) { animation: pagina-via .45s cubic-bezier(.4, 0, .2, 1) both; }
-::view-transition-new(root) { animation: pagina-arriva .6s cubic-bezier(.22, 1, .36, 1) both; }
-@keyframes pagina-via { to { opacity: 0; transform: scale(.97); filter: blur(8px); } }
-@keyframes pagina-arriva { from { opacity: 0; transform: scale(1.03); filter: blur(8px); } }
+/* 11 · passaggio tra le pagine: ora è la tendina rossa (vita.css / vita.js) */
 
 /* 12 · intro: il cursore rosso lampeggia due volte, poi si allarga e apre la pagina */
 .intro-cursore { width: 28px; height: 28px; background: var(--rosso); animation: lampeggia 1.1s steps(1) infinite; }

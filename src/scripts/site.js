@@ -6,6 +6,7 @@ import Lenis from 'lenis';
 import { numero } from '../data/formato.js';
 import { avviaPersonalizza } from './benvenuto.js';
 import { avviaEffetti } from './effetti.js';
+import { avviaVita } from './vita.js';
 import { leggiProfilo, lang } from './profilo.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -271,6 +272,7 @@ function caricaScena() {
 function avvio() {
   animaIngressi();
   avviaEffetti();
+  avviaVita();
   ScrollTrigger.refresh();
   if ('requestIdleCallback' in window) requestIdleCallback(caricaScena, { timeout: 800 }); else setTimeout(caricaScena, 200);
 }
