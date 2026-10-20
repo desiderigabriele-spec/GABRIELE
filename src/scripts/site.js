@@ -290,8 +290,8 @@ document.addEventListener('click', (e) => {
 // ==========================================================================
 // Il fuoco: i puntini si accendono di rosso sul servizio che guardi, un cuore a chi torna
 // ==========================================================================
-// un solo colore per tutti i servizi: il rosso del logo
-const COLORI_SERVIZIO = { sito: '#E30613', ecommerce: '#E30613', software: '#E30613', gestionale: '#E30613', ads: '#E30613', cura: '#E30613' };
+// un solo colore per tutti i servizi: il colore d'accento scelto
+const accento = () => getComputedStyle(html).getPropertyValue('--rosso').trim() || '#e30613';
 const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} } };
 const ls = { get: (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} } };
 
@@ -299,7 +299,7 @@ const ls = { get: (k) => { try { return localStorage.getItem(k); } catch (_) { r
 let tintaTimer = 0;
 function tinta(id) {
   clearTimeout(tintaTimer);
-  if (scena) scena.tinta = id ? COLORI_SERVIZIO[id] || null : null;
+  if (scena) scena.tinta = id ? accento() : null;
 }
 document.querySelectorAll('[data-iride]').forEach((el) => {
   el.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') tinta(el.dataset.iride); });

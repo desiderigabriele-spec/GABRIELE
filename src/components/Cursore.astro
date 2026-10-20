@@ -9,8 +9,9 @@ type Stato = 'aspetta' | 'pensa' | 'fatto' | 'festa' | 'perso' | 'saluta' | 'gri
 interface Props { stato?: Stato; class?: string }
 const { stato = 'aspetta', class: classe = '' } = Astro.props;
 
-const ROSSO = '#E30613';
-const q = (x: number, y: number, l: number, cls = '', fill = ROSSO) => `<rect class="${cls}" x="${x}" y="${y}" width="${l}" height="${l}" fill="${fill}"/>`;
+// il colore d'accento scelto nel pannello «Il tuo sito» (rosso se non c'è)
+const ROSSO = 'var(--rosso, #E30613)';
+const q = (x: number, y: number, l: number, cls = '', fill = ROSSO) => `<rect class="${cls}" x="${x}" y="${y}" width="${l}" height="${l}" style="fill:${fill}"/>`;
 let s = '';
 let box = '0 0 48 48';
 if (stato === 'aspetta') s = q(14, 14, 20, 'c-lampeggia');

@@ -4,7 +4,7 @@
 // Gli altri capitoli sono forme a pixel quadrati, come i pixel di uno schermo (idea 10):
 //   1 BERSAGLIO  → interesse, tutto converge sul punto rosso
 //   2 SPUNTA     → fiducia, con il quadratino rosso del logo
-//   3 CUORE      → desiderio (batte), tutto rosso
+//   3 CUORE      → desiderio (batte), con il cuore rosso al centro
 //   4 FRECCIA    → azione, il passo verso il «sì»
 // La forma attiva la decide la sezione al centro dello schermo ([data-forma]).
 import * as THREE from 'three';
@@ -101,7 +101,9 @@ vec3 occhio(){
     p = vec3(RC + mix(quadro, cuoreDa(q), uCuore) * (0.9 + 0.1 * dilata), 0.02);
     eCol = uRosso * (0.85 + 0.3 * aRand);
     // cursore: acceso 0,55 s, spento 0,55 s (fermo e acceso con «riduci movimento»)
-    eVis = mix(0.18, 1.0, 1.0 - step(0.5, fract(uTime / 0.66)));
+    // lampeggia solo nei primi secondi, poi resta acceso: un cursore che aspetta, non un allarme
+    float lampo = uTime < 2.7 ? 1.0 - step(0.5, fract(uTime / 0.66)) : 1.0;
+    eVis = mix(0.18, 1.0, lampo);
     eVis = max(eVis, uCuore);
     eSize = 0.95;
   } else {                     // polvere attorno, appena accennata
@@ -266,7 +268,7 @@ const segmento = (px, py, ax, ay, bx, by) => { const dx = bx - ax, dy = by - ay;
 const FORME_PIXEL = [
   (u, v) => { const m = Math.max(Math.abs(u), Math.abs(v)); return m < 0.2 ? 2 : Math.abs(m - 0.86) < 0.12 || Math.abs(m - 0.52) < 0.1 ? 1 : 0; },
   (u, v) => { if (u > 0.62 && v > 0.62) return 2; return Math.min(segmento(u, v, -0.72, 0, -0.22, 0.48), segmento(u, v, -0.22, 0.48, 0.72, -0.56)) < 0.17 ? 1 : 0; },
-  (u, v) => { const x = u * 1.25, y = -v * 1.25 + 0.3; return Math.pow(x * x + y * y - 1, 3) - x * x * y * y * y < 0 ? 2 : 0; },
+  (u, v) => { const x = u * 1.25, y = -v * 1.25 + 0.3; return Math.pow(x * x + y * y - 1, 3) - x * x * y * y * y < 0 ? (Math.hypot(u, v + 0.08) < 0.24 ? 2 : 1) : 0; },
   (u, v) => ((Math.abs(v) < 0.17 && u > -0.86 && u < 0.3) || (u >= 0.1 && u < 0.86 && Math.abs(v) < (0.86 - u) * 1.05) ? 1 : 0),
 ];
 function pixel(N, out, rossi, k) {
@@ -315,10 +317,16 @@ function scritta(nome, N, out, larghezza, quota) {
 }
 
 // I colori del logo: bianco e il rosso del quadratino. A = i pixel bianchi, B = i pixel rossi di ogni forma (fuoco, bersaglio, spunta, cuore, freccia)
-const COLORI = {
-  A: ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF'], B: ['#E30613', '#E30613', '#E30613', '#E30613', '#E30613'],
-  pelle: '#FFFFFF', rosso: '#E30613', alone: '#9A9A9A', stelle: '#C8C8C8',
-};
+// Sul fondo chiaro i punti sono inchiostro (scuri, fusione normale); su quello scuro sono luce (fusione additiva).
+// Il rosso è il colore d'accento scelto nel pannello «Il tuo sito».
+function leggiColori() {
+  const cs = getComputedStyle(document.documentElement);
+  const chiaro = document.documentElement.dataset.tema === 'chiaro';
+  const accento = cs.getPropertyValue('--rosso').trim() || '#E30613';
+  const base = chiaro ? '#1A1A1A' : '#FFFFFF';
+  return { chiaro, A: Array(5).fill(base), B: Array(5).fill(accento), pelle: chiaro ? '#151515' : '#FFFFFF', rosso: accento, alone: chiaro ? '#6B6B6B' : '#9A9A9A', stelle: chiaro ? '#7A7A7A' : '#C8C8C8' };
+}
+const COLORI = leggiColori();
 
 export function avviaScena(canvas) {
   const ridotto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -372,7 +380,8 @@ export function avviaScena(canvas) {
     uColB: { value: COLORI.B.map((c) => new THREE.Color(c)) },
     uPelle: { value: new THREE.Color(COLORI.pelle) }, uRosso: { value: new THREE.Color(COLORI.rosso) }, uAlone: { value: new THREE.Color(COLORI.alone) },
   };
-  const mat = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+  const fusione = () => (COLORI.chiaro ? THREE.NormalBlending : THREE.AdditiveBlending);
+  const mat = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms, transparent: true, depthWrite: false, blending: fusione() });
   const punti = new THREE.Points(geo, mat);
   punti.frustumCulled = false;
   const gruppo = new THREE.Group();
@@ -404,7 +413,7 @@ export function avviaScena(canvas) {
     uWarp: { value: 0 },                                     // 0 fermo · 1 scroll velocissimo: le stelle diventano strisce
   };
   const smat = new THREE.ShaderMaterial({
-    uniforms: suni, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    uniforms: suni, transparent: true, depthWrite: false, blending: fusione(),
     vertexShader: /* glsl */ `
       uniform float uTime, uScroll, uPR, uAspect, uWarp;
       uniform vec2 uParallasse, uRis;
@@ -467,7 +476,7 @@ export function avviaScena(canvas) {
   scgeo.setAttribute('aT', new THREE.BufferAttribute(scT, 1));
   const scuni = { uInizio: { value: new THREE.Vector3() }, uDir: { value: new THREE.Vector3(-1, -0.4, 0) }, uProg: { value: -1 }, uPR: { value: pr }, uColore: suni.uColore };
   const scmat = new THREE.ShaderMaterial({
-    uniforms: scuni, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    uniforms: scuni, transparent: true, depthWrite: false, blending: fusione(),
     vertexShader: /* glsl */ `
       uniform vec3 uInizio, uDir;
       uniform float uProg, uPR;
@@ -673,6 +682,17 @@ export function avviaScena(canvas) {
   const sguardo = new THREE.Vector2();
 
   let ultimoScroll = window.scrollY, vel = 0;
+
+  // ---------- Chiaro o scuro e colore d'accento: cambiano dal pannello «Il tuo sito» ----------
+  window.addEventListener('gd-aspetto', () => {
+    const c = leggiColori();
+    Object.assign(COLORI, c);
+    uniforms.uColA.value.forEach((x, i) => x.set(c.A[i]));
+    uniforms.uColB.value.forEach((x, i) => x.set(c.B[i]));
+    uniforms.uPelle.value.set(c.pelle); uniforms.uRosso.value.set(c.rosso); uniforms.uAlone.value.set(c.alone);
+    suni.uColore.value.set(c.stelle);
+    [mat, smat, scmat].forEach((m) => { m.blending = fusione(); m.needsUpdate = true; });
+  });
 
   // ---------- Ciclo ----------
   const orologio = new THREE.Clock();

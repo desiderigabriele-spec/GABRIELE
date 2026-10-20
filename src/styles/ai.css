@@ -71,7 +71,7 @@
 .cr-scheda { display: grid; gap: .2rem; padding: 14px; border-radius: 14px; border: 1px solid var(--linea); background: rgba(var(--notte-rgb), .55); }
 .cr-scheda strong { font-family: var(--f-titolo); font-size: 1.7rem; letter-spacing: -.02em; line-height: 1.1; }
 .cr-scheda span:last-child { color: var(--nebbia); font-size: .85rem; }
-.cr-calda { border-color: rgba(227, 6, 19, .45); }
+.cr-calda { border-color: rgba(var(--rosso-rgb), .45); }
 .cr-calda strong { color: var(--ambra); }
 .cr-avviso { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .8rem; align-items: center; padding: 12px 14px; border-radius: 14px; background: rgba(var(--brand-rgb), .12); border: 1px solid rgba(var(--brand-rgb), .35); }
 .cr-avviso .mascotte { width: 40px; height: 40px; }

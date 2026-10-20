@@ -1,6 +1,6 @@
-// «Personalizza»: un pannellino sotto il bottone «Aa», con il nome del visitatore.
-// Cambia mentre scrivi: il nome compare nei titoli e nei messaggi.
-import { leggiProfilo, salvaProfilo, pulisciNome, applicaProfilo } from './profilo.js';
+// «Il tuo sito»: un pannellino sotto il bottone «Aa», con il nome, chiaro o scuro e il colore d'accento.
+// Cambia subito: il nome compare nei titoli e nei messaggi, i colori su tutto il sito (il logo resta rosso).
+import { leggiProfilo, salvaProfilo, pulisciNome, applicaProfilo, applicaAspetto, ASPETTI, ACCENTI } from './profilo.js';
 
 const traccia = (e, d) => window.gdTrack?.(e, d);
 
@@ -8,6 +8,7 @@ export function avviaPersonalizza(scena) {
   const html = document.documentElement;
   let p = leggiProfilo();
   applicaProfilo(p);
+  applicaAspetto(p);
   const box = document.querySelector('[data-pannello-tema]');
   if (!box) return;
 
@@ -17,6 +18,23 @@ export function avviaPersonalizza(scena) {
   let aperto = false, origine = null, nomeScritto = p.nome || '';
 
   const salva = () => { salvaProfilo(p); applicaProfilo(p); };
+  const aspetti = [...box.querySelectorAll('[data-aspetto-scelta]')];
+  const colori = [...box.querySelectorAll('[data-accento-scelta]')];
+  const segna = () => {
+    const ora = applicaAspetto(p);
+    aspetti.forEach((b) => b.setAttribute('aria-checked', String(b.dataset.aspettoScelta === ora.aspetto)));
+    colori.forEach((b) => b.setAttribute('aria-checked', String(b.dataset.accentoScelta === ora.accento)));
+  };
+  aspetti.forEach((b) => b.addEventListener('click', () => {
+    if (!ASPETTI.includes(b.dataset.aspettoScelta)) return;
+    p.aspetto = b.dataset.aspettoScelta; p.fatto = true; salvaProfilo(p); segna();
+    traccia('personalizza_aspetto', { aspetto: p.aspetto });
+  }));
+  colori.forEach((b) => b.addEventListener('click', () => {
+    if (!ACCENTI.includes(b.dataset.accentoScelta)) return;
+    p.accento = b.dataset.accentoScelta; p.fatto = true; salvaProfilo(p); segna();
+    traccia('personalizza_colore', { accento: p.accento });
+  }));
 
   // il pannello si apre sotto il bottone dell'header (su telefono, sotto la barra in alto)
   function posiziona() {
@@ -31,6 +49,7 @@ export function avviaPersonalizza(scena) {
     origine = da || null;
     p = leggiProfilo();
     input.value = p.nome || '';
+    segna();
     posiziona();
     box.hidden = false;
     requestAnimationFrame(() => box.classList.add('aperto'));

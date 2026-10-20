@@ -3,7 +3,7 @@
 interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
 const T = (a: string, b: string) => (lang === 'it' ? a : b);
-const freccia = (c: string) => `<svg width="15" height="19" viewBox="0 0 16 20" aria-hidden="true"><path d="M1 1v15l4-3.6 3 6.6 2.6-1.1-3-6.4H13Z" fill="${c}" stroke="#0a0a0a" stroke-width="1"/></svg>`;
+const freccia = (c: string) => `<svg width="15" height="19" viewBox="0 0 16 20" aria-hidden="true"><path d="M1 1v15l4-3.6 3 6.6 2.6-1.1-3-6.4H13Z" style="fill:${c}" stroke="#0a0a0a" stroke-width="1"/></svg>`;
 ---
 <figure class="cursori-box" style="margin:0">
   <div class="cursori" role="img" aria-label={T('Animazione: tre cursori lavorano sulla stessa pagina. Gabriele sposta una scheda, l’AI scrive un testo, il cliente approva il bottone.', 'Animation: three cursors work on the same page. Gabriele moves a card, the AI writes copy, the client approves the button.')}>
@@ -12,7 +12,7 @@ const freccia = (c: string) => `<svg width="15" height="19" viewBox="0 0 16 20" 
     <span class="cursori-testo" aria-hidden="true"><span>{T('Prima consulenza gratuita.', 'First consultation free.')}</span><i></i></span>
     <span class="cursori-scheda" aria-hidden="true"><b>{T('Diritto del lavoro', 'Employment law')}</b></span>
     <span class="cursore-tipo ct-g" aria-hidden="true"><Fragment set:html={freccia('#ffffff')} /><span>Gabriele</span></span>
-    <span class="cursore-tipo ct-a" aria-hidden="true"><Fragment set:html={freccia('#e30613')} /><span>{T('AI · scrive', 'AI · writes')}</span></span>
+    <span class="cursore-tipo ct-a" aria-hidden="true"><Fragment set:html={freccia('var(--rosso)')} /><span>{T('AI · scrive', 'AI · writes')}</span></span>
     <span class="cursore-tipo ct-t" aria-hidden="true"><Fragment set:html={freccia('#8a8a8a')} /><span>{T('Tu · approvi', 'You · approve')}</span></span>
   </div>
   <figcaption class="cursori-nota">{T('Lavoriamo insieme sulla stessa pagina', 'We work together on the same page')}</figcaption>

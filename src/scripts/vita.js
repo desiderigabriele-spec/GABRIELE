@@ -6,7 +6,16 @@ const ridotto = html.classList.contains('ridotto');
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} }, via: (k) => { try { sessionStorage.removeItem(k); } catch (_) {} } };
 const SEGNI = '01<>/{}[]#$%&*+=?;:_';
-const ROSSO = '#e30613';
+// i colori del tema in uso (cambiano dal pannello «Il tuo sito»)
+const tinte = { accento: '#e30613', accentoRgb: '227, 6, 19', testo: '#ffffff' };
+function leggiTinte() {
+  const cs = getComputedStyle(html);
+  tinte.accento = cs.getPropertyValue('--rosso').trim() || '#e30613';
+  tinte.accentoRgb = cs.getPropertyValue('--rosso-rgb').trim() || '227, 6, 19';
+  tinte.testo = cs.getPropertyValue('--latte').trim() || '#ffffff';
+}
+leggiTinte();
+window.addEventListener('gd-aspetto', leggiTinte);
 
 // chiama fn la prima volta che el entra nello schermo
 function quandoVisibile(el, fn, soglia = 0.25) {
@@ -41,17 +50,19 @@ function cursoreCheScrive() {
   const parole = el.dataset.scrive.split(',');
   let i = 0;
   const aspetta = (ms) => new Promise((r) => setTimeout(r, ms));
+  // fa un solo giro delle parole e torna alla prima, poi il cursore resta fermo e acceso
   async function giro() {
     await aspetta(3200);
-    for (;;) {
+    for (let k = 0; k < parole.length; k++) {
       el.classList.add('scrive-attivo');
       for (let n = testo.textContent.length; n > 0; n--) { testo.textContent = testo.textContent.slice(0, -1); await aspetta(45); }
       i = (i + 1) % parole.length;
       await aspetta(260);
       for (const ch of parole[i]) { testo.textContent += ch; await aspetta(85); }
       el.classList.remove('scrive-attivo');
-      await aspetta(i === 0 ? 5200 : 2600);
+      if (k < parole.length - 1) await aspetta(2400);
     }
+    el.classList.add('scrive-fermo');
   }
   giro();
 }
@@ -92,7 +103,7 @@ function grigliaMagnetica() {
       const k = Math.max(0, 1 - d / R);
       const s = 1.6 + 6 * k * k;
       ctx.globalAlpha = 0.09 + 0.5 * k;
-      ctx.fillStyle = d < 54 ? ROSSO : '#ffffff';
+      ctx.fillStyle = d < 54 ? tinte.accento : tinte.testo;
       ctx.beginPath(); ctx.arc(x, y, s / 2, 0, 6.283); ctx.fill();
     }
     ctx.globalAlpha = 1;
@@ -217,6 +228,7 @@ function tabellone() {
 // ---------- 11 · Tendina rossa: tra una pagina e l'altra il quadratino copre tutto e si richiude ----------
 function tendina() {
   // arrivo: la pagina nasce coperta di rosso (classe messa nel <head>), il rosso si richiude sul logo
+  // la tendina ha il colore dello sfondo; diventa del colore d'accento solo quando è piccola (niente schermo rosso)
   if (html.classList.contains('tendina-arrivo')) {
     const velo = document.createElement('span');
     velo.className = 'tendina';
@@ -225,9 +237,11 @@ function tendina() {
     html.classList.remove('tendina-arrivo');
     const logo = document.querySelector('.site-header .brand-icona')?.getBoundingClientRect();
     const fx = logo ? logo.right - logo.width * 0.25 : 40, fy = logo ? logo.bottom - logo.height * 0.25 : 40;
+    const cs = getComputedStyle(html);
     const anim = velo.animate([
-      { left: '0px', top: '0px', width: `${innerWidth}px`, height: `${innerHeight}px` },
-      { left: `${fx - 3}px`, top: `${fy - 3}px`, width: '6px', height: '6px' },
+      { left: '0px', top: '0px', width: `${innerWidth}px`, height: `${innerHeight}px`, backgroundColor: cs.getPropertyValue('--notte').trim() },
+      { offset: 0.7, backgroundColor: cs.getPropertyValue('--notte-2').trim() },
+      { left: `${fx - 3}px`, top: `${fy - 3}px`, width: '6px', height: '6px', backgroundColor: cs.getPropertyValue('--rosso').trim() },
     ], { duration: 650, easing: 'cubic-bezier(.76,0,.24,1)', fill: 'forwards' });
     anim.onfinish = () => velo.remove();
   }
@@ -247,9 +261,11 @@ function tendina() {
     velo.setAttribute('aria-hidden', 'true');
     document.body.appendChild(velo);
     const x = e.clientX || innerWidth / 2, y = e.clientY || innerHeight / 2;
+    const cs = getComputedStyle(html);
     velo.animate([
-      { left: `${x - 5}px`, top: `${y - 5}px`, width: '10px', height: '10px' },
-      { left: '0px', top: '0px', width: `${innerWidth}px`, height: `${innerHeight}px` },
+      { left: `${x - 5}px`, top: `${y - 5}px`, width: '10px', height: '10px', backgroundColor: cs.getPropertyValue('--rosso').trim() },
+      { offset: 0.35, backgroundColor: cs.getPropertyValue('--notte-2').trim() },
+      { left: '0px', top: '0px', width: `${innerWidth}px`, height: `${innerHeight}px`, backgroundColor: cs.getPropertyValue('--notte').trim() },
     ], { duration: 520, easing: 'cubic-bezier(.76,0,.24,1)', fill: 'forwards' }).onfinish = () => { ss.set('gd-tendina', '1'); location.assign(u.href); };
   });
 }
@@ -365,7 +381,7 @@ function mappaAttenzione() {
       for (const [x, y, nato] of punti) {
         const vita = Math.max(0, 1 - (t - nato) / 9000);
         const g = ctx.createRadialGradient(x, y, 0, x, y, 46);
-        g.addColorStop(0, `rgba(227,6,19,${0.22 * vita})`); g.addColorStop(1, 'rgba(227,6,19,0)');
+        g.addColorStop(0, `rgba(${tinte.accentoRgb},${0.22 * vita})`); g.addColorStop(1, `rgba(${tinte.accentoRgb},0)`);
         ctx.fillStyle = g; ctx.fillRect(x - 46, y - 46, 92, 92);
       }
       ctx.globalCompositeOperation = 'source-over';

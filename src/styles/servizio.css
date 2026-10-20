@@ -90,12 +90,12 @@
 .ill .s1 { fill: rgba(var(--sup2-rgb), .96); stroke: var(--linea-forte); stroke-width: 1.5; }
 .ill .s1.forte { stroke: rgba(var(--brand-rgb), .55); }
 .ill .s2 { fill: rgba(var(--notte-rgb), .65); stroke: var(--linea); stroke-width: 1; }
-.ill .s2.bordo-a { stroke: rgba(227, 6, 19, .55); }
+.ill .s2.bordo-a { stroke: rgba(var(--rosso-rgb), .55); }
 .ill .b { fill: var(--viola); }
 .ill .bs { fill: rgba(var(--brand-rgb), .2); }
 .ill .a { fill: var(--ambra); }
-.ill .r { fill: #e30613; }
-.ill .ill-lampo { animation: lampeggia 1.1s steps(1) infinite; }
+.ill .r { fill: var(--rosso); }
+
 .ill .c { fill: var(--ciano); }
 .ill .l { fill: var(--latte); }
 .ill .verde { fill: #22d47e; }

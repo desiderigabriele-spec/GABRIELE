@@ -43,9 +43,12 @@ function ciclo(ora) {
 }
 function aggiungi(p) { parti.push(p); if (!inCorso) { inCorso = true; requestAnimationFrame(ciclo); } }
 
-const COLORI = ['#ffffff', '#ffffff', '#d4d4d4', '#e30613', '#e30613'];
+// i colori del tema in uso: il testo (bianco o nero) e il colore d'accento scelto
 function scoppio(x, y) {
   preparaTela();
+  const cs = getComputedStyle(html);
+  const t = cs.getPropertyValue('--latte').trim() || '#ffffff', a = cs.getPropertyValue('--rosso').trim() || '#e30613';
+  const COLORI = [t, t, a, a, cs.getPropertyValue('--nebbia').trim() || '#a3a3a3'];
   for (let i = 0; i < 26; i++) {
     const a = rnd(0, 6.283), v = rnd(1.6, 5.2);
     aggiungi({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.5, vita: 0, durata: rnd(650, 1100), r: rnd(1.6, 3.4), c: COLORI[(Math.random() * COLORI.length) | 0], stella: Math.random() < 0.45, g: 0.09, alone: 8 });

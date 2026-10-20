@@ -11,7 +11,7 @@
 .pv-passi li.attivo { color: var(--latte); }
 .pv-passi li.attivo span { border-color: var(--rosso); color: var(--ambra); }
 .pv-passi li.fatto { color: var(--nebbia); }
-.pv-passi li.fatto span { background: var(--viola); border-color: var(--viola); color: #fff; }
+.pv-passi li.fatto span { background: var(--viola); border-color: var(--viola); color: var(--notte); }
 .pv-barra { height: 3px; border-radius: 99px; background: rgba(var(--latte-rgb),.08); overflow: hidden; margin-bottom: 40px; max-width: 640px; }
 .pv-barra span { display: block; height: 100%; width: 8%; background: var(--firma); border-radius: inherit; transition: width .8s var(--ease); }
 @media (max-width: 720px) { .pv-passi li { font-size: 0; gap: 0; justify-content: center; } .pv-passi li.attivo { font-size: .82rem; gap: .5rem; grid-column: span 1; } }
@@ -75,7 +75,7 @@
 .pv-extra[open] summary::before { content: '−'; }
 .pv-extra summary:hover { color: var(--latte); }
 .pv-extra summary .facolt { font-weight: 400; }
-.pv-extra-conta:not(:empty) { margin-left: .2rem; min-width: 22px; height: 22px; padding: 0 .4rem; border-radius: 99px; display: inline-grid; place-items: center; background: var(--rosso); color: #fff; font-size: .75rem; font-weight: 700; }
+.pv-extra-conta:not(:empty) { margin-left: .2rem; min-width: 22px; height: 22px; padding: 0 .4rem; border-radius: 99px; display: inline-grid; place-items: center; background: var(--rosso); color: var(--azione-testo); font-size: .75rem; font-weight: 700; }
 .pv-extra-riga { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: .2rem 1rem; align-items: center; padding: .8rem 0; border-bottom: 1px solid var(--linea); }
 .pv-extra-riga:last-child { border-bottom: 0; }
 .pv-extra-riga.attivo .pv-extra-nome { color: var(--ambra); }
@@ -85,7 +85,7 @@
 .pv-extra-prezzo { font-size: .88rem; font-weight: 600; white-space: nowrap; color: var(--latte); font-variant-numeric: tabular-nums; }
 .pv-stepper { flex: none; display: flex; align-items: center; gap: 2px; padding: 3px; border-radius: 99px; border: 1px solid var(--linea-forte); }
 .pv-stepper button { width: 30px; height: 30px; border-radius: 50%; border: 0; background: rgba(var(--latte-rgb),.07); color: var(--latte); cursor: pointer; font-size: 1rem; line-height: 1; transition: background .2s; }
-.pv-stepper button:hover { background: rgba(227, 6, 19, .25); }
+.pv-stepper button:hover { background: rgba(var(--rosso-rgb), .25); }
 .pv-stepper output { min-width: 1.6em; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
 .pv-interruttore { flex: none; position: relative; width: 48px; height: 28px; cursor: pointer; }
 .pv-interruttore input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
@@ -147,7 +147,7 @@
 .pv-rassicura { margin-top: .9rem; font-size: .8rem; color: var(--nebbia-2); text-align: right; }
 @media (max-width: 640px) { .pv-campi { grid-template-columns: 1fr; } .pv-nav .btn { flex: 1; } .pv-invio { width: 100%; } .pv-rassicura { text-align: left; } }
 
-.pv-fatto { display: grid; gap: 1.4rem; justify-items: start; padding: clamp(28px, 4vw, 56px); border-radius: var(--r-grande); border: 1px solid rgba(227, 6, 19, .4); background: rgba(var(--sup-rgb),.88); }
+.pv-fatto { display: grid; gap: 1.4rem; justify-items: start; padding: clamp(28px, 4vw, 56px); border-radius: var(--r-grande); border: 1px solid rgba(var(--rosso-rgb), .4); background: rgba(var(--sup-rgb),.88); }
 .pv-fatto h2 { font-size: clamp(2.2rem, 5vw, 3.8rem); }
 .pv-fatto-icona { font-size: 2.4rem; background: var(--caldo); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
