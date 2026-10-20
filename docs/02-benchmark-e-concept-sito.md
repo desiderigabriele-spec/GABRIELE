@@ -281,6 +281,9 @@ Tre passi, il meno possibile da leggere e da scrivere.
 - **Astro** (sito statico, velocissimo) + **three.js** (particelle, shader scritti a mano) + **GSAP ScrollTrigger** + **Lenis**.
 - Particelle: circa 14.000 su desktop e 6.000 su mobile. Si spengono se il dispositivo è lento o se è attivo "riduci movimento". La scena si carica **dopo** il testo.
 - Deploy su **Vercel**, come il sito di Lorenzo.
+- **Telefoni vecchi e pieghevoli:**
+  - **iOS 14 e 15.** Il codice è compilato per Safari e iOS 14 in su (`vite.build.target` in `astro.config.mjs`), quindi la scena 3D gira anche su un iPhone 7. Se la scena non parte, al suo posto compare l'occhio disegnato. Ogni misura in `svh` ha anche la versione in `vh` per chi non la capisce, e `.at()` è aggiunto per Safari prima della 15.4.
+  - **iPhone Duo.** Lo schermo interno misura 626×890 punti in verticale e 890×626 in orizzontale, quello esterno 466×678. Dai 600 px i servizi stanno su 2 colonne. Tra 600 e 900 px la barra in basso resta larga al massimo 520 px. In orizzontale con poca altezza l'hero è compatto e senza le didascalie sopra l'occhio. Sugli schermi bassi come quello esterno l'occhio ha più spazio e il testo è più compatto.
 - **CSS dentro ogni pagina** (`inlineStylesheets: 'always'` in `astro.config.mjs`): non c'è un file di stile da scaricare a parte. Così una pagina non può mai comparire «nuda», cioè bianca, con il logo gigante e senza stile. Succedeva su un browser che aveva tenuto in cache, per un anno, un CSS vecchio o non trovato. JS e font stanno in `/_sd/` con cache lunga: hanno nomi con l'impronta del contenuto, quindi a ogni modifica cambia anche il nome.
 - Obiettivi: Lighthouse > 90 su mobile, testo leggibile prima di 1,5 secondi.
 
