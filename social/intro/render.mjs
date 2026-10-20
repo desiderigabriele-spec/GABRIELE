@@ -9,8 +9,8 @@ import path from 'node:path';
 const qui = path.dirname(fileURLToPath(import.meta.url));
 const FPS = 30;
 const FORMATI = {
-  verticale: { w: 1080, h: 1920, file: 'studio-desideri-intro-9x16.mp4' }, // Reels, TikTok, Storie
-  quadrato: { w: 1080, h: 1080, file: 'studio-desideri-intro-1x1.mp4' }, // post nel feed
+  verticale: { w: 1080, h: 1920, file: 'desideri-code-intro-9x16.mp4' }, // Reels, TikTok, Storie
+  quadrato: { w: 1080, h: 1080, file: 'desideri-code-intro-1x1.mp4' }, // post nel feed
 };
 const scelti = process.argv[2] ? [process.argv[2]] : Object.keys(FORMATI);
 const browser = await chromium.launch({

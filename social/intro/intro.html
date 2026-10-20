@@ -3,71 +3,68 @@
 <head>
 <meta charset="utf-8">
 <title>Desideri & Code · intro social</title>
-<!-- Video intro per i social (motion graphics). Ogni fotogramma si disegna con disegna(t), t in secondi:
-     render.mjs lo apre a 1080×1920 (Reels, TikTok, Storie) o 1080×1080 (post) e salva i fotogrammi per ffmpeg.
-     ?t=5 mostra un fotogramma fermo, ?play fa partire l'animazione nel browser. -->
+<!-- Video intro per i social (motion graphics), nello stile del sito: nero, bianco e il quadratino del logo.
+     Nei video il quadratino cambia colore (rosso, blu, verde, rosa, viola): ci adattiamo ai gusti di chi ci sceglie.
+     Ogni fotogramma si disegna con disegna(t), t in secondi: render.mjs lo apre a 1080×1920 (Reels, TikTok, Storie)
+     o 1080×1080 (post) e passa i fotogrammi a ffmpeg. ?t=5 mostra un fotogramma fermo, ?play fa partire l'animazione. -->
 <style>
-  @font-face { font-family: 'Bricolage'; src: url('../../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2') format('woff2'); font-weight: 200 800; }
+  @font-face { font-family: 'Tight'; src: url('../../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
   @font-face { font-family: 'Inter'; src: url('../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
-  @font-face { font-family: 'Instrument'; src: url('../../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2') format('woff2'); font-style: italic; }
   @font-face { font-family: 'Mono'; src: url('../../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2') format('woff2'); font-weight: 100 800; }
-  :root { --notte: #05070f; --latte: #f2f4f8; --nebbia: #9fa8bd; --blu: #3d7bff; --blu-chiaro: #9cc0ff; --ambra: #ffb547; --rosso: #ff3347; --firma: linear-gradient(100deg, #3d7bff 0%, #5cc8ff 55%, #9fe8ff 100%); }
+  :root { --notte: #0a0a0a; --latte: #ffffff; --nebbia: #a3a3a3; --q: #e30613; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 100%; height: 100%; overflow: hidden; background: var(--notte); color: var(--latte); }
-  #scena { position: fixed; inset: 0; overflow: hidden; background: radial-gradient(70% 45% at 50% 42%, #0d1630 0%, var(--notte) 70%); }
+  #scena { position: fixed; inset: 0; overflow: hidden; background: var(--notte); }
   canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-  #alone { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(61,123,255,.38), rgba(61,123,255,0) 65%); pointer-events: none; }
-  #marchio { position: absolute; overflow: visible; }
-  .blocco { position: absolute; left: 0; right: 0; display: grid; justify-items: center; text-align: center; }
-  .riga { display: block; overflow: hidden; padding: .04em .1em .1em; }
+  .blocco { position: absolute; left: 0; right: 0; display: grid; justify-items: start; padding-left: 8%; }
+  .riga { display: block; overflow: hidden; padding: .02em .1em .1em 0; }
   .riga > span { display: inline-block; }
-  .titolo { font-family: 'Bricolage'; font-weight: 800; letter-spacing: -0.045em; line-height: .96; }
-  .em { font-family: 'Instrument'; font-style: italic; font-weight: 400; letter-spacing: .01em; background: var(--firma); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .08em; }
-  .mono { font-family: 'Mono'; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; color: var(--blu-chiaro); }
-  .studio { font-family: 'Inter'; font-weight: 500; letter-spacing: .5em; text-transform: uppercase; padding-left: .5em; }
-  .nome { font-family: 'Bricolage'; font-weight: 800; letter-spacing: -0.05em; line-height: .9; }
-  .motto { font-family: 'Instrument'; font-style: italic; }
+  .titolo { font-family: 'Tight'; font-weight: 800; letter-spacing: -0.05em; line-height: .96; }
+  .grigio { color: var(--nebbia); }
+  .q { display: inline-block; width: .2em; height: .2em; margin-left: .05em; background: var(--q); }
+  .cursore { display: inline-block; width: .2em; height: .2em; margin-left: .05em; }
+  .mono { font-family: 'Mono'; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--nebbia); display: flex; align-items: center; gap: .8em; }
+  .mono i { display: inline-block; width: .7em; height: .7em; }
+  .servizio .q { width: .16em; height: .16em; }
+  #b-firma { justify-items: center; padding-left: 0; text-align: center; }
+  .icona { position: relative; background: #ffffff; }
+  .icona b { position: absolute; left: 13.9%; font-family: 'Tight'; font-weight: 800; letter-spacing: -0.05em; line-height: 1; color: #0a0a0a; }
+  .icona i { position: absolute; }
+  .nome { font-family: 'Tight'; font-weight: 800; letter-spacing: -0.05em; line-height: 1; white-space: nowrap; }
+  .motto { font-family: 'Tight'; font-weight: 600; letter-spacing: -0.02em; color: var(--latte); }
   .piede { font-family: 'Mono'; letter-spacing: .16em; text-transform: uppercase; color: var(--nebbia); }
-  .punto-piede { display: inline-block; width: .55em; height: .55em; border-radius: 50%; background: var(--rosso); margin: 0 .7em; vertical-align: .1em; box-shadow: 0 0 .8em var(--rosso); }
+  .riga > span.tinte { display: flex; gap: .5em; justify-content: center; }
+  .tinte i { display: block; width: 1em; height: 1em; }
 </style>
 </head>
 <body>
 <div id="scena">
-  <canvas id="cielo"></canvas>
-  <div id="alone"></div>
-  <svg id="marchio" viewBox="0 0 507.1 402.1" aria-hidden="true">
-    <defs><clipPath id="clip-palpebra"><circle id="taglio" cx="145.6" cy="53.6" r="0" /></clipPath></defs>
-    <g id="g-sfera"><path fill="#F2F4F8" fill-rule="evenodd" d="M155.6 15.6C63.6 38.6 -0.4 120.6 0.6 209.6C1.6 315.6 83.6 401.6 191.6 401.6C262.6 401.6 330.6 365.6 368.6 306.6C342.6 323.6 311.6 317.6 284.6 306.6C222.6 281.6 175.6 235.6 146.6 181.6C114.6 121.6 110.6 54.6 155.6 15.6Z"/></g>
-    <g id="g-occhio">
-      <g clip-path="url(#clip-palpebra)"><path fill="#3D7BFF" fill-rule="evenodd" d="M145.6 53.6C170.6 3.6 210.6 -9.4 255.6 7.6C336.6 37.6 396.6 126.6 401.6 210.6C389.6 144.6 347.6 96.6 297.6 64.6C247.6 34.6 194.6 29.6 145.6 53.6Z"/></g>
-      <g id="g-iride"><path id="iride" fill="#FFB547" fill-rule="evenodd" d="M367.7 292.7C332 315.8 269.9 283.5 229 220.5C188.1 157.5 183.9 87.7 219.5 64.5C255.2 41.4 317.3 73.7 358.2 136.7C399.1 199.7 403.3 269.5 367.7 292.7ZM367 222.1C353.1 231.1 326 214 306.4 183.9C286.9 153.8 282.3 122.1 296.2 113.1C310.1 104.1 337.2 121.2 356.8 151.3C376.3 181.4 380.9 213.1 367 222.1Z"/>
-        <circle id="riflesso" cx="339.6" cy="129.6" r="8" fill="#F2F4F8"/></g>
-    </g>
-    <circle id="punto" cx="477.6" cy="45.6" r="29" fill="#FF3347"/>
-  </svg>
+  <canvas id="griglia"></canvas>
 
   <div class="blocco" id="b-titolo">
+    <span class="riga mono" id="cap1"><span><i></i>Capitolo 01 · Attenzione</span></span>
     <span class="riga titolo"><span>Trasformiamo</span></span>
     <span class="riga titolo"><span>chi ti guarda</span></span>
-    <span class="riga titolo"><span>in chi ti <span class="em" id="sceglie">sceglie.</span></span></span>
+    <span class="riga titolo"><span>in chi ti <span id="parola">sceglie</span><span class="q" id="q-titolo"></span></span></span>
   </div>
 
   <div class="blocco" id="b-servizi">
-    <span class="riga mono" id="etichetta"><span>Cosa facciamo</span></span>
-    <span class="riga titolo servizio"><span>Siti web</span></span>
-    <span class="riga titolo servizio"><span>Negozi <span class="em">online</span></span></span>
-    <span class="riga titolo servizio"><span>Software <span class="em">con AI</span></span></span>
-    <span class="riga titolo servizio"><span>Pubblicità</span></span>
+    <span class="riga mono" id="cap2"><span><i></i>Cosa facciamo</span></span>
+    <span class="riga titolo servizio"><span>Siti web<span class="q"></span></span></span>
+    <span class="riga titolo servizio"><span>Negozi online<span class="q"></span></span></span>
+    <span class="riga titolo servizio"><span>Automazioni <span class="grigio">e AI</span><span class="q"></span></span></span>
+    <span class="riga titolo servizio"><span>Gestionali<span class="q"></span></span></span>
+    <span class="riga titolo servizio"><span>Pubblicità<span class="q"></span></span></span>
   </div>
 
   <div class="blocco" id="b-firma">
-    <span class="riga studio"><span>Studio</span></span>
-    <span class="riga nome"><span>Desideri</span></span>
-    <span class="riga motto"><span class="em">Dal primo sguardo al sì.</span></span>
-    <span class="riga piede"><span>Siti web · AI · Pubblicità</span></span>
-    <span class="riga piede"><span>Milano<i class="punto-piede"></i>Italia e Svizzera</span></span>
+    <span class="riga"><span><span class="icona" id="icona"><b id="i-1">D&amp;</b><b id="i-2">C</b><i id="i-q"></i></span></span></span>
+    <span class="riga nome"><span>Desideri&amp;Code<span class="q" id="q-nome"></span></span></span>
+    <span class="riga motto"><span>Il tuo sito, nei colori che piacciono a te.</span></span>
+    <span class="riga"><span class="tinte" id="tinte"><i></i><i></i><i></i><i></i><i></i></span></span>
+    <span class="riga piede"><span>Siti web · AI · Gestionali · Pubblicità</span></span>
+    <span class="riga piede"><span>Milano · Italia e Svizzera</span></span>
   </div>
-  <canvas id="particelle"></canvas>
 </div>
 
 <script>
@@ -77,106 +74,72 @@
   const fra = (t, a, b) => cl((t - a) / (b - a));
   const eOut = (x) => 1 - Math.pow(1 - x, 3);
   const eInOut = (x) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
-  const eBack = (x) => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
   const mix = (a, b, k) => a + (b - a) * k;
   let seme = 7; const rnd = () => ((seme = (seme * 16807) % 2147483647) / 2147483647);
+  // i colori a scelta del sito: nei video il quadratino li attraversa tutti
+  const TINTE = ['#E30613', '#1F5EFF', '#16A34A', '#FF4F9A', '#7C3AED'];
+  const tinta = (t, ogni = .9) => TINTE[Math.floor(Math.max(0, t) / ogni) % TINTE.length];
 
-  // ---------- misure del testo (proporzionali al lato corto) ----------
-  document.querySelectorAll('.titolo').forEach((el) => { el.style.fontSize = `${(VERT ? 132 : 112) * U}px`; });
-  $('#etichetta').style.fontSize = `${32 * U}px`;
-  $('#b-firma .studio').style.fontSize = `${30 * U}px`;
-  $('#b-firma .nome').style.fontSize = `${(VERT ? 190 : 150) * U}px`;
-  $('#b-firma .motto').style.fontSize = `${(VERT ? 74 : 60) * U}px`;
-  document.querySelectorAll('#b-firma .piede').forEach((el) => { el.style.fontSize = `${30 * U}px`; });
-  $('#b-titolo').style.top = `${H * (VERT ? .44 : .45)}px`;
-  $('#b-servizi').style.top = `${H * (VERT ? .44 : .44)}px`;
-  $('#b-firma').style.top = `${H * (VERT ? .55 : .52)}px`;
-  $('#b-firma .motto').style.marginTop = `${26 * U}px`;
-  $('#b-firma .piede').style.marginTop = `${(VERT ? 90 : 46) * U}px`;
-  $('#etichetta').style.marginBottom = `${18 * U}px`;
+  // ---------- misure (proporzionali al lato corto) ----------
+  const corpo = (VERT ? 150 : 118) * U;
+  document.querySelectorAll('#b-titolo .titolo').forEach((el) => { el.style.fontSize = `${corpo}px`; });
+  document.querySelectorAll('.servizio').forEach((el) => { el.style.fontSize = `${(VERT ? 118 : 92) * U}px`; });
+  document.querySelectorAll('.mono').forEach((el) => { el.style.fontSize = `${30 * U}px`; el.style.marginBottom = `${30 * U}px`; });
+  $('#b-titolo').style.top = `${H * (VERT ? .40 : .30)}px`;
+  $('#b-servizi').style.top = `${H * (VERT ? .30 : .14)}px`;
+  $('#b-firma').style.top = `${H * (VERT ? .30 : .17)}px`;
+  const lato = (VERT ? 260 : 210) * U;
+  Object.assign($('#icona').style, { display: 'block', width: `${lato}px`, height: `${lato}px`, marginBottom: `${50 * U}px` });
+  // nell'icona le lettere sono alte come nel logo: «D&» sopra, «C» sotto, il quadratino accanto alla C
+  const fs = lato * 26 / 72;
+  $('#i-1').style.fontSize = $('#i-2').style.fontSize = `${fs}px`;
+  $('#i-1').style.top = `${lato - lato * 10 / 72 - fs * .85 - fs * .78}px`;
+  $('#i-2').style.top = `${lato - lato * 10 / 72 - fs * .78}px`;
+  $('.nome').style.fontSize = `${(VERT ? 150 : 128) * U}px`;
+  $('.motto').style.fontSize = `${(VERT ? 50 : 42) * U}px`; $('.motto').style.marginTop = `${30 * U}px`;
+  $('#tinte').style.fontSize = `${34 * U}px`; $('#tinte').parentElement.style.marginTop = `${40 * U}px`;
+  document.querySelectorAll('.piede').forEach((el, i) => { el.style.fontSize = `${28 * U}px`; el.style.marginTop = `${(i ? 10 : 60) * U}px`; });
+  [...$('#tinte').children].forEach((el, i) => { el.style.background = TINTE[i]; });
   const servizi = [...document.querySelectorAll('.servizio')];
-  servizi.forEach((s) => { s.style.position = 'absolute'; s.style.top = `${60 * U}px`; });
 
-  // ---------- il cielo stellato ----------
-  const cielo = $('#cielo'), cx = cielo.getContext('2d');
-  cielo.width = W; cielo.height = H;
-  const stelle = Array.from({ length: VERT ? 700 : 480 }, () => ({ x: rnd() * W, y: rnd() * H, z: .25 + rnd() * .75, f: rnd() * 6.28, c: rnd() < .12 ? '#9fe8ff' : rnd() < .06 ? '#ffb547' : '#f2f4f8' }));
-  const stellaCadente = { a: 5.0, d: 1.1 };
-  function warp(t) { return Math.exp(-Math.pow((t - 3.35) / .22, 2)) + Math.exp(-Math.pow((t - 9.05) / .22, 2)); }
-  function disegnaCielo(t) {
-    cx.clearRect(0, 0, W, H);
-    const luce = eOut(fra(t, 0, 1.2)), w = warp(t);
-    // la salita: lenta, con due accelerate nei passaggi di scena
-    const salita = t * 22 * U + (cl((t - 3.1) / .5) + cl((t - 8.8) / .5)) * 260 * U;
-    for (const s of stelle) {
-      const y = ((s.y - salita * s.z) % H + H) % H;
-      const tw = .55 + .45 * Math.sin(t * 2.2 + s.f);
-      const r = (.6 + s.z * 1.5) * U * 1.6;
-      cx.globalAlpha = luce * tw * (.35 + .65 * s.z);
-      cx.fillStyle = s.c; cx.strokeStyle = s.c;
-      if (w > .02) {
-        cx.lineWidth = r * 1.4; cx.lineCap = 'round';
-        cx.beginPath(); cx.moveTo(s.x, y); cx.lineTo(s.x, y + w * 180 * U * s.z); cx.stroke();
-      } else { cx.beginPath(); cx.arc(s.x, y, r, 0, 6.283); cx.fill(); }
-    }
-    // una stella cadente mentre compare il titolo
-    const k = fra(t, stellaCadente.a, stellaCadente.a + stellaCadente.d);
-    if (k > 0 && k < 1) {
-      const x0 = W * .9, y0 = H * .08, x1 = W * .25, y1 = H * .3;
-      const px = mix(x0, x1, eOut(k)), py = mix(y0, y1, eOut(k));
-      const g = cx.createLinearGradient(px, py, px + (x0 - x1) * .25, py + (y0 - y1) * .25);
-      g.addColorStop(0, 'rgba(242,244,248,.95)'); g.addColorStop(1, 'rgba(242,244,248,0)');
-      cx.globalAlpha = Math.sin(k * Math.PI); cx.strokeStyle = g; cx.lineWidth = 3 * U;
-      cx.beginPath(); cx.moveTo(px, py); cx.lineTo(px + (x0 - x1) * .25, py + (y0 - y1) * .25); cx.stroke();
-    }
-    cx.globalAlpha = 1;
+  // ---------- la griglia di puntini che si raccoglie sul quadratino (come la prima schermata del sito) ----------
+  const tela = $('#griglia'), g = tela.getContext('2d');
+  tela.width = W; tela.height = H;
+  const N = 12, P = (VERT ? 54 : 46) * U, larg = (N - 1) * P;
+  const gx = (W - larg) / 2 - P * .6, gy = H * (VERT ? .30 : .47) - larg / 2;
+  const qx = gx + larg + P * .7, qy = gy + larg - P * .3, ql = P * 1.25;
+  const punti = [];
+  for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+    const x = gx + c * P, y = gy + r * P;
+    const vicino = 1 - cl(Math.hypot(x - qx, y - qy) / (larg * 1.3));
+    const a = rnd() * 6.283, d = (.4 + rnd()) * Math.max(W, H) * .7;
+    punti.push({ x, y, r: mix(3, 10, vicino) * U, sx: qx + Math.cos(a) * d, sy: qy + Math.sin(a) * d, rit: rnd() * .5 });
   }
-
-  // ---------- il marchio: si compone, sbatte le palpebre, guarda, cambia colore ----------
-  const marchio = $('#marchio'), alone = $('#alone');
-  const RAPP = 402.1 / 507.1;
-  // dove sta il marchio: [tempo, centro x, centro y, larghezza]
-  const posti = VERT
-    ? [[0, .5, .42, .62], [3.0, .5, .42, .62], [3.6, .5, .25, .34], [8.8, .5, .25, .34], [9.5, .5, .36, .44]]
-    : [[0, .5, .45, .5], [3.0, .5, .45, .5], [3.6, .5, .22, .26], [8.8, .5, .22, .26], [9.5, .5, .3, .34]];
-  function posto(t) {
-    let i = 0; while (i < posti.length - 1 && t > posti[i + 1][0]) i++;
-    const a = posti[i], b = posti[Math.min(i + 1, posti.length - 1)];
-    const k = b === a ? 0 : eInOut(fra(t, a[0], b[0]));
-    return [mix(a[1], b[1], k) * W, mix(a[2], b[2], k) * H, mix(a[3], b[3], k) * W];
-  }
-  const sc = (cxv, cyv, s) => `translate(${cxv} ${cyv}) scale(${s}) translate(${-cxv} ${-cyv})`;
-  const COLORI = ['#FFB547', '#FF6B8A', '#A98BFF', '#5CE1E6']; // sito, negozi, software, pubblicità
-  function disegnaMarchio(t) {
-    const [x, y, l] = posto(t), h = l * RAPP;
-    Object.assign(marchio.style, { left: `${x - l / 2}px`, top: `${y - h / 2}px`, width: `${l}px`, height: `${h}px` });
-    const ra = l * 1.5;
-    Object.assign(alone.style, { left: `${x - ra / 2}px`, top: `${y - ra / 2}px`, width: `${ra}px`, height: `${ra}px`, opacity: String(.5 + .5 * eOut(fra(t, 1, 2.4))) });
-    // 1 · la sfera si apre dal centro
-    $('#g-sfera').setAttribute('transform', sc(190, 210, eBack(fra(t, .9, 1.7)) || .0001));
-    // 2 · la palpebra si disegna da sinistra a destra
-    $('#taglio').setAttribute('r', String(eOut(fra(t, 1.35, 2.15)) * 300));
-    // 3 · l'iride cresce, poi sbatte le palpebre e si guarda intorno
-    let s = eBack(fra(t, 1.6, 2.3)), sy = 1, dx = 0, dy = 0;
-    const blink = (a) => { const k = fra(t, a, a + .26); return k > 0 && k < 1 ? 1 - Math.sin(k * Math.PI) * .92 : 1; };
-    sy = blink(2.7) * blink(10.3);
-    dx = (eInOut(fra(t, 3.7, 4.1)) - eInOut(fra(t, 5.6, 6.0))) * -14 + (eInOut(fra(t, 6.6, 6.9)) - eInOut(fra(t, 8.9, 9.3))) * 10;
-    dy = (eInOut(fra(t, 6.6, 6.9)) - eInOut(fra(t, 8.9, 9.3))) * 8;
-    $('#g-iride').setAttribute('transform', `translate(${dx} ${dy}) translate(295 178) scale(${s || .0001} ${(s || .0001) * sy}) translate(-295 -178)`);
-    $('#riflesso').setAttribute('transform', sc(339.6, 129.6, eBack(fra(t, 2.2, 2.5)) || .0001));
-    // il colore dell'iride segue il servizio di cui parliamo
-    let col = COLORI[0];
-    servizi.forEach((_, i) => { if (t >= 6.6 + i * .6) col = COLORI[i]; });
-    if (t >= 9.05) col = COLORI[0];
-    $('#iride').setAttribute('fill', col);
-    // 4 · il punto rosso: nasce al centro, poi salta al suo posto e batte
-    const k = eInOut(fra(t, .9, 1.9));
-    const px = mix(253.5, 477.6, k), py = mix(201, 45.6, k);
-    const nasce = eBack(fra(t, .25, .7));
-    const batte = 1 + .18 * Math.max(0, Math.sin((t - 2) * 4.2)) * (t > 10.6 ? 1 : .35);
-    $('#punto').setAttribute('cx', px); $('#punto').setAttribute('cy', py);
-    $('#punto').setAttribute('r', String(Math.max(.0001, 29 * nasce * batte * mix(1.6, 1, k))));
-    marchio.style.filter = `drop-shadow(0 0 ${30 * U}px rgba(61,123,255,${.35 * eOut(fra(t, 1, 2.4))}))`;
+  const stelle = Array.from({ length: VERT ? 260 : 180 }, () => ({ x: rnd() * W, y: rnd() * H, r: (.6 + rnd() * 1.2) * U * 1.6, a: .12 + rnd() * .3 }));
+  function disegnaGriglia(t) {
+    g.clearRect(0, 0, W, H);
+    // polvere di fondo, ferma, come le stelle del sito
+    g.fillStyle = '#ffffff';
+    for (const s of stelle) { g.globalAlpha = s.a * eOut(fra(t, 0, 1)); g.beginPath(); g.arc(s.x, s.y, s.r, 0, 6.283); g.fill(); }
+    // i puntini arrivano (0-2 s), restano, poi a 3 s si stringono verso il quadratino e spariscono
+    const via = eInOut(fra(t, 2.9, 3.5));
+    for (const p of punti) {
+      const k = eOut(fra(t, .2 + p.rit, 1.7 + p.rit));
+      let x = mix(p.sx, p.x, k), y = mix(p.sy, p.y, k);
+      x = mix(x, qx, via); y = mix(y, qy, via);
+      g.globalAlpha = (.25 + .75 * k) * (1 - via);
+      g.fillStyle = '#ffffff';
+      g.beginPath(); g.arc(x, y, p.r * (1 - via * .7), 0, 6.283); g.fill();
+    }
+    // il quadratino: lampeggia come un cursore, poi diventa il punto del titolo
+    if (t < 3.6) {
+      const on = t < 2.6 ? Math.floor(t / .55) % 2 === 0 : true;
+      g.globalAlpha = (on ? 1 : .15) * eOut(fra(t, .1, .5)) * (1 - fra(t, 3.4, 3.6));
+      g.fillStyle = tinta(t, 1.1);
+      const s = ql * (1 + .25 * via);
+      g.fillRect(qx - s / 2, qy - s / 2, s, s);
+    }
+    g.globalAlpha = 1;
   }
 
   // ---------- le righe entrano ed escono da sotto una «tenda» ----------
@@ -185,64 +148,49 @@
     el.firstElementChild.style.transform = `translateY(${(1 - a) * 115 - b * 115}%)`;
     el.style.visibility = a > 0 && b < 1 ? 'visible' : 'hidden';
   }
+  // l'ultima parola del titolo si riscrive, e a ogni parola il quadratino cambia colore
+  const PAROLE = ['sceglie', 'scrive', 'chiama', 'sceglie'];
+  function parola(t) {
+    const fasi = [[0, 0], [4.6, 1], [5.4, 2], [6.2, 3]];
+    let i = 0; fasi.forEach(([da], j) => { if (t >= da) i = j; });
+    const [da] = fasi[i];
+    if (i === 0) return [PAROLE[0], 0];
+    const prima = PAROLE[i - 1], ora = PAROLE[i], k = t - da;
+    const canc = Math.max(0, prima.length - Math.floor(k / .045));
+    if (canc > 0) return [prima.slice(0, canc), i - 1];
+    return [ora.slice(0, Math.floor((k - prima.length * .045) / .07) + 1), i];
+  }
   function disegnaTesti(t) {
     const tit = [...document.querySelectorAll('#b-titolo .riga')];
-    tit.forEach((el, i) => riga(el, t - (3.55 + i * .22), t - (6.15 + i * .06)));
-    // «sceglie.» nasce dalle stelle: la parola vera compare quando le stelle sono arrivate
-    $('#sceglie').style.opacity = String(fra(t, 5.05, 5.4));
-    riga($('#etichetta'), t - 6.45, t - 8.75);
-    servizi.forEach((el, i) => riga(el, t - (6.6 + i * .6), i < 3 ? t - (7.05 + i * .6) : t - 8.8, .4));
+    tit.forEach((el, i) => riga(el, t - (3.3 + i * .16), t - (6.9 + i * .05)));
+    const [p, i] = parola(t);
+    $('#parola').textContent = p;
+    $('#q-titolo').style.background = TINTE[i % TINTE.length];
+    document.querySelectorAll('.mono i').forEach((el) => { el.style.background = tinta(t, 1.1); });
+    riga($('#cap2'), t - 7.1, t - 9.4);
+    servizi.forEach((el, k) => {
+      riga(el, t - (7.25 + k * .22), t - (9.45 + k * .04), .45);
+      el.querySelector('.q').style.background = TINTE[k];
+    });
     const fir = [...document.querySelectorAll('#b-firma .riga')];
-    fir.forEach((el, i) => riga(el, t - (9.35 + i * .18), null, .65));
-  }
-
-  // ---------- particelle della parola «sceglie.» ----------
-  const pc = $('#particelle'), px = pc.getContext('2d');
-  pc.width = W; pc.height = H;
-  let punti = [];
-  function preparaParticelle() {
-    const el = $('#sceglie'), r = el.getBoundingClientRect(), cs = getComputedStyle(el);
-    const off = document.createElement('canvas'); off.width = W; off.height = H;
-    const o = off.getContext('2d');
-    o.font = `italic 400 ${cs.fontSize} Instrument`;
-    o.textBaseline = 'alphabetic';
-    const g = o.createLinearGradient(r.left, 0, r.right, 0);
-    g.addColorStop(0, '#3d7bff'); g.addColorStop(.55, '#5cc8ff'); g.addColorStop(1, '#9fe8ff');
-    o.fillStyle = g;
-    const m = o.measureText('sceglie.');
-    o.fillText('sceglie.', r.left + (r.width - m.width) / 2, r.top + m.fontBoundingBoxAscent + (r.height - m.fontBoundingBoxAscent - m.fontBoundingBoxDescent) / 2);
-    const d = o.getImageData(0, 0, W, H).data, passo = Math.round(4 * U) || 3;
-    for (let yy = Math.floor(r.top); yy < r.bottom; yy += passo) for (let xx = Math.floor(r.left); xx < r.right; xx += passo) {
-      const i = (yy * W + xx) * 4;
-      if (d[i + 3] > 150) punti.push({ tx: xx, ty: yy, x: rnd() * W, y: rnd() * H, c: `rgb(${d[i]},${d[i + 1]},${d[i + 2]})`, rit: (xx - r.left) / r.width * .35 + rnd() * .2, r: (.9 + rnd() * 1.2) * U * 1.5 });
-    }
-  }
-  function disegnaParticelle(t) {
-    px.clearRect(0, 0, W, H);
-    const sparisce = 1 - fra(t, 5.15, 5.6);
-    if (t < 4.2 || sparisce <= 0) return;
-    for (const p of punti) {
-      const k = eInOut(fra(t, 4.2 + p.rit, 5.0 + p.rit));
-      px.globalAlpha = (.3 + .7 * k) * sparisce;
-      px.fillStyle = p.c;
-      px.beginPath(); px.arc(mix(p.x, p.tx, k), mix(p.y, p.ty, k), p.r, 0, 6.283); px.fill();
-    }
-    px.globalAlpha = 1;
+    fir.forEach((el, k) => riga(el, t - (9.9 + k * .14), null, .6));
+    // nella firma il quadratino del nome e dell'icona passa per tutti i colori
+    const c = tinta(t - 10.4, .45);
+    $('#q-nome').style.background = c;
+    Object.assign($('#i-q').style, { background: c, width: `${lato * 7 / 72}px`, height: `${lato * 7 / 72}px`, left: `${lato * 10 / 72 + (window.larghezzaC || fs * .62) + lato * 3 / 72}px`, top: `${lato - lato * 10 / 72 - lato * 7 / 72}px` });
   }
 
   // ---------- un fotogramma ----------
-  window.DURATA = 12;
+  window.DURATA = 14;
   window.disegna = (t) => {
-    disegnaCielo(t); disegnaMarchio(t); disegnaTesti(t); disegnaParticelle(t);
-    // dissolvenza finale molto breve: il video si può mettere in loop
-    $('#scena').style.opacity = String(1 - fra(t, 11.75, 12));
+    disegnaGriglia(t); disegnaTesti(t);
+    // dissolvenza finale breve: il video si può mettere in loop
+    $('#scena').style.opacity = String(1 - fra(t, 13.7, 14));
   };
-  window.pronto = Promise.all([
-    document.fonts.load(`800 100px Bricolage`), document.fonts.load(`italic 400 100px Instrument`),
-    document.fonts.load(`500 30px Inter`), document.fonts.load(`400 30px Mono`),
-  ]).then(() => document.fonts.ready).then(() => {
-    // le particelle si misurano con il titolo al suo posto
-    disegnaTesti(5.5); preparaParticelle();
+  window.pronto = Promise.all([document.fonts.load('800 100px Tight'), document.fonts.load('600 40px Tight'), document.fonts.load('500 30px Mono')]).then(() => document.fonts.ready).then(() => {
+    // la C dell'icona: la larghezza vera serve per mettere il quadratino accanto
+    const m = document.createElement('canvas').getContext('2d'); m.font = `800 ${fs}px Tight`;
+    window.larghezzaC = m.measureText('C').width;
     const q = new URLSearchParams(location.search);
     if (q.has('play')) { const t0 = performance.now(); const giro = () => { disegna(((performance.now() - t0) / 1000) % DURATA); requestAnimationFrame(giro); }; giro(); }
     else disegna(Number(q.get('t') || 0));

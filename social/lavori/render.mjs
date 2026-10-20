@@ -22,7 +22,7 @@ for (const f of scelti) {
   await pagina.goto('file://' + path.join(qui, nome, 'video.html'));
   await pagina.evaluate(() => window.pronto);
   const durata = await pagina.evaluate(() => window.DURATA);
-  const uscita = path.join(qui, nome, `studio-desideri-lavori-${nome}-${sigla}.mp4`);
+  const uscita = path.join(qui, nome, `desideri-code-lavori-${nome}-${sigla}.mp4`);
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-i', wav,
     '-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', uscita],
   { stdio: ['pipe', 'inherit', 'inherit'] });

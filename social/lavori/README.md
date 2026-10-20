@@ -2,6 +2,8 @@
 
 Video in motion graphics che mostrano i siti fatti per i clienti, con effetti sonori sintetizzati da zero (nessun diritto da pagare).
 
+**Stile nuovo (Desideri & Code):** `luigi/video.html` è già aggiornato al nome e allo stile nuovi (nero e bianco, icona D&C, quadratino che cambia colore ogni 2 secondi e passa per tutti i colori nella firma). I file mp4 qui sotto sono ancora quelli vecchi, con «Studio Desideri»: vanno rifatti con i passi di «Rifarli» (i nuovi si chiamano `desideri-code-lavori-luigi-9x16.mp4` e `-1x1.mp4`). Serve il sito di Luigi in locale o raggiungibile, per riprendere lo scorrimento.
+
 ## Luigi · Montini Luigino (22 secondi)
 | File | Formato | Dove |
 |---|---|---|
