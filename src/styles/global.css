@@ -167,12 +167,6 @@ html.intro-fine .intro-punto { animation: intro-esplodi .7s var(--ease) forwards
 /* footer: icona sopra, scritta sotto */
 .brand-impilato { flex-direction: column; align-items: flex-start; gap: .8rem; }
 .brand-impilato .brand-icona svg { width: 56px; height: 56px; }
-.footer-marchio { display: none; text-decoration: none; }
-@media (max-width: 820px) {
-  .footer-grid > div:first-child > .brand { display: none; }
-  .footer-marchio { display: flex; align-items: center; margin: 2.6rem auto 0; width: max-content; }
-  .footer-marchio .brand-logo svg { height: 24px; }
-}
 /* Il punto rosso del logo: lo stimolo che cattura l'attenzione. Pulsa piano, come la spia "REC". */
 .punto-segnale { transform-box: fill-box; transform-origin: center; animation: segnale 2.4s ease-in-out infinite; }
 @keyframes segnale { 0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 3px rgba(255, 51, 71, .9)); } 50% { opacity: .35; transform: scale(.82); filter: drop-shadow(0 0 0 rgba(255, 51, 71, 0)); } }
@@ -277,6 +271,8 @@ html.intro-fine .intro-punto { animation: intro-esplodi .7s var(--ease) forwards
 .hero-spazio-occhio { display: none; }
 /* l'occhio disegnato che prende il posto della scena 3D quando non parte */
 .hero-spazio-occhio { place-items: center; }
+.occhio-riserva { display: block; width: min(46vw, 30vh, 210px); height: auto; margin: 0 auto; opacity: 0; transition: opacity .8s var(--ease); }
+html.scena-no .occhio-riserva { opacity: 1; }
 @media (max-width: 820px) { .hero { align-items: stretch; flex-direction: column; } .hero-spazio-occhio { display: grid; height: 33vh; margin-bottom: -1rem; } }
 .hero-azioni { display: flex; flex-wrap: wrap; gap: .9rem; align-items: center; }
 .scorri { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); display: grid; justify-items: center; gap: .7rem; text-decoration: none; }
@@ -470,6 +466,10 @@ input[type='range']::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .cliente-anteprima:hover img { transform: scale(1); }
 .cliente-anteprima .browser { position: absolute; z-index: 1; top: 0; left: 0; right: 0; height: 28px; display: flex; gap: 6px; align-items: center; padding-left: 14px; background: rgba(var(--notte-rgb),.85); }
 .cliente-anteprima .browser i { width: 8px; height: 8px; border-radius: 50%; background: rgba(var(--latte-rgb),.25); }
+/* i tre pallini delle finestre dei siti: verde, bianco e rosso */
+:is(.cliente-anteprima .browser, .browser-barra, .bz-barra) > i:nth-of-type(1) { background: var(--smeraldo); }
+:is(.cliente-anteprima .browser, .browser-barra, .bz-barra) > i:nth-of-type(2) { background: var(--latte); }
+:is(.cliente-anteprima .browser, .browser-barra, .bz-barra) > i:nth-of-type(3) { background: var(--rosso); }
 .cliente-anteprima .browser span { margin-left: .8rem; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .04em; color: var(--nebbia); }
 .cliente-guarda { position: absolute; right: 14px; bottom: 14px; padding: .5rem .85rem; border-radius: 99px; background: rgba(var(--notte-rgb),.85); border: 1px solid var(--linea-forte); font-weight: 600; font-size: .85rem; color: var(--latte); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: background .3s, border-color .3s; }
 .cliente-anteprima:hover .cliente-guarda { background: var(--rosso); border-color: var(--rosso); color: var(--azione-testo); }
@@ -481,6 +481,7 @@ input[type='range']::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .cliente-firma strong { display: block; font-family: var(--f-titolo); font-size: 1.1rem; letter-spacing: -0.01em; }
 .cliente-firma small { display: block; color: var(--nebbia); font-size: .82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cliente-iniziali { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-titolo); font-weight: 700; font-size: .95rem; color: var(--notte); background: var(--firma); }
+.cliente-logo { width: 42px; height: 42px; flex: none; display: block; background: #fff; object-fit: contain; }
 .cliente-fatto { list-style: none; margin: 0; padding: .8rem 0 0; border-top: 1px solid var(--linea); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .35rem 1rem; }
 .cliente-fatto li { position: relative; padding-left: 1rem; font-size: .82rem; line-height: 1.35; color: var(--nebbia); }
 .cliente-fatto li::before { content: ''; position: absolute; left: 0; top: .5em; width: 5px; height: 5px; border-radius: 50%; background: var(--ciano); }
@@ -850,7 +851,7 @@ html.intro-fine .intro-cursore { animation: intro-cursore-via .5s var(--ease) fo
 /* telefono: tutto l'hero nella prima schermata, sopra la barra dei bottoni */
 @media (max-width: 820px) {
   .hero { min-height: 100svh; padding-top: calc(var(--header-h) + 4px); padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
-  .hero-spazio-occhio { height: 28svh; margin-bottom: -1.2rem; }
+  .hero-spazio-occhio { height: 28svh; margin-bottom: .4rem; }
   .hero-testo { gap: .95rem; }
   .hero .didascalia, .hero .scorri { display: none; }
   .hero .hero-azioni .btn-vetro { display: none; }
@@ -858,7 +859,7 @@ html.intro-fine .intro-cursore { animation: intro-cursore-via .5s var(--ease) fo
   .hero .rassicura { font-size: .8rem; gap: .3rem .9rem; }
 }
 @media (max-width: 820px) and (max-height: 720px) {
-  .hero-spazio-occhio { height: 21svh; margin-bottom: -.4rem; }
+  .hero-spazio-occhio { height: 21svh; margin-bottom: .2rem; }
   .hero-testo { gap: .75rem; }
   .hero h1 { font-size: 2.05rem; }
   .hero .lead { font-size: .95rem; }

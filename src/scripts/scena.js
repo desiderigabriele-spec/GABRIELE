@@ -539,7 +539,9 @@ export function avviaScena(canvas) {
     obiettivo.y = (mobile ? Number(scelta.dataset.yMobile) || 0 : Number(scelta.dataset.y) || 0) * altezzaMondo;
     obiettivo.luce = scelta.dataset.luce != null ? Number(scelta.dataset.luce) : 1;
     // su telefono la forma sta dietro al testo: più tenue, per lasciarlo leggibile
-    if (mobile) obiettivo.luce *= scelta.dataset.luceMobile != null ? Number(scelta.dataset.luceMobile) : 0.4;
+    if (mobile) obiettivo.luce *= scelta.dataset.luceMobile != null ? Number(scelta.dataset.luceMobile) : 0;
+    // la griglia col quadratino (forma 0) non si mostra più: al suo posto c'è solo il cielo
+    if (obiettivo.forma === 0) obiettivo.luce = 0;
     obiettivo.scala = mobile && scelta.dataset.scalaMobile ? Number(scelta.dataset.scalaMobile) : (Number(scelta.dataset.scala) || 1) * (mobile ? 0.82 : 1);
     if (segnali.sorpresa) {
       // chi sta per andarsene: le particelle tornano occhio, al centro, e lo guardano

@@ -125,6 +125,7 @@ export const lavori = [
     pacchetto: 'Progetto Signature',
     url: 'https://www.lorenzobaldassarri.it',
     img: '/img/lavoro-lorenzo.webp',
+    logo: '/img/logo-lorenzo.webp', // ritagliato dal suo sito
     sfida: 'Un professionista con una carriera straordinaria, dalla Formula 1 allo sport di alto livello, che online sembrava uno psicologo come tanti.',
     fatto: [
       'Strategia e posizionamento: cinque "porte" per cinque tipi di persone',
@@ -142,6 +143,7 @@ export const lavori = [
     pacchetto: 'Progetto Presenza',
     url: 'https://luigi-idraulico.it',
     img: '/img/lavoro-montini.webp',
+    logo: '/img/logo-montini.webp', // ritagliato dal suo sito
     sfida: '40 anni di esperienza e clienti contentissimi, ma le richieste arrivavano solo col passaparola.',
     fatto: [
       'Sito veloce pensato per chi ha un guasto e cerca dal telefono',

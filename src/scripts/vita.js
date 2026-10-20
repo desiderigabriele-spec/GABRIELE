@@ -64,7 +64,8 @@ function cursoreCheScrive() {
 // (niente puntatore) un'onda lenta in diagonale. In entrambi i casi i puntini non entrano nelle lettere del logo.
 function grigliaMagnetica() {
   const box = document.querySelector('[data-griglia-magnetica]');
-  if (!box) return;
+  // su telefono niente puntini: distraggono dal testo
+  if (!box || !finePointer) return;
   const hero = box.parentElement;
   const logo = hero.querySelector('[data-logo-gigante]');
   const lettere = logo && window.Path2D ? new Path2D(logo.querySelector('path').getAttribute('d')) : null;
@@ -108,7 +109,8 @@ function grigliaMagnetica() {
       for (let i = 0; i < punti.length; i += 2) {
         const x = punti[i], y = punti[i + 1], d = Math.hypot(x - g.x, y - g.y);
         const k = Math.max(0, 1 - d / R) * forza, s = 1.6 + 6 * k * k;
-        ctx.globalAlpha = 0.09 + 0.5 * k;
+        if (k < 0.02) continue;
+        ctx.globalAlpha = 0.6 * k;
         ctx.fillStyle = d < 54 && forza > 0.3 ? tinte.accento : tinte.testo;
         ctx.beginPath(); ctx.arc(x, y, s / 2, 0, 6.283); ctx.fill();
       }
@@ -137,14 +139,19 @@ function bozza() {
   const parti = () => {
     if (!el.offsetParent) return;
     // i rettangoli si prendono dalla bozza vera, così le linee combaciano con quello che comparirà
+    // in percentuale della bozza: le linee restano al loro posto anche se lo schermo cambia misura
     const b = el.getBoundingClientRect();
-    svg.setAttribute('viewBox', `0 0 ${b.width} ${b.height}`);
-    svg.innerHTML = pezzi.map((p) => { const r = p.getBoundingClientRect(); return `<rect x="${(r.left - b.left).toFixed(1)}" y="${(r.top - b.top).toFixed(1)}" width="${r.width.toFixed(1)}" height="${r.height.toFixed(1)}" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>`; }).join('');
+    const px = (v, l) => ((v / l) * 100).toFixed(2);
+    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('preserveAspectRatio', 'none');
+    svg.innerHTML = pezzi.map((p) => { const r = p.getBoundingClientRect(); return `<rect x="${px(r.left - b.left, b.width)}" y="${px(r.top - b.top, b.height)}" width="${px(r.width, b.width)}" height="${px(r.height, b.height)}" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>`; }).join('');
     const rett = [...svg.querySelectorAll('rect')];
     rett.forEach((r, i) => r.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 650, delay: i * 210, easing: 'cubic-bezier(.6,0,.3,1)', fill: 'forwards' }));
     const fine = rett.length * 210 + 650;
     setTimeout(() => el.classList.add('viva'), fine);
-    setTimeout(() => { el.classList.add('inclinata'); inclina(); }, fine + 500);
+    // il 3D solo con il mouse: su telefono la bozza resta piatta e nitida
+    if (finePointer) setTimeout(() => { el.classList.add('inclinata'); inclina(); }, fine + 500);
+    else setTimeout(() => el.classList.add('animata'), fine + 500);
   };
   // la bozza segue il mouse (pochi gradi); su telefono ondeggia piano da sola
   function inclina() {
@@ -430,7 +437,13 @@ function primaDopo() {
     let mano = false;
     const metti = (x) => box.style.setProperty('--x', `${x}%`);
     r.addEventListener('input', () => { mano = true; metti(r.value); });
-    r.addEventListener('pointerdown', () => { mano = true; });
+    // col dito o col mouse: tocchi un punto e trascini, la lama segue (lo scorrimento in verticale resta libero)
+    let giu = false;
+    const segui = (e) => { const b = box.getBoundingClientRect(); const x = Math.max(0, Math.min(100, ((e.clientX - b.left) / b.width) * 100)); metti(x.toFixed(2)); r.value = Math.round(x); };
+    box.addEventListener('pointerdown', (e) => { mano = true; giu = true; box.setPointerCapture?.(e.pointerId); segui(e); });
+    box.addEventListener('pointermove', (e) => { if (giu) segui(e); });
+    const su = () => { giu = false; };
+    box.addEventListener('pointerup', su); box.addEventListener('pointercancel', su);
     let t0 = 0;
     mentreVisibile(box, (t) => {
       if (mano) return;

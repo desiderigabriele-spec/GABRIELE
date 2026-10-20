@@ -261,11 +261,6 @@ const hrefEn = lang === 'en' ? path : alt;
           <span>© {new Date().getFullYear()} {contatti.studio} di {contatti.nome}{contatti.piva ? ` · P.IVA ${contatti.piva}` : ''}</span>
           <span><a href={url('privacy', lang)}>{t.privacy}</a> · <button type="button" data-cookie-apri style="background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font-size:inherit">{t.preferenzeCookie}</button>{alt && <> · <a href={alt} hreflang={altLang} lang={altLang}>{t.altraLingua}</a></>}</span>
         </div>
-        <!-- su telefono il marchio chiude il footer: l'icona sopra, la scritta sotto -->
-        <a class="footer-marchio brand-impilato" href={home} aria-label={t.home}>
-          <span class="brand-icona" set:html={logoIcona} />
-          <span class="brand-logo" set:html={logoScritta} />
-        </a>
       </div>
     </footer>
 

@@ -461,7 +461,9 @@ const jsonLd = {
                   ? <blockquote class="cliente-citazione">«{l.recensione}»</blockquote>
                   : <p class="cliente-sfida"><span class="mono">{T('La sfida', 'The challenge')}</span>{l.sfida}</p>}
                 <div class="cliente-firma">
-                  <span class="cliente-iniziali" aria-hidden="true">{iniziali}</span>
+                  {l.logo
+                    ? <img class="cliente-logo" src={l.logo} alt="" width="42" height="42" loading="lazy" decoding="async" />
+                    : <span class="cliente-iniziali" aria-hidden="true">{iniziali}</span>}
                   <span><strong>{l.cliente}</strong><small>{l.settore}</small></span>
                   <span class="pacchetto-tag">{l.pacchetto}</span>
                 </div>
