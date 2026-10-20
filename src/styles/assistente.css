@@ -61,17 +61,13 @@
 /* sul computer il tondino non copre l'avviso dei cookie */
 html:has(.cookie:not([hidden])) .focus:not(.aperta) { opacity: 0; pointer-events: none; }
 
-/* telefono: il tondino sta nella barra in basso, al posto del bottone WhatsApp (WhatsApp è nella chat) */
+/* telefono: solo il tondino, fisso in basso a destra (preventivo e WhatsApp sono dentro la chat) */
 @media (max-width: 900px) {
-  .focus { right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 45; }
-  .barra-pollice { padding-right: 70px; }
-  .focus-bolla { width: 52px; height: 52px; }
+  .focus { right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 45; }
+  .focus-bolla { width: 56px; height: 56px; }
   .focus-fumetto { right: 0; bottom: 70px; }
   .focus-fumetto-testo::after { right: 18px; bottom: -6px; border: 6px solid transparent; border-bottom: 0; border-top-color: var(--latte); }
   .focus-pannello { position: fixed; left: 0; right: 0; bottom: 0; width: auto; height: min(86svh, 640px); z-index: 70; transform: translateY(20px); }
   .focus.aperta { z-index: 70; }
-}
-@media (min-width: 600px) and (max-width: 900px) {
-  .focus { right: calc(50% - min(260px, (100% - 24px) / 2) + 8px); }
 }
 @media (prefers-reduced-motion: reduce) { .focus-bolla, .focus-pannello, .focus-fumetto { transition: none; } }

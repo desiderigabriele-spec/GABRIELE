@@ -266,12 +266,7 @@ const hrefEn = lang === 'en' ? path : alt;
       </div>
     </footer>
 
-    {barra && (
-      <div class="barra-pollice" data-barra>
-        <a class="btn btn-azione" href={preventivo}>{t.ctaPreventivo}</a>
-        <!-- a destra della barra c'è Focus, l'assistente (WhatsApp è dentro la chat) -->
-      </div>
-    )}
+    <!-- su telefono niente barra in basso: c'è solo Focus, e dentro la chat il preventivo e WhatsApp -->
 
     <Assistente lang={lang} />
 

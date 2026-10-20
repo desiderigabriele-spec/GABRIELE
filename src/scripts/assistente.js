@@ -26,7 +26,6 @@ export function avviaAssistente() {
   const linkPv = box.querySelector('[data-focus-pv]');
   const linkWa = box.querySelector('[data-focus-wa]');
   const fumetto = box.querySelector('[data-focus-fumetto]');
-  const barra = document.querySelector('[data-barra]');
   const mobile = () => window.matchMedia('(max-width: 900px)').matches;
   const nome = () => leggiProfilo().nome || '';
   const scelto = { servizio: null, quando: null, domanda: null };
@@ -166,6 +165,12 @@ export function avviaAssistente() {
   }
   function mostraFumetto() {
     if (aperta || ss.get('gd-focus-fumetto') || /preventivo|quote/.test(location.pathname)) return;
+    // non sopra il bottone dell'hero: aspetta che la prima schermata sia passata
+    if (window.scrollY < innerHeight * 0.8) {
+      const dopo = () => { if (window.scrollY >= innerHeight * 0.8) { removeEventListener('scroll', dopo); setTimeout(mostraFumetto, 1200); } };
+      addEventListener('scroll', dopo, { passive: true });
+      return;
+    }
     const n = nome();
     fumetto.querySelector('[data-focus-fumetto-apri]').textContent = n ? `${saluta} ${n}, ${T.fumetto}` : T.fumettoSenzaNome;
     fumetto.hidden = false;
@@ -196,11 +201,10 @@ export function avviaAssistente() {
   setInterval(guardaBottone, 2600);
 
   // ---------- quando spunta ----------
-  // dopo 6 secondi, mai sopra la finestra del nome; su telefono insieme alla barra in basso
+  // dopo 3 secondi e poi resta lì, fisso; mai sopra la finestra del nome
   function puoMostrare() {
     if (document.querySelector('[data-chiedi-nome]')?.open) return false;
     if (html.classList.contains('menu-aperto') || html.classList.contains('intro-attiva')) return false;
-    if (mobile() && barra) return barra.classList.contains('visibile');
     return true;
   }
   function spunta() {
@@ -212,17 +216,11 @@ export function avviaAssistente() {
     setTimeout(() => { occhio.apri(); guardaBottone(); }, ridotto ? 0 : 450);
     setTimeout(mostraFumetto, 3200);
   }
-  function nascondi() {
-    if (!visibile || aperta) return;
-    visibile = false;
-    box.classList.remove('su');
-  }
   let pronto = false;
-  setTimeout(() => { pronto = true; }, 6000);
+  setTimeout(() => { pronto = true; }, 3000);
   setInterval(() => {
     if (!pronto) return;
-    if (puoMostrare()) { if (!visibile) spunta(); else if (!box.classList.contains('su')) { visibile = false; spunta(); } }
-    else if (mobile() && barra && !aperta) nascondi();
+    if (!visibile && puoMostrare()) spunta();
   }, 400);
 
   // ---------- il disegno: solo quando si vede ----------
