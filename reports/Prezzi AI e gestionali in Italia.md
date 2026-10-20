@@ -130,3 +130,98 @@ Il calcolo dà per scontato che il canone dello studio non cambi con il numero d
 Il listino ha un andamento chiaro: lo studio ha prezzato bene i servizi AI, dove il mercato è giovane e confuso, e ha prezzato troppo poco proprio il gestionale, dove il mercato è più maturo e le fasce sono più alte. Le correzioni da fare sono poche e mirate: Completo a 11.900 €, Completo + AI a 17.900 €, Funzione AI a 2.900 €, Copilota a 4.200 €, più due prezzi per il "programma in più". Per uno studio senza casi studio, la scelta più utile non è abbassare il listino ma tenerlo pieno e dare ai primi 2-3 clienti di ogni linea uno sconto dichiarato, in cambio di una referenza e del permesso di raccontare il progetto. Così i prezzi restano credibili anche dopo, quando lo sconto finisce.
 
 Il secondo insegnamento riguarda il contratto più che il prezzo. I rischi veri non sono nel canone dello studio ma nei costi esterni che cambiano senza preavviso, come le nuove tariffe WhatsApp di ottobre 2026 e la tariffa AI italiana di Meta, e nei bandi che premiano chi supera certe soglie e chi è fornitore qualificato. Scrivere con precisione cosa include ogni canone, cosa si paga al costo e come un pacchetto supera i 4.000 € del voucher vale, per uno studio piccolo, quanto qualche centinaio di euro di listino. Prima di pubblicare il listino, vanno ricontrollate sulle pagine originali almeno le cifre di LEMIO, Nesso, Nebu, Odoo, Fatture in Cloud e il bando lombardo.
+
+## Fonti
+
+Tutte le pagine citate in questo rapporto, nell'ordine in cui compaiono e divise per sezione. Sono state lette attraverso i riassunti dei motori di ricerca: prima di usare una cifra con un cliente, aprila sulla pagina originale.
+
+### Da dove vengono questi numeri, e perché vanno ricontrollati
+
+- Wecoode — https://wecoode.it/blog/quanto-costa-software-gestionale-su-misura
+- Osservatori.net — https://www.osservatori.net/comunicato/innovazione-digitale-nelle-pmi/pmi-italiane-innovazione/
+
+### Automazioni e AI: quattro pacchetti su cinque sono già al prezzo giusto
+
+- Andrea Baglioni — https://andreabaglioni.it/blog/n8n-cos-e-come-funziona/
+- Tready — https://www.tready.it/tecnologie-per-il-marketing/workflow-automation-n8n-make/
+- Outline Digital — https://www.outlinedigital.it/blog/automazioni-n8n-intelligenza-artificiale.html
+- Usanest — https://usanest.it/blog/consulenza-n8n-italia
+- Cascades — https://cascades.it/automazione-ai-pmi
+- iaflux — https://www.iaflux.it/servizi/automazioni-ai-n8n/
+- Malt — https://www.malt.fr/s/tags/automation-60338a796c9ccc000ea3a13b?p=6
+- Cascades — https://cascades.it/agenti-ai-per-pmi
+- Webrenew — https://webrenew.it/servizi/chatbot-whatsapp-ai
+- Ufficiami — https://www.ufficiami.it/creazione-chatbot-ai-milano
+- WhatsappBooking — https://www.whatsappbooking.com/
+- Luca Sammarco — https://lucasammarco.com/blog/chatbot-aziendale
+- TeamLab — https://teamlabsrl.com/guides/rag-aziendale-chatgpt-documenti-privati/
+- The Rundown — https://www.therundown.ai/tools/tiledesk
+- AILocale — https://ailocale.it/blog/chatbot-ai-documenti-aziendali/
+- Segretly — https://www.segretly.com/studi-medici
+- Doctorin — https://www.beevoip.it/beetalk-doctorin.php
+- SNJ Media Studio — https://www.snjmediastudio.com/automazione-processi-pmi-priorita/
+- Itria — https://itria.io/quanto-costa-sistema-ai-pmi
+- Rayo Consulting — https://www.rayo.consulting/blog/automazione-gestione-documentale-ai-pmi-guida
+- Luca Sammarco — https://lucasammarco.com/blog/integrare-ai-gestionale-aziendale
+- Agensio — https://agensio.ai/it/blog/segretaria-virtuale-ai-pmi-costi-guida/
+- Rayo Consulting — https://www.rayo.consulting/blog/quanto-costa-implementare-ai-azienda-pmi
+- Luca Sammarco — https://lucasammarco.com/blog/agenti-ai-per-aziende
+- Microsoft — https://www.microsoft.com/it-it/microsoft-365-copilot/pricing-without-teams
+- n8n.it — https://n8n.it/
+- Brainrooms — https://www.brainrooms.net/restart-ai/guide/freelance-e-consulenti-nell-era-ai
+
+### Gestionale su misura: l'Essenziale regge, il Completo vale almeno 3.000 € in più
+
+- Andrea Piani — https://www.andreapiani.com/gestionali-personalizzati.html
+- La Capitale — https://lacapitaledesign.it/blog/quanto-costa-un-software-gestionale-personalizzato-su-misura-guida-ai-prezzi-e-ai-fattori-chiave-con-la-capitale
+- LEMIO — https://lemio.it/blog/quanto-costa-gestionale-aziendale-2026
+- RegisPro — https://www.regispro.it/blog/quanto-costa-gestionale-su-misura-2026
+- Nebu — https://www.nebu.it/prezzi-gestionali
+- One AM — https://oneam.it/it/blog/guide/quanto-costa-un-gestionale-su-misura
+- Andrea Piani — https://www.andreapiani.com/servizi-odoo.html
+- Nesso Digitale — https://nessodigitale.it/en/articoli/quanto-costa-gestionale-personalizzato
+- Codebaker — https://www.codebaker.it/quanto-costa-software-su-misura
+- MatechStudio — https://matechstudio.com/blog/software-gestionale-personalizzato
+- SystemForge — https://systemforge.it/blog/tariffe-programmatore-freelance-italia-2026/
+- CodeGrind — https://www.codegrind.it/blog/quanto-guadagna-freelance-developer-italia
+- Luca Sammarco — https://lucasammarco.com/blog/ai-gestionali-italiani-teamsystem-zucchetti-2026
+- SystemForge — https://systemforge.it/blog/pwa-vs-app-nativo-quale-scegliere/
+- Everest Innovation — https://www.everestinnovation.it/pwa-vs-app-nativa-2026-guida-pmi-italiane-2/
+- MagicHeidi — https://magicheidi.ch/it/hourly-rates
+- RicevAI — https://enrietabiz.com/receptionist-ai
+
+### I costi che paga il cliente ogni mese sono piccoli, tranne WhatsApp
+
+- CloudZero — https://www.cloudzero.com/blog/n8n-pricing/
+- AI Automation Italia — https://aiautomationitalia.com/quanto-costa-n8n-nel-2025-piani-esecuzioni-overage-e-come-scegliere-quello-giusto/
+- Jetadmin — https://www.jetadmin.io/blog/make-com-review/
+- NoCode MBA — https://www.nocode.mba/articles/zapier-pricing-2026
+- Finout — https://www.finout.io/blog/anthropic-api-pricing
+- PricePerToken — https://pricepertoken.com/pricing-page/model/openai-gpt-5.4-mini
+- Twilio — https://help.twilio.com/articles/53100480177819
+- Money.it — https://www.money.it/rincaro-whatsapp-business-dal-1-ottobre-le-nuove-tariffe-per-messaggi-e-assistenza-clienti
+- Flowcall — https://www.flowcall.co/blog/whatsapp-business-api-pricing
+- 360dialog — https://360dialog.com/pricing
+- TechCrunch — https://techcrunch.com/2026/01/28/whatsapp-will-now-charge-ai-chatbots-to-operate-in-italy/
+
+### Il Voucher Doppia Transizione premia i progetti sopra i 4.000 €
+
+- Agenda Digitale — https://www.agendadigitale.eu/industry-4-0/voucher-doppia-transizione-2026-la-guida-per-le-pmi/
+- Assolombarda — https://www.assolombarda.it/servizi/credito-finanza-e-incentivi/informazioni/bando-voucher-doppia-transizione-2026-contributi-per-digitalizzazione-e-sostenibilita
+- Industria Lombarda — https://industrialombarda.it/2026/07/22/voucher-doppia-transizione-lombardia-2026/
+- CNA Lombardia — https://www.cnalombardianordovest.it/agevolazioni/voucher-doppia-transizione-lombardia-2026/
+- Incentivi Impresa — https://www.incentivimpresa.it/transizione-5-0-software-ai-spese-ammissibili-2026/
+- Quadra — https://quadrasrl.net/iperammortamento-2026-2028-ex-transizione-5-0-guida/
+- PMI.it — https://www.pmi.it/impresa/normativa/484923/iperammortamento-2026-decreto-attuativo-regole-novita.html
+
+### In 5 anni il su misura batte Odoo e HubSpot appena crescono gli utenti
+
+- Srlonline — https://www.srlonline.com/software-gestionali-2026-fatture-in-cloud-vs-danea-teamsystem-confronto-prezzi-funzioni/
+- Centro Fiscale — https://centrofiscale.com/fatture-in-cloud-recensione-2026/
+- Profattura — https://www.profattura.it/guide/aruba-fatturazione-elettronica-quando-cambiare
+- Aliteq — https://aliteq.com/odoo-pricing-community-vs-enterprise
+- GB Technology — https://gb-technology.com/en/blog/erp-and-odoo-news-2/implementazione-odoo-erp-tempi-e-costi-reali-guida-2026-59
+- HubSpot — https://blog.hubspot.de/sales/hubspot-sales-hub-pricing
+- Brussels Times — https://www.brusselstimes.com/business/2332306/odoo-announces-e10-billion-valuation-and-a-partial-price-increase
+- ICCOM — https://www.iccom.it/wp-content/uploads/ICCOM-Comunicazione-Aumento-Prezzi-15-1-24.pdf
+- Tommaso Maria Ricci — https://www.tommasomariaricci.com/blog/software-gestionale-aziendale-come-sceglierlo
