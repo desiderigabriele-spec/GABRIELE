@@ -46,14 +46,9 @@ html.tendina-arrivo::after { content: ''; position: fixed; inset: 0; z-index: 20
 
 /* 16 · la griglia viva */
 [data-griglia-viva] { position: relative; }
-.guide-viva { position: absolute; inset: -14px -8px; z-index: 3; pointer-events: none; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 8px; opacity: 0; }
-.guide-viva i { background: rgba(var(--rosso-rgb), .06); border-inline: 1px solid rgba(var(--rosso-rgb), .4); }
-.guide-misura { position: absolute; left: 8px; top: -26px; font-family: var(--f-mono); font-size: .68rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--rosso-testo); }
 html.vita-on [data-griglia-viva]:not(.atterrata) > .card { opacity: 0; }
-[data-griglia-viva].atterra .guide-viva { animation: guide-viva 2.6s var(--ease) forwards; }
 [data-griglia-viva].atterra > .card { animation: atterra .9s cubic-bezier(.34, 1.36, .5, 1) both; animation-delay: calc(.35s + var(--i, 0) * .12s); }
 [data-griglia-viva].atterrata > .card { animation: none; opacity: 1; }
-@keyframes guide-viva { 0% { opacity: 0; } 15%, 70% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes atterra { from { opacity: 0; transform: translate(26px, -34px) rotate(-3deg); } to { opacity: 1; transform: none; } }
 
 /* 06 · raggi X sulle anteprime dei lavori */

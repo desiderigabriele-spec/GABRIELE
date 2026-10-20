@@ -317,18 +317,11 @@ function peso() {
   });
 }
 
-// ---------- 16 · La griglia viva: compaiono le colonne e le schede atterrano al loro posto ----------
+// ---------- 16 · La griglia viva: le schede atterrano al loro posto, una dopo l'altra ----------
 function grigliaViva() {
   document.querySelectorAll('[data-griglia-viva]').forEach((g) => {
-    const guide = document.createElement('div');
-    guide.className = 'guide-viva';
-    guide.setAttribute('aria-hidden', 'true');
-    guide.innerHTML = '<i></i>'.repeat(12) + '<b class="guide-misura"></b>';
-    g.appendChild(guide);
     [...g.children].forEach((c, i) => c.style.setProperty('--i', i));
     quandoVisibile(g, () => {
-      const card = g.querySelector('.card');
-      guide.querySelector('.guide-misura').textContent = `${getComputedStyle(g).gridTemplateColumns.split(' ').length} col · ${Math.round(card?.getBoundingClientRect().width || 0)} px · gap ${parseInt(getComputedStyle(g).columnGap, 10) || 0}`;
       g.classList.add('atterra');
       setTimeout(() => g.classList.add('atterrata'), 2600);
     }, 0.04);
