@@ -7,6 +7,7 @@ import { numero } from '../data/formato.js';
 import { avviaPersonalizza } from './benvenuto.js';
 import { avviaEffetti } from './effetti.js';
 import { avviaVita } from './vita.js';
+import { avviaAssistente } from './assistente.js';
 import { leggiProfilo, lang } from './profilo.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -262,6 +263,7 @@ let scena = null;
 const canvas = document.querySelector('[data-scena]');
 // profilo del visitatore (nome e colore) e pannello «Personalizza»
 avviaPersonalizza(() => scena);
+avviaAssistente();
 function caricaScena() {
   if (!canvas || scena) return;
   // se la scena 3D non parte (telefono vecchio, WebGL spento), al suo posto si vede la griglia disegnata

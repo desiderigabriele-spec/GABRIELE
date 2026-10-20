@@ -1,0 +1,96 @@
+---
+// Focus, l'assistente: il tondino in basso a destra con l'occhio. Si apre una chat a bottoni che dà i prezzi veri,
+// porta al preventivo già compilato o passa a WhatsApp con il riassunto. Le domande scritte vanno a Gabriele su WhatsApp
+// (finché non c'è l'AI vera). Logica in scripts/assistente.js, stili in styles/assistente.css.
+import { dati } from '../i18n/dati.js';
+import { url, urlServizio } from '../i18n/ui.js';
+import { contatti } from '../data/sito.js';
+import { euro } from '../data/formato.js';
+interface Props { lang?: 'it' | 'en' }
+const { lang = 'it' } = Astro.props;
+const it = lang === 'it';
+const T = (a: string, b: string) => (it ? a : b);
+const { servizi } = dati(lang);
+const config = {
+  wa: contatti.whatsapp,
+  preventivo: url('preventivo', lang),
+  ai: url('ai', lang),
+  servizi: servizi.map((s) => ({ id: s.id, titolo: s.titolo, da: `${T('da', 'from')} ${euro(s.da, lang)}${s.mese ? T('/mese', '/month') : ''}`, url: urlServizio(s.id, lang) })),
+};
+// i testi della chat: le funzioni con il nome stanno in assistente.js, qui solo le frasi fisse
+const testi = it ? {
+  apri: 'Apri la chat con Focus, l’assistente', chiudi: 'Chiudi la chat',
+  ruolo: 'Assistente di Desideri & Code · risponde subito',
+  fumetto: 'ti calcolo il prezzo in 2 minuti?', fumettoSenzaNome: 'Ti calcolo il prezzo in 2 minuti?',
+  ciao: 'sono <b>Focus</b>, l’assistente di Desideri & Code. Rispondo subito, anche di sera. Cosa ti serve?',
+  ciaoSenzaNome: 'Ciao, sono <b>Focus</b>, l’assistente di Desideri & Code. Rispondo subito, anche di sera. Cosa ti serve?',
+  quanto: 'Quanto costa?', vogliPreventivo: 'Voglio un preventivo', cosaAi: 'Cosa fa l’AI per la mia azienda?', persona: 'Parlo con una persona',
+  prezzi: 'Ecco da dove si parte:', prezziDopo: 'Vuoi il prezzo per il tuo caso? Bastano 2 minuti.',
+  calcolaMio: 'Calcola il mio prezzo', scrivoWa: 'Scrivo su WhatsApp',
+  diCosa: 'Ti faccio due domande e ti do il prezzo. <b>Di cosa hai bisogno?</b>',
+  perQuando: '<b>Per quando?</b>', entroMese: 'Entro un mese', dueTre: 'Fra 2-3 mesi', valuto: 'Sto solo valutando',
+  riepilogo: 'Per <b>{n}</b> si parte <b>{p}</b>. Ti apro il preventivo con «{s}» già scelto, o preferisci scrivere a Gabriele?',
+  apriPreventivo: 'Apri il preventivo', mandaWa: 'Mandalo su WhatsApp',
+  ai: 'Un esempio: un centro estetico riceve i messaggi su WhatsApp. L’AI capisce il servizio, propone l’orario libero e segna l’appuntamento in agenda. Si parte da <b>1.200 €</b>, e il programma è tuo.',
+  miInteressa: 'Mi interessa', leggiAi: 'Leggi come funziona',
+  passoGabriele: 'Ti passo a <b>Gabriele</b> su WhatsApp con quello che mi hai detto, così non devi ripetere niente:',
+  apriWa: 'Apri WhatsApp', torna: 'Torna alle domande', tornaTesto: 'Certo. Cosa ti serve?',
+  libera: 'A questa ti risponde Gabriele, così non ti dico cose a caso. Ti ho preparato il messaggio con la tua domanda:',
+  scrivi: 'Scrivi una domanda…', invia: 'Invia', calcola: 'Calcola il preventivo', whatsapp: 'WhatsApp',
+  nomi: { sito: 'un sito', ecommerce: 'un negozio online', software: 'un’automazione con l’AI', gestionale: 'un gestionale su misura', ads: 'la pubblicità online', cura: 'la cura del sito' },
+  waSaluto: 'Ciao, sono {n}.', waSalutoSenzaNome: 'Ciao!', waServizio: 'Mi serve {s}', waFine: 'Ho visto il sito di Desideri & Code.', waGenerico: 'Vorrei parlarvi di un progetto.', waDomanda: 'Vi scrivo per una domanda: «{q}»',
+} : {
+  apri: 'Open the chat with Focus, the assistant', chiudi: 'Close the chat',
+  ruolo: 'Desideri & Code assistant · replies straight away',
+  fumetto: 'shall I work out your price in 2 minutes?', fumettoSenzaNome: 'Shall I work out your price in 2 minutes?',
+  ciao: 'I’m <b>Focus</b>, the Desideri & Code assistant. I reply straight away, evenings too. What do you need?',
+  ciaoSenzaNome: 'Hi, I’m <b>Focus</b>, the Desideri & Code assistant. I reply straight away, evenings too. What do you need?',
+  quanto: 'How much does it cost?', vogliPreventivo: 'I want a quote', cosaAi: 'What can AI do for my business?', persona: 'Talk to a person',
+  prezzi: 'Here’s where prices start:', prezziDopo: 'Want the price for your case? It takes 2 minutes.',
+  calcolaMio: 'Work out my price', scrivoWa: 'Message on WhatsApp',
+  diCosa: 'Two questions and you’ll have a price. <b>What do you need?</b>',
+  perQuando: '<b>When for?</b>', entroMese: 'Within a month', dueTre: 'In 2-3 months', valuto: 'Just looking',
+  riepilogo: 'For <b>{n}</b> prices start <b>{p}</b>. Shall I open the quote with “{s}” already selected, or would you rather message Gabriele?',
+  apriPreventivo: 'Open the quote', mandaWa: 'Send it on WhatsApp',
+  ai: 'An example: a beauty salon gets messages on WhatsApp. The AI understands the service, offers a free slot and books it in the calendar. It starts at <b>€1,200</b>, and the software is yours.',
+  miInteressa: 'I’m interested', leggiAi: 'Read how it works',
+  passoGabriele: 'I’ll pass you to <b>Gabriele</b> on WhatsApp with what you told me, so you don’t have to repeat anything:',
+  apriWa: 'Open WhatsApp', torna: 'Back to the questions', tornaTesto: 'Sure. What do you need?',
+  libera: 'Gabriele will answer this one, so I don’t guess. I’ve written the message with your question:',
+  scrivi: 'Type a question…', invia: 'Send', calcola: 'Get a quote', whatsapp: 'WhatsApp',
+  nomi: { sito: 'a website', ecommerce: 'an online store', software: 'an AI automation', gestionale: 'custom software', ads: 'online advertising', cura: 'website care' },
+  waSaluto: 'Hi, I’m {n}.', waSalutoSenzaNome: 'Hi!', waServizio: 'I need {s}', waFine: 'I saw the Desideri & Code website.', waGenerico: 'I’d like to talk to you about a project.', waDomanda: 'I have a question: “{q}”',
+};
+const dati_ = { ...config, testi };
+---
+<div class="focus" data-focus hidden>
+  <div class="focus-fumetto" data-focus-fumetto hidden>
+    <button class="focus-fumetto-testo" type="button" data-focus-fumetto-apri></button>
+    <button class="focus-fumetto-chiudi" type="button" aria-label={T('Chiudi', 'Close')} data-focus-fumetto-chiudi>×</button>
+  </div>
+  <div class="focus-pannello" id="focus-pannello" role="dialog" aria-labelledby="focus-nome" data-focus-pannello hidden>
+    <div class="fp-testa">
+      <span class="fp-occhio" data-focus-occhio-testa aria-hidden="true"></span>
+      <span class="fp-chi"><b id="focus-nome">Focus</b><small>{testi.ruolo}</small></span>
+      <button class="fp-chiudi" type="button" aria-label={testi.chiudi} data-focus-chiudi>×</button>
+    </div>
+    <div class="fp-msg" data-focus-msg aria-live="polite"></div>
+    <div class="fp-scelte" data-focus-scelte></div>
+    <div class="fp-piede">
+      <div class="fp-azioni">
+        <a class="fp-pv" href={config.preventivo} data-focus-pv>{testi.calcola}</a>
+        <a class="fp-wa" href={`https://wa.me/${config.wa}`} target="_blank" rel="noopener" data-focus-wa>{testi.whatsapp}</a>
+      </div>
+      <form class="fp-scrivi" data-focus-form>
+        <label class="sr-only" for="focus-campo">{testi.scrivi}</label>
+        <input id="focus-campo" type="text" maxlength="300" autocomplete="off" enterkeyhint="send" placeholder={testi.scrivi} />
+        <button type="submit" aria-label={testi.invia}>→</button>
+      </form>
+    </div>
+  </div>
+  <button class="focus-bolla" type="button" aria-label={testi.apri} aria-expanded="false" aria-controls="focus-pannello" data-focus-bolla>
+    <span class="focus-occhio" data-focus-occhio aria-hidden="true"></span>
+    <span class="focus-x" aria-hidden="true">×</span>
+  </button>
+</div>
+<script type="application/json" id="focus-dati" set:html={JSON.stringify(dati_)} />

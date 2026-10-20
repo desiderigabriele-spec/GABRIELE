@@ -212,6 +212,13 @@ function raggiX() {
   });
 }
 
+// ---------- I tre problemi: una riga rossa barra la frase vecchia, sotto compare cosa facciamo noi ----------
+function barrate() {
+  document.querySelectorAll('[data-barrate]').forEach((box) => {
+    [...box.children].forEach((r) => quandoVisibile(r, () => setTimeout(() => r.classList.add('on'), 250), 0.7));
+  });
+}
+
 // ---------- 08 · Il punto che compare: il quadratino rosso chiude il titolo quando la sezione entra ----------
 function puntoTitoli() {
   document.querySelectorAll('main .testa-sezione h2, main .sezione > .wrap > h2').forEach((h) => {
@@ -497,6 +504,7 @@ export function avviaVita() {
   decodifica();
   raggiX();
   puntoTitoli();
+  barrate();
   tabellone();
   cinetica();
   peso();

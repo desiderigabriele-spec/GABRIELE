@@ -196,23 +196,23 @@ const jsonLd = {
           </h2>
         )}
       </div>
-      <div class="dolori" data-sequenza>
+      <!-- i tre problemi: la frase vecchia si barra in rosso, sotto compare cosa facciamo noi (vita.js, barrate) -->
+      <ul class="barrate" data-barrate role="list">
         {(it ? [
-          ['01 — Nessuno ti trova', 'Sei bravo, ma online sei invisibile.', 'I clienti cercano proprio quello che fai. Solo che trovano prima gli altri.'],
-          ['02 — Ti trovano, ma se ne vanno', 'Pochi secondi e chiudono la pagina.', 'Il sito è lento, confuso o uguale a mille altri. Il cervello decide in fretta e passa oltre.'],
-          ['03 — Ti guardano, ma non ti scrivono', 'Visite tante, richieste poche.', 'Manca il percorso che porta dalla curiosità alla fiducia, e dalla fiducia al «ti scrivo».'],
+          ['Online sei invisibile.', 'Ti trovano su Google, nella tua zona.'],
+          ['Chiudono la pagina in 3 secondi.', 'Capiscono subito cosa fai e restano.'],
+          ['Visite tante, richieste poche.', 'Un percorso chiaro fino al «ti scrivo».'],
         ] : [
-          ['01 — Nobody finds you', "You're good, but online you're invisible.", 'Clients are searching for exactly what you do. They just find someone else first.'],
-          ['02 — They find you, then leave', 'A few seconds and the tab is closed.', 'The site is slow, confusing or looks like a thousand others. The brain decides fast and moves on.'],
-          ["03 — They look, but don't get in touch", 'Lots of visits, few enquiries.', 'The path from curiosity to trust, and from trust to "let\'s talk", is missing.'],
-        ]).map(([n, h, p]) => (
-          <div class="dolore">
-            <span class="dolore-num">{n}</span>
-            <h3>{h}</h3>
-            <p>{p}</p>
-          </div>
+          ["Online you're invisible.", 'They find you on Google, in your area.'],
+          ['They close the page in 3 seconds.', 'They get what you do straight away and stay.'],
+          ['Lots of visits, few enquiries.', 'A clear path all the way to "let\'s talk".'],
+        ]).map(([vecchia, nuova]) => (
+          <li class="ba-riga">
+            <s class="ba-vecchia"><span class="sr-only">{T('Prima: ', 'Before: ')}</span>{vecchia}</s>
+            <span class="ba-nuova"><span class="sr-only">{T('Con noi: ', 'With us: ')}</span>{nuova}</span>
+          </li>
         ))}
-      </div>
+      </ul>
       <div class="svolta-riga">
         <p class="svolta" data-appare>
           {T('Noi costruiamo quel percorso.', 'We build that path.')} <span class="em em-firma">{T('Dal primo sguardo al sì.', 'From first glance to yes.')}</span>
@@ -574,23 +574,23 @@ const jsonLd = {
   <!-- GARANZIE -->
   <section class="sezione" id="garanzie" data-forma="3" data-luce="0.14" data-scala="1.5" style="padding-top:0">
     <div class="wrap">
-      <div class="garanzie" data-sequenza>
+      <!-- le garanzie in piccolo: una fila di badge, icona e tre parole -->
+      <ul class="garanzie-fila" role="list">
         {(it ? [
-          ['revisioni', 'Ritocchi finché non ti convince', 'Prima di andare online lavoriamo sul design finché non ti piace davvero. Il sito deve rappresentarti.'],
-          ['chiave', 'Tutto è tuo', 'Codice, dominio, contenuti e account pubblicitari restano tuoi. Niente vincoli e niente ostaggi.'],
-          ['prezzo', 'Il prezzo è quello', 'Firmi un preventivo chiaro, voce per voce. Se qualcosa cambia, lo decidiamo insieme prima.'],
+          ['revisioni', 'Ritocchi finché ti convince', 'prima di andare online'],
+          ['chiave', 'Tutto è tuo', 'codice, dominio, account'],
+          ['prezzo', 'Prezzo firmato', 'voce per voce, niente sorprese'],
         ] : [
-          ['revisioni', "Tweaks until you're convinced", "Before going live we work on the design until you truly like it. The site has to represent you."],
-          ['chiave', 'Everything is yours', 'Code, domain, content and ad accounts stay yours. No lock-in and no hostages.'],
-          ['prezzo', 'The price is the price', 'You sign a clear quote, line by line. If anything changes, we agree on it together first.'],
-        ]).map(([icona, titolo, testo]) => (
-          <div class="card garanzia">
-            <span class="garanzia-icona"><Icona nome={icona} /></span>
-            <h3>{titolo}</h3>
-            <p>{testo}</p>
-          </div>
+          ['revisioni', "Tweaks until you're convinced", 'before going live'],
+          ['chiave', 'Everything is yours', 'code, domain, accounts'],
+          ['prezzo', 'Signed price', 'line by line, no surprises'],
+        ]).map(([icona, titolo, sotto]) => (
+          <li class="garanzia-badge">
+            <span class="servizio-icona"><Icona nome={icona} /></span>
+            <span><b>{titolo}</b><small>{sotto}</small></span>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
 

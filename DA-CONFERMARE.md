@@ -29,3 +29,6 @@
 - [ ] **Gestionale su misura** (`src/data/listino.js`): i prezzi sono una prima proposta. Essenziale 4.900 € + 79 €/mese, Completo 8.900 € + 149 €/mese, Completo + AI 13.900 € + 249 €/mese; extra: area 1.500 €, funzione AI 1.900 €, migrazione 900 €, app 1.200 €. Vanno confrontati con i tempi veri di sviluppo, anche i tempi di consegna (4-6, 8-10 e 10-12 settimane). Da verificare anche se il Voucher Doppia Transizione copre i gestionali: per ora il preventivo lo calcola solo su Automazioni e AI.
 - [ ] **Demo dal vivo** (`src/data/demo.js`): le cifre prima/dopo (5-10 minuti a messaggio, 45 minuti a preventivo, 3 minuti per controllare, 2 h 40 min risparmiate) sono indicative: tienile allineate a quello che vedi davvero sui primi progetti. La pagina promette che nella Diagnosi AI mostri al cliente come funzionerebbe da lui: prepara una demo base da adattare (per esempio un flusso n8n e un assistente con i suoi documenti).
 - [ ] **Voucher Lombardia**: verificare che lo sportello 2026 sia ancora aperto prima di citarlo nelle campagne.
+
+## Focus, l'AI vera nella chat
+Oggi Focus risponde con i bottoni (prezzi, preventivo, WhatsApp) e passa le domande scritte a WhatsApp. Per farlo rispondere con l'AI (Claude) serve: una chiave API messa nelle impostazioni di Vercel, un tetto di spesa mensile e una riga nell'informativa privacy. Da decidere con Gabriele.

@@ -1,0 +1,77 @@
+/* Focus, l'assistente: il tondino in basso a destra, la nuvoletta e la chat. */
+.focus { position: fixed; z-index: 58; right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+.focus[hidden] { display: none; }
+.focus-bolla { position: relative; width: 60px; height: 60px; padding: 0; border-radius: 50% !important; border: 1px solid #444; background: var(--notte); cursor: pointer; overflow: hidden; display: block;
+  transform: scale(0); transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), border-color .3s; box-shadow: 0 16px 34px -12px rgba(0, 0, 0, .9); }
+.focus.su .focus-bolla { transform: none; }
+.focus-bolla:hover, .focus-bolla:focus-visible { border-color: var(--latte); outline: none; }
+.focus-occhio, .fp-occhio { position: absolute; inset: 0; display: grid; place-items: center; }
+.focus-occhio canvas, .fp-occhio canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.focus-x { position: absolute; inset: 0; display: grid; place-items: center; font-size: 28px; line-height: 1; color: var(--latte); background: var(--notte); opacity: 0; transition: opacity .25s; }
+.focus.aperta .focus-x { opacity: 1; }
+/* la nuvoletta */
+.focus-fumetto { position: absolute; right: 74px; bottom: 10px; width: max-content; max-width: min(260px, calc(100vw - 110px)); opacity: 0; transform: translateX(8px); transition: opacity .35s var(--ease), transform .35s var(--ease); }
+.focus-fumetto.su { opacity: 1; transform: none; }
+.focus-fumetto-testo { display: block; background: var(--latte); color: var(--notte); border: 0; text-align: left; font: inherit; font-size: .88rem; font-weight: 600; line-height: 1.35; padding: .7rem 2.1rem .7rem .85rem; cursor: pointer; }
+.focus-fumetto-testo::after { content: ""; position: absolute; right: -6px; bottom: 16px; border: 6px solid transparent; border-right: 0; border-left-color: var(--latte); }
+.focus-fumetto-chiudi { position: absolute; right: 2px; top: 2px; width: 30px; height: 30px; border: 0; background: none; color: #555; font-size: 1.1rem; cursor: pointer; }
+/* la chat */
+.focus-pannello { position: absolute; right: 0; bottom: 74px; width: min(380px, calc(100vw - 40px)); height: min(560px, calc(100svh - 120px)); display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto;
+  background: #0d0d0d; border: 1px solid var(--linea-forte); border-top: 3px solid var(--rosso); box-shadow: 0 30px 70px -25px rgba(0, 0, 0, .95);
+  opacity: 0; transform: translateY(10px); transform-origin: bottom right; transition: opacity .25s var(--ease), transform .25s var(--ease); }
+.focus-pannello[hidden] { display: none; }
+.focus.aperta .focus-pannello { opacity: 1; transform: none; }
+.fp-testa { display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 12px; border-bottom: 1px solid var(--linea); }
+.fp-occhio { position: relative; inset: auto; width: 42px; height: 42px; flex: none; border-radius: 50% !important; border: 1px solid #333; overflow: hidden; background: var(--notte); }
+.fp-chi { display: grid; line-height: 1.2; min-width: 0; }
+.fp-chi b { font-size: 1rem; font-weight: 700; }
+.fp-chi small { display: flex; align-items: center; gap: 6px; font-size: .72rem; color: var(--nebbia); }
+.fp-chi small::before { content: ""; width: 7px; height: 7px; flex: none; background: var(--smeraldo); }
+.fp-chiudi { margin-left: auto; width: 40px; height: 40px; border: 0; background: none; color: var(--nebbia); font-size: 1.5rem; cursor: pointer; }
+.fp-chiudi:hover, .fp-chiudi:focus-visible { color: var(--latte); outline: none; }
+.fp-msg { overflow-y: auto; overscroll-behavior: contain; padding: 14px 12px; display: flex; flex-direction: column; gap: 10px; }
+.fm { max-width: 88%; font-size: .9rem; line-height: 1.45; padding: 9px 11px; }
+.fm-lui { align-self: flex-start; background: #181818; border: 1px solid #262626; color: var(--latte); }
+.fm-tu { align-self: flex-end; background: var(--latte); color: var(--notte); }
+.fm b { font-weight: 700; }
+.fm-scrive { display: flex; gap: 4px; padding: 12px; }
+.fm-scrive i { width: 6px; height: 6px; background: #888; animation: fm-punto 1s infinite; }
+.fm-scrive i:nth-child(2) { animation-delay: .15s; } .fm-scrive i:nth-child(3) { animation-delay: .3s; }
+@keyframes fm-punto { 0%, 60%, 100% { opacity: .25; } 30% { opacity: 1; } }
+.fm-prezzi { display: grid; margin: 8px 0; border-top: 1px solid #2a2a2a; }
+.fm-riga { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid #2a2a2a; color: var(--latte); text-decoration: none; font-size: .86rem; }
+.fm-riga b { white-space: nowrap; }
+.fm-riga:hover span { text-decoration: underline; }
+.fm-wa { display: block; margin-top: 8px; padding: 8px 10px; background: #0b2b1d; border-left: 3px solid #25d366; font-size: .84rem; color: #d9fbe8; }
+.fp-scelte { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 10px; }
+.fp-scelte button, .fp-scelte a { border: 1px solid var(--linea-forte); background: none; color: var(--latte); padding: 8px 11px; font: inherit; font-size: .84rem; cursor: pointer; text-align: left; text-decoration: none; }
+.fp-scelte :is(button, a):hover, .fp-scelte :is(button, a):focus-visible { border-color: var(--latte); outline: none; }
+.fp-scelte .forte { background: var(--rosso); border-color: var(--rosso); font-weight: 600; }
+.fp-scelte .wa { border-color: #25d366; color: #b8f5cf; }
+.fp-piede { border-top: 1px solid var(--linea); padding: 8px; display: grid; gap: 8px; }
+.fp-azioni { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.fp-azioni a { display: grid; place-items: center; padding: 10px 8px; font-size: .86rem; font-weight: 600; text-decoration: none; }
+.fp-pv { background: var(--rosso); color: var(--azione-testo); }
+.fp-wa { border: 1px solid #25d366; color: #b8f5cf; }
+.fp-scrivi { display: flex; gap: 6px; }
+.fp-scrivi input { flex: 1; min-width: 0; height: 44px; background: transparent; border: 1px solid var(--linea-forte); color: var(--latte); padding: 0 10px; font: inherit; font-size: 16px; }
+.fp-scrivi input:focus { outline: none; border-color: var(--latte); }
+.fp-scrivi button { width: 44px; height: 44px; border: 0; background: var(--latte); color: var(--notte); font-weight: 700; font-size: 1.1rem; cursor: pointer; }
+
+/* sul computer il tondino non copre l'avviso dei cookie */
+html:has(.cookie:not([hidden])) .focus:not(.aperta) { opacity: 0; pointer-events: none; }
+
+/* telefono: il tondino sta nella barra in basso, al posto del bottone WhatsApp (WhatsApp è nella chat) */
+@media (max-width: 900px) {
+  .focus { right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 45; }
+  .barra-pollice { padding-right: 70px; }
+  .focus-bolla { width: 52px; height: 52px; }
+  .focus-fumetto { right: 0; bottom: 70px; }
+  .focus-fumetto-testo::after { right: 18px; bottom: -6px; border: 6px solid transparent; border-bottom: 0; border-top-color: var(--latte); }
+  .focus-pannello { position: fixed; left: 0; right: 0; bottom: 0; width: auto; height: min(86svh, 640px); z-index: 70; transform: translateY(20px); }
+  .focus.aperta { z-index: 70; }
+}
+@media (min-width: 600px) and (max-width: 900px) {
+  .focus { right: calc(50% - min(260px, (100% - 24px) / 2) + 8px); }
+}
+@media (prefers-reduced-motion: reduce) { .focus-bolla, .focus-pannello, .focus-fumetto { transition: none; } }

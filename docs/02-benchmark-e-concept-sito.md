@@ -115,6 +115,18 @@ Alla prima visita, dopo l'intro, si apre un riquadro: «Prima di iniziare: come 
 
 Il bottone «Aa» nell'header apre il pannellino «Il tuo nome» per cambiarlo. Tutto resta nel browser (`localStorage gd-profilo`: `nome`), niente viene inviato.
 
+### Focus, l'assistente (la mascotte)
+Focus è un occhio vero, in bianco e grigio, che vive nel tondino in basso a destra (`Assistente.astro`, `scripts/assistente.js`, `scripts/focus-occhio.js`, `styles/assistente.css`). Non è un decoro: è l'assistente del sito, e chi lo usa sta già provando il servizio «Automazioni e AI».
+- **Come spunta:** dopo 6 secondi (mai sopra la finestra del nome o il menu); l'occhio si apre e guarda il bottone rosso più vicino (gaze cueing). Una nuvoletta, una volta per visita: «Ciao Marta, ti calcolo il prezzo in 2 minuti?». Sul telefono compare insieme alla barra in basso e prende il posto del bottone WhatsApp.
+- **Come si muove:** fermo, solo palpebre e sguardo. Segue il mouse; mentre scrivi la pupilla si allarga, mentre «pensa» guarda in alto a destra, quando risponde sbatte le palpebre. Senza WebGL resta un occhio disegnato.
+- **La chat, a bottoni:** «Quanto costa?» (i prezzi veri di ogni servizio), «Voglio un preventivo» (cosa ti serve e per quando, poi apre il preventivo con il servizio già scelto, `?s=sito`), «Cosa fa l'AI per la mia azienda?», «Parlo con una persona». In fondo sempre «Calcola il preventivo» e «WhatsApp», con il messaggio già scritto dal riassunto della chat.
+- **Domande scritte:** per ora vanno a Gabriele su WhatsApp, con la domanda già nel messaggio. Per l'AI vera serve una funzione su Vercel con una chiave API (da decidere).
+
+### I tre problemi e le garanzie
+- **Il problema:** tre frasi grandi in grigio («Online sei invisibile.»…); quando arrivi, una riga rossa le barra e sotto compare cosa facciamo noi, con la spunta verde.
+- **Le garanzie:** una fila sola di tre badge (icona con bordo rosso, tre parole, una riga sotto): ritocchi finché ti convince, tutto è tuo, prezzo firmato.
+- **Prima / dopo:** le due foto sono generate con l'AI (`public/img/pd-prima.webp`, bagno datato col flash; `pd-dopo.webp`, bagno nuovo da rivista).
+
 ### La voce: Desideri & Code, al plurale
 Tutto il sito parla come studio («facciamo», «ti rispondiamo», «scrivici»). Gabriele compare in terza persona solo in «Lo studio», come fondatore. I messaggi WhatsApp precompilati salutano lo studio («Ho visto il sito di Desideri & Code e vorrei parlarvi di un progetto»). Resta al singolare solo l'informativa privacy, dove il titolare dei dati è la persona.
 
