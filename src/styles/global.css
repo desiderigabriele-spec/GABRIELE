@@ -755,7 +755,7 @@ html.intro-fine .intro-cursore { animation: intro-cursore-via .5s var(--ease) fo
 
 /* angoli dritti ovunque, come nel logo (il telefono finto delle demo resta tondo) */
 /* angoli dritti ovunque, tranne il telefono disegnato e il sito «vecchio» del prima/dopo */
-*:not(.tel, .tel *, .pd-prima *), *:not(.tel, .tel *, .pd-prima *)::before, *:not(.tel, .tel *, .pd-prima *)::after { border-radius: 0 !important; }
+*:not(.tel, .tel *, .pd-prima *, .pd-dopo *), *:not(.tel, .tel *, .pd-prima *, .pd-dopo *)::before, *:not(.tel, .tel *, .pd-prima *, .pd-dopo *)::after { border-radius: 0 !important; }
 
 @media (prefers-reduced-motion: reduce) {
   .scia, .corona-eclisse, .firma-footer { animation: none; }
@@ -905,3 +905,33 @@ html.intro-fine .intro-cursore { animation: intro-cursore-via .5s var(--ease) fo
 .nome-tocca { cursor: text; text-decoration: underline dotted rgba(var(--rosso-rgb), .55); text-decoration-thickness: .06em; text-underline-offset: .14em; border-radius: 0; }
 .nome-tocca:hover, .nome-tocca:focus-visible { text-decoration-style: solid; outline: none; }
 .nome-modifica { outline: 2px solid var(--latte) !important; outline-offset: .08em; text-decoration: none; caret-color: var(--latte); min-width: 1ch; display: inline-block; }
+
+/* Sul telefono, nella home: la linea a capitoli sotto l'header e il capitolo in cui sei accanto al logo.
+   Toccandolo si apre l'indice dei cinque capitoli (effetti.js, capitoliTelefono). */
+.cap-linea, .cap-attuale { display: none; }
+@media (max-width: 900px) {
+  .cap-linea { display: flex; gap: 3px; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; pointer-events: none; opacity: 0; transition: opacity .4s; }
+  .site-header.scorre .cap-linea { opacity: 1; }
+  html.con-capitoli .site-header.scorre { background: var(--notte); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .cap-linea i { flex: 1; background: rgba(var(--latte-rgb), .14); position: relative; overflow: hidden; }
+  .cap-linea i::after { content: ''; position: absolute; inset: 0; background: var(--rosso); transform-origin: left; transform: scaleX(var(--f, 0)); }
+  .cap-attuale { display: inline-flex; align-items: center; gap: .45rem; height: 40px; padding: 0 .35rem; border: 0; background: none; color: var(--latte); font-family: var(--f-mono); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; overflow: hidden; cursor: pointer; opacity: 0; pointer-events: none; transform: translateY(6px); transition: opacity .35s, transform .35s var(--ease); }
+  .cap-attuale b { color: var(--rosso-testo); font-weight: 500; }
+  .cap-attuale::after { content: ''; flex: none; width: 6px; height: 6px; border-right: 1.5px solid var(--nebbia); border-bottom: 1.5px solid var(--nebbia); transform: rotate(45deg) translateY(-2px); }
+  .cap-testo { display: block; animation: cap-sale .35s var(--ease); }
+  html.cap-su .cap-attuale { opacity: 1; pointer-events: auto; transform: none; }
+  html.cap-su .site-header .brand-logo { display: none; }
+}
+@keyframes cap-sale { from { transform: translateY(80%); opacity: 0; } }
+html.ridotto .cap-testo { animation: none; }
+.cap-indice { position: fixed; inset: 0; z-index: 80; }
+.cap-velo { position: absolute; inset: 0; background: rgba(0, 0, 0, .55); opacity: 0; transition: opacity .3s; }
+.cap-foglio { position: absolute; left: 0; right: 0; bottom: 0; background: var(--superficie); border-top: 1px solid var(--linea-forte); padding: 1.2rem var(--gutter) calc(1.6rem + env(safe-area-inset-bottom, 0px)); display: grid; transform: translateY(100%); transition: transform .4s var(--ease); }
+.cap-indice.aperto .cap-velo { opacity: 1; }
+.cap-indice.aperto .cap-foglio { transform: none; }
+.cap-foglio > span { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--nebbia); margin-bottom: .5rem; }
+.cap-foglio a { display: flex; align-items: baseline; gap: .9rem; padding: .95rem 0; border-bottom: 1px solid var(--linea); color: var(--latte); text-decoration: none; font-family: var(--f-titolo); font-weight: 700; font-size: 1.3rem; letter-spacing: -.03em; }
+.cap-foglio a b { font-family: var(--f-mono); font-size: .75rem; font-weight: 500; color: var(--nebbia); letter-spacing: 0; }
+.cap-foglio a em { display: none; margin-left: auto; font-style: normal; font-family: var(--f-mono); font-size: .66rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--rosso-testo); }
+.cap-foglio a.qui, .cap-foglio a.qui b { color: var(--rosso-testo); }
+.cap-foglio a.qui em { display: block; }

@@ -514,6 +514,8 @@ function primaDopo() {
   document.querySelectorAll('[data-prima-dopo]').forEach((box) => {
     const r = box.querySelector('[data-pd-cursore]');
     let mano = false;
+    // il «dopo» entra in scena (titolo, arco, cartellino) quando il riquadro arriva sullo schermo
+    quandoVisibile(box, () => box.classList.add('visto'), 0.35);
     const metti = (x) => box.style.setProperty('--x', `${x}%`);
     r.addEventListener('input', () => { mano = true; metti(r.value); });
     // col dito o col mouse: tocchi un punto e trascini, la lama segue (lo scorrimento in verticale resta libero)

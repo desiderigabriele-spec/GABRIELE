@@ -1,12 +1,18 @@
 ---
-// 15 · Prima / dopo da trascinare: a sinistra un sito del 2014 ordinato ma vecchio, a destra quello che facciamo noi.
+// 15 · Prima / dopo da trascinare: a sinistra il sito del 2014 di Idraulica Rossi, ordinato ma vecchio;
+// a destra «Pietra e luce», il sito che faremmo: lo showroom di sera, il bagno dentro un arco, il prezzo su un cartellino.
 // Si muove da solo finché non lo tocchi (vita.js, primaDopo). Stili in vita.css; misure in cqw, così scala con il riquadro.
+// I caratteri del «dopo» (Bodoni Moda, Hanken Grotesk, DM Mono) sono solo qui: non sono i nostri.
+import '@fontsource-variable/bodoni-moda/opsz.css';
+import '@fontsource-variable/bodoni-moda/opsz-italic.css';
+import '@fontsource-variable/hanken-grotesk/wght.css';
+import '@fontsource/dm-mono/400.css';
 interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
 const T = (a: string, b: string) => (lang === 'it' ? a : b);
 ---
 <figure class="prima-dopo-box" style="margin:0">
-  <div class="prima-dopo" data-prima-dopo role="img" aria-label={T('Confronto: a sinistra il vecchio sito di Idraulica Rossi, blu e grigio, con un testo lungo e un link piccolo. A destra il sito nuovo, Rossi Bagni: nero, titolo grande con il risultato, bottone rosso, foto del bagno, voto Google e chat WhatsApp.', 'Comparison: on the left the old Idraulica Rossi website, blue and grey, with long copy and a tiny link. On the right the new Rossi Bagni site: black, a big headline with the result, red button, bathroom photo, Google rating and WhatsApp chat.')}>
+  <div class="prima-dopo" data-prima-dopo role="img" aria-label={T('Confronto: a sinistra il vecchio sito di Idraulica Rossi, blu e grigio, con un testo lungo e un link piccolo. A destra il sito nuovo, Rossi atelier del bagno: scuro e caldo, titolo elegante «Il bagno nuovo in 10 giorni. Prezzo firmato.», la foto del bagno dentro un arco, il prezzo su un cartellino, il voto Google e un messaggio WhatsApp.', 'Comparison: on the left the old Idraulica Rossi website, blue and grey, with long copy and a tiny link. On the right the new site, Rossi bathroom atelier: dark and warm, an elegant headline "A new bathroom in 10 days. Signed price.", the bathroom photo inside an arch, the price on a tag, the Google rating and a WhatsApp message.')}>
     <div class="pd-strato pd-prima" aria-hidden="true">
       <div class="v-testa"><span class="v-logo">R</span><span class="v-nome">Idraulica Rossi s.n.c.<small>{T('Impianti idraulici e termici dal 1987', 'Plumbing and heating since 1987')}</small></span><span class="v-tel">{T('Chiamaci!', 'Call us!')}<br><b>02 1234567</b></span></div>
       <div class="v-menu"><span>Home</span><span>{T('Chi siamo', 'About us')}</span><span>{T('Servizi', 'Services')}</span><span>{T('Galleria', 'Gallery')}</span><span>{T('Contatti', 'Contact')}</span></div>
@@ -18,18 +24,23 @@ const T = (a: string, b: string) => (lang === 'it' ? a : b);
       <span class="pd-etichetta">{T('PRIMA', 'BEFORE')}</span>
     </div>
     <div class="pd-strato pd-dopo" aria-hidden="true">
-      <div class="n-testa"><b>Rossi Bagni<i class="n-q"></i></b><span><span>{T('Lavori', 'Work')}</span><span>{T('Prezzi', 'Prices')}</span><em>{T('Chiedi il prezzo', 'Get a price')}</em></span></div>
-      <div class="n-sx">
-        <span class="n-occhiello">{T('BAGNI CHIAVI IN MANO · MILANO', 'TURNKEY BATHROOMS · MILAN')}</span>
-        <b class="n-tit">{T('Il bagno nuovo', 'A new bathroom')}<br>{T('in 10 giorni', 'in 10 days')}<span>,</span><br>{T('prezzo fisso', 'fixed price')}<i class="n-q"></i></b>
-        <span class="n-sub">{T('Un sopralluogo, un preventivo scritto in 24 ore. Il prezzo che firmi è quello che paghi.', 'One visit, a written quote within 24 hours. The price you sign is the price you pay.')}</span>
-        <span class="n-azioni"><span class="n-btn">{T('Calcola il prezzo', 'Get the price')} →</span><span class="n-btn2">{T('Guarda i lavori', 'See our work')}</span></span>
-        <span class="n-spunte"><span>{T('Prezzo bloccato', 'Locked price')}</span><span>{T('Garanzia 10 anni', '10-year warranty')}</span></span>
+      <div class="r-nav"><b class="r-logo">Rossi<small>{T('atelier del bagno', 'bathroom atelier')}</small></b><span class="r-voci"><span>{T('Bagni finiti', 'Our work')}</span><span>{T('Prezzi', 'Prices')}</span><span>{T('Come lavoriamo', 'How we work')}</span></span><span class="r-nav-cta">{T('Sopralluogo gratuito', 'Free survey')}</span></div>
+      <div class="r-testo">
+        <span class="r-occhiello">{T('Milano · bagni chiavi in mano dal 1987', 'Milan · turnkey bathrooms since 1987')}</span>
+        <b class="r-tit"><span class="r"><span>{T('Il bagno nuovo', 'A new bathroom')}</span></span><span class="r"><span><em>{T('in 10 giorni.', 'in 10 days.')}</em></span></span><span class="r"><span>{T('Prezzo firmato.', 'Signed price.')}</span></span></b>
+        <span class="r-sub">{T('Un sopralluogo, il preventivo scritto in 24 ore. ', 'One visit, a written quote within 24 hours. ')}<b>{T('Il prezzo che firmi è quello che paghi', 'The price you sign is the price you pay')}</b>{T(', anche se dietro le piastrelle troviamo sorprese.', ', even if we find surprises behind the tiles.')}</span>
+        <span class="r-azioni"><span class="r-btn">{T('Calcola il tuo bagno', 'Price your bathroom')} →</span><span class="r-btn2">{T('Guarda 40 bagni finiti', 'See 40 finished bathrooms')}</span></span>
+        <span class="r-fiducia"><span><b>4,9</b> <i>★★★★★</i> {T('212 recensioni', '212 reviews')}</span><span>{T('Garanzia 10 anni', '10-year warranty')}</span><span>{T('Novembre:', 'November:')} <b>{T('2 cantieri liberi', '2 slots left')}</b><span class="r-posti"><s></s><s></s><s></s><s></s><s class="l"></s><s class="l"></s></span></span></span>
       </div>
-      <div class="n-foto">
-        <span class="n-chat"><small>WHATSAPP · {T('ORA', 'NOW')}</small>{T('Ciao! Per un bagno di 6 m² servono circa 10 giorni. Ti mando il prezzo?', 'Hi! A 6 m² bathroom takes about 10 days. Shall I send you the price?')}</span>
-        <span class="n-voto"><b>4,9<i>★★★★★</i></b><span>{T('recensioni Google', 'Google reviews')}</span></span>
-      </div>
+      <span class="r-arco">
+        <span class="r-foto"></span>
+        <span class="r-punto" style="--x:46%;--y:39%;--k:0"><span><b>{T('La nicchia', 'The niche')}</b>{T('Luce LED calda 3000K', 'Warm 3000K LED light')}</span></span>
+        <span class="r-punto" style="--x:74%;--y:62%;--k:1"><span><b>{T('Il mobile', 'The vanity')}</b>{T('Sospeso, in rovere vero', 'Wall-hung, real oak')}</span></span>
+        <span class="r-punto" style="--x:34%;--y:84%;--k:2"><span><b>{T('Il pavimento', 'The floor')}</b>{T('Gres effetto pietra 120×280', 'Stone-look porcelain 120×280')}</span></span>
+      </span>
+      <span class="r-didascalia">{T('Via Tortona · 6,2 m² · finito in 9 giorni', 'Via Tortona · 6.2 m² · done in 9 days')}</span>
+      <span class="r-cartellino"><small>{T('Bagno 6 m² chiavi in mano', '6 m² turnkey bathroom')}</small><b>{T('da 8.900 €', 'from €8,900')}</b><em>{T('prezzo firmato, IVA inclusa', 'signed price, VAT included')}</em></span>
+      <span class="r-chat"><small>WhatsApp · {T('ora', 'now')}</small>{T('Ciao Giulia! Domani alle 10 passo per le misure, ti va bene?', 'Hi Giulia! I’ll come by tomorrow at 10 to measure up, does that work?')}</span>
       <span class="pd-etichetta">{T('DOPO', 'AFTER')}</span>
     </div>
     <input class="pd-cursore" type="range" min="0" max="100" value="50" aria-label={T('Sposta il confronto tra prima e dopo', 'Move the before/after comparison')} data-pd-cursore>

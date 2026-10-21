@@ -45,7 +45,9 @@ document.addEventListener('click', (e) => {
   if (!dest) return;
   e.preventDefault();
   chiudiMenu();
-  if (lenis) lenis.scrollTo(dest, { offset: -20 }); else dest.scrollIntoView({ behavior: ridotto ? 'auto' : 'smooth' });
+  // sul telefono, nella home, l'header resta sopra: la sezione parte sotto di lui
+  const sopra = html.classList.contains('con-capitoli') && window.innerWidth <= 900 ? (header?.offsetHeight ?? 20) : 20;
+  if (lenis) lenis.scrollTo(dest, { offset: -sopra }); else window.scrollTo({ top: dest.getBoundingClientRect().top + scrollY - sopra, behavior: ridotto ? 'auto' : 'smooth' });
   history.replaceState(null, '', url.hash);
 });
 
@@ -57,7 +59,9 @@ function suScroll() {
   const y = window.scrollY;
   if (header) {
     header.classList.toggle('scorre', y > 20);
-    header.classList.toggle('nascosto', y > 400 && y > ultimo && !html.classList.contains('menu-aperto'));
+    // sul telefono, nella home, l'header resta: porta la linea dei capitoli
+    const resta = html.classList.contains('con-capitoli') && window.innerWidth <= 900;
+    header.classList.toggle('nascosto', y > 400 && y > ultimo && !resta && !html.classList.contains('menu-aperto'));
   }
   if (barra) barra.classList.toggle('visibile', y > window.innerHeight * 0.6);
   ultimo = y;
