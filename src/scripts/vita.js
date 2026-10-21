@@ -188,29 +188,6 @@ function decodifica() {
   });
 }
 
-// ---------- 06 · Raggi X: sotto l'anteprima dei lavori c'è il codice ----------
-function raggiX() {
-  document.querySelectorAll('[data-raggi]').forEach((a) => {
-    const x = (v) => a.style.setProperty('--raggi', `${v}%`);
-    x(100);
-    if (finePointer) {
-      a.addEventListener('pointermove', (e) => { const r = a.getBoundingClientRect(); x(Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100))); a.classList.add('raggi-su'); });
-      a.addEventListener('pointerleave', () => { a.classList.remove('raggi-su'); x(100); });
-    }
-    // entrando nello schermo la lama passa una volta da sola
-    quandoVisibile(a, () => {
-      const t0 = performance.now();
-      a.classList.add('raggi-su');
-      const giro = (t) => {
-        const k = Math.min(1, (t - t0) / 2600);
-        if (a.matches(':hover')) return;
-        x(100 - Math.sin(k * Math.PI) * 62);
-        if (k < 1) requestAnimationFrame(giro); else { a.classList.remove('raggi-su'); x(100); }
-      };
-      requestAnimationFrame(giro);
-    }, 0.6);
-  });
-}
 
 // ---------- I pacchetti sul telefono: si scorrono di lato, si apre sul più scelto ----------
 function pacchettiSlider() {
@@ -636,7 +613,6 @@ export function avviaVita() {
   grigliaMagnetica();
   bozza();
   decodifica();
-  raggiX();
   puntoTitoli();
   notifiche();
   metodoNumeri();

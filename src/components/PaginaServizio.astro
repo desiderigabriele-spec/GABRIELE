@@ -27,7 +27,8 @@ const mese = T('/mese', '/month');
 const preventivo = url('preventivo', lang);
 const prezzoLivello = (l: { una?: number; mese?: number }) =>
   l.una && l.mese ? `${eur(l.una)} + ${eur(l.mese)}${mese}` : l.mese ? `${eur(l.mese)}${mese}` : eur(l.una!);
-const altri = servizi.filter((x) => x.id !== id);
+// dal più caro al più economico, come nella home: il primo prezzo fa da àncora
+const altri = servizi.filter((x) => x.id !== id).sort((a, b) => b.da - a.da);
 const ai = id === 'software' || id === 'gestionale';
 // le demo guidate che fanno vedere il servizio al lavoro
 const demoIds = id === 'software' ? (['whatsapp', 'preventivo'] as const) : [];

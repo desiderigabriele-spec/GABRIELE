@@ -33,11 +33,12 @@ const perChi: Record<string, string> = it ? {
   presenza: 'For businesses and professionals who want enquiries every week.',
   impulso: 'To get started fast or launch a promotion.',
 };
+// gli altri servizi dal più caro al più economico: il primo prezzo fa da àncora e quelli dopo sembrano leggeri
 const altri = ['ecommerce', 'software', 'gestionale', 'ads', 'cura'].map((id) => {
   const c = categorie.find((x) => x.id === id)!;
   const l = c.livelli[0];
-  return { id, nome: c.nome, prezzo: l.una ? eur(l.una) : eur(l.mese!) + mese };
-});
+  return { id, nome: c.nome, valore: l.una ?? l.mese!, prezzo: l.una ? eur(l.una) : eur(l.mese!) + mese };
+}).sort((a, b) => b.valore - a.valore);
 // 12 · tipografia cinetica: tre righe giganti al posto del nastro
 const cinetica = it
   ? [['Siti web', 'Negozi online', 'Automazioni e AI', 'Gestionali'], ['Attenzione', 'Interesse', 'Fiducia', 'Desiderio', 'Azione'], ['Neuromarketing', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Copy che vende']]
@@ -455,15 +456,8 @@ const jsonLd = {
           const iniziali = l.cliente.replace(/^Dott\.\s*/, '').split(' ').map((p) => p[0]).slice(0, 2).join('');
           return (
             <article class="card cliente" data-lavoro={l.id}>
-              <a class="cliente-anteprima" href={l.url} target="_blank" rel="noopener" aria-label={T(`Apri il sito di ${l.cliente}`, `Open ${l.cliente}'s website`)} data-raggi>
+              <a class="cliente-anteprima" href={l.url} target="_blank" rel="noopener" aria-label={T(`Apri il sito di ${l.cliente}`, `Open ${l.cliente}'s website`)}>
                 <span class="browser" aria-hidden="true"><i></i><i></i><i></i><span>{dominio}</span></span>
-                <span class="raggi" aria-hidden="true">
-                  <b>&lt;sito</b> cliente=<em>"{l.cliente}"</em> pacchetto=<em>"{l.pacchetto}"</em><b>&gt;</b><br />
-                  {l.fatto.map((f) => <>&nbsp;&nbsp;&lt;!-- {f} --&gt;<br /></>)}
-                  &nbsp;&nbsp;<b>&lt;bottone</b> colore=<em>"rosso"</em> azione=<em>"contatto"</em> <b>/&gt;</b><br />
-                  <b>&lt;/sito&gt;</b>
-                </span>
-                <span class="raggi-lama" aria-hidden="true"></span>
                 <img src={l.img} alt={T(`La home del sito di ${l.cliente}`, `The home page of ${l.cliente}'s website`)} width="1440" height="900" loading="lazy" decoding="async" />
                 <span class="cliente-guarda" aria-hidden="true">{T('Guarda il sito', 'View the site')} ↗</span>
               </a>
