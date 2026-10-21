@@ -246,12 +246,15 @@ function notifiche() {
     const voci = [...box.querySelectorAll('.st-notifiche li')];
     // a sinistra la chat di stanotte (Laura chiede, il software scrive e risponde), poi a destra arrivano le notifiche
     const passi = [...box.querySelectorAll('[data-sf-passo]')];
+    const chat = box.querySelector('[data-sf-chat]');
     quandoVisibile(box, () => {
+      // il bottoncino della chat salta, poi la finestra si apre
+      if (chat) { setTimeout(() => chat.classList.add('bussa'), 150); setTimeout(() => chat.classList.add('aperta'), 650); setTimeout(() => chat.classList.add('chiusa'), 6200); }
       passi.forEach((p) => {
         setTimeout(() => p.classList.add('su'), Number(p.dataset.sfPasso));
         if (p.dataset.sfVia) setTimeout(() => p.classList.remove('su'), Number(p.dataset.sfVia));
       });
-      const parte = passi.length ? 2000 : 300;
+      const parte = passi.length ? 3000 : 300;
       voci.forEach((v, i) => setTimeout(() => v.classList.add('su'), parte + i * 850));
     }, 0.4);
   });

@@ -1049,32 +1049,56 @@ html.ridotto .cap-testo { animation: none; }
 .sf-wifi { width: 13px; height: 10px; color: #fff; display: block; }
 .sf-batteria { width: 18px; height: 9px; border: 1.5px solid rgba(255,255,255,.75); border-radius: 3px !important; position: relative; }
 .sf-batteria::after { content: ""; position: absolute; inset: 1.5px 3px 1.5px 1.5px; background: #fff; border-radius: 1px !important; }
-/* sinistra: il sito del cliente */
-.sf-sx { grid-row: 2; background: #f4f2ee; color: #141414; display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; gap: clamp(6px, 1.8cqw, 12px); padding: clamp(6px, 1.6cqw, 10px) clamp(9px, 2.4cqw, 14px) clamp(9px, 2.4cqw, 14px); min-width: 0; }
-.sf-sito-testa { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #ddd8cf; padding-bottom: clamp(4px, 1.2cqw, 8px); }
+/* sinistra: il sito del cliente. Foto grande con il titolo sopra, tre modelli, le garanzie e la chat piccola nell'angolo */
+.sf-sx { grid-row: 2; position: relative; background: #f4f2ee; color: #141414; display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto; gap: clamp(5px, 1.5cqw, 9px); padding: clamp(5px, 1.4cqw, 9px) clamp(8px, 2.2cqw, 13px) clamp(8px, 2.2cqw, 13px); min-width: 0; overflow: hidden; }
+.sf-sito-testa { display: flex; justify-content: space-between; align-items: center; }
 .sf-sito-testa b { font-family: var(--f-titolo); font-weight: 800; font-size: clamp(10px, 2.5cqw, 14px); letter-spacing: -.03em; }
 .sf-sito-testa b i { display: inline-block; width: .3em; height: .3em; margin-left: .08em; background: #b4572e; }
-.sf-sito-testa span { font-family: var(--f-mono); font-size: clamp(7px, 1.5cqw, 9px); letter-spacing: .12em; text-transform: uppercase; color: #8a8378; }
-.sf-sito-hero { display: grid; gap: clamp(5px, 1.4cqw, 9px); justify-items: start; }
-.sf-sito-hero b { font-family: var(--f-titolo); font-weight: 800; font-size: clamp(12px, 3.6cqw, 20px); line-height: 1.02; letter-spacing: -.04em; }
-.sf-btn { background: #141414; color: #fff; font-size: clamp(8px, 1.7cqw, 10px); font-weight: 600; padding: clamp(4px, 1.1cqw, 7px) clamp(7px, 1.8cqw, 11px); }
-.sf-foto { position: relative; min-height: 0; border-radius: 6px !important; overflow: hidden;
-  background: linear-gradient(180deg, #e8e2d8 0 38%, #2b2a28 38% 44%, transparent 44%), repeating-linear-gradient(90deg, #c49a6c 0 23%, #b48858 23% 24%), #c49a6c; }
-.sf-foto::before, .sf-foto::after { content: ""; position: absolute; left: 12%; top: 14%; width: 22%; height: 16%; background: #2b2a28; opacity: .85; }
-.sf-foto::after { left: 46%; }
-.sf-foto span { position: absolute; left: 6px; bottom: 6px; background: rgba(255,255,255,.88); font-family: var(--f-mono); font-size: clamp(7px, 1.4cqw, 9px); letter-spacing: .06em; padding: 3px 6px; color: #141414; }
-.sf-chat { align-self: end; background: #fff; border: 1px solid #e4dfd6; border-radius: 12px !important; padding: clamp(6px, 1.6cqw, 10px); display: grid; gap: clamp(4px, 1.1cqw, 7px); box-shadow: 0 10px 24px -14px rgba(0, 0, 0, .35); }
-.sf-chat small { display: flex; align-items: center; gap: 5px; font-family: var(--f-mono); font-size: clamp(7px, 1.4cqw, 8.5px); letter-spacing: .06em; color: #8a8378; }
-.sf-chat small i { width: 6px; height: 6px; border-radius: 50% !important; background: #22c55e; }
-.sf-chat p { margin: 0; font-size: clamp(8.5px, 1.95cqw, 11px); line-height: 1.35; padding: clamp(4px, 1.1cqw, 7px) clamp(6px, 1.5cqw, 9px); max-width: 92%; }
-.sf-lei { justify-self: start; background: #eeeae3; border-radius: 10px 10px 10px 3px !important; }
-.sf-lui { justify-self: end; background: #141414; color: #fff; border-radius: 10px 10px 3px 10px !important; }
-.sf-scrive { justify-self: end; display: flex; gap: 3px; background: #141414; border-radius: 10px !important; }
+.sf-menu { display: grid; gap: 3px; width: clamp(10px, 2.6cqw, 15px); }
+.sf-menu i { height: 1.5px; background: #141414; }
+.sf-foto { position: relative; min-height: 0; border-radius: clamp(6px, 1.6cqw, 10px) !important; overflow: hidden; display: grid; align-content: end; justify-items: start; gap: clamp(4px, 1.1cqw, 7px); padding: clamp(7px, 1.9cqw, 11px); color: #fff;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,.62)), linear-gradient(180deg, #ddd5c8 0 40%, #3a3532 40% 45%, transparent 45%), repeating-linear-gradient(90deg, #c49a6c 0 24.5%, #a97f51 24.5% 25%), #c49a6c; }
+.sf-foto.con-foto { background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,.62)), url("/img/stanotte-cucina.webp") center / cover no-repeat; }
+.sf-foto:not(.con-foto)::before, .sf-foto:not(.con-foto)::after { content: ""; position: absolute; top: 12%; width: 20%; height: 14%; background: #3a3532; opacity: .85; }
+.sf-foto:not(.con-foto)::before { left: 10%; } .sf-foto:not(.con-foto)::after { left: 40%; }
+.sf-foto > * { position: relative; z-index: 1; }
+.sf-chip { position: absolute !important; top: clamp(6px, 1.6cqw, 10px); right: clamp(6px, 1.6cqw, 10px); background: rgba(255,255,255,.92); color: #141414; font-size: clamp(7px, 1.45cqw, 9px); font-weight: 600; padding: 3px 6px; border-radius: 99px !important; }
+.sf-foto b { font-family: var(--f-titolo); font-weight: 800; font-size: clamp(12px, 3.5cqw, 20px); line-height: 1.02; letter-spacing: -.04em; max-width: 92%; text-shadow: 0 1px 8px rgba(0,0,0,.35); }
+.sf-btn { background: #fff; color: #141414; font-size: clamp(8px, 1.7cqw, 10px); font-weight: 700; padding: clamp(4px, 1.1cqw, 7px) clamp(7px, 1.8cqw, 11px); border-radius: 99px !important; }
+.sf-modelli { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(4px, 1.1cqw, 7px); }
+.sf-modello { display: grid; gap: 2px; }
+.sf-modello i { aspect-ratio: 4 / 3; border-radius: clamp(4px, 1cqw, 6px) !important; background: linear-gradient(180deg, #e6dfd3 0 46%, #39332f 46% 52%, var(--c) 52%); --c: #c49a6c; }
+.sf-modello:nth-child(2) i { --c: #6f7a6d; } .sf-modello:nth-child(3) i { --c: #2f3b4a; }
+.sf-modello b { font-size: clamp(8px, 1.75cqw, 10.5px); }
+.sf-modello small { font-size: clamp(7px, 1.45cqw, 9px); color: #7a7368; }
+.sf-garanzie { display: flex; flex-wrap: wrap; gap: 3px clamp(6px, 1.5cqw, 10px); font-size: clamp(7px, 1.45cqw, 9px); color: #57514a; }
+.sf-garanzie span::before { content: "✓ "; color: #1a8a55; font-weight: 700; }
+/* la chat: bottoncino nell'angolo che bussa, poi una finestrella piccola che non copre il sito */
+.sf-chat { position: absolute; right: clamp(6px, 1.6cqw, 10px); bottom: clamp(6px, 1.6cqw, 10px); z-index: 3; display: grid; justify-items: end; gap: 5px; }
+.sf-lancia { order: 2; width: clamp(20px, 5cqw, 30px); height: clamp(20px, 5cqw, 30px); border-radius: 50% !important; background: #141414; display: grid; place-items: center; box-shadow: 0 6px 14px -6px rgba(0,0,0,.6); }
+.sf-lancia i { width: 45%; height: 36%; background: #fff; border-radius: 3px 3px 3px 0 !important; }
+.sf-finestra { width: clamp(100px, 27cqw, 150px); background: #fff; border: 1px solid #e4dfd6; border-radius: 10px !important; padding: clamp(5px, 1.3cqw, 8px); display: grid; gap: clamp(3px, .9cqw, 5px); box-shadow: 0 14px 28px -14px rgba(0,0,0,.45); transform-origin: bottom right; }
+.sf-finestra small { display: flex; align-items: center; gap: 4px; font-size: clamp(6.5px, 1.3cqw, 8px); font-weight: 600; color: #57514a; }
+.sf-finestra small i { width: 5px; height: 5px; border-radius: 50% !important; background: #22c55e; }
+.sf-finestra p { margin: 0; font-size: clamp(7.5px, 1.65cqw, 9.5px); line-height: 1.3; padding: clamp(3px, .8cqw, 5px) clamp(5px, 1.2cqw, 7px); max-width: 94%; }
+.sf-lei { justify-self: start; background: #eeeae3; border-radius: 8px 8px 8px 2px !important; }
+.sf-lui { justify-self: end; background: #141414; color: #fff; border-radius: 8px 8px 2px 8px !important; }
+.sf-scrive { justify-self: end; display: flex; gap: 3px; background: #141414; border-radius: 8px !important; }
 .sf-scrive i { width: 4px; height: 4px; border-radius: 50% !important; background: #999; animation: fm-punto 1s infinite; }
 .sf-scrive i:nth-child(2) { animation-delay: .15s; } .sf-scrive i:nth-child(3) { animation-delay: .3s; }
-html.vita-on .sf-chat [data-sf-passo] { opacity: 0; transform: translateY(6px); transition: opacity .35s var(--ease), transform .35s var(--ease); }
-html.vita-on .sf-chat [data-sf-passo].su { opacity: 1; transform: none; }
-html.vita-on .sf-chat .sf-scrive:not(.su) { display: none; }
+.sf-fatto { justify-self: end; font-size: clamp(7px, 1.4cqw, 8.5px); font-weight: 700; color: #1a8a55; }
+html.vita-on .sf-finestra { opacity: 0; transform: scale(.6) translateY(8px); transition: opacity .35s var(--ease), transform .45s cubic-bezier(.3, 1.4, .5, 1); }
+html.vita-on .sf-chat.aperta .sf-finestra { opacity: 1; transform: none; }
+html.vita-on .sf-chat.bussa:not(.aperta) .sf-lancia { animation: sf-bussa .5s ease-in-out; }
+@keyframes sf-bussa { 30% { transform: translateY(-5px); } 60% { transform: translateY(0); } 80% { transform: translateY(-2px); } }
+/* i messaggi esistono solo quando arrivano: la finestrella cresce con la conversazione */
+html.vita-on .sf-finestra [data-sf-passo]:not(.su) { display: none; }
+html.vita-on .sf-finestra [data-sf-passo].su { animation: sf-arriva .35s cubic-bezier(.2, .8, .2, 1); }
+@keyframes sf-arriva { from { opacity: 0; transform: translateY(5px); } }
+/* finita la chat, la finestrella si richiude nel bottoncino, che resta con il pallino verde */
+html.vita-on .sf-chat.chiusa .sf-finestra { opacity: 0; transform: scale(.6) translateY(8px); pointer-events: none; }
+.sf-chat.chiusa .sf-lancia { position: relative; }
+.sf-chat.chiusa .sf-lancia::after { content: ""; position: absolute; top: -1px; right: -1px; width: 28%; height: 28%; border-radius: 50% !important; background: #22c55e; box-shadow: 0 0 0 2px #f4f2ee; }
 /* destra: la schermata di blocco del mattino */
 .sf-dx { grid-row: 2; position: relative; min-width: 0; background: radial-gradient(120% 70% at 50% 0%, #232323, #050505 72%); padding: clamp(4px, 1.4cqw, 10px) clamp(7px, 1.8cqw, 11px) clamp(8px, 2cqw, 12px); display: grid; align-content: start; gap: clamp(4px, 1.1cqw, 7px); }
 .sf-dx .st-ora-grande { font-size: clamp(30px, 9cqw, 54px); }

@@ -46,7 +46,7 @@ function benvenuto(scena) {
     titoloCookie.hidden = nome;
     box.querySelector('[data-bv-nome-resta]').hidden = !nome;
     no.hidden = !cookie;
-    si.textContent = nome && cookie ? testoSi : cookie ? testoAccetta : testoEntra;
+    si.firstChild.textContent = `${nome && cookie ? testoSi : cookie ? testoAccetta : testoEntra} `;
     box.hidden = false;
     requestAnimationFrame(() => { box.classList.add('su'); misura(); });
     traccia(nome ? 'nome_chiesto' : 'cookie_chiesti');

@@ -250,8 +250,9 @@ const hrefEn = lang === 'en' ? path : alt;
           <p>{t.bvCookie} <span data-bv-nome-resta>{t.bvNomeResta}</span> <a href={url('privacy', lang)}>{t.dettagli}</a></p>
         </div>
         <div class="bv-azioni">
-          <button class="btn btn-azione btn-piccolo" type="submit" value="si" data-bv-si data-testi={JSON.stringify([t.bvSi, t.bvAccetta, t.bvEntra])}>{t.bvSi}</button>
+          <!-- «Solo necessari» a sinistra, «Accetta» a destra dove va il pollice e lo sguardo per ultimo: stessa grandezza, il rifiuto resta ben leggibile -->
           <button class="btn btn-vetro btn-piccolo" type="submit" value="no" data-bv-no>{t.bvNo}</button>
+          <button class="btn btn-azione btn-piccolo" type="submit" value="si" data-bv-si data-testi={JSON.stringify([t.bvSi, t.bvAccetta, t.bvEntra])}>{t.bvSi} <span class="freccia" aria-hidden="true">→</span></button>
         </div>
       </form>
     </div>

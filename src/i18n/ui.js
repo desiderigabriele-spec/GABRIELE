@@ -48,7 +48,7 @@ export const ui = {
     cnTitolo: 'Prima di iniziare: come ti chiami?', cnTesto: 'Così ti parliamo come si deve. Il nome resta solo sul tuo dispositivo.', cnEntra: 'Entra', cnChiudi: 'Chiudi',
     bvPrima: 'Prima di iniziare', bvTitolo: 'Come ti chiami?', bvPerche: 'Serve solo per chiamarti per nome.', bvSegnaposto: 'Il tuo nome (se ti va)',
     bvCookieTitolo: 'I cookie, in breve',
-    bvCookie: 'Con il tuo ok usiamo cookie di statistica per capire cosa migliorare.', bvNomeResta: 'Il nome resta sul tuo dispositivo.',
+    bvCookie: 'Con il tuo ok vediamo quali pagine ti servono davvero e miglioriamo il sito per te.', bvNomeResta: 'Il nome resta sul tuo dispositivo.',
     bvSi: 'Accetta ed entra', bvNo: 'Solo necessari', bvAccetta: 'Accetta', bvEntra: 'Entra',
   },
   en: {
@@ -73,7 +73,7 @@ export const ui = {
     cnTitolo: 'Before we start: what’s your name?', cnTesto: 'So we can talk to you properly. Your name stays on your device only.', cnEntra: 'Enter', cnChiudi: 'Close',
     bvPrima: 'Before we start', bvTitolo: 'What’s your name?', bvPerche: 'Only so we can call you by name.', bvSegnaposto: 'Your name (if you like)',
     bvCookieTitolo: 'Cookies, in short',
-    bvCookie: 'With your OK we use analytics cookies to see what to improve.', bvNomeResta: 'Your name stays on your device.',
+    bvCookie: 'With your OK we see which pages really help you and improve the site for you.', bvNomeResta: 'Your name stays on your device.',
     bvSi: 'Accept and enter', bvNo: 'Necessary only', bvAccetta: 'Accept', bvEntra: 'Enter',
   },
 };
