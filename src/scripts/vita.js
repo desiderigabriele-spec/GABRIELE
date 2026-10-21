@@ -243,19 +243,20 @@ function giornata() {
 // ---------- «Stanotte»: le notifiche arrivano una dopo l'altra sul telefono delle 6 ----------
 function notifiche() {
   document.querySelectorAll('[data-stanotte]').forEach((box) => {
-    const voci = [...box.querySelectorAll('.st-notifiche li')];
     const fold = box.querySelector('.st-fold');
+    const esterna = box.querySelector('[data-sf-esterna]');
+    const voci = [...box.querySelectorAll('.sf-destra .st-notifiche li, .stanotte > .st-notifiche li')];
     const passi = [...box.querySelectorAll('[data-sf-passo]')];
     const chat = box.querySelector('[data-sf-chat]');
     quandoVisibile(box, () => {
-      // 1 · chiuso: sullo schermo esterno arrivano le notifiche del mattino, una alla volta
-      voci.forEach((v, i) => setTimeout(() => v.classList.add('su'), 400 + i * 650));
-      if (!fold) return;
-      // 2 · si apre come un libro: a sinistra compare il sito del cliente
-      const apre = 400 + voci.length * 650 + 500;
-      setTimeout(() => fold.classList.add('aperto'), apre);
-      // 3 · sul sito si rivede la chat di stanotte: Laura chiede, il software scrive e risponde
-      const via = apre + 1100;
+      // 1 · chiuso: sullo schermo esterno arriva la prima notifica
+      setTimeout(() => { esterna?.classList.add('su'); voci[0]?.classList.add('su'); }, 300);
+      // 2 · subito dopo si apre: l'anta gira sulla cerniera
+      const apre = 1500;
+      if (fold) setTimeout(() => fold.classList.add('aperto'), apre);
+      // 3 · dentro arrivano le altre notifiche, e sul sito riparte la chat di stanotte
+      voci.slice(1).forEach((v, i) => setTimeout(() => v.classList.add('su'), apre + 1300 + i * 650));
+      const via = apre + 1300;
       if (chat) { setTimeout(() => chat.classList.add('bussa'), via); setTimeout(() => chat.classList.add('aperta'), via + 500); setTimeout(() => chat.classList.add('chiusa'), via + 5600); }
       passi.forEach((p) => {
         setTimeout(() => p.classList.add('su'), via + Number(p.dataset.sfPasso));

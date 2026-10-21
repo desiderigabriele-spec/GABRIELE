@@ -1099,16 +1099,8 @@ html.ridotto .cap-testo { animation: none; }
 
 /* «Stanotte»: un telefono pieghevole aperto. Cornice in titanio, piega al centro, fotocamera sul lato destro.
    A sinistra il sito del cliente (chiaro, con la chat di stanotte), a destra la schermata di blocco con le notifiche */
-/* la cornice: titanio blu notte, angoli tondi, la cerniera al centro che si vede sul bordo, due tasti sopra */
-.st-fold { position: relative; width: min(100%, 560px); aspect-ratio: 1.16; container-type: inline-size; padding: clamp(5px, 1.3cqw, 8px); border-radius: clamp(26px, 7.5cqw, 44px) !important;
-  background: linear-gradient(150deg, #4a5366 0%, #262c37 22%, #1b2029 50%, #2a303c 78%, #444c5d 100%); box-shadow: 0 50px 90px -45px rgba(0, 0, 0, .95), inset 0 0 0 1px rgba(255, 255, 255, .08), inset 0 -2px 3px rgba(0, 0, 0, .5); }
-.st-fold::before, .st-fold::after { content: ""; position: absolute; left: 50%; width: 3px; height: clamp(5px, 1.3cqw, 8px); margin-left: -1.5px; background: #0b0d11; z-index: 5; }
-.st-fold::before { top: 0; } .st-fold::after { bottom: 0; }
-.sf-tasti { position: absolute; top: -2px; left: 18%; display: flex; gap: 6%; width: 22%; height: 3px; z-index: 0; }
-.sf-tasti i { flex: 1; background: #2d3340; border-radius: 2px 2px 0 0 !important; }
-.sf-tasti i:first-child { flex: .55; }
-.sf-schermo { position: relative; width: 100%; height: 100%; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto minmax(0, 1fr); border-radius: clamp(20px, 6.2cqw, 37px) !important; overflow: hidden; background: #050505; box-shadow: 0 0 0 clamp(2px, .6cqw, 4px) #050505; }
-.sf-barra { grid-column: 1 / -1; display: flex; justify-content: flex-end; align-items: center; padding: clamp(7px, 2cqw, 12px) clamp(30px, 10cqw, 56px) clamp(3px, .8cqw, 5px) clamp(16px, 4cqw, 24px); font-family: var(--f-titolo); font-weight: 600; font-size: clamp(10px, 2.3cqw, 13px); color: #fff; position: relative; z-index: 2; background: linear-gradient(90deg, #f4f2ee 50%, transparent 50%); }
+.sf-barra { display: flex; justify-content: flex-end; align-items: center; min-height: clamp(20px, 5.4cqw, 30px); padding: clamp(7px, 2cqw, 12px) clamp(26px, 8cqw, 46px) clamp(3px, .8cqw, 5px) clamp(12px, 3cqw, 18px); font-family: var(--f-titolo); font-weight: 600; font-size: clamp(10px, 2.3cqw, 13px); color: #fff; position: relative; z-index: 2; }
+.sf-barra-sito { background: #f4f2ee; }
 .sf-icone { display: flex; align-items: center; gap: 5px; }
 .sf-rete { display: flex; align-items: end; gap: 1.5px; height: 9px; }
 .sf-rete b { width: 2.5px; background: #fff; border-radius: 1px !important; }
@@ -1179,22 +1171,42 @@ html.vita-on .sf-chat.chiusa .sf-finestra { opacity: 0; transform: scale(.6) tra
 .sf-dx .st-notifiche small { font-size: clamp(7.5px, 1.6cqw, 10px); }
 .sf-dx .st-notifiche span { font-size: clamp(8.5px, 1.9cqw, 11px); }
 /* la piega dello schermo e la fotocamera */
-.sf-piega { position: absolute; top: 0; bottom: 0; left: 50%; width: 22px; transform: translateX(-50%); pointer-events: none; z-index: 3; background: linear-gradient(90deg, transparent, rgba(255,255,255,.06) 30%, rgba(0,0,0,.4) 50%, rgba(255,255,255,.06) 70%, transparent); }
 /* la fotocamera a pillola in alto a destra, con la lente e la lucina verde */
 .sf-camera { position: absolute; top: clamp(8px, 2.4cqw, 14px); right: clamp(10px, 3cqw, 18px); width: clamp(10px, 2.6cqw, 15px); height: clamp(18px, 4.8cqw, 28px); border-radius: 99px !important; background: #000; z-index: 4; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: clamp(2px, .5cqw, 3px); gap: clamp(2px, .5cqw, 3px); box-sizing: border-box; }
 .sf-camera::before { content: ""; width: 56%; aspect-ratio: 1; border-radius: 50% !important; background: radial-gradient(circle at 38% 35%, #4a5f86, #0b1220 62%); }
 .sf-camera i { width: 22%; aspect-ratio: 1; border-radius: 50% !important; background: #22c55e; box-shadow: 0 0 4px #22c55e; }
 
-/* Il telefono che si apre: chiuso si vede solo la metà destra (lo schermo esterno con le notifiche), centrata;
-   poi la metà sinistra si apre ruotando sulla cerniera e il telefono si allarga fino al sito */
-html.vita-on .st-fold { transition: clip-path 1s cubic-bezier(.7, 0, .2, 1), transform 1s cubic-bezier(.7, 0, .2, 1); }
-html.vita-on .st-fold:not(.aperto) { clip-path: inset(0 0 0 50% round clamp(26px, 7.5cqw, 44px)); transform: translateX(-25%); }
-html.vita-on .st-fold .sf-sx { transform-origin: right center; transition: transform 1s cubic-bezier(.7, 0, .2, 1), filter 1s ease; }
-html.vita-on .st-fold:not(.aperto) .sf-sx { transform: perspective(700px) rotateY(-80deg); filter: brightness(.4); }
-html.vita-on .st-fold:not(.aperto) .sf-tasti, html.vita-on .st-fold:not(.aperto)::before, html.vita-on .st-fold:not(.aperto)::after { opacity: 0; }
-/* da chiuso la cerniera è il bordo sinistro del telefono: una cornice al posto della piega */
-html.vita-on .st-fold:not(.aperto) .sf-piega { width: clamp(5px, 1.3cqw, 8px); transform: none; margin-left: 0; background: linear-gradient(90deg, #444c5d, #262c37); }
-html.vita-on .st-fold .sf-piega { transition: width .6s ease, background .6s ease; }
-/* la barra in alto diventa chiara sopra il sito solo a telefono quasi aperto */
-html.vita-on .st-fold .sf-barra { transition: background-color .3s ease .6s; }
-html.vita-on .st-fold:not(.aperto) .sf-barra { background: #050505; transition: none; }
+
+/* Il pieghevole in 3D. Ogni metà ha la sua cornice in titanio; la sinistra è un'anta che ruota sulla cerniera.
+   Chiuso: l'anta è girata di 180° sopra la metà destra e si vede la sua faccia esterna; il telefono è stretto e centrato. */
+.st-fold { position: relative; width: min(100%, 560px); aspect-ratio: 1.16; container-type: inline-size; perspective: 1800px; perspective-origin: 50% 40%; }
+.sf-meta, .sf-faccia { position: absolute; top: 0; bottom: 0; width: 100%; padding: clamp(5px, 1.3cqw, 8px);
+  background: linear-gradient(150deg, #4a5366 0%, #262c37 22%, #1b2029 50%, #2a303c 78%, #444c5d 100%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08); }
+.sf-destra { right: 0; width: 50%; z-index: 1; padding-left: 1.5px; border-radius: 0 clamp(26px, 7.5cqw, 44px) clamp(26px, 7.5cqw, 44px) 0 !important; box-shadow: 30px 50px 80px -45px rgba(0, 0, 0, .9), inset 0 0 0 1px rgba(255, 255, 255, .08); }
+.sf-anta { position: absolute; top: 0; bottom: 0; left: 0; width: 50%; transform-origin: right center; transform-style: preserve-3d; z-index: 2; }
+.sf-faccia { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.sf-fronte { padding-right: 1.5px; border-radius: clamp(26px, 7.5cqw, 44px) 0 0 clamp(26px, 7.5cqw, 44px) !important; }
+.sf-retro { transform: rotateY(180deg); border-radius: clamp(26px, 7.5cqw, 44px) !important; }
+.sf-vetro { position: relative; width: 100%; height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; background: #050505; }
+.sf-destra .sf-vetro { border-radius: 0 clamp(20px, 6.2cqw, 37px) clamp(20px, 6.2cqw, 37px) 0 !important; }
+.sf-retro .sf-vetro { border-radius: clamp(20px, 6.2cqw, 37px) !important; }
+/* da chiuso anche la metà destra ha gli angoli tondi verso la cerniera, così non spuntano da sotto il dorso */
+html.vita-on .st-fold .sf-destra { border-radius: clamp(26px, 7.5cqw, 44px) !important; transition: border-radius .5s .6s; }
+html.vita-on .st-fold .sf-destra .sf-vetro { border-radius: clamp(20px, 6.2cqw, 37px) !important; transition: border-radius .5s .6s; }
+html.vita-on .st-fold.aperto .sf-destra { border-radius: 0 clamp(26px, 7.5cqw, 44px) clamp(26px, 7.5cqw, 44px) 0 !important; }
+html.vita-on .st-fold.aperto .sf-destra .sf-vetro { border-radius: 0 clamp(20px, 6.2cqw, 37px) clamp(20px, 6.2cqw, 37px) 0 !important; }
+.sf-fronte .sf-vetro { border-radius: clamp(20px, 6.2cqw, 37px) 0 0 clamp(20px, 6.2cqw, 37px) !important; }
+.sf-esterno { color: #fff; }
+/* l'ombra che passa sulle facce mentre l'anta gira, e quella che l'anta getta sulla metà destra */
+.sf-faccia::after, .sf-destra::after { content: ''; position: absolute; inset: 0; border-radius: inherit !important; background: #000; opacity: 0; pointer-events: none; z-index: 5; }
+html.vita-on .st-fold { transform: translateX(-25%); transition: transform 1.1s cubic-bezier(.65, 0, .25, 1); }
+html.vita-on .st-fold .sf-anta { transform: rotateY(-180deg); transition: transform 1.1s cubic-bezier(.65, 0, .25, 1); }
+html.vita-on .st-fold.aperto { transform: none; }
+html.vita-on .st-fold.aperto .sf-anta { transform: none; }
+html.vita-on .st-fold.aperto .sf-fronte::after { animation: sf-luce-fronte 1.1s cubic-bezier(.65, 0, .25, 1); }
+html.vita-on .st-fold.aperto .sf-retro::after { animation: sf-luce-retro 1.1s cubic-bezier(.65, 0, .25, 1); }
+html.vita-on .st-fold.aperto .sf-destra::after { animation: sf-ombra 1.1s cubic-bezier(.65, 0, .25, 1); }
+@keyframes sf-luce-fronte { 0%, 45% { opacity: .75; } 100% { opacity: 0; } }
+@keyframes sf-luce-retro { 0% { opacity: 0; } 55%, 100% { opacity: .75; } }
+@keyframes sf-ombra { 0% { opacity: .55; } 60% { opacity: .15; } 100% { opacity: 0; } }
+html.vita-on .st-fold:not(.aperto) .sf-destra::after { opacity: .55; }

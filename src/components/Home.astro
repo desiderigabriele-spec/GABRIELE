@@ -303,10 +303,34 @@ const jsonLd = {
       <!-- l'assaggio: cosa ha fatto da solo il software stanotte -->
       <div class="stanotte" data-stanotte>
         <!-- un telefono pieghevole: parte chiuso con le notifiche del mattino, poi si apre come un libro e a sinistra compare il sito del cliente (vita.js, notifiche) -->
+        <!-- il telefono pieghevole in 3D: la metà destra è ferma; la metà sinistra è un'anta con due facce,
+             fuori lo schermo esterno (la prima notifica), dentro il sito. Da chiuso l'anta sta piegata sopra la metà destra;
+             dopo la prima notifica ruota sulla cerniera e il telefono si apre (vita.js, notifiche) -->
         <div class="st-fold" aria-hidden="true">
-          <span class="sf-tasti"><i></i><i></i></span>
-          <div class="sf-schermo">
+          <div class="sf-meta sf-destra"><div class="sf-vetro">
           <div class="sf-barra"><span class="sf-icone"><i class="sf-rete"><b></b><b></b><b></b><b></b></i><svg class="sf-wifi" viewBox="0 0 16 12" aria-hidden="true"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0Zm-4.3-4.3a6 6 0 0 1 8.6 0l-1.3 1.3a4.2 4.2 0 0 0-6 0ZM1 4.5a9.9 9.9 0 0 1 14 0l-1.3 1.3a8.1 8.1 0 0 0-11.4 0Z" fill="currentColor"/></svg><i class="sf-batteria"></i></span></div>
+          <div class="sf-dx">
+            <span class="st-ora-grande">06:00</span>
+            <span class="st-giorno">{T('Lunedì · la sveglia suona', 'Monday · the alarm goes off')}</span>
+            <ul class="st-notifiche">
+              {(it ? [
+                ['23:47', 'Risposto a Laura, che chiedeva un preventivo'],
+                ['01:12', 'Copiato 12 ordini nel gestionale'],
+                ['03:30', 'Preparato 3 preventivi da approvare'],
+                ['06:00', 'Mandato i promemoria degli appuntamenti di oggi'],
+              ] : [
+                ['23:47', 'Replied to Laura, who asked for a quote'],
+                ['01:12', 'Copied 12 orders into your software'],
+                ['03:30', 'Drafted 3 quotes for you to approve'],
+                ['06:00', 'Sent the reminders for today’s appointments'],
+              ]).map(([ora, cosa], i) => <li style={`--i:${i}`}><i class="st-app"></i><b>{T('Il tuo software', 'Your software')}</b><small>{ora}</small><span>{cosa}</span></li>)}
+            </ul>
+          </div>
+          <span class="sf-camera"><i></i></span>
+          </div></div>
+          <div class="sf-anta">
+            <div class="sf-faccia sf-fronte"><div class="sf-vetro">
+              <div class="sf-barra sf-barra-sito"></div>
           <!-- il sito del cliente: un vero sito di cucine, con la chat piccola nell'angolo che si apre da sola -->
           <div class="sf-sx">
             <div class="sf-sito-testa"><b>Arredi Conti<i></i></b><span class="sf-menu"><i></i><i></i></span></div>
@@ -333,25 +357,16 @@ const jsonLd = {
               </div>
             </div>
           </div>
-          <div class="sf-dx">
-            <span class="st-ora-grande">06:00</span>
-            <span class="st-giorno">{T('Lunedì · la sveglia suona', 'Monday · the alarm goes off')}</span>
-            <ul class="st-notifiche">
-              {(it ? [
-                ['23:47', 'Risposto a Laura, che chiedeva un preventivo'],
-                ['01:12', 'Copiato 12 ordini nel gestionale'],
-                ['03:30', 'Preparato 3 preventivi da approvare'],
-                ['06:00', 'Mandato i promemoria degli appuntamenti di oggi'],
-              ] : [
-                ['23:47', 'Replied to Laura, who asked for a quote'],
-                ['01:12', 'Copied 12 orders into your software'],
-                ['03:30', 'Drafted 3 quotes for you to approve'],
-                ['06:00', 'Sent the reminders for today’s appointments'],
-              ]).map(([ora, cosa], i) => <li style={`--i:${i}`}><i class="st-app"></i><b>{T('Il tuo software', 'Your software')}</b><small>{ora}</small><span>{cosa}</span></li>)}
-            </ul>
-          </div>
-          <span class="sf-piega"></span>
-          <span class="sf-camera"><i></i></span>
+            </div></div>
+            <div class="sf-faccia sf-retro"><div class="sf-vetro">
+              <div class="sf-barra"><span class="sf-icone"><i class="sf-rete"><b></b><b></b><b></b><b></b></i><svg class="sf-wifi" viewBox="0 0 16 12" aria-hidden="true"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0Zm-4.3-4.3a6 6 0 0 1 8.6 0l-1.3 1.3a4.2 4.2 0 0 0-6 0ZM1 4.5a9.9 9.9 0 0 1 14 0l-1.3 1.3a8.1 8.1 0 0 0-11.4 0Z" fill="currentColor"/></svg><i class="sf-batteria"></i></span></div>
+              <div class="sf-dx sf-esterno">
+                <span class="st-ora-grande">06:00</span>
+                <span class="st-giorno">{T('Lunedì · la sveglia suona', 'Monday · the alarm goes off')}</span>
+                <ul class="st-notifiche"><li data-sf-esterna><i class="st-app"></i><b>{T('Il tuo software', 'Your software')}</b><small>23:47</small><span>{T('Risposto a Laura, che chiedeva un preventivo', 'Replied to Laura, who asked for a quote')}</span></li></ul>
+              </div>
+              <span class="sf-camera"><i></i></span>
+            </div></div>
           </div>
         </div>
         <p class="sr-only">{T('Stanotte, mentre dormivi, il tuo software ha risposto a Laura che chiedeva un preventivo, copiato 12 ordini nel gestionale, preparato 3 preventivi da approvare e mandato i promemoria degli appuntamenti di oggi.', 'Last night, while you slept, your software replied to Laura who asked for a quote, copied 12 orders, drafted 3 quotes and sent today’s appointment reminders.')}</p>
