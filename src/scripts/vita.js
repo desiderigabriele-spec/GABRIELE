@@ -244,18 +244,23 @@ function giornata() {
 function notifiche() {
   document.querySelectorAll('[data-stanotte]').forEach((box) => {
     const voci = [...box.querySelectorAll('.st-notifiche li')];
-    // a sinistra la chat di stanotte (Laura chiede, il software scrive e risponde), poi a destra arrivano le notifiche
+    const fold = box.querySelector('.st-fold');
     const passi = [...box.querySelectorAll('[data-sf-passo]')];
     const chat = box.querySelector('[data-sf-chat]');
     quandoVisibile(box, () => {
-      // il bottoncino della chat salta, poi la finestra si apre
-      if (chat) { setTimeout(() => chat.classList.add('bussa'), 150); setTimeout(() => chat.classList.add('aperta'), 650); setTimeout(() => chat.classList.add('chiusa'), 6200); }
+      // 1 · chiuso: sullo schermo esterno arrivano le notifiche del mattino, una alla volta
+      voci.forEach((v, i) => setTimeout(() => v.classList.add('su'), 400 + i * 650));
+      if (!fold) return;
+      // 2 · si apre come un libro: a sinistra compare il sito del cliente
+      const apre = 400 + voci.length * 650 + 500;
+      setTimeout(() => fold.classList.add('aperto'), apre);
+      // 3 · sul sito si rivede la chat di stanotte: Laura chiede, il software scrive e risponde
+      const via = apre + 1100;
+      if (chat) { setTimeout(() => chat.classList.add('bussa'), via); setTimeout(() => chat.classList.add('aperta'), via + 500); setTimeout(() => chat.classList.add('chiusa'), via + 5600); }
       passi.forEach((p) => {
-        setTimeout(() => p.classList.add('su'), Number(p.dataset.sfPasso));
-        if (p.dataset.sfVia) setTimeout(() => p.classList.remove('su'), Number(p.dataset.sfVia));
+        setTimeout(() => p.classList.add('su'), via + Number(p.dataset.sfPasso));
+        if (p.dataset.sfVia) setTimeout(() => p.classList.remove('su'), via + Number(p.dataset.sfVia));
       });
-      const parte = passi.length ? 3000 : 300;
-      voci.forEach((v, i) => setTimeout(() => v.classList.add('su'), parte + i * 850));
     }, 0.4);
   });
 }

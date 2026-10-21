@@ -73,6 +73,7 @@ html[data-tema='chiaro'] {
   --latte: #ffffff; --latte-rgb: 255, 255, 255; --nebbia: #a3a3a3; --nebbia-2: #8a8a8a; --notte: #0a0a0a; --notte-rgb: 10, 10, 10;
   --linea: rgba(255, 255, 255, .12); --linea-forte: rgba(255, 255, 255, .24); --rosso-testo: #ff2d3a;
 }
+.st-fold .sf-dx { color: #ffffff; }
 html[data-tema='chiaro'] .cap-velo { background: rgba(10, 10, 10, .35); }
 /* il cambio di tema è morbido, ma solo mentre cambia (niente transizioni al caricamento) */
 html.tema-cambia, html.tema-cambia * { transition: background-color .35s ease, color .35s ease, border-color .35s ease !important; }
@@ -1107,8 +1108,7 @@ html.ridotto .cap-testo { animation: none; }
 .sf-tasti i { flex: 1; background: #2d3340; border-radius: 2px 2px 0 0 !important; }
 .sf-tasti i:first-child { flex: .55; }
 .sf-schermo { position: relative; width: 100%; height: 100%; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto minmax(0, 1fr); border-radius: clamp(20px, 6.2cqw, 37px) !important; overflow: hidden; background: #050505; box-shadow: 0 0 0 clamp(2px, .6cqw, 4px) #050505; }
-.sf-barra { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; padding: clamp(7px, 2cqw, 12px) clamp(30px, 10cqw, 56px) clamp(3px, .8cqw, 5px) clamp(16px, 4cqw, 24px); font-family: var(--f-titolo); font-weight: 600; font-size: clamp(10px, 2.3cqw, 13px); color: #fff; position: relative; z-index: 2; background: linear-gradient(90deg, #f4f2ee 50%, transparent 50%); }
-.sf-barra > span:first-child { color: #111; }
+.sf-barra { grid-column: 1 / -1; display: flex; justify-content: flex-end; align-items: center; padding: clamp(7px, 2cqw, 12px) clamp(30px, 10cqw, 56px) clamp(3px, .8cqw, 5px) clamp(16px, 4cqw, 24px); font-family: var(--f-titolo); font-weight: 600; font-size: clamp(10px, 2.3cqw, 13px); color: #fff; position: relative; z-index: 2; background: linear-gradient(90deg, #f4f2ee 50%, transparent 50%); }
 .sf-icone { display: flex; align-items: center; gap: 5px; }
 .sf-rete { display: flex; align-items: end; gap: 1.5px; height: 9px; }
 .sf-rete b { width: 2.5px; background: #fff; border-radius: 1px !important; }
@@ -1184,3 +1184,17 @@ html.vita-on .sf-chat.chiusa .sf-finestra { opacity: 0; transform: scale(.6) tra
 .sf-camera { position: absolute; top: clamp(8px, 2.4cqw, 14px); right: clamp(10px, 3cqw, 18px); width: clamp(10px, 2.6cqw, 15px); height: clamp(18px, 4.8cqw, 28px); border-radius: 99px !important; background: #000; z-index: 4; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: clamp(2px, .5cqw, 3px); gap: clamp(2px, .5cqw, 3px); box-sizing: border-box; }
 .sf-camera::before { content: ""; width: 56%; aspect-ratio: 1; border-radius: 50% !important; background: radial-gradient(circle at 38% 35%, #4a5f86, #0b1220 62%); }
 .sf-camera i { width: 22%; aspect-ratio: 1; border-radius: 50% !important; background: #22c55e; box-shadow: 0 0 4px #22c55e; }
+
+/* Il telefono che si apre: chiuso si vede solo la metà destra (lo schermo esterno con le notifiche), centrata;
+   poi la metà sinistra si apre ruotando sulla cerniera e il telefono si allarga fino al sito */
+html.vita-on .st-fold { transition: clip-path 1s cubic-bezier(.7, 0, .2, 1), transform 1s cubic-bezier(.7, 0, .2, 1); }
+html.vita-on .st-fold:not(.aperto) { clip-path: inset(0 0 0 50% round clamp(26px, 7.5cqw, 44px)); transform: translateX(-25%); }
+html.vita-on .st-fold .sf-sx { transform-origin: right center; transition: transform 1s cubic-bezier(.7, 0, .2, 1), filter 1s ease; }
+html.vita-on .st-fold:not(.aperto) .sf-sx { transform: perspective(700px) rotateY(-80deg); filter: brightness(.4); }
+html.vita-on .st-fold:not(.aperto) .sf-tasti, html.vita-on .st-fold:not(.aperto)::before, html.vita-on .st-fold:not(.aperto)::after { opacity: 0; }
+/* da chiuso la cerniera è il bordo sinistro del telefono: una cornice al posto della piega */
+html.vita-on .st-fold:not(.aperto) .sf-piega { width: clamp(5px, 1.3cqw, 8px); transform: none; margin-left: 0; background: linear-gradient(90deg, #444c5d, #262c37); }
+html.vita-on .st-fold .sf-piega { transition: width .6s ease, background .6s ease; }
+/* la barra in alto diventa chiara sopra il sito solo a telefono quasi aperto */
+html.vita-on .st-fold .sf-barra { transition: background-color .3s ease .6s; }
+html.vita-on .st-fold:not(.aperto) .sf-barra { background: #050505; transition: none; }
