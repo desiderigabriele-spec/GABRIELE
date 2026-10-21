@@ -34,12 +34,12 @@ const originali = new WeakMap();
 export function applicaProfilo(p = leggiProfilo()) {
   const nome = p.nome || '';
   html.classList.toggle('ha-nome', !!nome);
-  document.querySelectorAll('[data-nome]').forEach((el) => { el.textContent = nome; });
+  // il nome che si sta scrivendo resta com'è (così il cursore non salta)
+  document.querySelectorAll('[data-nome]:not([data-in-modifica])').forEach((el) => { el.textContent = nome; });
   // nell'hero il nome arriva con il saluto dell'ora: Buongiorno, Ciao (pomeriggio), Buonasera
   const saluto = TESTI.saluto(new Date().getHours());
   document.querySelectorAll('[data-saluto]').forEach((el) => { el.textContent = nome ? saluto : ''; });
-  document.querySelectorAll('[data-riga-nome]').forEach((el) => { el.hidden = !nome; });
-  document.querySelectorAll('[data-nome-prefisso]').forEach((el) => { el.textContent = nome ? `${nome}, ` : ''; });
+  document.querySelectorAll('[data-riga-nome], [data-nome-prefisso]').forEach((el) => { el.hidden = !nome && !el.querySelector('[data-in-modifica]'); });
   // dopo il nome la frase prosegue in minuscolo («Marco, trasformo…»)
   document.querySelectorAll('[data-minuscola]').forEach((el) => {
     if (!originali.has(el)) originali.set(el, el.textContent);

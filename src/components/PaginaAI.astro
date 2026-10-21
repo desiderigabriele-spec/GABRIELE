@@ -1,6 +1,7 @@
 ---
 // L'intelligenza artificiale spiegata a chi non è del settore: cosa fa, esempi per settore, benefici,
 // programma su misura, come lavoriamo, paure comuni. Italiano (/intelligenza-artificiale) e inglese (/en/ai).
+import MicroIcona from './MicroIcona.astro';
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
 import Cursore from './Cursore.astro';
@@ -169,9 +170,9 @@ const demo = it ? {
           <a class="btn btn-vetro btn-grande" href={`${preventivo}?s=software`}>{T('Calcola quanto costa', 'See what it costs')}</a>
         </div>
         <ul class="rassicura" data-appare="0.55">
-          <li>{T('Niente termini tecnici', 'No jargon')}</li>
-          <li>{T('Si collega ai programmi che hai', 'Works with the programs you have')}</li>
-          <li>{T('Decidi sempre tu', 'You always decide')}</li>
+          <li><MicroIcona nome="parole" />{T('Niente termini tecnici', 'No jargon')}</li>
+          <li><MicroIcona nome="collega" />{T('Si collega ai programmi che hai', 'Works with the programs you have')}</li>
+          <li><MicroIcona nome="decidi" />{T('Decidi sempre tu', 'You always decide')}</li>
         </ul>
       </div>
     </div>

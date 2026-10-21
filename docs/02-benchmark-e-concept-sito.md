@@ -113,7 +113,13 @@ Alla prima visita, dopo l'intro, si apre un riquadro: «Prima di iniziare: come 
 3. il titolo finale e il messaggio WhatsApp precompilato;
 4. il «Rieccoti» alla visita dopo.
 
-Il bottone «Aa» nell'header apre il pannellino «Il tuo nome» per cambiarlo. Tutto resta nel browser (`localStorage gd-profilo`: `nome`), niente viene inviato.
+Nell'header non c'è più nessun bottone per il nome: il nome si cambia toccandolo dove è scritto (hero, preventivo, finale). Si apre la tastiera lì, il nome è già selezionato, e mentre scrivi cambia in tutti gli altri punti e nei messaggi WhatsApp. Invio conferma, Esc annulla (`scripts/benvenuto.js`, `nomeModificabile`). Tutto resta nel browser (`localStorage gd-profilo`: `nome`), niente viene inviato.
+
+### Le scelte dei ritocchi
+- **Rassicurazioni sotto i bottoni:** icone a linea bianche al posto del quadratino (cronometro, messaggio, segnaposto; nel finale cartellino, lucchetto, telefono), in `MicroIcona.astro`.
+- **Capitoli con un verbo:** 01 · Guarda, 02 · Scegli, 03 · Fidati, 04 · Calcola, 05 · Scrivici, anche nella linea a sinistra.
+- **Lingua:** nell'header solo l'altra lingua («EN» in italiano, «IT» in inglese).
+- **Il bozza dell'hero:** è il sito di un'osteria (Osteria Navigli, «Il tuo tavolo è pronto»): i sei tasselli si girano e compongono la foto del piatto (`public/img/bozza-piatto.webp`, ossobuco con risotto).
 
 ### Focus, l'assistente (la mascotte)
 Focus è un occhio vero, in bianco e grigio, che vive nel tondino in basso a destra (`Assistente.astro`, `scripts/assistente.js`, `scripts/focus-occhio.js`, `styles/assistente.css`). Non è un decoro: è l'assistente del sito, e chi lo usa sta già provando il servizio «Automazioni e AI».
@@ -123,8 +129,9 @@ Focus è un occhio vero, in bianco e grigio, che vive nel tondino in basso a des
 - **Domande scritte:** per ora vanno a Gabriele su WhatsApp, con la domanda già nel messaggio. Per l'AI vera serve una funzione su Vercel con una chiave API (da decidere).
 
 ### I tre problemi e le garanzie
-- **Il problema:** tre schede che si girano. Davanti il numero rosso e il problema in quattro parole («Online sei invisibile.»), dietro, su fondo bianco, cosa facciamo noi. Si girano da sole una alla volta finché non ne tocchi una; col tocco si girano anche con «riduci movimento».
+- **Il problema: la giornata di un cliente.** Due bottoni, «Oggi» e «Con noi». «Oggi» mostra tre momenti con l'ora (09:12 cerca e trova prima un altro, 09:14 apre il sito e lo chiude dopo 4 secondi, 21:40 ci ripensa ma non ti scrive), ognuno con la × rossa. «Con noi» mostra gli stessi tre momenti finiti bene, con la spunta verde. Si alterna da solo finché non tocchi un bottone.
 - **Le garanzie:** una fila sola di tre badge (icona con bordo rosso, tre parole, una riga sotto): ritocchi finché ti convince, tutto è tuo, prezzo firmato.
+- **Prezzi:** su telefono i tre pacchetti sono uno slider (si vede l'inizio della scheda dopo, con la barra «2 / 3» sotto); gli altri prezzi sono una fila di etichette che scorre di lato, ognuna porta alla pagina del servizio.
 - **Prima / dopo:** le due foto sono generate con l'AI (`public/img/pd-prima.webp`, bagno datato col flash; `pd-dopo.webp`, bagno nuovo da rivista).
 
 ### La voce: Desideri & Code, al plurale
@@ -191,7 +198,7 @@ Scelte dal canvas «Idee di animazione Desideri & Code» e messe tutte nel sito,
 |---|---|---|
 | 01 | **Il cursore che scrive**: il quadratino rosso riscrive l'ultima parola del titolo (sceglie, scrive, chiama, compra) | Hero della home |
 | 02 | **Logo gigante e griglia**: dietro all'hero il logo enorme e quasi trasparente; i puntini crescono e diventano rossi dove passi col mouse, su telefono un'onda; mai dentro le lettere | Hero della home |
-| 02b | **Il sito che si disegna** (`Bozza.astro`): accanto al titolo (su telefono sopra) linee bianche disegnano un sito pezzo per pezzo; poi diventa la bozza vera di «Rossi Bagni» in 3D: si inclina col mouse, piastrelle che respirano, voto Google, messaggio WhatsApp e grafico che galleggiano davanti. Prende il posto della forma 3D nell'hero (`data-luce="0"`) | Hero della home |
+| 02b | **Il sito che si disegna** (`Bozza.astro`): accanto al titolo (su telefono sopra) linee bianche disegnano un sito pezzo per pezzo; poi diventa la bozza vera di «Osteria Navigli» in 3D: si inclina col mouse, la foto del piatto in sei tasselli, voto Google, messaggio WhatsApp e grafico che galleggiano davanti. Prende il posto della forma 3D nell'hero (`data-luce="0"`) | Hero della home |
 | 03 | **Il percorso dello sguardo**: quadratini numerati 1-2-3-4 con i secondi, collegati da una linea sottile; l'ultimo, sul bottone, è rosso («decide qui») (`Mappa.astro`) | Metodo, passo «Prima ti devono notare» |
 | 04 | **Testo che si decodifica**: le etichette dei capitoli entrano come codice e diventano parole | Tutte le pagine |
 | 05 | **Il sito si compila**: a sinistra il codice, a destra il sito che appare pezzo per pezzo (`Compila.astro`) | Pagina Siti web, al posto dell'illustrazione |
@@ -260,8 +267,8 @@ Scelte dal canvas «Idee di animazione Desideri & Code» e messe tutte nel sito,
    - Riduttori di rischio: "Preventivo in 2 minuti · Risposta entro 24 ore · Milano e tutta Italia".
 3. **Il problema** — "Un sito bello non basta. Deve far venire voglia di sceglierti." Tre dolori in parole semplici: nessuno ti trova, ti trovano ma se ne vanno, ti contattano ma non comprano.
 4. **Servizi · Interesse** — 6 schede compatte: Siti web · Negozi online · Automazioni e AI · Gestionale su misura · Pubblicità online · Cura e crescita. Ogni scheda ha "In parole semplici", "da X €" e porta alla pagina del servizio.
-5. **Software con AI: quanto ti fa risparmiare** — Nella home solo un assaggio che incuriosisce: «Quante ore ti rubano i lavori sempre uguali?» e la scheda «Stanotte, mentre dormivi, il tuo software ha fatto da solo:» con quattro lavori che si spuntano uno alla volta e la domanda «E a te quante ore restituirebbe? ? ore all'anno». Il bottone «Calcola quanto risparmi» apre una finestra in tre passi: 1) cosa fai ancora a mano (dieci lavori da spuntare, ognuno con cosa farebbe l'AI e le ore a settimana); 2) quanto vale (persone e costo orario → ore ed euro all'anno); 3) il riepilogo con i lavori scelti e «Richiedi il preventivo», che apre il preventivo con il software già scelto e i lavori già scritti nel campo obiettivo (oppure WhatsApp con lo stesso testo). Si apre anche da `/#calcola`.
-6. **Il metodo · Fiducia** — Sezione bloccata con 5 passi che scorrono (Sguardo, Interesse, Fiducia, Desiderio, Azione). Per ogni passo: cosa succede nella testa del cliente + la tecnica usata + cosa facciamo noi.
+5. **Software con AI: quanto ti fa risparmiare** — Nella home solo un assaggio che incuriosisce: «Quante ore ti rubano i lavori sempre uguali?» e un telefono che si sveglia alle 06:00 con le notifiche di quello che il software ha fatto di notte (risposto a Laura, copiato 12 ordini, preparato 3 preventivi, una alla volta), poi la domanda «E a te quante ore restituirebbe?» con il bottone «Calcolalo in 1 minuto». Il bottone «Calcola quanto risparmi» apre una finestra in tre passi: 1) cosa fai ancora a mano (dieci lavori da spuntare, ognuno con cosa farebbe l'AI e le ore a settimana); 2) quanto vale (persone e costo orario → ore ed euro all'anno); 3) il riepilogo con i lavori scelti e «Richiedi il preventivo», che apre il preventivo con il software già scelto e i lavori già scritti nel campo obiettivo (oppure WhatsApp con lo stesso testo). Si apre anche da `/#calcola`.
+6. **Il metodo · Fiducia** — I numeri in verticale: a sinistra 01-05 in grande, mentre scorri si accende in rosso quello del passo in cui sei; a destra il passo (Sguardo, Interesse, Fiducia, Desiderio, Azione) con cosa succede nella testa del cliente e la tecnica usata. Il primo passo mostra il percorso dello sguardo.
 7. **Parlano di noi** (voce di menu "Clienti") — una scheda per cliente: anteprima del sito con il link per vederlo dal vivo, la recensione (oggi, finché non arriva, la sfida del progetto), nome, settore, pacchetto e cosa è stato fatto.
 8. **Lo studio** — «Desideri di nome, risultati di fatto.» Chi è Desideri & Code e chi l'ha fondato: Gabriele Desideri, che ha provato ogni tipo di vendita a freddo per capire come decidono le persone e per allenarsi. Cinque punti (vendita provata sul campo, negozi e pubblicità, una startup da zero, psicologia applicata, oggi software con AI) e le certificazioni. Niente date e niente lavori da dipendente: si parla dello studio.
 9. **Prezzi · Desiderio** — Tre pacchetti sito (Signature, Presenza "il più scelto", Impulso), più "da X €" per tutto il resto. I tre pacchetti sono i livelli del preventivo: il bottone apre il preventivo con quel pacchetto già scelto. Servono a chi vuole vedere un prezzo subito senza comporre niente, e lo Signature messo per primo fa da "àncora" (Presenza sembra più ragionevole accanto a lui).

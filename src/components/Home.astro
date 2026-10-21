@@ -6,6 +6,7 @@ import PrimaDopo from './PrimaDopo.astro';
 import Mappa from './Mappa.astro';
 import Bozza from './Bozza.astro';
 import LogoGigante from './LogoGigante.astro';
+import MicroIcona from './MicroIcona.astro';
 import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -35,7 +36,7 @@ const perChi: Record<string, string> = it ? {
 const altri = ['ecommerce', 'software', 'gestionale', 'ads', 'cura'].map((id) => {
   const c = categorie.find((x) => x.id === id)!;
   const l = c.livelli[0];
-  return { nome: c.nome, prezzo: l.una ? eur(l.una) : eur(l.mese!) + mese };
+  return { id, nome: c.nome, prezzo: l.una ? eur(l.una) : eur(l.mese!) + mese };
 });
 // 12 · tipografia cinetica: tre righe giganti al posto del nastro
 const cinetica = it
@@ -104,8 +105,8 @@ const jsonLd = {
   <nav class="guida" aria-label={T('Capitoli', 'Chapters')} data-percorso>
     <span class="guida-luce" aria-hidden="true"></span>
     {(it
-      ? [['inizio', 'Attenzione'], ['servizi', 'Interesse'], ['metodo', 'Fiducia'], ['prezzi', 'Desiderio'], ['azione', 'Azione']]
-      : [['inizio', 'Attention'], ['servizi', 'Interest'], ['metodo', 'Trust'], ['prezzi', 'Desire'], ['azione', 'Action']]
+      ? [['inizio', 'Guarda'], ['servizi', 'Scegli'], ['metodo', 'Fidati'], ['prezzi', 'Calcola'], ['azione', 'Scrivici']]
+      : [['inizio', 'Look'], ['servizi', 'Choose'], ['metodo', 'Trust'], ['prezzi', 'Work it out'], ['azione', 'Write to us']]
     ).map(([id, nome], i) => <a href={`#${id}`} data-capitolo={id}><span>{String(i + 1).padStart(2, '0')} · {nome}</span></a>)}
   </nav>
 
@@ -116,7 +117,7 @@ const jsonLd = {
     <div class="wrap">
       <div class="hero-testo">
         <div class="hero-spazio-occhio" aria-hidden="true"><Bozza lang={lang} /></div>
-        <span class="capitolo" data-appare>{T('Capitolo 01 · Attenzione', 'Chapter 01 · Attention')}</span>
+        <span class="capitolo" data-appare>{T('01 · Guarda', '01 · Look')}</span>
         {it ? (
           <h1 data-righe>
             <span class="riga riga-nome" data-riga-nome hidden><span><span data-saluto></span><span data-nome></span>,</span></span>
@@ -148,9 +149,9 @@ const jsonLd = {
           <a class="btn btn-vetro btn-grande" href="#metodo">{T('Guarda come funziona', 'See how it works')}</a>
         </div>
         <ul class="rassicura" data-appare="0.55">
-          <li>{T('Preventivo in 2 minuti', 'Quote in 2 minutes')}</li>
-          <li>{T('Risposta entro 24 ore', 'Reply within 24 hours')}</li>
-          <li>{contatti.zona}</li>
+          <li><MicroIcona nome="tempo" />{T('Preventivo in 2 minuti', 'Quote in 2 minutes')}</li>
+          <li><MicroIcona nome="risposta" />{T('Risposta entro 24 ore', 'Reply within 24 hours')}</li>
+          <li><MicroIcona nome="luogo" />{contatti.zona}</li>
         </ul>
       </div>
     </div>
@@ -196,25 +197,31 @@ const jsonLd = {
           </h2>
         )}
       </div>
-      <!-- i tre problemi: schede che si girano, davanti il problema, dietro cosa facciamo (vita.js, giraSchede) -->
-      <ul class="giro" data-giro role="list">
-        {(it ? [
-          ['Online sei invisibile.', 'Ti portiamo su Google nella tua zona, dove ti cercano.'],
-          ['Chiudono in 3 secondi.', 'Un sito veloce che dice subito cosa fai e per chi.'],
-          ['Ti guardano, ma non scrivono.', 'Prezzi chiari, recensioni in vista e un bottone solo.'],
-        ] : [
-          ["Online you're invisible.", 'We get you onto Google in your area, where people search.'],
-          ['They leave in 3 seconds.', 'A fast site that says straight away what you do and for whom.'],
-          ["They look, but don't write.", 'Clear prices, reviews in sight and a single button.'],
-        ]).map(([problema, soluzione], i) => (
-          <li>
-            <button class="carta" type="button" aria-pressed="false" aria-label={`${problema} ${T('Cosa facciamo:', 'What we do:')} ${soluzione}`}>
-              <span class="faccia f1" aria-hidden="true"><b>0{i + 1}</b><span>{problema}</span><small>{T('Tocca', 'Tap')}</small></span>
-              <span class="faccia f2" aria-hidden="true"><small>{T('Cosa facciamo', 'What we do')}</small><span>{soluzione}</span></span>
-            </button>
-          </li>
-        ))}
-      </ul>
+      <!-- i tre problemi: la giornata di un cliente, due volte. «Oggi» ti perde, «Con noi» ti scrive (vita.js, giornata) -->
+      <div class="giornata" data-giornata>
+        <div class="gi-interruttore" role="group" aria-label={T('Scegli la giornata', 'Choose the day')}>
+          <i aria-hidden="true"></i>
+          <button type="button" class="on" aria-pressed="true" data-lato="oggi">{T('Oggi', 'Today')}</button>
+          <button type="button" aria-pressed="false" data-lato="noi">{T('Con noi', 'With us')}</button>
+        </div>
+        <ol class="gi-momenti" role="list">
+          {(it ? [
+            ['09:12', 'Cerca', 'Trova prima un altro.', 'Sei a pagina 3 di Google.', 'Trova te, per primo.', 'In cima a Google, nella sua zona.'],
+            ['09:14', 'Apre il sito', 'Lo chiude dopo 4 secondi.', 'Lento, e non si capisce cosa fai.', 'Capisce in 3 secondi.', 'Cosa fai, per chi e quanto costa.'],
+            ['21:40', 'Ci ripensa', 'Non ti scrive.', 'Nessun bottone chiaro: rimanda.', 'Ti scrive su WhatsApp.', 'Un tocco, messaggio già pronto.'],
+          ] : [
+            ['09:12', 'Searches', 'Finds someone else first.', "You're on page 3 of Google.", 'Finds you, first.', 'Top of Google, in their area.'],
+            ['09:14', 'Opens the site', 'Closes it after 4 seconds.', "Slow, and it's unclear what you do.", 'Gets it in 3 seconds.', 'What you do, for whom and what it costs.'],
+            ['21:40', 'Thinks it over', "Doesn't write to you.", 'No clear button: puts it off.', 'Messages you on WhatsApp.', 'One tap, message already written.'],
+          ]).map(([ora, cosa, oggi, oggiPerche, noi, noiPerche]) => (
+            <li class="gi-momento">
+              <span class="gi-ora">{ora} · {cosa}<span class="gi-esito" aria-hidden="true"></span></span>
+              <span class="gi-stato gi-oggi"><b>{oggi}</b><span>{oggiPerche}</span></span>
+              <span class="gi-stato gi-noi"><b>{noi}</b><span>{noiPerche}</span></span>
+            </li>
+          ))}
+        </ol>
+      </div>
       <div class="svolta-riga">
         <p class="svolta" data-appare>
           {T('Noi costruiamo quel percorso.', 'We build that path.')} <span class="em em-firma">{T('Dal primo sguardo al sì.', 'From first glance to yes.')}</span>
@@ -228,7 +235,7 @@ const jsonLd = {
   <section class="sezione" id="servizi" data-forma="1" data-lato="destra" data-y="0.18" data-luce="0.45" data-scala="0.8">
     <div class="wrap">
       <div class="testa-sezione testa-riga">
-        <span class="capitolo" data-appare>{T('Capitolo 02 · Interesse', 'Chapter 02 · Interest')}</span>
+        <span class="capitolo" data-appare>{T('02 · Scegli', '02 · Choose')}</span>
         <h2 data-righe>
           <span class="riga"><span>{T('Cosa facciamo,', 'What we do,')}</span></span>
           <span class="riga"><span><span class="em">{T('detto semplice.', 'in plain words.')}</span></span></span>
@@ -289,27 +296,28 @@ const jsonLd = {
         </div>
       </div>
       <!-- l'assaggio: cosa ha fatto da solo il software stanotte -->
-      <div class="stanotte" data-stanotte data-appare>
-        <div class="st-testa">
-          <span class="st-luna" aria-hidden="true"></span>
-          <span><strong>{T('Stanotte, mentre dormivi', 'Last night, while you slept')}</strong><small>{T('il tuo software ha fatto da solo:', 'your software did on its own:')}</small></span>
+      <div class="stanotte" data-stanotte>
+        <div class="st-telefono" aria-hidden="true">
+          <span class="st-ora-grande">06:00</span>
+          <span class="st-giorno">{T('Lunedì · la sveglia suona', 'Monday · the alarm goes off')}</span>
+          <ul class="st-notifiche">
+            {(it ? [
+              ['23:47', 'Risposto a Laura, che chiedeva un preventivo'],
+              ['01:12', 'Copiato 12 ordini nel gestionale'],
+              ['03:30', 'Preparato 3 preventivi da approvare'],
+              ['06:00', 'Mandato i promemoria degli appuntamenti di oggi'],
+            ] : [
+              ['23:47', 'Replied to Laura, who asked for a quote'],
+              ['01:12', 'Copied 12 orders into your software'],
+              ['03:30', 'Drafted 3 quotes for you to approve'],
+              ['06:00', 'Sent the reminders for today’s appointments'],
+            ]).map(([ora, cosa], i) => <li style={`--i:${i}`}><i class="st-app"></i><b>{T('Il tuo software', 'Your software')}</b><small>{ora}</small><span>{cosa}</span></li>)}
+          </ul>
         </div>
-        <ul>
-          {(it ? [
-            ['23:47', 'Risposto a Laura, che chiedeva un preventivo'],
-            ['01:12', 'Copiato 12 ordini nel gestionale'],
-            ['03:30', 'Preparato 3 preventivi da approvare'],
-            ['06:00', 'Mandato i promemoria degli appuntamenti di oggi'],
-          ] : [
-            ['23:47', 'Replied to Laura, who asked for a quote'],
-            ['01:12', 'Copied 12 orders into your software'],
-            ['03:30', 'Drafted 3 quotes for you to approve'],
-            ['06:00', 'Sent the reminders for today’s appointments'],
-          ]).map(([ora, cosa], i) => <li style={`--i:${i}`}><span class="st-ora">{ora}</span><span>{cosa}</span><span class="st-ok" aria-hidden="true"></span></li>)}
-        </ul>
+        <p class="sr-only">{T('Stanotte, mentre dormivi, il tuo software ha risposto a Laura che chiedeva un preventivo, copiato 12 ordini nel gestionale, preparato 3 preventivi da approvare e mandato i promemoria degli appuntamenti di oggi.', 'Last night, while you slept, your software replied to Laura who asked for a quote, copied 12 orders, drafted 3 quotes and sent today’s appointment reminders.')}</p>
         <button class="st-domanda" type="button" data-calcolo-apri>
           <span>{T('E a te quante ore restituirebbe?', 'And how many hours would it give you back?')}</span>
-          <strong>? {T('ore all’anno', 'hours a year')}</strong>
+          <strong>{T('Calcolalo in 1 minuto', 'Work it out in 1 minute')} →</strong>
         </button>
       </div>
     </div>
@@ -381,47 +389,48 @@ const jsonLd = {
     </div>
   </dialog>
 
-  <!-- 03 · FIDUCIA: IL METODO -->
-  <section class="sezione" id="metodo">
-    <div class="wrap metodo">
-      <div class="metodo-fisso">
-        <span class="icona-titolo"><Icona nome="sguardo" /></span>
-        <span class="capitolo">{T('Capitolo 03 · Il metodo', 'Chapter 03 · The method')}</span>
+  <!-- 03 · IL METODO: i cinque passi. Scorrendo si accende un numero alla volta (rosso) e a destra entra il suo passo (vita.js, metodoNumeri) -->
+  <section class="sezione" id="metodo" data-forma="2" data-luce="0">
+    <div class="wrap">
+      <div class="testa-sezione">
+        <span class="capitolo">{T('03 · Fidati', '03 · Trust')}</span>
         {it ? (
           <h2 data-righe>
-            <span class="riga"><span>Cinque passi</span></span>
-            <span class="riga"><span>nella testa</span></span>
+            <span class="riga"><span>Cinque passi nella testa</span></span>
             <span class="riga"><span>del <span class="em em-firma">tuo cliente.</span></span></span>
           </h2>
         ) : (
           <h2 data-righe>
-            <span class="riga"><span>Five steps</span></span>
-            <span class="riga"><span>inside your</span></span>
-            <span class="riga"><span><span class="em em-firma">client's mind.</span></span></span>
+            <span class="riga"><span>Five steps inside</span></span>
+            <span class="riga"><span><span class="em em-firma">your client's mind.</span></span></span>
           </h2>
         )}
-        <p class="metodo-sotto">{T(
+        <p class="lead">{T(
           'Le cinque tappe che ogni persona attraversa prima di comprare. Per ognuna usiamo tecniche studiate dalla psicologia e provate sul campo.',
           'The five stages everyone goes through before buying. For each one we use techniques studied by psychology and tested in the field.',
         )}</p>
-        <ol class="metodo-indice" data-indice>
-          {metodo.map((m, i) => <li class={i === 0 ? 'attivo' : ''}>{String(i + 1).padStart(2, '0')} {m.passo}</li>)}
-        </ol>
       </div>
-      <div class="passi">
-        {metodo.map((m, i) => (
-          <article class="passo" data-passo data-forma={m.forma} data-lato="sinistra" data-y="-0.31" data-scala="0.44">
-            <span class="passo-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-            <span class="capitolo">{m.passo}</span>
-            <h3>{m.titolo}</h3>
-            <p class="passo-testa">{m.testa}</p>
-            <div class="passo-tecnica">
-              <span class="mono">{T('Tecnica', 'Technique')} · {m.tecnica}</span>
-              <p>{m.spiega}</p>
-            </div>
-            {i === 0 && <Mappa lang={lang} />}
-          </article>
-        ))}
+    </div>
+    <div class="metodo-pista" data-metodo>
+      <div class="metodo-palco wrap">
+        <ol class="metodo-numeri" aria-hidden="true">
+          {metodo.map((_, i) => <li class={i === 0 ? 'on' : ''}>{String(i + 1).padStart(2, '0')}</li>)}
+        </ol>
+        <div class="metodo-passi">
+          {metodo.map((m, i) => (
+            <article class={`passo${i === 0 ? ' on' : ''}`}>
+              <span class="passo-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <span class="capitolo">{String(i + 1).padStart(2, '0')} · {m.passo}</span>
+              <h3>{m.titolo}</h3>
+              <p class="passo-testa">{m.testa}</p>
+              <div class="passo-tecnica">
+                <span class="mono">{T('Tecnica', 'Technique')} · {m.tecnica}</span>
+                <p>{m.spiega}</p>
+              </div>
+              {i === 0 && <Mappa lang={lang} />}
+            </article>
+          ))}
+        </div>
       </div>
     </div>
   </section>
@@ -537,7 +546,7 @@ const jsonLd = {
   <section class="sezione" id="prezzi" data-forma="3" data-luce="0.2" data-scala="1.35">
     <div class="wrap">
       <div class="testa-sezione testa-riga">
-        <span class="capitolo" data-appare>{T('Capitolo 04 · Desiderio', 'Chapter 04 · Desire')}</span>
+        <span class="capitolo" data-appare>{T('04 · Calcola', '04 · Work it out')}</span>
         {it ? (
           <h2 data-righe>
             <span class="riga"><span>Prezzi chiari.</span></span>
@@ -554,7 +563,8 @@ const jsonLd = {
           'No "it depends", no surprises. Start from one of these three: it comes pre-selected in the quote, where you add only what you need.',
         )}</p>
       </div>
-      <div class="prezzi" data-sequenza>
+      <!-- sul telefono i tre pacchetti stanno uno di fianco all'altro e si fanno scorrere (vita.js, pacchettiSlider) -->
+      <div class="prezzi" data-sequenza data-pacchetti>
         {piani.map((p) => (
           <article class={`card piano${p.top ? ' top' : ''}`}>
             {p.top && <span class="scia" aria-hidden="true"></span>}
@@ -567,9 +577,11 @@ const jsonLd = {
           </article>
         ))}
       </div>
-      <div class="altri-prezzi" data-appare>
-        {altri.map((a) => <div><span>{a.nome}</span><strong>{T('da', 'from')} {a.prezzo}</strong></div>)}
-      </div>
+      <div class="prezzi-guida" aria-hidden="true"><span class="segmenti"><i></i><i class="on"></i><i></i></span><span class="conta" data-pacchetti-conta>2 / 3</span></div>
+      <!-- gli altri servizi: in piccolo, una fila da far scorrere -->
+      <ul class="altri-prezzi" role="list" data-appare>
+        {altri.map((a) => <li><a href={urlServizio(a.id, lang)}>{a.nome} <strong>{T('da', 'from')} {a.prezzo}</strong></a></li>)}
+      </ul>
     </div>
   </section>
 
@@ -619,7 +631,7 @@ const jsonLd = {
   <!-- 05 · AZIONE -->
   <section class="sezione finale" id="azione" data-forma="4" data-luce="0.75" data-luce-mobile="0.5" data-scala="1.15">
     <div class="wrap finale-testo">
-      <span class="capitolo" data-appare>{T('Capitolo 05 · Azione', 'Chapter 05 · Action')}</span>
+      <span class="capitolo" data-appare>{T('05 · Scrivici', '05 · Write to us')}</span>
       <h2 data-righe data-peso>
         <span class="riga riga-nome" data-riga-nome hidden><span><span data-nome></span>,</span></span>
         <span class="riga"><span data-minuscola>{T('Il tuo prossimo cliente', 'Your next client')}</span></span>
@@ -634,9 +646,9 @@ const jsonLd = {
         <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
       </div>
       <ul class="rassicura" data-appare style="justify-content:center">
-        <li>{T('Preventivo gratuito', 'Free quote')}</li>
-        <li>{T('Nessun impegno', 'No commitment')}</li>
-        <li>{T('Chiamata conoscitiva di 20 minuti', '20-minute intro call')}</li>
+        <li><MicroIcona nome="gratis" />{T('Preventivo gratuito', 'Free quote')}</li>
+        <li><MicroIcona nome="libero" />{T('Nessun impegno', 'No commitment')}</li>
+        <li><MicroIcona nome="chiamata" />{T('Chiamata conoscitiva di 20 minuti', '20-minute intro call')}</li>
       </ul>
     </div>
   </section>

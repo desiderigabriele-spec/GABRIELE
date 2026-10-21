@@ -4,10 +4,11 @@
 // il voto, il messaggio WhatsApp e il grafico. Logica in vita.js (bozza), stili in vita.css.
 // La foto è public/img/bozza-piatto.webp (3:2): finché non c'è, i tasselli restano color crema.
 import fs from 'node:fs';
+import path from 'node:path';
 interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
 const T = (a: string, b: string) => (lang === 'it' ? a : b);
-const conFoto = fs.existsSync(new URL('../../public/img/bozza-piatto.webp', import.meta.url));
+const conFoto = fs.existsSync(path.join(process.cwd(), 'public/img/bozza-piatto.webp'));
 ---
 <div class="bozza" data-bozza aria-hidden="true">
   <div class="bz-scena">

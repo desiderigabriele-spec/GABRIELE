@@ -212,26 +212,83 @@ function raggiX() {
   });
 }
 
-// ---------- I tre problemi: le schede si girano da sole una alla volta, finché non ne tocchi una ----------
-function giraSchede() {
-  document.querySelectorAll('[data-giro]').forEach((box) => {
-    const carte = [...box.querySelectorAll('.carta')];
-    let mano = false, i = 0;
-    const gira = (c, si) => { c.classList.toggle('girata', si); c.setAttribute('aria-pressed', String(si)); };
-    carte.forEach((c) => c.addEventListener('click', () => { mano = true; gira(c, !c.classList.contains('girata')); }));
+// ---------- I pacchetti sul telefono: si scorrono di lato, si apre sul più scelto ----------
+function pacchettiSlider() {
+  const box = document.querySelector('[data-pacchetti]');
+  if (!box) return;
+  const carte = [...box.children], seg = [...document.querySelectorAll('.prezzi-guida .segmenti i')], conta = document.querySelector('[data-pacchetti-conta]');
+  const telefono = () => matchMedia('(max-width: 820px)').matches;
+  const segna = () => {
+    const c = box.scrollLeft + box.clientWidth / 2;
+    let i = 0, d = Infinity;
+    carte.forEach((el, k) => { const m = Math.abs(el.offsetLeft + el.offsetWidth / 2 - c); if (m < d) { d = m; i = k; } });
+    carte.forEach((el, k) => el.classList.toggle('on', k === i));
+    seg.forEach((s, k) => s.classList.toggle('on', k === i));
+    if (conta) conta.textContent = `${i + 1} / ${carte.length}`;
+  };
+  box.addEventListener('scroll', () => requestAnimationFrame(segna), { passive: true });
+  const parti = () => {
+    if (!telefono()) return;
+    const top = carte.findIndex((c) => c.classList.contains('top'));
+    const c = carte[top < 0 ? 0 : top];
+    box.scrollLeft = c.offsetLeft - (box.clientWidth - c.offsetWidth) / 2;
+    segna();
+    box.classList.add('pronto');
+  };
+  requestAnimationFrame(parti);
+  addEventListener('resize', segna);
+}
+
+// ---------- I tre problemi: la giornata «Oggi» e «Con noi», si scambia da sola finché non tocchi l'interruttore ----------
+function giornata() {
+  document.querySelectorAll('[data-giornata]').forEach((box) => {
+    const bt = [...box.querySelectorAll('.gi-interruttore button')];
+    const oggi = box.querySelectorAll('.gi-oggi'), noi = box.querySelectorAll('.gi-noi');
+    let conNoi = false, mano = false, id = 0;
+    const metti = (v) => {
+      conNoi = v;
+      box.classList.toggle('noi', v);
+      bt.forEach((b) => { const si = (b.dataset.lato === 'noi') === v; b.classList.toggle('on', si); b.setAttribute('aria-pressed', String(si)); });
+      // chi usa un lettore di schermo sente solo la giornata scelta
+      oggi.forEach((e) => e.setAttribute('aria-hidden', String(v)));
+      noi.forEach((e) => e.setAttribute('aria-hidden', String(!v)));
+    };
+    metti(false);
+    bt.forEach((b) => b.addEventListener('click', () => { mano = true; clearInterval(id); metti(b.dataset.lato === 'noi'); }));
     if (ridotto) return;
-    let id = 0;
     new IntersectionObserver(([v]) => {
       clearInterval(id);
-      if (!v.isIntersecting || mano) return;
-      id = setInterval(() => {
-        if (mano) { clearInterval(id); return; }
-        // una girata alla volta, poi tutte e tre davanti
-        carte.forEach((c, k) => gira(c, k === i % (carte.length + 1)));
-        i++;
-      }, 1900);
+      if (v.isIntersecting && !mano) id = setInterval(() => metti(!conNoi), 3600);
     }, { threshold: 0.4 }).observe(box);
   });
+}
+
+// ---------- «Stanotte»: le notifiche arrivano una dopo l'altra sul telefono delle 6 ----------
+function notifiche() {
+  document.querySelectorAll('[data-stanotte]').forEach((box) => {
+    const voci = [...box.querySelectorAll('.st-notifiche li')];
+    quandoVisibile(box, () => voci.forEach((v, i) => setTimeout(() => v.classList.add('su'), 300 + i * 900)), 0.4);
+  });
+}
+
+// ---------- Il metodo: scorrendo si accende un numero alla volta e a destra entra il suo passo ----------
+function metodoNumeri() {
+  const pista = document.querySelector('[data-metodo]');
+  if (!pista) return;
+  const numeri = [...pista.querySelectorAll('.metodo-numeri li')], passi = [...pista.querySelectorAll('.metodo-passi .passo')];
+  let attivo = 0, in_coda = false;
+  const leggi = () => {
+    in_coda = false;
+    const r = pista.getBoundingClientRect(), corsa = r.height - innerHeight;
+    const p = Math.max(0, Math.min(0.999, -r.top / Math.max(1, corsa)));
+    const i = Math.floor(p * passi.length);
+    if (i === attivo) return;
+    attivo = i;
+    numeri.forEach((n, k) => { n.classList.toggle('on', k === i); n.classList.toggle('fatto', k < i); });
+    passi.forEach((s, k) => s.classList.toggle('on', k === i));
+  };
+  addEventListener('scroll', () => { if (!in_coda) { in_coda = true; requestAnimationFrame(leggi); } }, { passive: true });
+  leggi();
 }
 
 // ---------- 08 · Il punto che compare: il quadratino rosso chiude il titolo quando la sezione entra ----------
@@ -511,7 +568,8 @@ function righeCheSiScrivono() {
 
 export function avviaVita() {
   tendina();
-  giraSchede(); // le schede si girano col tocco anche con «riduci movimento»
+  giornata(); // l'interruttore funziona anche con «riduci movimento»
+  pacchettiSlider();
   if (ridotto) return;
   html.classList.add('vita-on');
   cursoreCheScrive();
@@ -520,6 +578,8 @@ export function avviaVita() {
   decodifica();
   raggiX();
   puntoTitoli();
+  notifiche();
+  metodoNumeri();
   tabellone();
   cinetica();
   peso();

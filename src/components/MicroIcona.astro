@@ -1,0 +1,17 @@
+---
+// Icone piccole a linea per le rassicurazioni sotto i bottoni (cronometro, messaggio, segnaposto…). Griglia 24×24, bianche.
+interface Props { nome: string }
+const { nome } = Astro.props;
+const tracciati: Record<string, string> = {
+  tempo: '<circle cx="12" cy="13.5" r="7.5"/><path d="M10 2.5h4M12 2.5v3.5M12 13.5V9.5M18.5 6.5 20 5"/>',
+  risposta: '<path d="M4 5h16v11H10l-4.5 3.5V16H4z"/><path d="m8.5 10.5 2.5 2.5 4.5-5"/>',
+  luogo: '<path d="M12 21.5s-6.5-6-6.5-11.5a6.5 6.5 0 0 1 13 0c0 5.5-6.5 11.5-6.5 11.5Z"/><circle cx="12" cy="10" r="2.4"/>',
+  gratis: '<path d="M3.5 12V4.5H11l9.5 9.5-7 7Z"/><circle cx="7.5" cy="8.5" r="1.4"/>',
+  libero: '<rect x="5" y="11" width="14" height="10"/><path d="M8.5 11V7.5a3.5 3.5 0 0 1 6.8-1.2"/>',
+  chiamata: '<path d="M5 4h4l1.5 4.5-2.5 1.5a10 10 0 0 0 6 6l1.5-2.5L20 15v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1Z"/>',
+  parole: '<path d="M4 5h16v11H10l-4.5 3.5V16H4z"/><path d="M8 9.5h8M8 12.5h5"/>',
+  collega: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  decidi: '<circle cx="12" cy="12" r="8.5"/><path d="m8 12.2 2.8 2.8L16.5 9"/>',
+};
+---
+<svg class="micro-ico" viewBox="0 0 24 24" aria-hidden="true" set:html={tracciati[nome] || ''} />

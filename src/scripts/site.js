@@ -237,17 +237,6 @@ if (finePointer && !ridotto) {
   });
 }
 
-// ---------- Metodo: indice che segue il passo attivo ----------
-const indice = document.querySelectorAll('[data-indice] li');
-if (indice.length) {
-  document.querySelectorAll('[data-passo]').forEach((passo, i) => {
-    ScrollTrigger.create({
-      trigger: passo, start: 'top 55%', end: 'bottom 55%',
-      onToggle: (s) => { if (s.isActive) indice.forEach((li, j) => li.classList.toggle('attivo', j === i)); },
-    });
-  });
-}
-
 // ---------- Cookie ----------
 const banner = document.querySelector('[data-cookie]');
 function salvaCookie(v) { try { localStorage.setItem(CHIAVE_COOKIE, v); } catch (_) {} banner.hidden = true; }

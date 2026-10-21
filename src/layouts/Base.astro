@@ -157,13 +157,9 @@ const hrefEn = lang === 'en' ? path : alt;
           ))}
         </nav>
         <div class="header-strumenti">
-          <button class="personalizza-btn" type="button" data-personalizza aria-expanded="false" aria-controls="pannello-tema" title={t.personalizza}>
-            <span class="tuo-nome" aria-hidden="true">Aa<i></i></span>
-            <span class="sr-only">{t.personalizza}</span>
-          </button>
           {alt && (
             <a class="lingua" href={alt} hreflang={altLang} lang={altLang} data-lingua={altLang} title={t.cambiaLingua}>
-              <span class="lingua-attiva" aria-hidden="true">{t.questaLinguaBreve}</span><span class="lingua-sep" aria-hidden="true">/</span><span>{t.altraLinguaBreve}</span>
+              <span aria-hidden="true">{t.altraLinguaBreve}</span>
               <span class="sr-only">{t.cambiaLingua}</span>
             </a>
           )}
@@ -175,17 +171,6 @@ const hrefEn = lang === 'en' ? path : alt;
       </div>
     </header>
 
-    <!-- Personalizza: il nome del visitatore, compare subito mentre lo scrive -->
-    <div class="pannello-tema" id="pannello-tema" data-pannello-tema hidden role="dialog" aria-labelledby="pt-titolo">
-      <div class="pt-testa">
-        <Cursore stato="aspetta" />
-        <span class="mono" id="pt-titolo">{t.ptTitolo}</span>
-        <button class="pt-chiudi" type="button" data-pt-chiudi aria-label={t.chiudi}>×</button>
-      </div>
-      <label class="pt-domanda" for="pt-nome">{t.ptNome}</label>
-      <input id="pt-nome" type="text" autocomplete="given-name" maxlength="24" placeholder={t.ptNomeSegnaposto} enterkeyhint="done" data-pt-nome />
-      <p class="pt-nota">{t.ptNota}</p>
-    </div>
     <!-- All'ingresso: il nome, chiesto una volta sola. Poi compare solo nei punti che contano (titolo, preventivo, finale, messaggi). -->
     <dialog class="chiedi-nome" data-chiedi-nome aria-labelledby="cn-titolo">
       <form method="dialog" class="cn-box" data-cn-form>
@@ -218,9 +203,6 @@ const hrefEn = lang === 'en' ? path : alt;
         <p class="mono">{contatti.zona}</p>
         <a class="btn btn-azione btn-grande" href={preventivo}>{t.ctaPreventivo}</a>
         <a class="btn btn-vetro" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener" data-wa>{t.whatsapp}</a>
-        <button class="btn btn-vetro" type="button" data-personalizza aria-controls="pannello-tema">
-          <span class="tuo-nome" aria-hidden="true">Aa<i></i></span> {t.personalizza}
-        </button>
       </div>
     </div>
 

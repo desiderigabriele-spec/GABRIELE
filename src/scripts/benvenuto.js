@@ -1,74 +1,19 @@
-// «Il tuo nome»: lo chiediamo all'ingresso con un riquadro; il pannellino sotto «Aa» serve a cambiarlo.
-// Cambia mentre scrivi: il nome compare nei punti giusti (titolo, finale, messaggi).
-import { leggiProfilo, salvaProfilo, pulisciNome, applicaProfilo } from './profilo.js';
+// «Il tuo nome»: lo chiediamo all'ingresso con un riquadro, una volta sola. Poi si cambia toccandolo
+// dove è scritto (titolo dell'hero, preventivo, finale): si apre la tastiera lì, e mentre scrivi
+// il nome cambia in tutti gli altri punti e nei messaggi WhatsApp.
+import { leggiProfilo, salvaProfilo, pulisciNome, applicaProfilo, lang } from './profilo.js';
 
 const traccia = (e, d) => window.gdTrack?.(e, d);
+const TESTI = {
+  it: { cambia: (n) => `Il tuo nome: ${n}. Premi per cambiarlo`, suggerimento: 'Tocca per cambiare il nome' },
+  en: { cambia: (n) => `Your name: ${n}. Press to change it`, suggerimento: 'Tap to change your name' },
+}[lang];
 
 export function avviaPersonalizza(scena) {
   const html = document.documentElement;
   let p = leggiProfilo();
   applicaProfilo(p);
-  const box = document.querySelector('[data-pannello-tema]');
-  if (!box) return;
-
-  const input = box.querySelector('[data-pt-nome]');
-  const bottoni = [...document.querySelectorAll('[data-personalizza]')];
-  let aperto = false, origine = null, nomeScritto = p.nome || '';
-
-  const salva = () => { salvaProfilo(p); applicaProfilo(p); };
-
-  // il pannello si apre sotto il bottone dell'header (su telefono, sotto la barra in alto)
-  function posiziona() {
-    const b = bottoni.find((x) => x.offsetParent && x.closest('.site-header'));
-    const d = b ? `${Math.max(12, Math.min(innerWidth - b.getBoundingClientRect().right - 24, innerWidth - 352))}px` : '12px';
-    box.style.setProperty('--pt-destra', d);
-  }
-  function apri(da) {
-    if (html.classList.contains('menu-aperto')) document.querySelector('[data-menu-toggle]')?.click();
-    origine = da || null;
-    p = leggiProfilo();
-    input.value = p.nome || '';
-    posiziona();
-    box.hidden = false;
-    requestAnimationFrame(() => box.classList.add('aperto'));
-    bottoni.forEach((b) => b.setAttribute('aria-expanded', 'true'));
-    aperto = true;
-    setTimeout(() => input.focus({ preventScroll: true }), 80);
-    traccia('personalizza_aperto');
-  }
-  function chiudi(rimetti = true) {
-    if (!aperto) return;
-    aperto = false;
-    scriviNome();
-    box.classList.remove('aperto');
-    bottoni.forEach((b) => b.setAttribute('aria-expanded', 'false'));
-    setTimeout(() => { if (!aperto) box.hidden = true; }, 250);
-    if (rimetti && origine?.offsetParent) origine.focus({ preventScroll: true });
-  }
-
-  // il nome: si vede subito nei titoli; le stelle lo scrivono quando hai finito
-  function scriviNome() {
-    if (p.nome && p.nome !== nomeScritto) { scena()?.scrivi?.(p.nome); traccia('personalizza_nome'); }
-    nomeScritto = p.nome || '';
-  }
-  input.addEventListener('input', () => {
-    p.nome = pulisciNome(input.value);
-    p.fatto = true;
-    salva();
-  });
-  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); chiudi(); } });
-  input.addEventListener('change', scriviNome);
-
-  bottoni.forEach((b) => b.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (aperto) chiudi(); else apri(b);
-  }));
-  box.querySelector('[data-pt-chiudi]').addEventListener('click', () => chiudi());
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && aperto) chiudi(); });
-  document.addEventListener('pointerdown', (e) => {
-    if (aperto && !box.contains(e.target) && !e.target.closest('[data-personalizza]')) chiudi(false);
-  });
-  window.addEventListener('resize', () => { if (aperto) posiziona(); });
+  nomeModificabile();
 
   // alla prima visita chiediamo il nome, una volta sola: poi compare solo nei punti che contano
   const dialogo = document.querySelector('[data-chiedi-nome]');
@@ -77,7 +22,7 @@ export function avviaPersonalizza(scena) {
   if (dialogo?.showModal && !p.nome && !giaChiesto) {
     const campo = dialogo.querySelector('[data-cn-nome]');
     const chiedi = () => setTimeout(() => {
-      if (aperto || dialogo.open || html.classList.contains('menu-aperto')) return;
+      if (dialogo.open || html.classList.contains('menu-aperto')) return;
       dialogo.showModal();
       traccia('nome_chiesto');
     }, 700);
@@ -88,18 +33,85 @@ export function avviaPersonalizza(scena) {
       p = leggiProfilo();
       p.nome = nome;
       p.fatto = true;
-      salva();
+      salvaProfilo(p);
+      applicaProfilo(p);
       traccia('nome_dato');
       // le stelle scrivono il nome appena la scena è pronta
       let prove = 0;
-      const scrivi = () => { const s = scena(); if (s?.scrivi) { s.scrivi(nome); nomeScritto = nome; } else if (prove++ < 20) setTimeout(scrivi, 250); };
+      const scrivi = () => { const s = scena(); if (s?.scrivi) s.scrivi(nome); else if (prove++ < 20) setTimeout(scrivi, 250); };
       scrivi();
     });
-    // un clic fuori dal riquadro vale come «preferisco di no»
+    // un clic fuori dal riquadro vale come chiudere
     dialogo.addEventListener('click', (e) => { if (e.target === dialogo) dialogo.close('no'); });
     if (html.classList.contains('intro-attiva')) window.addEventListener('gd-intro-fine', chiedi, { once: true }); else chiedi();
   }
+}
 
-  // i vecchi link «#personalizza» aprono il pannello
-  if (location.hash === '#personalizza') { history.replaceState(null, '', location.pathname); setTimeout(() => apri(bottoni[0]), 300); }
+// ---------- il nome si cambia dove è scritto ----------
+function nomeModificabile() {
+  const etichetta = (el) => { el.setAttribute('aria-label', TESTI.cambia(el.textContent)); el.title = TESTI.suggerimento; };
+  document.querySelectorAll('[data-nome]').forEach((el) => {
+    el.tabIndex = 0;
+    el.setAttribute('role', 'button');
+    el.classList.add('nome-tocca');
+    etichetta(el);
+    el.addEventListener('click', inizia);
+    el.addEventListener('keydown', (e) => { if (!el.isContentEditable && (e.key === 'Enter' || e.key === ' ')) inizia(e); });
+  });
+
+  function inizia(e) {
+    const el = e.currentTarget;
+    if (el.isContentEditable) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const prima = el.textContent;
+    el.dataset.inModifica = '';
+    el.removeAttribute('role');
+    el.setAttribute('role', 'textbox');
+    el.setAttribute('aria-label', TESTI.suggerimento);
+    el.contentEditable = 'plaintext-only';
+    if (el.contentEditable !== 'plaintext-only') el.contentEditable = 'true';
+    el.spellcheck = false;
+    el.setAttribute('autocapitalize', 'words');
+    el.setAttribute('enterkeyhint', 'done');
+    el.classList.add('nome-modifica');
+    el.focus();
+    // seleziona tutto: scrivendo si sostituisce il nome
+    const r = document.createRange(); r.selectNodeContents(el);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+
+    const aggiorna = () => {
+      if (el.textContent.length > 24) { el.textContent = el.textContent.slice(0, 24); const c = document.createRange(); c.selectNodeContents(el); c.collapse(false); s.removeAllRanges(); s.addRange(c); }
+      const q = leggiProfilo();
+      q.nome = pulisciNome(el.textContent);
+      q.fatto = true;
+      salvaProfilo(q);
+      applicaProfilo(q); // cambia il nome in tutti gli altri punti (questo resta com'è mentre scrivi)
+    };
+    const fine = (annulla) => {
+      el.removeEventListener('input', aggiorna);
+      el.removeEventListener('keydown', tasti);
+      el.removeEventListener('blur', sfuoca);
+      if (annulla) el.textContent = prima;
+      const q = leggiProfilo();
+      q.nome = pulisciNome(el.textContent);
+      salvaProfilo(q);
+      el.contentEditable = 'false';
+      el.removeAttribute('contenteditable');
+      el.classList.remove('nome-modifica');
+      delete el.dataset.inModifica;
+      el.setAttribute('role', 'button');
+      applicaProfilo(q);
+      document.querySelectorAll('[data-nome]').forEach(etichetta);
+      if (q.nome !== prima) traccia('nome_cambiato');
+    };
+    const tasti = (k) => {
+      if (k.key === 'Enter') { k.preventDefault(); el.blur(); }
+      if (k.key === 'Escape') { k.preventDefault(); fine(true); }
+    };
+    const sfuoca = () => fine(false);
+    el.addEventListener('input', aggiorna);
+    el.addEventListener('keydown', tasti);
+    el.addEventListener('blur', sfuoca);
+  }
 }

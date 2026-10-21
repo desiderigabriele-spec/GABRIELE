@@ -19,7 +19,7 @@
 ## Tecnica
 - [ ] Creare il foglio "Preventivi", incollare `apps-script/Code.gs`, pubblicarlo come app web e impostare `PUBLIC_PREVENTIVO_ENDPOINT` su Vercel. Senza, il preventivo si invia su WhatsApp o per email.
 - [ ] Bot Telegram (`BOT_TOKEN`, `CHAT_ID`) nelle proprietà dello script.
-- [ ] Google Analytics 4 / Meta Pixel: da collegare solo dopo il consenso (gli eventi `preventivo_inizio`, `preventivo_passo`, `preventivo_invio`, `clic_contatto`, `personalizza_aperto`, `personalizza_nome`, `personalizza_colore`, `calcolo_aperto`, `calcolo_passo`, `lingua` sono già pronti in `dataLayer`).
+- [ ] Google Analytics 4 / Meta Pixel: da collegare solo dopo il consenso (gli eventi `preventivo_inizio`, `preventivo_passo`, `preventivo_invio`, `clic_contatto`, `nome_chiesto`, `nome_dato`, `nome_saltato`, `nome_cambiato`, `calcolo_aperto`, `calcolo_passo`, `lingua` sono già pronti in `dataLayer`).
 - [ ] **Privacy**: le pagine `/privacy` e `/en/privacy` sono bozze da far controllare.
 - [ ] **Svizzera**: far controllare a un consulente svizzero l'impostazione «stessi prezzi per tutti + incontri e SEO svizzera come extra» (art. 3a LCSl) e al commercialista le diciture delle fatture verso la Svizzera. Aggiornare ogni tanto il cambio in `src/data/listino.js` (`cambio.CHF`).
 - [ ] **Pagine dei servizi** (`src/data/pagine-servizi.js`): rileggere tempi e cifre indicative (Shopify «tra 30 e 110 € al mese», collegamenti «1-2 settimane», sistemi «3-6 settimane», pubblicità «10-20 € al giorno per partire», «4-8 settimane» per i risultati) e la frase sulla Cura «puoi smettere quando vuoi».
