@@ -169,6 +169,10 @@ p { margin: 0; text-wrap: pretty; }
 
 /* ---------- Scena 3D fissa ---------- */
 .scena { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+/* la luce del mattino (luce.js): solo con lo sfondo chiaro, dietro a tutto */
+.luce { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .6s ease; }
+.luce.su { opacity: 1; }
+.luce canvas { width: 100%; height: 100%; display: block; }
 .scena canvas { width: 100%; height: 100%; }
 /* colonne sottili come nella griglia svizzera, appena visibili */
 .velo { position: fixed; inset: 0; z-index: 0; pointer-events: none;

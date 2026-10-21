@@ -499,6 +499,9 @@ export function avviaScena(canvas) {
   const cadente = new THREE.Points(scgeo, scmat);
   cadente.frustumCulled = false;
   scene.add(cadente);
+  // con lo sfondo chiaro niente cielo stellato: c'è la luce del mattino (luce.js); restano le forme dei capitoli
+  const cielo = () => { stelle.visible = cadente.visible = !COLORI.chiaro; };
+  cielo();
   let prossimaCadente = 6 + Math.random() * 6, inizioCadente = -1;
 
   // ---------- Dimensioni ----------
@@ -692,6 +695,7 @@ export function avviaScena(canvas) {
     uniforms.uPelle.value.set(c.pelle); uniforms.uRosso.value.set(c.rosso); uniforms.uAlone.value.set(c.alone);
     suni.uColore.value.set(c.stelle);
     [mat, smat, scmat].forEach((m) => { m.blending = fusione(); m.needsUpdate = true; });
+    cielo();
   });
 
   // ---------- Ciclo ----------

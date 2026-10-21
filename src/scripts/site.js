@@ -1,6 +1,7 @@
 // Comportamenti comuni a tutte le pagine: scroll fluido, animazioni d'ingresso,
 // cursore, effetto magnetico, card che si inclinano, header, menu, cookie e scena 3D.
 import { avviaIntro } from './intro.js';
+import { avviaLuce } from './luce.js';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
@@ -13,6 +14,8 @@ import { leggiProfilo, lang } from './profilo.js';
 
 // l'avvio per primo: parte subito, mentre il resto si prepara
 avviaIntro();
+// lo sfondo della versione chiara: la luce del mattino al posto delle stelle
+avviaLuce();
 
 gsap.registerPlugin(ScrollTrigger);
 
