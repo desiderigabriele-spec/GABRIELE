@@ -245,6 +245,25 @@ if (finePointer && !ridotto) {
   });
 }
 
+// ---------- Sfondo chiaro o scuro: il bottone nell'header, la scelta resta per le visite dopo ----------
+(function tema() {
+  const btn = document.querySelector('[data-tema-btn]');
+  if (!btn) return;
+  const [vaiChiaro, vaiScuro] = JSON.parse(btn.dataset.testi);
+  const etichetta = () => { const chiaro = html.dataset.tema === 'chiaro'; btn.setAttribute('aria-label', chiaro ? vaiScuro : vaiChiaro); btn.title = btn.getAttribute('aria-label'); };
+  etichetta();
+  btn.addEventListener('click', () => {
+    const chiaro = html.dataset.tema !== 'chiaro';
+    html.classList.add('tema-cambia');
+    if (chiaro) html.dataset.tema = 'chiaro'; else delete html.dataset.tema;
+    try { localStorage.setItem('gd-tema', chiaro ? 'chiaro' : 'scuro'); } catch (_) {}
+    etichetta();
+    window.dispatchEvent(new Event('gd-tema'));
+    window.gdTrack?.('tema', { tema: chiaro ? 'chiaro' : 'scuro' });
+    setTimeout(() => html.classList.remove('tema-cambia'), 450);
+  });
+})();
+
 // ---------- Cookie: il consenso si dà nel benvenuto in basso (benvenuto.js) ----------
 
 // ---------- Scena 3D: si carica dopo il testo, solo se serve ----------

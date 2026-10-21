@@ -318,10 +318,13 @@ function scritta(nome, N, out, larghezza, quota) {
 
 // I colori del logo: bianco e il rosso del quadratino. A = i pixel bianchi, B = i pixel rossi di ogni forma (fuoco, bersaglio, spunta, cuore, freccia)
 // I colori del logo: bianco e il rosso del quadratino. A = i pixel bianchi, B = i pixel rossi di ogni forma
-const COLORI = {
-  A: Array(5).fill('#FFFFFF'), B: Array(5).fill('#E30613'),
-  pelle: '#FFFFFF', rosso: '#E30613', alone: '#9A9A9A', stelle: '#C8C8C8',
-};
+// Sul fondo scuro i punti sono luce (fusione additiva); su quello chiaro sono inchiostro (scuri, fusione normale).
+function leggiColori() {
+  const chiaro = document.documentElement.dataset.tema === 'chiaro';
+  const base = chiaro ? '#1A1A1A' : '#FFFFFF';
+  return { chiaro, A: Array(5).fill(base), B: Array(5).fill('#E30613'), pelle: chiaro ? '#151515' : '#FFFFFF', rosso: '#E30613', alone: chiaro ? '#6B6B6B' : '#9A9A9A', stelle: chiaro ? '#8A8A8A' : '#C8C8C8' };
+}
+const COLORI = leggiColori();
 
 export function avviaScena(canvas) {
   const ridotto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -375,7 +378,8 @@ export function avviaScena(canvas) {
     uColB: { value: COLORI.B.map((c) => new THREE.Color(c)) },
     uPelle: { value: new THREE.Color(COLORI.pelle) }, uRosso: { value: new THREE.Color(COLORI.rosso) }, uAlone: { value: new THREE.Color(COLORI.alone) },
   };
-  const mat = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+  const fusione = () => (COLORI.chiaro ? THREE.NormalBlending : THREE.AdditiveBlending);
+  const mat = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms, transparent: true, depthWrite: false, blending: fusione() });
   const punti = new THREE.Points(geo, mat);
   punti.frustumCulled = false;
   const gruppo = new THREE.Group();
@@ -407,7 +411,7 @@ export function avviaScena(canvas) {
     uWarp: { value: 0 },                                     // 0 fermo · 1 scroll velocissimo: le stelle diventano strisce
   };
   const smat = new THREE.ShaderMaterial({
-    uniforms: suni, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    uniforms: suni, transparent: true, depthWrite: false, blending: fusione(),
     vertexShader: /* glsl */ `
       uniform float uTime, uScroll, uPR, uAspect, uWarp;
       uniform vec2 uParallasse, uRis;
@@ -470,7 +474,7 @@ export function avviaScena(canvas) {
   scgeo.setAttribute('aT', new THREE.BufferAttribute(scT, 1));
   const scuni = { uInizio: { value: new THREE.Vector3() }, uDir: { value: new THREE.Vector3(-1, -0.4, 0) }, uProg: { value: -1 }, uPR: { value: pr }, uColore: suni.uColore };
   const scmat = new THREE.ShaderMaterial({
-    uniforms: scuni, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    uniforms: scuni, transparent: true, depthWrite: false, blending: fusione(),
     vertexShader: /* glsl */ `
       uniform vec3 uInizio, uDir;
       uniform float uProg, uPR;
@@ -678,6 +682,17 @@ export function avviaScena(canvas) {
   const sguardo = new THREE.Vector2();
 
   let ultimoScroll = window.scrollY, vel = 0;
+
+  // ---------- Chiaro o scuro: cambia dal bottone nell'header ----------
+  window.addEventListener('gd-tema', () => {
+    const c = leggiColori();
+    Object.assign(COLORI, c);
+    uniforms.uColA.value.forEach((x, i) => x.set(c.A[i]));
+    uniforms.uColB.value.forEach((x, i) => x.set(c.B[i]));
+    uniforms.uPelle.value.set(c.pelle); uniforms.uRosso.value.set(c.rosso); uniforms.uAlone.value.set(c.alone);
+    suni.uColore.value.set(c.stelle);
+    [mat, smat, scmat].forEach((m) => { m.blending = fusione(); m.needsUpdate = true; });
+  });
 
   // ---------- Ciclo ----------
   const orologio = new THREE.Clock();

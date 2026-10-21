@@ -83,6 +83,8 @@ const hrefEn = lang === 'en' ? path : alt;
           var p = JSON.parse(localStorage.getItem('gd-profilo') || 'null') || {};
           if (p.nome) h.classList.add('ha-nome');
         } catch (e) {}
+        // lo sfondo chiaro o scuro scelto col bottone nell'header (prima del disegno, così non lampeggia)
+        try { if (localStorage.getItem('gd-tema') === 'chiaro') h.dataset.tema = 'chiaro'; } catch (e) {}
         // Intro col cursore rosso: solo alla prima pagina della visita
         try { if (!sessionStorage.getItem('gd-intro')) h.classList.add('intro-attiva'); } catch (e) {}
         // arrivo da un'altra pagina del sito: la tendina rossa copre la pagina e poi si richiude (vita.js)
@@ -154,6 +156,10 @@ const hrefEn = lang === 'en' ? path : alt;
           ))}
         </nav>
         <div class="header-strumenti">
+          <button class="tema-btn" type="button" data-tema-btn aria-label={t.temaChiaro} data-testi={JSON.stringify([t.temaChiaro, t.temaScuro])}>
+            <svg class="sole" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M21.5 12h-2.2M4.7 12H2.5M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6M18.7 18.7l-1.6-1.6M6.9 6.9 5.3 5.3"/></svg>
+            <svg class="luna" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+          </button>
           {alt && (
             <a class="lingua" href={alt} hreflang={altLang} lang={altLang} data-lingua={altLang} title={t.cambiaLingua}>
               <span aria-hidden="true">{t.altraLinguaBreve}</span>

@@ -48,6 +48,43 @@
   color-scheme: dark;
 }
 
+/* Versione chiara: stessi ruoli, colori invertiti (sfondo bianco, testo nero). Rosso del marchio e verde dei bottoni restano uguali,
+   il rosso delle parole si scurisce un filo per il contrasto sul bianco. Si sceglie dal bottone nell'header (gd-tema). */
+html[data-tema='chiaro'] {
+  --notte: #fafaf8;            --notte-rgb: 250, 250, 248;
+  --notte-2: #f2f2ef;
+  --superficie: #ffffff;       --sup-rgb: 255, 255, 255;
+  --superficie-2: #f1f1ee;     --sup2-rgb: 241, 241, 238;
+  --top-rgb: 236, 236, 232;
+  --latte: #0a0a0a;            --latte-rgb: 10, 10, 10;
+  --nebbia: #555555;
+  --nebbia-2: #6b6b6b;
+  --viola: #0a0a0a;            --brand-rgb: 10, 10, 10;
+  --viola-chiaro: #333333;
+  --ciano: #0a0a0a;            --dati-rgb: 10, 10, 10;
+  --firma: linear-gradient(#0a0a0a, #0a0a0a);
+  --ambra: #0a0a0a;
+  --rosso-testo: #d10512;
+  --verde-azione-su: #0f9f6e;
+  color-scheme: light;
+}
+/* i dispositivi disegnati (telefoni, schermi, codice, finte app) restano scuri anche nella versione chiara */
+:is(.bozza, .st-fold, .pd-dopo, .compila-codice, .terminale, .mappa, .cursori, .cubo-f, .chiedi-occhio, .focus-bolla, .fp-occhio, .intro-bolla) {
+  --latte: #ffffff; --latte-rgb: 255, 255, 255; --nebbia: #a3a3a3; --nebbia-2: #8a8a8a; --notte: #0a0a0a; --notte-rgb: 10, 10, 10;
+  --linea: rgba(255, 255, 255, .12); --linea-forte: rgba(255, 255, 255, .24); --rosso-testo: #ff2d3a;
+}
+html[data-tema='chiaro'] .cap-velo { background: rgba(10, 10, 10, .35); }
+/* il cambio di tema è morbido, ma solo mentre cambia (niente transizioni al caricamento) */
+html.tema-cambia, html.tema-cambia * { transition: background-color .35s ease, color .35s ease, border-color .35s ease !important; }
+
+/* il bottone del tema nell'header: sole o luna, sempre visibile accanto alla lingua */
+.tema-btn { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid var(--linea-forte); background: none; color: var(--latte); cursor: pointer; flex: none; transition: border-color .3s; }
+.tema-btn:hover, .tema-btn:focus-visible { border-color: var(--latte); outline: none; }
+.tema-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tema-btn .luna { display: none; }
+html[data-tema='chiaro'] .tema-btn .sole { display: none; }
+html[data-tema='chiaro'] .tema-btn .luna { display: block; }
+
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 html.lenis, html.lenis body { height: auto; }

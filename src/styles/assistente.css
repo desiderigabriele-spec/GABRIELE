@@ -18,7 +18,7 @@
 .focus-fumetto-chiudi { position: absolute; right: 2px; top: 2px; width: 30px; height: 30px; border: 0; background: none; color: #555; font-size: 1.1rem; cursor: pointer; }
 /* la chat */
 .focus-pannello { position: absolute; right: 0; bottom: 82px; width: min(380px, calc(100vw - 40px)); height: min(560px, calc(100svh - 120px)); display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto;
-  background: #0d0d0d; border: 1px solid var(--linea-forte); border-top: 3px solid var(--rosso); box-shadow: 0 30px 70px -25px rgba(0, 0, 0, .95);
+  background: var(--superficie); border: 1px solid var(--linea-forte); border-top: 3px solid var(--rosso); box-shadow: 0 30px 70px -25px rgba(0, 0, 0, .95);
   opacity: 0; transform: translateY(10px); transform-origin: bottom right; transition: opacity .25s var(--ease), transform .25s var(--ease); }
 .focus-pannello[hidden] { display: none; }
 .focus.aperta .focus-pannello { opacity: 1; transform: none; }
@@ -35,7 +35,7 @@
 .fp-chiudi:hover, .fp-chiudi:focus-visible { color: var(--latte); outline: none; }
 .fp-msg { overflow-y: auto; overscroll-behavior: contain; padding: 14px 12px; display: flex; flex-direction: column; gap: 10px; }
 .fm { max-width: 88%; font-size: .9rem; line-height: 1.45; padding: 9px 11px; }
-.fm-lui { align-self: flex-start; background: #181818; border: 1px solid #262626; color: var(--latte); }
+.fm-lui { align-self: flex-start; background: var(--superficie-2); border: 1px solid var(--linea); color: var(--latte); }
 .fm-tu { align-self: flex-end; background: var(--latte); color: var(--notte); }
 .fm b { font-weight: 700; }
 .fm-scrive { display: flex; gap: 4px; padding: 12px; }
