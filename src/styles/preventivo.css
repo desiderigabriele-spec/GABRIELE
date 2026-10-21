@@ -5,7 +5,7 @@
 .pv-noscript { padding: 1.2rem; border-radius: var(--r); border: 1px solid var(--linea-forte); }
 .pv-noscript a { color: var(--ambra); }
 
-.pv-passi { list-style: none; margin: 0 0 14px; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 640px; }
+.pv-passi { list-style: none; margin: 0 0 14px; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-width: 760px; }
 .pv-passi li { display: flex; align-items: center; gap: .6rem; font-size: .88rem; color: var(--nebbia-2); cursor: pointer; transition: color .3s; }
 .pv-passi li span { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-mono); font-size: .75rem; border: 1px solid var(--linea-forte); transition: background .3s, border-color .3s, color .3s; }
 .pv-passi li.attivo { color: var(--latte); }
@@ -14,7 +14,7 @@
 .pv-passi li.fatto span { background: var(--viola); border-color: var(--viola); color: var(--notte); }
 .pv-barra { height: 3px; border-radius: 99px; background: rgba(var(--latte-rgb),.08); overflow: hidden; margin-bottom: 40px; max-width: 640px; }
 .pv-barra span { display: block; height: 100%; width: 8%; background: var(--firma); border-radius: inherit; transition: width .8s var(--ease); }
-@media (max-width: 720px) { .pv-passi li { font-size: 0; gap: 0; justify-content: center; } .pv-passi li.attivo { font-size: .82rem; gap: .5rem; grid-column: span 1; } }
+@media (max-width: 720px) { .pv-passi { grid-template-columns: auto auto auto auto; justify-content: space-between; } .pv-passi li { font-size: 0; gap: 0; white-space: nowrap; } .pv-passi li.attivo { font-size: .82rem; gap: .5rem; } }
 
 .pv-griglia { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: clamp(24px, 3vw, 48px); align-items: start; }
 .pv-form { min-width: 0; }
@@ -210,3 +210,27 @@
 .pv-attesa { display: none; }
 .pv-attesa .mascotte { width: 46px; height: 46px; }
 .invio-in-corso .pv-attesa { display: block; }
+
+/* passo 3 · gli extra del servizio scelto, aperti; altri servizi da aggiungere, ognuno con i suoi pacchetti */
+.pv-extra-cat { margin-top: .4rem; }
+.pv-extra-cat + .pv-extra-cat { margin-top: 1.4rem; }
+.pv-extra-titolo { display: flex; align-items: center; gap: .7rem; font-size: 1.05rem; margin: 0 0 .2rem; }
+.pv-extra-titolo .pv-cat-icona { width: 30px; height: 30px; }
+.pv-extra-titolo .pv-cat-icona svg { width: 18px; height: 18px; }
+.pv-altro-serv { border-bottom: 1px solid var(--linea); }
+.pv-altro-serv[hidden] { display: none; }
+.pv-altro-testa { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: .2rem .9rem; align-items: center; padding: .8rem 0; cursor: pointer; }
+.pv-altro-testa input { position: absolute; opacity: 0; pointer-events: none; }
+.pv-altro-testa .pv-cat-icona { width: 30px; height: 30px; }
+.pv-altro-testa .pv-cat-icona svg { width: 18px; height: 18px; }
+.pv-altro-testa input:checked ~ .pv-interruttore span { background: var(--caldo); }
+.pv-altro-testa input:checked ~ .pv-interruttore span::after { transform: translateX(20px); }
+.pv-altro-testa input:focus-visible ~ .pv-interruttore span { outline: 2px solid var(--rosso-testo); outline-offset: 3px; }
+.pv-altro-livelli { display: none; flex-wrap: wrap; gap: .5rem; padding: 0 0 .9rem 2.8rem; }
+.pv-altro-serv.attivo .pv-altro-livelli { display: flex; }
+.pv-pillola { position: relative; cursor: pointer; }
+.pv-pillola input { position: absolute; opacity: 0; pointer-events: none; }
+.pv-pillola > span { display: inline-block; padding: .45rem .75rem; border: 1px solid var(--linea-forte); font-size: .86rem; color: var(--nebbia); transition: border-color .2s, color .2s; }
+.pv-pillola input:checked + span { border-color: var(--verde-azione); color: var(--latte); }
+.pv-pillola input:focus-visible + span { outline: 2px solid var(--rosso-testo); outline-offset: 2px; }
+@media (max-width: 560px) { .pv-altro-testa { grid-template-columns: auto minmax(0, 1fr) auto; } .pv-altro-testa .pv-extra-prezzo { grid-column: 2; grid-row: 2; } .pv-altro-livelli { padding-left: 0; } }

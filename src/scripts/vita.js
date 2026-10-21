@@ -419,7 +419,7 @@ function salto() {
   }
   ss.via('gd-salto');
   // tornando indietro col browser la pagina dev'essere di nuovo visibile
-  window.addEventListener('pageshow', (e) => { if (e.persisted) html.classList.remove('salto-via', 'salto-arrivo', 'salto-entra'); document.querySelectorAll('.premuto').forEach((b) => b.classList.remove('premuto')); });
+  window.addEventListener('pageshow', (e) => { if (e.persisted) html.classList.remove('salto-via', 'salto-arrivo', 'salto-entra'); });
   if (ridotto) return;
   // partenza: ascolto sulla finestra, così ogni altro gestore dei clic ha già deciso
   window.addEventListener('click', (e) => {
@@ -430,10 +430,7 @@ function salto() {
     const u = new URL(a.href, location.href);
     if (u.origin !== location.origin || (u.pathname === location.pathname && u.search === location.search)) return;
     e.preventDefault();
-    // sui bottoni si sente il clic: il bottone si abbassa, poi si salta
-    const bt = a.matches('.btn') ? a : null;
-    bt?.classList.add('premuto');
-    const dopo = bt ? 110 : 0;
+    const dopo = 0;
     window.dispatchEvent(new CustomEvent('gd-salto'));
     setTimeout(() => html.classList.add('salto-via'), dopo);
     setTimeout(() => { ss.set('gd-salto', '1'); location.assign(u.href); }, dopo + 440);

@@ -69,16 +69,22 @@ export function avviaPreventivo() {
 
   // ---------- Stato ----------
   function leggi() {
-    const stato = { cat: {}, tempi: form.elements.tempi?.value || 'normale' };
-    form.querySelectorAll('input[name="cat"]:checked').forEach((i) => {
-      const id = i.value;
-      const liv = form.querySelector(`input[name="liv-${id}"]:checked`)?.value;
+    // un servizio principale (passo 1, pacchetto al passo 2) e gli altri aggiunti tra gli extra (pacchetto lì)
+    const principale = form.querySelector('input[name="servizio"]:checked')?.value || '';
+    const stato = { servizio: principale, cat: {}, tempi: form.elements.tempi?.value || 'normale' };
+    const extraDi = (id) => {
       const extra = {};
-      form.querySelectorAll(`[data-blocco="${id}"] [data-extra]`).forEach((r) => {
+      form.querySelectorAll(`[data-extra-cat="${id}"] [data-extra]`).forEach((r) => {
         const q = Number(r.dataset.q || 0);
         if (q > 0) extra[r.dataset.extra.split('.')[1]] = q;
       });
-      stato.cat[id] = { liv, extra };
+      return extra;
+    };
+    if (principale) stato.cat[principale] = { liv: form.querySelector(`input[name="liv-${principale}"]:checked`)?.value, extra: extraDi(principale) };
+    form.querySelectorAll('input[name="altro"]:checked').forEach((i) => {
+      const id = i.value;
+      if (id === principale) return;
+      stato.cat[id] = { liv: form.querySelector(`input[name="liv2-${id}"]:checked`)?.value, extra: extraDi(id) };
     });
     stato.incontri = {};
     form.querySelectorAll('[data-incontro]').forEach((r) => {
@@ -187,6 +193,7 @@ export function avviaPreventivo() {
     // quanti extra hai aggiunto, scritto accanto a «Aggiungi extra»
     form.querySelectorAll('[data-extra-box]').forEach((box) => {
       const k = [...box.querySelectorAll('[data-extra], [data-incontro]')].filter((x) => Number(x.dataset.q || 0) > 0).length
+        + box.querySelectorAll('input[name="altro"]:checked').length
         + (box.querySelector('input[name="tempi"]:checked') && box.querySelector('input[name="tempi"]:checked').value !== 'normale' ? 1 : 0);
       box.querySelector('[data-extra-conta]').textContent = k ? `${k}` : '';
     });
@@ -203,10 +210,19 @@ export function avviaPreventivo() {
     elRighe.appendChild(li);
   }
 
-  // ---------- Blocchi del passo 2 visibili solo per i servizi scelti ----------
+  // ---------- Passo 2: solo il pacchetto del servizio scelto. Passo 3: i suoi extra e quelli degli altri servizi aggiunti ----------
   function mostraBlocchi() {
-    const scelti = new Set([...form.querySelectorAll('input[name="cat"]:checked')].map((i) => i.value));
-    form.querySelectorAll('[data-blocco]').forEach((b) => { b.hidden = !scelti.has(b.dataset.blocco); });
+    const principale = form.querySelector('input[name="servizio"]:checked')?.value;
+    const altri = new Set([...form.querySelectorAll('input[name="altro"]:checked')].map((i) => i.value));
+    form.querySelectorAll('[data-blocco]').forEach((b) => { b.hidden = b.dataset.blocco !== principale; });
+    form.querySelectorAll('[data-extra-cat]').forEach((b) => { b.hidden = !(b.dataset.extraCat === principale || altri.has(b.dataset.extraCat)); });
+    // tra gli «altri servizi» non c'è quello già scelto; quelli attivi mostrano i loro pacchetti
+    form.querySelectorAll('[data-altro]').forEach((r) => {
+      const id = r.dataset.altro, cb = r.querySelector('input[name="altro"]');
+      r.hidden = id === principale;
+      if (id === principale) cb.checked = false;
+      r.classList.toggle('attivo', cb.checked);
+    });
   }
 
   // ---------- Extra: + / − e interruttori ----------
@@ -228,7 +244,9 @@ export function avviaPreventivo() {
   });
 
   form.addEventListener('change', (e) => {
-    if (e.target.name === 'cat') mostraBlocchi();
+    if (e.target.name === 'servizio' || e.target.name === 'altro') mostraBlocchi();
+    // scelto il servizio, si passa da soli al suo pacchetto
+    if (e.target.name === 'servizio' && passo === 1) setTimeout(() => { if (passo === 1) vaiA(2); }, 380);
     if (!iniziato) { iniziato = true; traccia('preventivo_inizio'); }
     aggiorna();
   });
@@ -242,7 +260,7 @@ export function avviaPreventivo() {
       li.classList.toggle('attivo', i === n);
       li.classList.toggle('fatto', i < n);
     });
-    if (progresso) progresso.style.width = `${[0, 12, 55, 90, 100][n]}%`;
+    if (progresso) progresso.style.width = `${[0, 10, 38, 66, 90, 100][n]}%`;
     const attivo = passi.find((p) => Number(p.dataset.passo) === n);
     if (!ridotto && attivo) gsap.fromTo(attivo, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: 'expo.out' });
     if (focus) {
@@ -257,16 +275,16 @@ export function avviaPreventivo() {
 
   function valido(n) {
     if (n === 1) {
-      const ok = !!form.querySelector('input[name="cat"]:checked');
+      const ok = !!form.querySelector('input[name="servizio"]:checked');
       form.querySelector('[data-errore="1"]').hidden = ok;
       return ok;
     }
-    if (n === 3) {
-      // nome, almeno un contatto (email o telefono) e il consenso
+    if (n === 4) {
+      // nome e cognome, almeno un contatto (email o telefono) e il consenso
       const f = form.elements;
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value.trim());
       const telOk = f.telefono.value.replace(/\D/g, '').length >= 6;
-      const esiti = { nome: f.nome.value.trim().length > 1, email: emailOk || telOk, telefono: emailOk || telOk, privacy: f.privacy.checked };
+      const esiti = { nome: f.nome.value.trim().length > 2, email: emailOk || telOk, telefono: emailOk || telOk, privacy: f.privacy.checked };
       // un'email scritta male resta un errore anche se c'è il telefono
       if (f.email.value.trim() && !emailOk) esiti.email = false;
       let ok = true;
@@ -275,7 +293,7 @@ export function avviaPreventivo() {
         f[k].setAttribute('aria-invalid', String(!v));
         if (!v) ok = false;
       }
-      form.querySelector('[data-errore="3"]').hidden = ok;
+      form.querySelector('[data-errore="4"]').hidden = ok;
       return ok;
     }
     return true;
@@ -287,7 +305,7 @@ export function avviaPreventivo() {
   });
   indicatori.forEach((li) => li.addEventListener('click', () => {
     const n = Number(li.dataset.passoInd);
-    if (n < passo || (n > passo && valido(passo) && n <= 3 && (n !== 2 || form.querySelector('input[name="cat"]:checked')))) vaiA(n);
+    if (n < passo || (n > passo && n <= 4 && valido(1) && valido(passo))) vaiA(n);
   }));
 
   // ---------- Riepilogo su mobile ----------
@@ -334,7 +352,7 @@ export function avviaPreventivo() {
     mail.className = 'btn btn-vetro';
     mail.textContent = t.inviaMail;
     mail.addEventListener('click', () => {
-      if (!valido(3)) return;
+      if (!valido(4)) return;
       const d = dati();
       location.href = mailLink(testoProgetto(calcola(leggi()), d));
       fatto(d, 'email');
@@ -348,14 +366,14 @@ export function avviaPreventivo() {
       nome: f.nome.value.trim(), email: f.email.value.trim(), telefono: f.telefono.value.trim(),
       messaggio: f.messaggio.value.trim(), canale: f.canale.value,
       // campi che il foglio Preventivi si aspetta ancora: restano vuoti
-      azienda: '', settore: '', sito_attuale: '',
+      azienda: '', settore: '', sito_attuale: (f.sito?.value || '').trim(),
     };
   }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (form.elements.botcheck.checked) return; // trappola per i bot
-    if (!valido(3)) return;
+    if (!valido(4)) return;
     const d = dati();
     const r = calcola(leggi());
     const testo = testoProgetto(r, d);
@@ -385,7 +403,7 @@ export function avviaPreventivo() {
       form.classList.remove('invio-in-corso');
       btn.disabled = false;
       btn.innerHTML = `${t.riprova} <span class="freccia" aria-hidden="true">→</span>`;
-      const err = form.querySelector('[data-errore="3"]');
+      const err = form.querySelector('[data-errore="4"]');
       err.hidden = false;
       err.innerHTML = t.errore(waLink(testo));
     }
@@ -409,20 +427,23 @@ export function avviaPreventivo() {
       a.textContent = via === 'email' ? t.riapriMail : t.riapriWa;
       box.appendChild(a);
     }
-    vaiA(4);
+    vaiA(5);
     try { localStorage.removeItem(CHIAVE); } catch (_) {}
   }
 
   // ---------- Salvataggio nel browser ----------
   function salva(stato) {
-    try { localStorage.setItem(CHIAVE, JSON.stringify({ ...stato, passo: Math.min(passo, 2) })); } catch (_) {}
+    try { localStorage.setItem(CHIAVE, JSON.stringify({ ...stato, passo: Math.min(passo, 3) })); } catch (_) {}
   }
   function ripristina(stato) {
+    // i progetti salvati prima avevano solo l'elenco dei servizi: il primo diventa quello principale
+    const principale = stato.servizio || Object.keys(stato.cat || {})[0];
     for (const [id, s] of Object.entries(stato.cat || {})) {
-      const cb = form.querySelector(`input[name="cat"][value="${id}"]`);
+      const primo = id === principale;
+      const cb = form.querySelector(primo ? `input[name="servizio"][value="${id}"]` : `input[name="altro"][value="${id}"]`);
       if (!cb) continue;
       cb.checked = true;
-      const radio = s.liv && form.querySelector(`input[name="liv-${id}"][value="${s.liv}"]`);
+      const radio = s.liv && form.querySelector(`input[name="${primo ? 'liv' : 'liv2'}-${id}"][value="${s.liv}"]`);
       if (radio) radio.checked = true;
       for (const [eid, q] of Object.entries(s.extra || {})) {
         form.querySelector(`[data-extra="${id}.${eid}"]`)?._imposta?.(q);
@@ -473,8 +494,10 @@ export function avviaPreventivo() {
   const param = new URLSearchParams(location.search).get('s');
   if (param) {
     const [id, liv] = param.split(':');
-    const cb = form.querySelector(`input[name="cat"][value="${id}"]`);
+    const cb = form.querySelector(`input[name="servizio"][value="${id}"]`);
     if (cb) cb.checked = true;
+    const altro = form.querySelector(`input[name="altro"][value="${id}"]`);
+    if (altro) altro.checked = false;
     const radio = liv && form.querySelector(`input[name="liv-${id}"][value="${liv}"]`);
     if (radio) radio.checked = true;
   }

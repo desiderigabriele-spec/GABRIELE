@@ -164,6 +164,19 @@ export function avviaAssistente() {
     if (segna) ss.set('gd-focus-fumetto', '1');
   }
   function mostraFumetto() {
+    // chi torna dopo un po': la nuvoletta dice bentornato e, se c'è, il preventivo lasciato a metà
+    const ritorno = window.gdRitorno;
+    if (ritorno && !aperta && !/preventivo|quote/.test(location.pathname)) {
+      window.gdRitorno = null;
+      const b = fumetto.querySelector('[data-focus-fumetto-apri]');
+      b.textContent = ritorno.testo;
+      b.dataset.ritorno = ritorno.preventivo ? '1' : '';
+      fumetto.hidden = false;
+      requestAnimationFrame(() => fumetto.classList.add('su'));
+      ss.set('gd-focus-fumetto', '1');
+      setTimeout(() => nascondiFumetto(false), 9000);
+      return;
+    }
     if (aperta || ss.get('gd-focus-fumetto') || /preventivo|quote/.test(location.pathname)) return;
     // non sopra il bottone dell'hero: aspetta che la prima schermata sia passata
     if (window.scrollY < innerHeight * 0.8) {
@@ -183,7 +196,11 @@ export function avviaAssistente() {
     ss.set('gd-focus-fumetto', '1');
     setTimeout(() => nascondiFumetto(false), 7000);
   }
-  fumetto.querySelector('[data-focus-fumetto-apri]').addEventListener('click', apri);
+  fumetto.querySelector('[data-focus-fumetto-apri]').addEventListener('click', (e) => {
+    // il preventivo lasciato a metà: la nuvoletta porta dritta lì
+    if (e.currentTarget.dataset.ritorno) { nascondiFumetto(true); location.href = linkPv.href; return; }
+    apri();
+  });
   fumetto.querySelector('[data-focus-fumetto-chiudi]').addEventListener('click', () => nascondiFumetto(true));
 
   // ---------- lo sguardo ----------

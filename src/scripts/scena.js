@@ -657,7 +657,7 @@ export function avviaScena(canvas) {
   // Dietro a quell'area le particelle si affievoliscono con una sfumatura ampia: nessun ritaglio
   // attorno alle lettere, solo una luce che cala dove si legge.
   const SEL_BLOCCHI = 'main :is(.hero-testo, .didascalia, .testa-sezione, .dolore, .svolta, .servizio, .stanotte, .metodo-fisso, .passo, .cliente-corpo, .sv-testo, .chi-testo, .storia-tempi, .piano, .altri-prezzi, .prezzi-nota, .garanzia, .faq details, .finale-testo, .pv-testa, .pv-passi, .pv-passo:not([hidden]), .prosa)';
-  const SEL_FISSO = '.site-header .header-bar, .ritorno.visibile';
+  const SEL_FISSO = '.site-header .header-bar';
   let righe = [];
   const rng = document.createRange();
   function areaTesto(el) {

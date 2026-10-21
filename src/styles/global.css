@@ -257,7 +257,6 @@ html.intro-attiva .intro { display: grid; }
 .nav-voce { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: .3rem; padding: .55rem .95rem; border: 0; border-radius: 999px; background: none; font: inherit; font-size: .92rem; line-height: 1; text-decoration: none; color: var(--nebbia); white-space: nowrap; cursor: pointer; transition: color .25s; }
 .nav-voce:hover, .nav-voce:focus-visible, .nav-voce.attiva, .nav-voce[aria-expanded='true'] { color: var(--latte); }
 .nav-voce:focus-visible { outline: 2px solid var(--viola-chiaro); outline-offset: 1px; }
-.nav-ai::after { content: ''; width: 6px; height: 6px; margin-left: .15rem; background: var(--rosso); }
 /* un solo cursore lampeggia nel sito (quello del titolo); gli altri quadratini stanno fermi */
 @keyframes lampeggia { 50% { opacity: 0; } }
 .nav-freccia { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: transform .35s var(--ease); }
@@ -709,15 +708,6 @@ html.js:not(.ridotto) [data-appare] { opacity: 0; transform: translateY(28px); }
 .parola-iride:hover { background-image: linear-gradient(var(--rosso), var(--rosso)); background-size: 100% 2px; }
 
 /* ---------- Bentornato ---------- */
-.ritorno { position: fixed; z-index: 55; left: 16px; bottom: 16px; max-width: 380px; display: grid; grid-template-columns: auto 1fr auto; gap: .3rem .9rem; align-items: center; padding: 1rem 1.1rem; border-radius: var(--r); background: rgba(var(--sup-rgb),.94); border: 1px solid var(--linea-forte); border-left: 3px solid var(--rosso); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transform: translateY(20px); opacity: 0; transition: opacity .6s var(--ease), transform .6s var(--ease); }
-.ritorno[hidden] { display: none; }
-.ritorno.visibile { opacity: 1; transform: none; }
-.ritorno-occhio { grid-row: span 2; font-size: 1.6rem; background: var(--caldo); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.ritorno p { margin: 0; font-size: .92rem; color: var(--nebbia); }
-.ritorno p strong { color: var(--latte); }
-.ritorno .link-freccia { font-size: .88rem; }
-.ritorno-chiudi { grid-row: 1 / span 2; grid-column: 3; align-self: start; background: none; border: 0; color: var(--nebbia); font-size: 1.3rem; line-height: 1; cursor: pointer; padding: .2rem; }
-@media (max-width: 900px) { .ritorno { left: 12px; right: 12px; max-width: none; bottom: calc(86px + env(safe-area-inset-bottom)); } }
 
 /* ---------- Header: personalizza e lingua ---------- */
 .header-strumenti { display: flex; align-items: center; gap: .5rem; }
@@ -790,7 +780,6 @@ html.js:not(.ridotto) [data-appare] { opacity: 0; transform: translateY(28px); }
 html.ridotto .mascotte *, html.ridotto .ico * { animation: none !important; }
 
 /* dove compare */
-.ritorno .mascotte { grid-row: span 2; width: 52px; height: 52px; }
 .pagina-404 .mascotte { width: min(30vw, 120px); height: auto; margin: 0 auto; }
 
 /* ==========================================================================

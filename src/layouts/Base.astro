@@ -300,13 +300,6 @@ const hrefEn = lang === 'en' ? path : alt;
       </form>
     </div>
 
-    <div class="ritorno" data-ritorno hidden role="status">
-      <Cursore stato="saluta" />
-      <p><strong data-ritorno-titolo>{t.bentornato}!</strong> <span data-ritorno-testo>{t.bentornatoTesto}</span></p>
-      <a class="link-freccia" href={preventivo} data-ritorno-link>{t.ctaPreventivo} <span class="freccia" aria-hidden="true">→</span></a>
-      <button class="ritorno-chiudi" type="button" aria-label={t.chiudi} data-ritorno-chiudi>×</button>
-    </div>
-
     {alt && (
       <div class="avviso-lingua" data-avviso-lingua data-per={altLang} hidden role="status" lang={altLang}>
         <span>{t.avvisoLingua}</span>

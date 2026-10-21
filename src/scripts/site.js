@@ -220,20 +220,6 @@ document.addEventListener('pointerover', (e) => {
   if (scena) scena.battito = e.target.closest('[data-azione], .btn-azione') ? 1 : 0;
 });
 
-// ---------- Effetto magnetico sui bottoni importanti ----------
-if (finePointer && !ridotto) {
-  document.querySelectorAll('[data-magnete], .btn-azione').forEach((el) => {
-    const x = gsap.quickTo(el, 'x', { duration: 0.6, ease: 'elastic.out(1, 0.4)' });
-    const y = gsap.quickTo(el, 'y', { duration: 0.6, ease: 'elastic.out(1, 0.4)' });
-    el.addEventListener('pointermove', (e) => {
-      const r = el.getBoundingClientRect();
-      x((e.clientX - r.left - r.width / 2) * 0.28);
-      y((e.clientY - r.top - r.height / 2) * 0.4);
-    });
-    el.addEventListener('pointerleave', () => { x(0); y(0); });
-  });
-}
-
 // ---------- Card: bagliore che segue il mouse + leggera inclinazione ----------
 if (finePointer && !ridotto) {
   document.querySelectorAll('.card').forEach((el) => {
@@ -325,8 +311,8 @@ document.querySelectorAll('[data-iride]').forEach((el) => {
 
 // ---------- 3. Chi torna riceve un occhiolino ----------
 const RITORNO = {
-  it: { bentornato: 'Rieccoti', progetto: "Il tuo progetto è ancora qui, come l'avevi lasciato.", riprendi: 'Riprendi il preventivo' },
-  en: { bentornato: 'Welcome back', progetto: 'Your project is still here, just as you left it.', riprendi: 'Resume your quote' },
+  it: { bentornato: 'Rieccoti', progetto: 'Il tuo preventivo è ancora qui: lo riprendiamo?', semplice: 'Ti calcolo il prezzo in 2 minuti?' },
+  en: { bentornato: 'Welcome back', progetto: 'Your quote is still here: shall we pick it up?', semplice: 'Shall I work out your price in 2 minutes?' },
 };
 (function bentornato() {
   if (ss.get('gd-sessione') || /^\/(preventivo|en\/quote)/.test(location.pathname)) return; // una volta per visita, non nel preventivo
@@ -334,30 +320,17 @@ const RITORNO = {
   const ultima = Number(ls.get('gd-ultima') || 0);
   ls.set('gd-ultima', String(Date.now()));
   if (!ultima || Date.now() - ultima < 30 * 60 * 1000) return; // prima visita, o appena uscito
-  const box = document.querySelector('[data-ritorno]');
-  if (!box) return;
+  // non c'è più un riquadro: lo dice Focus, l'occhio, nella sua nuvoletta (assistente.js)
   let progetto = null;
   try { progetto = JSON.parse(ls.get('gd-preventivo') || 'null'); } catch (_) {}
   const t = RITORNO[lang], nome = leggiProfilo().nome;
-  if (nome) box.querySelector('[data-ritorno-titolo]').textContent = `${t.bentornato}, ${nome}!`;
-  if (progetto && Object.keys(progetto.cat || {}).length) {
-    box.querySelector('[data-ritorno-testo]').textContent = t.progetto;
-    box.querySelector('[data-ritorno-link]').firstChild.textContent = `${t.riprendi} `;
-  }
-  const mostra = () => {
-    setTimeout(() => {
-      scena?.occhiolino?.();
-      box.hidden = false;
-      requestAnimationFrame(() => box.classList.add('visibile'));
-      window.gdTrack('bentornato');
-      setTimeout(() => chiudi(), 10000);
-    }, 1400);
+  const haProgetto = !!(progetto && (progetto.servizio || Object.keys(progetto.cat || {}).length));
+  window.gdRitorno = {
+    testo: `${nome ? `${t.bentornato}, ${nome}!` : `${t.bentornato}!`} ${haProgetto ? t.progetto : t.semplice}`,
+    preventivo: haProgetto,
   };
-  const chiudi = () => { box.classList.remove('visibile'); setTimeout(() => { box.hidden = true; }, 600); };
-  box.querySelector('[data-ritorno-chiudi]').addEventListener('click', chiudi);
-  // aspetta che la scena sia pronta, così l'occhiolino si vede
-  const prova = (n = 0) => { if (scena || n > 25) mostra(); else setTimeout(() => prova(n + 1), 200); };
-  if (html.classList.contains('intro-attiva')) window.addEventListener('gd-intro-fine', () => prova(), { once: true }); else prova();
+  setTimeout(() => scena?.occhiolino?.(), 1400);
+  window.gdTrack('bentornato');
 })();
 
 // ---------- 4. Lingua: chi ha il browser in un'altra lingua riceve un avviso discreto ----------
