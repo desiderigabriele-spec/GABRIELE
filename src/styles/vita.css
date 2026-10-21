@@ -80,8 +80,8 @@
 @media (max-width: 820px) {
   /* il disegno resta al centro; i tre riquadri stanno sugli angoli e escono un po' verso l'esterno (mai oltre il margine):
      prenotazioni in alto a sinistra, WhatsApp in alto a destra, recensioni centrate sull'angolo in basso a destra */
-  .bz-grafico { top: -8%; bottom: auto; right: auto; left: max(-52px, calc((100% - 100vw) / 2 + 16px)); width: 88px; padding: 5px 7px; gap: 4px; }
-  .bz-grafico small { font-size: 7px; }
+  .bz-grafico { top: -8%; bottom: auto; right: auto; left: max(-52px, calc((100% - 100vw) / 2 + 16px)); width: 102px; padding: 5px 7px; gap: 4px; }
+  .bz-grafico small { font-size: 7px; letter-spacing: .04em; white-space: nowrap; }
   .bz-grafico span { height: 15px; }
   .bz-chat { top: -8%; right: max(-60px, calc((100% - 100vw) / 2 + 16px)); width: 100px; padding: 5px 7px; font-size: 9.5px; }
   .bz-chat small { font-size: 7px; }
