@@ -87,8 +87,8 @@ const hrefEn = lang === 'en' ? path : alt;
         try { if (localStorage.getItem('gd-tema') === 'chiaro') h.dataset.tema = 'chiaro'; } catch (e) {}
         // Intro col cursore rosso: solo alla prima pagina della visita
         try { if (!sessionStorage.getItem('gd-intro')) h.classList.add('intro-attiva'); } catch (e) {}
-        // arrivo da un'altra pagina del sito: la tendina rossa copre la pagina e poi si richiude (vita.js)
-        try { if (sessionStorage.getItem('gd-tendina')) h.classList.add('tendina-arrivo'); } catch (e) {}
+        // arrivo da un'altra pagina del sito con il salto tra le stelle: la pagina nasce nascosta e appare mentre le stelle rallentano (vita.js)
+        try { if (sessionStorage.getItem('gd-salto')) h.classList.add('salto-arrivo'); } catch (e) {}
       })();
     </script>
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}

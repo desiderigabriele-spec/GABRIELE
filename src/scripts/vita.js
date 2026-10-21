@@ -1,6 +1,6 @@
 // La vita del sito: gli effetti scelti dal canvas «Idee di animazione Desideri&Code» (01-17).
 // Ognuno parte solo se nella pagina c'è il suo elemento, e nessuno parte con «riduci movimento»
-// (tranne la tendina tra le pagine, che allora non c'è e basta).
+// (tranne il salto tra le pagine, che allora non c'è e basta).
 const html = document.documentElement;
 const ridotto = html.classList.contains('ridotto');
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -408,49 +408,35 @@ function fila1(fila) {
   });
 }
 
-// ---------- 11 · Tendina rossa: tra una pagina e l'altra il quadratino copre tutto e si richiude ----------
-function tendina() {
-  // arrivo: la pagina nasce coperta di rosso (classe messa nel <head>), il rosso si richiude sul logo
-  // la tendina ha il colore dello sfondo; diventa rossa solo quando è piccola (niente schermo rosso)
-  if (html.classList.contains('tendina-arrivo')) {
-    const velo = document.createElement('span');
-    velo.className = 'tendina';
-    velo.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(velo);
-    html.classList.remove('tendina-arrivo');
-    const logo = document.querySelector('.site-header .brand-icona')?.getBoundingClientRect();
-    const fx = logo ? logo.right - logo.width * 0.25 : 40, fy = logo ? logo.bottom - logo.height * 0.25 : 40;
-    const cs = getComputedStyle(html);
-    const anim = velo.animate([
-      { left: '0px', top: '0px', width: `${innerWidth}px`, height: `${innerHeight}px`, backgroundColor: cs.getPropertyValue('--notte').trim() },
-      { offset: 0.7, backgroundColor: cs.getPropertyValue('--notte-2').trim() },
-      { left: `${fx - 3}px`, top: `${fy - 3}px`, width: '6px', height: '6px', backgroundColor: cs.getPropertyValue('--rosso').trim() },
-    ], { duration: 650, easing: 'cubic-bezier(.76,0,.24,1)', fill: 'forwards' });
-    anim.onfinish = () => velo.remove();
+// ---------- 11 · Il salto tra le stelle: cambiare pagina è un altro pezzo del viaggio ----------
+function salto() {
+  // arrivo: la pagina è nascosta (classe messa nel <head>) e appare mentre le stelle rallentano
+  if (html.classList.contains('salto-arrivo')) {
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      html.classList.add('salto-entra'); html.classList.remove('salto-arrivo');
+      setTimeout(() => html.classList.remove('salto-entra'), 700);
+    }));
   }
-  ss.via('gd-tendina');
-  window.addEventListener('pageshow', (e) => { if (e.persisted) document.querySelectorAll('.tendina').forEach((v) => v.remove()); });
+  ss.via('gd-salto');
+  // tornando indietro col browser la pagina dev'essere di nuovo visibile
+  window.addEventListener('pageshow', (e) => { if (e.persisted) html.classList.remove('salto-via', 'salto-arrivo', 'salto-entra'); document.querySelectorAll('.premuto').forEach((b) => b.classList.remove('premuto')); });
   if (ridotto) return;
   // partenza: ascolto sulla finestra, così ogni altro gestore dei clic ha già deciso
   window.addEventListener('click', (e) => {
     if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     const a = e.target.closest?.('a[href]');
-    // il cambio lingua è immediato: niente tendina
+    // il cambio lingua è immediato: niente salto
     if (!a || a.target === '_blank' || a.hasAttribute('download') || a.hasAttribute('data-lingua')) return;
     const u = new URL(a.href, location.href);
     if (u.origin !== location.origin || (u.pathname === location.pathname && u.search === location.search)) return;
     e.preventDefault();
-    const velo = document.createElement('span');
-    velo.className = 'tendina';
-    velo.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(velo);
-    const x = e.clientX || innerWidth / 2, y = e.clientY || innerHeight / 2;
-    const cs = getComputedStyle(html);
-    velo.animate([
-      { left: `${x - 5}px`, top: `${y - 5}px`, width: '10px', height: '10px', backgroundColor: cs.getPropertyValue('--rosso').trim() },
-      { offset: 0.35, backgroundColor: cs.getPropertyValue('--notte-2').trim() },
-      { left: '0px', top: '0px', width: `${innerWidth}px`, height: `${innerHeight}px`, backgroundColor: cs.getPropertyValue('--notte').trim() },
-    ], { duration: 520, easing: 'cubic-bezier(.76,0,.24,1)', fill: 'forwards' }).onfinish = () => { ss.set('gd-tendina', '1'); location.assign(u.href); };
+    // sui bottoni si sente il clic: il bottone si abbassa, poi si salta
+    const bt = a.matches('.btn') ? a : null;
+    bt?.classList.add('premuto');
+    const dopo = bt ? 110 : 0;
+    window.dispatchEvent(new CustomEvent('gd-salto'));
+    setTimeout(() => html.classList.add('salto-via'), dopo);
+    setTimeout(() => { ss.set('gd-salto', '1'); location.assign(u.href); }, dopo + 440);
   });
 }
 
@@ -622,7 +608,7 @@ function righeCheSiScrivono() {
 }
 
 export function avviaVita() {
-  tendina();
+  salto();
   giornata(); // l'interruttore funziona anche con «riduci movimento»
   pacchettiSlider();
   filaInfinita(); // si trascina anche con «riduci movimento», ma non scorre da sola

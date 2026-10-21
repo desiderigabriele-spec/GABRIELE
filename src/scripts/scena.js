@@ -554,6 +554,10 @@ export function avviaScena(canvas) {
   let capitolo = 0;
   // velocità del viaggio per capitolo (strada al secondo): fermi, si parte piano, sicuri, si accelera, scie
   const VIAGGIO = [0, 0.035, 0.07, 0.13, 0.24];
+  // il salto tra le pagine: partendo le stelle accelerano fino alle scie; arrivando rallentano
+  let salto = document.documentElement.classList.contains('salto-arrivo') ? 1 : 0, saltoVia = false;
+  window.addEventListener('gd-salto', () => { saltoVia = true; });
+  window.addEventListener('pageshow', (e) => { if (e.persisted) { saltoVia = false; salto = 0; } });
   function leggiStato() {
     const c = H * 0.5;
     let scelta = null;
@@ -815,10 +819,11 @@ export function avviaScena(canvas) {
     suni.uWarp.value = morbido(suni.uWarp.value, ridotto ? 0 : THREE.MathUtils.smoothstep(Math.abs(vel), 0.18, 1.3), 6);
     suni.uScroll.value = (sy / H) * 0.6;
     // il viaggio: si parte dal secondo capitolo; scorrendo si accelera un po'
-    const velViaggio = ridotto ? 0 : VIAGGIO[capitolo] + Math.min(Math.abs(vel), 1.5) * 0.12 * (capitolo > 0 ? 1 : 0);
-    suni.uViaggio.value = morbido(suni.uViaggio.value, ridotto || capitolo === 0 ? 0 : 1, 1.4);
+    salto = saltoVia ? Math.min(1, salto + dt * 3.5) : Math.max(0, salto - dt * 1.3);
+    const velViaggio = ridotto ? 0 : VIAGGIO[capitolo] + Math.min(Math.abs(vel), 1.5) * 0.12 * (capitolo > 0 ? 1 : 0) + salto * 0.9;
+    suni.uViaggio.value = Math.max(salto, morbido(suni.uViaggio.value, ridotto || capitolo === 0 ? 0 : 1, 1.4));
     suni.uPercorso.value += velViaggio * dt * suni.uViaggio.value;
-    suni.uScia.value = morbido(suni.uScia.value, THREE.MathUtils.smoothstep(velViaggio, 0.1, 0.26), 3);
+    suni.uScia.value = Math.max(salto, morbido(suni.uScia.value, THREE.MathUtils.smoothstep(velViaggio, 0.1, 0.26), 3));
     suni.uParallasse.value.set(mouse.x < 5 ? -mouse.x * 0.25 : 0, mouse.y < 5 ? -mouse.y * 0.15 : 0);
     // una stella cadente ogni 10-25 secondi (mai con «riduci movimento»)
     if (!ridotto) {

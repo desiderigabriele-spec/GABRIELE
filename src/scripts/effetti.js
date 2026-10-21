@@ -57,7 +57,7 @@ function scoppio(x, y) {
 
 function stelline() {
   if (ridotto) return;
-  // 7 · al clic su un bottone d'azione parte una pioggia di stelline (il cambio pagina lo fa la tendina rossa, vita.js)
+  // 7 · al clic su un bottone d'azione parte una pioggia di stelline (il cambio pagina lo fa il salto tra le stelle, vita.js)
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-azione], .btn-azione, a[data-wa]');
     if (!b) return;

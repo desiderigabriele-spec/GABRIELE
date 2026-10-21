@@ -20,6 +20,10 @@ export function avviaLuce() {
   let w = 0, h = 0, granelli = [], mx = null, my = null, id = 0, t0 = performance.now();
   let capitolo = 0, viaggio = 0, strada = 0, scia = 0, prima = 0, ultimoScroll = scrollY, vel = 0, conta = 0;
   const sezioni = [...document.querySelectorAll('[data-forma]')];
+  // il salto tra le pagine: il pulviscolo accelera fino alle scie, e arrivando rallenta
+  let salto = html.classList.contains('salto-arrivo') ? 1 : 0, saltoVia = false;
+  addEventListener('gd-salto', () => { saltoVia = true; });
+  addEventListener('pageshow', (e) => { if (e.persisted) { saltoVia = false; salto = 0; } });
   const leggiCapitolo = () => { const c = innerHeight / 2; for (const el of sezioni) { const r = el.getBoundingClientRect(); if (r.top <= c && r.bottom >= c) { capitolo = Number(el.dataset.forma) || 0; return; } } };
 
   const misura = () => {
@@ -37,10 +41,11 @@ export function avviaLuce() {
     const dt = Math.min(0.05, prima ? (t - prima) / 1000 : 0); prima = t;
     if (conta++ % 12 === 0) leggiCapitolo();
     vel += (Math.abs(scrollY - ultimoScroll) / Math.max(dt, 0.001) / 4000 - vel) * 0.1; ultimoScroll = scrollY;
-    const veloce = ridotto ? 0 : VIAGGIO[capitolo] + (capitolo > 0 ? Math.min(vel, 1.5) * 0.12 : 0);
-    viaggio += ((ridotto || !capitolo ? 0 : 1) - viaggio) * Math.min(1, dt * 1.4);
+    salto = saltoVia ? Math.min(1, salto + dt * 3.5) : Math.max(0, salto - dt * 1.3);
+    const veloce = ridotto ? 0 : VIAGGIO[capitolo] + (capitolo > 0 ? Math.min(vel, 1.5) * 0.12 : 0) + salto * 0.9;
+    viaggio = Math.max(salto, viaggio + ((ridotto || !capitolo ? 0 : 1) - viaggio) * Math.min(1, dt * 1.4));
     strada += veloce * dt * viaggio;
-    scia += ((veloce > 0.1 ? Math.min(1, (veloce - 0.1) / 0.16) : 0) - scia) * Math.min(1, dt * 3);
+    scia = Math.max(salto, scia + ((veloce > 0.1 ? Math.min(1, (veloce - 0.1) / 0.16) : 0) - scia) * Math.min(1, dt * 3));
     c.clearRect(0, 0, w, h);
     // i raggi: quattro fasce oblique che respirano piano
     for (let k = 0; k < 4; k++) {

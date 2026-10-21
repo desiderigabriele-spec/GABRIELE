@@ -847,7 +847,7 @@ html.stelle-titolo [data-stelle] { opacity: 0; }
 .parola-iride:hover::after, .parola-iride:focus-visible::after { opacity: 1; animation: cometa .9s ease-out forwards; }
 @keyframes cometa { from { background-position: 100% 0; } to { background-position: 0 0; opacity: .2; } }
 
-/* 11 · passaggio tra le pagine: ora è la tendina rossa (vita.css / vita.js) */
+/* 11 · passaggio tra le pagine: ora è il salto tra le stelle (vita.css / vita.js) */
 
 
 /* 13 · firma nel footer: «Desideri» con un cielo che scorre dentro le lettere */

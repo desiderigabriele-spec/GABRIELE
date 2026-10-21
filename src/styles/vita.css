@@ -128,10 +128,18 @@ html.vita-on .punto-titolo.arrivato { transform: none; }
 .flap.gira { font-variant-numeric: tabular-nums; background: #1c1c1c; color: #ffffff !important; box-shadow: inset 0 -1px 0 #0a0a0a, inset 0 1px 0 #0a0a0a; }
 /* niente cifre tabellari a riposo: in Inter Tight allargano anche il punto delle migliaia */
 
-/* 11 · la tendina rossa tra le pagine */
-.tendina { position: fixed; z-index: 200; background: var(--rosso); pointer-events: none; }
-html.tendina-arrivo::after { content: ''; position: fixed; inset: 0; z-index: 200; background: var(--notte); animation: tendina-sicura .3s 2.5s forwards; }
-@keyframes tendina-sicura { to { opacity: 0; visibility: hidden; } }
+/* 11 · il salto tra le stelle: cambiando pagina il sito si dissolve mentre le stelle diventano scie (scena.js, luce.js);
+   la pagina nuova appare mentre le stelle rallentano. Il cielo (.scena, .luce) resta sempre visibile. */
+html.salto-via body > :not(.scena):not(.luce) { opacity: 0; filter: blur(3px); transition: opacity .42s cubic-bezier(.6, 0, .3, 1), filter .42s; }
+html.salto-via main { transform: scale(1.04); transition: transform .42s cubic-bezier(.6, 0, .3, 1); }
+html.salto-arrivo body > :not(.scena):not(.luce) { opacity: 0; animation: salto-sicuro .3s 2.5s forwards; }
+html.salto-arrivo main { transform: scale(.97); }
+html.salto-entra body > :not(.scena):not(.luce) { transition: opacity .55s cubic-bezier(.2, .8, .2, 1); }
+html.salto-entra main { transition: transform .6s cubic-bezier(.2, .8, .2, 1); }
+/* se qualcosa va storto, la pagina compare comunque */
+@keyframes salto-sicuro { to { opacity: 1; } }
+/* il clic: il bottone si abbassa un attimo prima del salto */
+.btn.premuto { transform: scale(.96) !important; transition: transform .1s !important; }
 
 /* 12 · tipografia cinetica (al posto del nastro) */
 .cinetica { position: relative; z-index: 2; overflow: hidden; padding: clamp(14px, 2.4svh, 28px) 0; border-block: 1px solid var(--linea); background: rgba(var(--notte-rgb), .6); --inclina: 0deg; }
