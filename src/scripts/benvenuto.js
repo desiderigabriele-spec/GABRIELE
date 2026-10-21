@@ -12,7 +12,60 @@ const TESTI = {
 export function avviaPersonalizza(scena) {
   applicaProfilo(leggiProfilo());
   nomeModificabile();
+  nomeHeader();
+  nomeCheSiDecodifica();
   benvenuto(scena);
+}
+
+// ---------- il nome nell'header: NO/ME apre un campo piccolo, «Salva» chiama il sito con il tuo nome ----------
+function nomeHeader() {
+  const bt = document.querySelector('[data-nome-btn]'), pop = document.querySelector('[data-nome-pop]');
+  if (!bt || !pop) return;
+  const campo = pop.querySelector('input');
+  // il campo vive fuori dall'header (che si sposta mentre scorri): si apre sotto al bottone, dentro lo schermo
+  document.body.appendChild(pop);
+  const metti = () => { const r = bt.getBoundingClientRect(); pop.style.top = `${Math.round(r.bottom + 10)}px`; const largo = Math.min(320, innerWidth - 32); pop.style.right = `${Math.max(16, Math.min(Math.round(innerWidth - r.right), innerWidth - largo - 16))}px`; };
+  addEventListener('resize', () => { if (!pop.hidden) metti(); });
+  const apri = (si) => {
+    if (si) metti();
+    pop.hidden = !si; bt.setAttribute('aria-expanded', String(si));
+    if (si) { campo.value = leggiProfilo().nome || ''; requestAnimationFrame(() => campo.focus()); }
+  };
+  bt.addEventListener('click', (e) => { e.stopPropagation(); apri(pop.hidden); });
+  pop.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const q = leggiProfilo(); const prima = q.nome || '';
+    q.nome = pulisciNome(campo.value); q.fatto = true;
+    salvaProfilo(q); applicaProfilo(q);
+    apri(false); bt.focus();
+    if (q.nome && q.nome !== prima) { decodificaTutti(); traccia('nome_cambiato'); }
+  });
+  document.addEventListener('click', (e) => { if (!pop.hidden && !pop.contains(e.target) && e.target !== bt) apri(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !pop.hidden) { apri(false); bt.focus(); } });
+}
+
+// ---------- il nome si decodifica: lettere di codice che diventano il tuo nome, come le etichette dei capitoli ----------
+const SEGNI = '01<>/{}[]#$%&*+=?;:_';
+const ridotto = document.documentElement.classList.contains('ridotto') || matchMedia('(prefers-reduced-motion: reduce)').matches;
+function decodifica(el) {
+  const nome = leggiProfilo().nome;
+  if (!nome || ridotto || el.hasAttribute('data-in-modifica')) return;
+  let f = 0;
+  clearInterval(el._decodifica);
+  el._decodifica = setInterval(() => {
+    if (el.hasAttribute('data-in-modifica')) { clearInterval(el._decodifica); return; }
+    f++;
+    el.textContent = nome.split('').map((ch, k) => (ch === ' ' || f >= k * 2 + 5 ? ch : SEGNI[(k * 7 + f * 3) % SEGNI.length])).join('');
+    if (f >= nome.length * 2 + 5) { clearInterval(el._decodifica); el.textContent = nome; }
+  }, 42);
+}
+function decodificaTutti() {
+  document.querySelectorAll('[data-nome]').forEach((el) => { const r = el.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight) decodifica(el); });
+}
+function nomeCheSiDecodifica() {
+  // ogni nome si decodifica la prima volta che arriva sullo schermo
+  const io = new IntersectionObserver((voci) => voci.forEach((v) => { if (v.isIntersecting) { io.unobserve(v.target); decodifica(v.target); } }), { threshold: 0.6 });
+  document.querySelectorAll('[data-nome]').forEach((el) => io.observe(el));
 }
 
 // ---------- il benvenuto: nome e cookie in un pannellino in basso, una sola conferma ----------

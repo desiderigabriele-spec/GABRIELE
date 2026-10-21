@@ -156,6 +156,24 @@ const hrefEn = lang === 'en' ? path : alt;
           ))}
         </nav>
         <div class="header-strumenti">
+          {/* il nome: NO sopra e ME sotto (NA/ME in inglese), lettere a linee dritte che insieme fanno un quadrato */}
+          <div class="nome-pop-box">
+            <button class="nome-btn" type="button" data-nome-btn aria-label={t.nomeBtn} aria-expanded="false" aria-controls="nome-pop">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M1.2 10V1.2L8.8 8.8V0" />
+                {lang === 'en'
+                  ? <path d="M15.2 10V1.2H22.8V10M15.2 5.4H22.8" />
+                  : <rect class="nome-o" x="15.2" y="1.2" width="7.6" height="7.6" />}
+                <path d="M1.2 24V15.2L5 19.6L8.8 15.2V24" />
+                <path d="M24 15.2H15.2V22.8H24M15.2 19H22" />
+              </svg>
+            </button>
+            <form class="nome-pop" id="nome-pop" data-nome-pop hidden>
+              <label for="nome-pop-campo">{t.bvTitolo}</label>
+              <div><input id="nome-pop-campo" name="nome" type="text" autocomplete="given-name" maxlength="24" placeholder={t.bvSegnaposto} enterkeyhint="done" autocapitalize="words" spellcheck="false"><button class="btn btn-azione" type="submit">{t.nomeSalva}</button></div>
+              <small>{t.bvPerche}</small>
+            </form>
+          </div>
           <button class="tema-btn" type="button" data-tema-btn aria-label={t.temaChiaro} data-testi={JSON.stringify([t.temaChiaro, t.temaScuro])}>
             <svg class="sole" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M21.5 12h-2.2M4.7 12H2.5M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6M18.7 18.7l-1.6-1.6M6.9 6.9 5.3 5.3"/></svg>
             <svg class="luna" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>

@@ -80,6 +80,25 @@ html[data-tema='chiaro'] .cap-velo { background: rgba(10, 10, 10, .35); }
 html.tema-cambia, html.tema-cambia * { transition: background-color .35s ease, color .35s ease, border-color .35s ease !important; }
 
 /* il bottone del tema nell'header: sole o luna, sempre visibile accanto alla lingua */
+/* il nome nell'header: N, O, M, E a linee dritte in grassetto, insieme fanno un quadrato (niente riquadro attorno) */
+.nome-pop-box { position: relative; }
+.nome-btn { position: relative; width: 40px; height: 40px; display: grid; place-items: center; border: 0; background: none; color: var(--latte); cursor: pointer; padding: 0; }
+.nome-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 3; overflow: visible; }
+.nome-btn .nome-o { transition: fill .25s, stroke .25s; }
+.nome-btn:hover .nome-o, .nome-btn:focus-visible .nome-o, .nome-btn[aria-expanded='true'] .nome-o { fill: var(--rosso); stroke: var(--rosso); }
+.nome-btn:hover, .nome-btn:focus-visible { outline: none; }
+.nome-btn:focus-visible svg { outline: 2px solid var(--rosso-testo); outline-offset: 5px; }
+/* quando il nome c'è: il punto verde, come «online» */
+html.ha-nome .nome-btn::after { content: ''; position: absolute; top: 4px; right: 3px; width: 7px; height: 7px; border-radius: 50% !important; background: var(--verde-azione); box-shadow: 0 0 0 2px var(--notte); }
+.nome-pop { position: fixed; right: 16px; top: calc(var(--header-h, 64px) + 8px); z-index: 120; width: min(320px, calc(100vw - 32px)); display: grid; gap: .6rem; padding: 1rem; background: var(--notte); border: 1px solid var(--linea-forte); box-shadow: 0 24px 48px -24px rgba(0, 0, 0, .7); }
+.nome-pop[hidden] { display: none; }
+.nome-pop label { font-family: var(--f-titolo); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; color: var(--latte); }
+.nome-pop div { display: flex; gap: .5rem; min-width: 0; }
+.nome-pop input { flex: 1; min-width: 0; width: 100%; font: 500 16px/1 var(--f-testo); color: var(--latte); background: transparent; border: 1px solid var(--linea-forte); padding: .7rem .8rem; }
+.nome-pop input:focus { outline: none; border-color: var(--verde-azione); }
+.nome-pop .btn { padding: .7rem 1rem; }
+.nome-pop small { color: var(--nebbia); font-size: .82rem; }
+@media (max-width: 430px) { .nome-btn { width: 32px; } .header-bar .header-strumenti { gap: .35rem; } }
 .tema-btn { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid var(--linea-forte); background: none; color: var(--latte); cursor: pointer; flex: none; transition: border-color .3s; }
 .tema-btn:hover, .tema-btn:focus-visible { border-color: var(--latte); outline: none; }
 .tema-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -122,6 +141,8 @@ h3 { font-size: clamp(1.3rem, 1.8vw, 1.7rem); font-weight: 700; letter-spacing: 
 p { margin: 0; text-wrap: pretty; }
 /* nei titoli la seconda parte è grigia, la parola chiave rossa: niente corsivi né sfumature */
 .em { color: var(--nebbia); }
+/* il percorso nel colore: la frase va dal grigio dello sguardo al verde del sì */
+.em-percorso { background: linear-gradient(90deg, var(--nebbia) 0%, var(--latte) 55%, var(--verde-azione-su) 92%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .em-firma { color: var(--rosso-testo); }
 /* il punto finale del titolo è il quadratino rosso del logo */
 .quadratino { display: inline-block; width: .2em; height: .2em; margin-left: .05em; background: var(--rosso); }
@@ -155,6 +176,11 @@ p { margin: 0; text-wrap: pretty; }
 .btn:hover .freccia { transform: translateX(4px); }
 .btn-azione { background: var(--verde-azione); color: var(--verde-azione-scritta); }
 @media (hover: hover) { .btn-azione:hover { background: var(--verde-azione-su); color: var(--verde-azione-scritta); } }
+/* la lama di luce: ogni tanto un riflesso attraversa i bottoni verdi; passandoci sopra passa subito */
+.btn-azione::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, .5) 50%, transparent 58%) no-repeat; background-size: 260% 100%; background-position: 130% 0; }
+html.vita-on .btn-azione::before { animation: lama-luce 5.5s cubic-bezier(.6, 0, .3, 1) infinite 1.5s; }
+@media (hover: hover) { html.vita-on .btn-azione:hover::before { animation-duration: 1.1s; animation-delay: 0s; } }
+@keyframes lama-luce { 0%, 70% { background-position: 130% 0; } 100% { background-position: -30% 0; } }
 .btn-vetro { background: rgba(var(--notte-rgb), 0.5); border-color: rgba(var(--latte-rgb),.3); color: var(--latte); }
 .btn-vetro:hover { background: rgba(var(--latte-rgb), 0.08); border-color: var(--latte); }
 .btn-grande { --pad: 1.3rem 2.1rem; font-size: 1.08rem; }
@@ -265,7 +291,7 @@ html.intro-attiva .intro { display: grid; }
 .mega-ai strong { font-family: var(--f-titolo); font-size: 1.2rem; line-height: 1.15; letter-spacing: -0.015em; padding-right: 3.6rem; margin-top: 3.4rem; }
 .mega-ai > span:not(.link-freccia) { color: var(--nebbia); font-size: .86rem; line-height: 1.4; }
 .mega-ai:hover .freccia { transform: translateX(4px); }
-.menu-toggle { display: none; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--linea-forte); background: rgba(var(--latte-rgb),.04); cursor: pointer; position: relative; }
+.menu-toggle { display: none; flex: none; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--linea-forte); background: rgba(var(--latte-rgb),.04); cursor: pointer; position: relative; }
 .menu-toggle span { position: absolute; left: 14px; right: 14px; height: 1.5px; background: var(--latte); transition: transform .4s var(--ease); }
 .menu-toggle span:nth-child(1) { top: 18px; } .menu-toggle span:nth-child(2) { top: 26px; }
 .menu-toggle[aria-expanded='true'] span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
