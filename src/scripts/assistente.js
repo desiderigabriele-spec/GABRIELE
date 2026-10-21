@@ -172,7 +172,12 @@ export function avviaAssistente() {
       return;
     }
     const n = nome();
-    fumetto.querySelector('[data-focus-fumetto-apri]').textContent = n ? `${saluta} ${n}, ${T.fumetto}` : T.fumettoSenzaNome;
+    // la frase della sezione che hai davanti, col nome davanti se c'è
+    const riga = innerHeight * 0.45;
+    const qui = [...document.querySelectorAll('main section[id]')].find((x) => { const r = x.getBoundingClientRect(); return r.top <= riga && r.bottom > riga; });
+    const frase = T.contesti?.[qui?.id] || T.fumetto;
+    const maiuscola = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+    fumetto.querySelector('[data-focus-fumetto-apri]').textContent = n ? `${n}, ${frase}` : maiuscola(frase);
     fumetto.hidden = false;
     requestAnimationFrame(() => fumetto.classList.add('su'));
     ss.set('gd-focus-fumetto', '1');

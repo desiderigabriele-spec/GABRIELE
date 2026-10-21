@@ -49,7 +49,7 @@ export const ui = {
     bvPrima: 'Prima di iniziare', bvTitolo: 'Come ti chiami?', bvPerche: 'Serve solo per chiamarti per nome.', bvSegnaposto: 'Il tuo nome (se ti va)',
     bvCookieTitolo: 'I cookie, in breve',
     bvCookie: 'Con il tuo ok vediamo quali pagine ti servono davvero e miglioriamo il sito per te.', bvNomeResta: 'Il nome resta sul tuo dispositivo.',
-    bvSi: 'Accetta ed entra', bvNo: 'Personalizza', bvSenza: 'Continua senza accettare', bvScelte: 'Le tue scelte', bvSalva: 'Salva le mie scelte', bvTutti: 'Accetta tutti',
+    bvSi: 'Accetta ed entra', bvNo: 'Personalizza', bvSenza: 'Chiudi: continua senza accettare', bvSfondo: 'Sfondo', bvScuro: 'Scuro', bvChiaro: 'Chiaro', bvScelte: 'Le tue scelte', bvSalva: 'Salva le mie scelte', bvTutti: 'Accetta tutti',
     bvCat: [['necessari', 'Necessari', 'Fanno funzionare il sito e il preventivo. Sempre attivi.'], ['statistica', 'Statistica', 'Ci dicono quali pagine ti servono, così le miglioriamo.'], ['pubblicita', 'Pubblicità', 'Ti mostriamo solo offerte che ti interessano, non a caso.']], bvAccetta: 'Accetta', bvEntra: 'Entra',
   },
   en: {
@@ -75,7 +75,7 @@ export const ui = {
     bvPrima: 'Before we start', bvTitolo: 'What’s your name?', bvPerche: 'Only so we can call you by name.', bvSegnaposto: 'Your name (if you like)',
     bvCookieTitolo: 'Cookies, in short',
     bvCookie: 'With your OK we see which pages really help you and improve the site for you.', bvNomeResta: 'Your name stays on your device.',
-    bvSi: 'Accept and enter', bvNo: 'Customise', bvSenza: 'Continue without accepting', bvScelte: 'Your choices', bvSalva: 'Save my choices', bvTutti: 'Accept all',
+    bvSi: 'Accept and enter', bvNo: 'Customise', bvSenza: 'Close: continue without accepting', bvSfondo: 'Background', bvScuro: 'Dark', bvChiaro: 'Light', bvScelte: 'Your choices', bvSalva: 'Save my choices', bvTutti: 'Accept all',
     bvCat: [['necessari', 'Necessary', 'They make the site and the quote work. Always on.'], ['statistica', 'Analytics', 'They tell us which pages help you, so we can improve them.'], ['pubblicita', 'Advertising', 'We only show you offers you care about, not random ones.']], bvAccetta: 'Accept', bvEntra: 'Enter',
   },
 };

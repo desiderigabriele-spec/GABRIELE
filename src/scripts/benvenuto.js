@@ -49,7 +49,7 @@ function benvenuto(scena) {
     parteCookie.hidden = !chiediCookie || personalizzo;
     scelte.hidden = !chiediCookie || !personalizzo;
     no.hidden = !chiediCookie;
-    senza.hidden = !chiediCookie || personalizzo;
+    senza.hidden = !chiediCookie;
     no.textContent = personalizzo ? testoSalva : testoPersonalizza;
     si.firstChild.textContent = `${personalizzo ? testoTutti : chiediNome && chiediCookie ? testoSi : chiediCookie ? testoAccetta : testoEntra} `;
     requestAnimationFrame(misura);
@@ -103,6 +103,12 @@ function benvenuto(scena) {
     chiudi(quelliScelti());
   });
   senza.addEventListener('click', () => chiudi(nessuno()));
+  // lo sfondo: gli stessi due stati del bottone nell'header
+  const bottoniTema = [...box.querySelectorAll('[data-bv-tema]')];
+  const segnaTema = () => bottoniTema.forEach((b) => b.setAttribute('aria-pressed', String((html.dataset.tema === 'chiaro') === (b.dataset.bvTema === 'chiaro'))));
+  bottoniTema.forEach((b) => b.addEventListener('click', () => { if ((html.dataset.tema === 'chiaro') !== (b.dataset.bvTema === 'chiaro')) document.querySelector('[data-tema-btn]')?.click(); segnaTema(); }));
+  window.addEventListener('gd-tema', segnaTema);
+  segnaTema();
   // Invio nel campo chiude solo la tastiera e porta ai bottoni: il consenso si dà sempre con un tocco sul bottone
   campo.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter') return;

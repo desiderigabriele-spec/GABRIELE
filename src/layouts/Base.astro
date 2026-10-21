@@ -245,6 +245,12 @@ const hrefEn = lang === 'en' ? path : alt;
          Logica in scripts/benvenuto.js. -->
     <div class="benvenuto" data-benvenuto hidden role="dialog" aria-labelledby="bv-titolo">
       <form class="bv-box" data-bv-form>
+        <!-- lo sfondo si sceglie anche qui: cambia subito, così vedi come ti piace -->
+        <div class="bv-sfondo" role="group" aria-label={t.bvSfondo}>
+          <span class="mono bv-prima">{t.bvSfondo}</span>
+          <button type="button" data-bv-tema="scuro" aria-pressed="true"><i class="bv-campione scuro"></i>{t.bvScuro}</button>
+          <button type="button" data-bv-tema="chiaro" aria-pressed="false"><i class="bv-campione chiaro"></i>{t.bvChiaro}</button>
+        </div>
         <div class="bv-nome" data-bv-nome-parte>
           <span class="mono bv-prima">{t.bvPrima}</span>
           <label class="bv-titolo" id="bv-titolo" for="bv-nome">{t.bvTitolo}</label>
@@ -271,7 +277,8 @@ const hrefEn = lang === 'en' ? path : alt;
           <button class="btn btn-vetro btn-piccolo" type="button" data-bv-no data-testi={JSON.stringify([t.bvNo, t.bvSalva])}>{t.bvNo}</button>
           <button class="btn btn-azione btn-piccolo" type="submit" value="si" data-bv-si data-testi={JSON.stringify([t.bvSi, t.bvAccetta, t.bvEntra, t.bvTutti])}>{t.bvSi} <span class="freccia" aria-hidden="true">→</span></button>
         </div>
-        <button class="bv-senza" type="button" data-bv-senza>{t.bvSenza}</button>
+        <!-- la × piccola in alto a destra: chiude senza accettare (resta il nome, se l'hai scritto) -->
+        <button class="bv-chiudi" type="button" data-bv-senza aria-label={t.bvSenza} title={t.bvSenza}><span aria-hidden="true">×</span></button>
       </form>
     </div>
 
