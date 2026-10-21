@@ -720,7 +720,8 @@ const jsonLd = {
       <h2 data-righe>
         <span class="riga riga-nome" data-riga-nome hidden><span><span data-nome></span>,</span></span>
         <span class="riga"><span data-minuscola>{T('Il tuo prossimo cliente', 'Your next client')}</span></span>
-        <span class="riga"><span>{T('ti sta', 'is')} <span class="em em-firma">{T('già cercando.', 'already looking for you.')}</span></span></span>
+        {/* tutto bianco: solo il punto finale è il quadratino rosso del logo */}
+        <span class="riga"><span>{T('ti sta già cercando', 'is already looking for you')}<span class="quadratino" aria-hidden="true"></span></span></span>
       </h2>
       <p class="lead" data-appare>{T(
         'Componi il tuo progetto in 2 minuti: scegli quello che ti serve, vedi subito il prezzo e mandaci la richiesta. Ti rispondiamo entro 24 ore.',
