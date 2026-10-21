@@ -1,4 +1,4 @@
-// La vita del sito: gli effetti scelti dal canvas «Idee di animazione Desideri & Code» (01-17).
+// La vita del sito: gli effetti scelti dal canvas «Idee di animazione Desideri&Code» (01-17).
 // Ognuno parte solo se nella pagina c'è il suo elemento, e nessuno parte con «riduci movimento»
 // (tranne la tendina tra le pagine, che allora non c'è e basta).
 const html = document.documentElement;

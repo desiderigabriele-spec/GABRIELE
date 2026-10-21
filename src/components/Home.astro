@@ -71,7 +71,7 @@ const ripetitivi: [string, string, number][] = it ? [
   ['Writing reports and summaries', 'Every Monday the week’s summary arrives, in plain words.', 1.5],
 ];
 
-const waTesto = T('Ciao! Ho visto il sito di Desideri & Code e vorrei parlarvi di un progetto.', "Hi! I saw the Desideri & Code website and I'd like to talk to you about a project.");
+const waTesto = T('Ciao! Ho visto il sito di Desideri&Code e vorrei parlarvi di un progetto.', "Hi! I saw the Desideri&Code website and I'd like to talk to you about a project.");
 const descrizione = T(
   'Siti web, e-commerce, software con intelligenza artificiale e pubblicità online progettati con psicologia e neuromarketing.',
   'Websites, e-commerce, AI software and online advertising designed with psychology and neuromarketing.',
@@ -95,7 +95,7 @@ const jsonLd = {
   lang={lang}
   path={url('home', lang)}
   alt={url('home', it ? 'en' : 'it')}
-  title={T('Desideri & Code · Siti web, AI e pubblicità che portano clienti', 'Desideri & Code · Websites, AI and ads that bring clients')}
+  title={T('Desideri&Code · Siti web, AI e pubblicità che portano clienti', 'Desideri&Code · Websites, AI and ads that bring clients')}
   description={T(
     'Siti web, e-commerce, software con intelligenza artificiale e pubblicità online, progettati con la psicologia per portare le persone dal primo sguardo al «sì». Milano, Italia e Svizzera.',
     'Websites, e-commerce, AI software and online advertising, designed with psychology to take people from first glance to "yes". Based in Milan, working across Italy and Switzerland.',
@@ -300,6 +300,8 @@ const jsonLd = {
       <div class="stanotte" data-stanotte>
         <!-- un telefono pieghevole aperto: a sinistra il sito del cliente con la chat di stanotte, a destra le notifiche del mattino -->
         <div class="st-fold" aria-hidden="true">
+          <span class="sf-tasti"><i></i><i></i></span>
+          <div class="sf-schermo">
           <div class="sf-barra"><span>06:00</span><span class="sf-icone"><i class="sf-rete"><b></b><b></b><b></b><b></b></i><svg class="sf-wifi" viewBox="0 0 16 12" aria-hidden="true"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0Zm-4.3-4.3a6 6 0 0 1 8.6 0l-1.3 1.3a4.2 4.2 0 0 0-6 0ZM1 4.5a9.9 9.9 0 0 1 14 0l-1.3 1.3a8.1 8.1 0 0 0-11.4 0Z" fill="currentColor"/></svg><i class="sf-batteria"></i></span></div>
           <div class="sf-sx">
             <div class="sf-sito-testa"><b>Arredi Conti<i></i></b><span>{T('Cucine', 'Kitchens')}</span></div>
@@ -333,7 +335,8 @@ const jsonLd = {
             </ul>
           </div>
           <span class="sf-piega"></span>
-          <span class="sf-camera"></span>
+          <span class="sf-camera"><i></i></span>
+          </div>
         </div>
         <p class="sr-only">{T('Stanotte, mentre dormivi, il tuo software ha risposto a Laura che chiedeva un preventivo, copiato 12 ordini nel gestionale, preparato 3 preventivi da approvare e mandato i promemoria degli appuntamenti di oggi.', 'Last night, while you slept, your software replied to Laura who asked for a quote, copied 12 orders, drafted 3 quotes and sent today’s appointment reminders.')}</p>
         <button class="st-domanda" type="button" data-calcolo-apri>
@@ -546,12 +549,12 @@ const jsonLd = {
           ['Il «no»', 'Porta a porta, al telefono, per strada. Ogni «no» mi ha insegnato cosa fa scappare una persona: confusione, fretta, poca fiducia.'],
           ['La scoperta', 'Le persone non comprano un prodotto. <em>Comprano come si sentono quando lo scelgono</em>: chiarezza, fiducia, un po’ di desiderio.'],
           ['Il metodo', 'Ho unito psicologia della scelta, design e intelligenza artificiale per costruire siti che fanno provare proprio quella sensazione, dal primo sguardo al «sì».'],
-          ['Oggi', 'Desideri & Code è uno studio a Milano. <em>Parli sempre con me</em>, dal primo messaggio all’ultimo ritocco, e il prezzo lo firmi prima di iniziare.'],
+          ['Oggi', 'Desideri&Code è uno studio a Milano. <em>Parli sempre con me</em>, dal primo messaggio all’ultimo ritocco, e il prezzo lo firmi prima di iniziare.'],
         ] : [
           ['The “no”', 'Door to door, on the phone, on the street. Every “no” taught me what makes people walk away: confusion, pressure, too little trust.'],
           ['The discovery', 'People don’t buy a product. <em>They buy how they feel when they choose it</em>: clarity, trust, a little desire.'],
           ['The method', 'I brought together the psychology of choice, design and artificial intelligence to build websites that create exactly that feeling, from first glance to “yes”.'],
-          ['Today', 'Desideri & Code is a studio in Milan. <em>You always talk to me</em>, from the first message to the last tweak, and you sign the price before we start.'],
+          ['Today', 'Desideri&Code is a studio in Milan. <em>You always talk to me</em>, from the first message to the last tweak, and you sign the price before we start.'],
         ]).map(([titolo, testo], k) => <li><b aria-hidden="true">{String(k + 1).padStart(2, '0')}</b><div><h3>{titolo}</h3><p set:html={testo} /></div></li>)}
       </ol>
       <!-- un solo referente: chi ti ascolta è chi disegna il sito -->
@@ -737,7 +740,7 @@ const jsonLd = {
       );
       try { localStorage.setItem('gd-calcolo', testo); } catch (_) {}
       const wa = box.querySelector<HTMLAnchorElement>('[data-cl-wa]')!;
-      const u = new URL(wa.href); u.searchParams.set('text', T(`Ciao Desideri & Code! ${testo}`, `Hi Desideri & Code! ${testo}`)); wa.href = u.toString();
+      const u = new URL(wa.href); u.searchParams.set('text', T(`Ciao Desideri&Code! ${testo}`, `Hi Desideri&Code! ${testo}`)); wa.href = u.toString();
     }
 
     function vai(n: number) {

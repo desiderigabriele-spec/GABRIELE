@@ -17,7 +17,7 @@ export function avviaPersonalizza(scena) {
 
 // ---------- il benvenuto: nome e cookie in un pannellino in basso, una sola conferma ----------
 // Il nome si chiede una volta sola, i cookie finché non scegli. «Accetta ed entra» e «Solo necessari»
-// hanno lo stesso peso; la × vale «Solo necessari». Il consenso non è mai già spuntato.
+// hanno lo stesso peso. Il consenso non è mai già spuntato.
 const CHIAVE_COOKIE = 'gd-cookie';
 const leggi = (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } };
 const scrivi = (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} };
@@ -75,7 +75,6 @@ function benvenuto(scena) {
     e.preventDefault();
     chiudi(e.submitter === no ? 'no' : 'si');
   });
-  box.querySelector('[data-bv-chiudi]').addEventListener('click', () => { if (chiediNome) campo.value = ''; chiudi('no'); });
   // Invio nel campo chiude solo la tastiera e porta ai bottoni: il consenso si dà sempre con un tocco sul bottone
   campo.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter') return;

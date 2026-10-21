@@ -1,4 +1,4 @@
-# Desideri & Code — sito di Gabriele Desideri
+# Desideri&Code — sito di Gabriele Desideri
 
 **Stato:** prima versione completa (anteprima, alcuni dati da confermare) · aggiornato il 16 ottobre 2026
 

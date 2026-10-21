@@ -17,13 +17,13 @@ const T = (a: string, b: string) => (it ? a : b);
 const { categorie, contatti } = dati(lang);
 const preventivo = url('preventivo', lang);
 const diagnosi = categorie.find((c) => c.id === 'software')!.extra.find((e) => e.id === 'diagnosi')!;
-const waTesto = T('Ciao! Ho visto le demo di Desideri & Code e vorrei capire cosa si può fare nella mia attività.', 'Hi! I saw the Desideri & Code demos and I’d like to know what could work in my business.');
+const waTesto = T('Ciao! Ho visto le demo di Desideri&Code e vorrei capire cosa si può fare nella mia attività.', 'Hi! I saw the Desideri&Code demos and I’d like to know what could work in my business.');
 ---
 <Base
   lang={lang}
   path={url('demo', lang)}
   alt={url('demo', it ? 'en' : 'it')}
-  title={T('Demo dal vivo: l’AI al lavoro · Desideri & Code', 'Live demos: AI at work · Desideri & Code')}
+  title={T('Demo dal vivo: l’AI al lavoro · Desideri&Code', 'Live demos: AI at work · Desideri&Code')}
   description={T(
     'Tre demo guidate passo per passo: un messaggio WhatsApp che finisce da solo in agenda, un preventivo da una foto, un assistente che risponde ai clienti. Con spiegazioni semplici.',
     'Three step-by-step guided demos: a WhatsApp message that lands in the calendar on its own, a quote from a photo, an assistant that answers customers. Explained simply.',

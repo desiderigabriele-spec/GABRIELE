@@ -235,13 +235,14 @@ const hrefEn = lang === 'en' ? path : alt;
     <Assistente lang={lang} />
 
     <!-- Il benvenuto, in basso e piccolo: il nome e i cookie con una sola conferma. Il nome si chiede una volta sola;
-         i cookie finché non scegli. «Accetta ed entra» e «Solo necessari» sono grandi uguali, la × vale «Solo necessari».
+         i cookie finché non scegli. «Accetta ed entra» e «Solo necessari» sono grandi uguali.
          Logica in scripts/benvenuto.js. -->
     <div class="benvenuto" data-benvenuto hidden role="dialog" aria-labelledby="bv-titolo">
       <form class="bv-box" data-bv-form>
         <div class="bv-nome" data-bv-nome-parte>
           <span class="mono bv-prima">{t.bvPrima}</span>
           <label class="bv-titolo" id="bv-titolo" for="bv-nome">{t.bvTitolo}</label>
+          <span class="bv-perche">{t.bvPerche}</span>
           <input id="bv-nome" name="nome" type="text" autocomplete="given-name" maxlength="24" placeholder={t.bvSegnaposto} enterkeyhint="done" data-bv-nome />
         </div>
         <div class="bv-cookie" data-bv-cookie-parte>
@@ -252,7 +253,6 @@ const hrefEn = lang === 'en' ? path : alt;
           <button class="btn btn-azione btn-piccolo" type="submit" value="si" data-bv-si data-testi={JSON.stringify([t.bvSi, t.bvAccetta, t.bvEntra])}>{t.bvSi}</button>
           <button class="btn btn-vetro btn-piccolo" type="submit" value="no" data-bv-no>{t.bvNo}</button>
         </div>
-        <button class="bv-chiudi" type="button" aria-label={t.cnChiudi} data-bv-chiudi><span aria-hidden="true">×</span></button>
       </form>
     </div>
 

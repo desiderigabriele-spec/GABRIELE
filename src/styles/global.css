@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Desideri & Code — stile globale
+   Desideri&Code — stile globale
    Lo stile del logo: nero, bianco e un solo rosso, angoli dritti.
    Il rosso compare solo sul quadratino e sui punti di conversione.
    ========================================================================== */
@@ -696,7 +696,7 @@ html.ridotto .mascotte *, html.ridotto .ico * { animation: none !important; }
 .pagina-404 .mascotte { width: min(30vw, 120px); height: auto; margin: 0 auto; }
 
 /* ==========================================================================
-   Effetti (prova «Effetti Desideri & Code»): 1-13
+   Effetti (prova «Effetti Desideri&Code»): 1-13
    ========================================================================== */
 @property --ang { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
 
@@ -894,7 +894,7 @@ html.stelle-titolo [data-stelle] { opacity: 0; }
 /* il nome si cambia toccandolo dove è scritto */
 .nome-tocca { cursor: text; border-radius: 0; }
 .nome-tocca:focus-visible { outline: 2px solid var(--latte); outline-offset: .08em; }
-.nome-modifica { outline: 2px solid var(--latte) !important; outline-offset: .08em; text-decoration: none; caret-color: var(--latte); min-width: 1ch; display: inline-block; }
+.nome-modifica { -webkit-user-select: text; user-select: text; outline: 2px solid var(--latte) !important; outline-offset: .08em; text-decoration: none; caret-color: var(--latte); min-width: 1ch; display: inline-block; }
 
 /* Sul telefono, nella home: la linea a capitoli sotto l'header e il capitolo in cui sei accanto al logo.
    Toccandolo si apre l'indice dei cinque capitoli (effetti.js, capitoliTelefono). */
@@ -1002,25 +1002,23 @@ html.ridotto .cap-testo { animation: none; }
 }
 
 /* Il benvenuto: piccolo, in basso a destra accanto a Focus (su telefono a tutta larghezza, Focus sale sopra). Nome e cookie con una sola conferma */
-.benvenuto { position: fixed; z-index: 120; right: calc(20px + 68px + 16px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); width: min(400px, calc(100vw - 32px)); background: var(--superficie); border: 1px solid var(--linea-forte); border-top: 2px solid var(--rosso); box-shadow: 0 30px 70px -25px rgba(0, 0, 0, .95); opacity: 0; transform: translateY(16px); transition: opacity .35s var(--ease), transform .45s var(--ease); }
+.benvenuto { position: fixed; z-index: 215; touch-action: manipulation; right: calc(20px + 68px + 16px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); width: min(400px, calc(100vw - 32px)); background: var(--superficie); border: 1px solid var(--linea-forte); border-top: 2px solid var(--rosso); box-shadow: 0 30px 70px -25px rgba(0, 0, 0, .95); opacity: 0; transform: translateY(16px); transition: opacity .35s var(--ease), transform .45s var(--ease); }
 .benvenuto.su { opacity: 1; transform: none; }
 .bv-box { position: relative; display: grid; gap: .8rem; padding: 1rem 1rem .95rem; }
-.bv-nome { display: grid; gap: .35rem; padding-right: 2.2rem; }
+.bv-nome { display: grid; gap: .3rem; }
+.bv-perche { font-size: .8rem; color: var(--nebbia); }
 .bv-prima { font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--nebbia); }
 .bv-titolo { font-family: var(--f-titolo); font-weight: 800; font-size: 1.2rem; letter-spacing: -.03em; line-height: 1.1; }
-.bv-nome input { margin-top: .2rem; width: 100%; height: 44px; padding: 0 .8rem; background: transparent; border: 1px solid var(--linea-forte); color: var(--latte); font: inherit; font-size: 16px; }
+.bv-nome input { -webkit-user-select: text; user-select: text; margin-top: .2rem; width: 100%; height: 44px; padding: 0 .8rem; background: transparent; border: 1px solid var(--linea-forte); color: var(--latte); font: inherit; font-size: 16px; }
 .bv-nome input:focus { outline: none; border-color: var(--latte); }
 .bv-nome input::placeholder { color: var(--nebbia-2); }
-.bv-cookie { display: grid; gap: .35rem; padding-right: 2.2rem; }
-.bv-nome:not([hidden]) + .bv-cookie { padding-right: 0; }
+.bv-cookie { display: grid; gap: .35rem; }
 .bv-cookie p { margin: 0; font-size: .78rem; line-height: 1.45; color: var(--nebbia); }
 .bv-cookie a { color: var(--latte); }
 .bv-azioni { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
 .bv-azioni .btn { justify-content: center; --pad: .75rem .6rem; font-size: .88rem; }
 .bv-azioni .btn[hidden] { display: none; }
 .bv-azioni:has(.btn[hidden]) { grid-template-columns: 1fr; }
-.bv-chiudi { position: absolute; top: .35rem; right: .35rem; width: 40px; height: 40px; display: grid; place-items: center; background: none; border: 1px solid transparent; color: var(--nebbia); font-size: 1.5rem; line-height: 1; cursor: pointer; }
-.bv-chiudi:hover, .bv-chiudi:focus-visible { color: var(--latte); border-color: var(--linea-forte); outline: none; }
 @media (max-width: 900px) {
   .benvenuto { left: 10px; right: 10px; width: auto; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
   .bv-box { gap: .65rem; padding: .85rem .9rem .85rem; }
@@ -1033,10 +1031,16 @@ html.ridotto .cap-testo { animation: none; }
 
 /* «Stanotte»: un telefono pieghevole aperto. Cornice in titanio, piega al centro, fotocamera sul lato destro.
    A sinistra il sito del cliente (chiaro, con la chat di stanotte), a destra la schermata di blocco con le notifiche */
-.st-fold { position: relative; width: min(100%, 560px); aspect-ratio: 1.12; container-type: inline-size; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto minmax(0, 1fr);
-  border: 7px solid #1c1c1e; border-radius: 30px !important; outline: 1px solid #48484a; outline-offset: 0; background: #050505; overflow: hidden;
-  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .9), inset 0 0 0 1px #000; }
-.sf-barra { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; padding: clamp(6px, 1.6cqw, 10px) clamp(12px, 3cqw, 18px) clamp(3px, .8cqw, 5px); font-family: var(--f-titolo); font-weight: 600; font-size: clamp(10px, 2.3cqw, 13px); color: #fff; position: relative; z-index: 2; background: linear-gradient(90deg, #f4f2ee 50%, transparent 50%); }
+/* la cornice: titanio blu notte, angoli tondi, la cerniera al centro che si vede sul bordo, due tasti sopra */
+.st-fold { position: relative; width: min(100%, 560px); aspect-ratio: 1.16; container-type: inline-size; padding: clamp(5px, 1.3cqw, 8px); border-radius: clamp(26px, 7.5cqw, 44px) !important;
+  background: linear-gradient(150deg, #4a5366 0%, #262c37 22%, #1b2029 50%, #2a303c 78%, #444c5d 100%); box-shadow: 0 50px 90px -45px rgba(0, 0, 0, .95), inset 0 0 0 1px rgba(255, 255, 255, .08), inset 0 -2px 3px rgba(0, 0, 0, .5); }
+.st-fold::before, .st-fold::after { content: ""; position: absolute; left: 50%; width: 3px; height: clamp(5px, 1.3cqw, 8px); margin-left: -1.5px; background: #0b0d11; z-index: 5; }
+.st-fold::before { top: 0; } .st-fold::after { bottom: 0; }
+.sf-tasti { position: absolute; top: -2px; left: 18%; display: flex; gap: 6%; width: 22%; height: 3px; z-index: 0; }
+.sf-tasti i { flex: 1; background: #2d3340; border-radius: 2px 2px 0 0 !important; }
+.sf-tasti i:first-child { flex: .55; }
+.sf-schermo { position: relative; width: 100%; height: 100%; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto minmax(0, 1fr); border-radius: clamp(20px, 6.2cqw, 37px) !important; overflow: hidden; background: #050505; box-shadow: 0 0 0 clamp(2px, .6cqw, 4px) #050505; }
+.sf-barra { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; padding: clamp(7px, 2cqw, 12px) clamp(30px, 10cqw, 56px) clamp(3px, .8cqw, 5px) clamp(16px, 4cqw, 24px); font-family: var(--f-titolo); font-weight: 600; font-size: clamp(10px, 2.3cqw, 13px); color: #fff; position: relative; z-index: 2; background: linear-gradient(90deg, #f4f2ee 50%, transparent 50%); }
 .sf-barra > span:first-child { color: #111; }
 .sf-icone { display: flex; align-items: center; gap: 5px; }
 .sf-rete { display: flex; align-items: end; gap: 1.5px; height: 9px; }
@@ -1084,5 +1088,8 @@ html.vita-on .sf-chat .sf-scrive:not(.su) { display: none; }
 .sf-dx .st-notifiche small { font-size: clamp(7.5px, 1.6cqw, 10px); }
 .sf-dx .st-notifiche span { font-size: clamp(8.5px, 1.9cqw, 11px); }
 /* la piega dello schermo e la fotocamera */
-.sf-piega { position: absolute; top: 0; bottom: 0; left: 50%; width: 18px; transform: translateX(-50%); pointer-events: none; z-index: 3; background: linear-gradient(90deg, transparent, rgba(255,255,255,.05) 35%, rgba(0,0,0,.35) 50%, rgba(255,255,255,.05) 65%, transparent); }
-.sf-camera { position: absolute; top: clamp(6px, 1.5cqw, 9px); right: 25%; width: clamp(7px, 1.6cqw, 10px); height: clamp(7px, 1.6cqw, 10px); margin-right: -5px; border-radius: 50% !important; background: radial-gradient(circle at 40% 40%, #2a3a55, #050505 60%); box-shadow: 0 0 0 2px #0b0b0b; z-index: 4; }
+.sf-piega { position: absolute; top: 0; bottom: 0; left: 50%; width: 22px; transform: translateX(-50%); pointer-events: none; z-index: 3; background: linear-gradient(90deg, transparent, rgba(255,255,255,.06) 30%, rgba(0,0,0,.4) 50%, rgba(255,255,255,.06) 70%, transparent); }
+/* la fotocamera a pillola in alto a destra, con la lente e la lucina verde */
+.sf-camera { position: absolute; top: clamp(8px, 2.4cqw, 14px); right: clamp(10px, 3cqw, 18px); width: clamp(10px, 2.6cqw, 15px); height: clamp(18px, 4.8cqw, 28px); border-radius: 99px !important; background: #000; z-index: 4; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: clamp(2px, .5cqw, 3px); gap: clamp(2px, .5cqw, 3px); box-sizing: border-box; }
+.sf-camera::before { content: ""; width: 56%; aspect-ratio: 1; border-radius: 50% !important; background: radial-gradient(circle at 38% 35%, #4a5f86, #0b1220 62%); }
+.sf-camera i { width: 22%; aspect-ratio: 1; border-radius: 50% !important; background: #22c55e; box-shadow: 0 0 4px #22c55e; }
