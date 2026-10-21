@@ -337,6 +337,60 @@ function tabellone() {
   });
 }
 
+// ---------- Gli altri prezzi: la fila scorre da destra a sinistra all'infinito ----------
+// La seconda copia delle etichette serve solo al giro senza fine (nascosta ai lettori di schermo e al tasto Tab).
+// Toccandola, trascinandola o con la rotella si ferma; riparte da sola dopo qualche secondo.
+function filaInfinita() {
+  const fila = document.querySelector('.altri-prezzi');
+  if (!fila || fila.children.length < 2) return;
+  [...fila.children].forEach((li) => {
+    const c = li.cloneNode(true);
+    c.setAttribute('aria-hidden', 'true');
+    c.querySelectorAll('a').forEach((a) => { a.tabIndex = -1; });
+    fila.appendChild(c);
+  });
+  fila.classList.add('infinita');
+  const meta = () => fila.scrollWidth / 2;
+  let x = 0, fermo = false, riparti = 0;
+  const ferma = () => {
+    fermo = true;
+    clearTimeout(riparti);
+    riparti = setTimeout(() => { fermo = false; x = fila.scrollLeft; }, 3500);
+  };
+  ['touchstart', 'wheel', 'focusin'].forEach((ev) => fila.addEventListener(ev, ferma, { passive: true }));
+  // il giro: arrivati a metà si torna all'inizio, che è identico
+  fila.addEventListener('scroll', () => {
+    if (fila.scrollLeft >= meta()) { fila.scrollLeft -= meta(); x = fila.scrollLeft; }
+    else if (fila.scrollLeft <= 0 && fermo) { fila.scrollLeft += meta(); x = fila.scrollLeft; }
+  }, { passive: true });
+  // col mouse si trascina; un trascinamento non vale come clic
+  let giu = null, mosso = false;
+  fila.addEventListener('pointerdown', (e) => {
+    ferma();
+    if (e.pointerType !== 'mouse') return;
+    giu = { x: e.clientX, s: fila.scrollLeft };
+    mosso = false;
+  });
+  window.addEventListener('pointermove', (e) => {
+    if (!giu) return;
+    const dx = e.clientX - giu.x;
+    if (Math.abs(dx) > 4) { mosso = true; fila.classList.add('trascino'); }
+    if (mosso) { fila.scrollLeft = giu.s - dx; ferma(); }
+  });
+  window.addEventListener('pointerup', () => { giu = null; fila.classList.remove('trascino'); });
+  fila.addEventListener('click', (e) => { if (mosso) { e.preventDefault(); mosso = false; } }, true);
+  if (ridotto) return;
+  let t0 = 0;
+  mentreVisibile(fila, (t) => {
+    const dt = t0 ? Math.min(48, t - t0) : 16;
+    t0 = t;
+    if (fermo || giu) return;
+    x += dt * 0.034;
+    if (x >= meta()) x -= meta();
+    fila.scrollLeft = x;
+  });
+}
+
 // ---------- 11 · Tendina rossa: tra una pagina e l'altra il quadratino copre tutto e si richiude ----------
 function tendina() {
   // arrivo: la pagina nasce coperta di rosso (classe messa nel <head>), il rosso si richiude sul logo
@@ -364,7 +418,8 @@ function tendina() {
   window.addEventListener('click', (e) => {
     if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     const a = e.target.closest?.('a[href]');
-    if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+    // il cambio lingua è immediato: niente tendina
+    if (!a || a.target === '_blank' || a.hasAttribute('download') || a.hasAttribute('data-lingua')) return;
     const u = new URL(a.href, location.href);
     if (u.origin !== location.origin || (u.pathname === location.pathname && u.search === location.search)) return;
     e.preventDefault();
@@ -572,6 +627,7 @@ export function avviaVita() {
   tendina();
   giornata(); // l'interruttore funziona anche con «riduci movimento»
   pacchettiSlider();
+  filaInfinita(); // si trascina anche con «riduci movimento», ma non scorre da sola
   if (ridotto) return;
   html.classList.add('vita-on');
   cursoreCheScrive();

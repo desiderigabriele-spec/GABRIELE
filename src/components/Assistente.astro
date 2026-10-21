@@ -20,7 +20,7 @@ const config = {
 // i testi della chat: le funzioni con il nome stanno in assistente.js, qui solo le frasi fisse
 const testi = it ? {
   apri: 'Apri la chat con Focus, l’assistente', chiudi: 'Chiudi la chat',
-  ruolo: 'Assistente di Desideri & Code · risponde subito',
+  ruolo: 'Assistente AI di Desideri&Code', stato: 'online · risponde subito',
   fumetto: 'ti calcolo il prezzo in 2 minuti?', fumettoSenzaNome: 'Ti calcolo il prezzo in 2 minuti?',
   ciao: 'sono <b>Focus</b>, l’assistente di Desideri & Code. Rispondo subito, anche di sera. Cosa ti serve?',
   ciaoSenzaNome: 'Ciao, sono <b>Focus</b>, l’assistente di Desideri & Code. Rispondo subito, anche di sera. Cosa ti serve?',
@@ -41,7 +41,7 @@ const testi = it ? {
   waSaluto: 'Ciao, sono {n}.', waSalutoSenzaNome: 'Ciao!', waServizio: 'Mi serve {s}', waFine: 'Ho visto il sito di Desideri & Code.', waGenerico: 'Vorrei parlarvi di un progetto.', waDomanda: 'Vi scrivo per una domanda: «{q}»',
 } : {
   apri: 'Open the chat with Focus, the assistant', chiudi: 'Close the chat',
-  ruolo: 'Desideri & Code assistant · replies straight away',
+  ruolo: 'Desideri&Code AI assistant', stato: 'online · replies instantly',
   fumetto: 'shall I work out your price in 2 minutes?', fumettoSenzaNome: 'Shall I work out your price in 2 minutes?',
   ciao: 'I’m <b>Focus</b>, the Desideri & Code assistant. I reply straight away, evenings too. What do you need?',
   ciaoSenzaNome: 'Hi, I’m <b>Focus</b>, the Desideri & Code assistant. I reply straight away, evenings too. What do you need?',
@@ -71,7 +71,7 @@ const dati_ = { ...config, testi };
   <div class="focus-pannello" id="focus-pannello" role="dialog" aria-labelledby="focus-nome" data-focus-pannello hidden>
     <div class="fp-testa">
       <span class="fp-occhio" data-focus-occhio-testa aria-hidden="true"></span>
-      <span class="fp-chi"><b id="focus-nome">Focus</b><small>{testi.ruolo}</small></span>
+      <span class="fp-chi"><b id="focus-nome">Focus</b><small class="fp-ruolo">{testi.ruolo}</small><small class="fp-stato"><i aria-hidden="true"></i>{testi.stato}</small></span>
       <button class="fp-chiudi" type="button" aria-label={testi.chiudi} data-focus-chiudi>×</button>
     </div>
     <div class="fp-msg" data-focus-msg aria-live="polite"></div>
@@ -92,5 +92,6 @@ const dati_ = { ...config, testi };
     <span class="focus-occhio" data-focus-occhio aria-hidden="true"></span>
     <span class="focus-x" aria-hidden="true">×</span>
   </button>
+  <span class="focus-online" aria-hidden="true"></span>
 </div>
 <script type="application/json" id="focus-dati" set:html={JSON.stringify(dati_)} />

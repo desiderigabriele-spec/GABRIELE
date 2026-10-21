@@ -232,6 +232,9 @@ export function avviaAssistente() {
     setTimeout(() => { occhio.apri(); guardaBottone(); }, ridotto ? 0 : 450);
     setTimeout(mostraFumetto, 3200);
   }
+  // l'avviso dei cookie: il tondino sale sopra di lui di quanto è alto
+  const cookie = document.querySelector('.cookie');
+  if (cookie && 'ResizeObserver' in window) new ResizeObserver(() => html.style.setProperty('--cookie-alto', `${cookie.offsetHeight}px`)).observe(cookie);
   let pronto = false;
   setTimeout(() => { pronto = true; }, 3000);
   setInterval(() => {

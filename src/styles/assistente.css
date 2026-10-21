@@ -1,5 +1,5 @@
 /* Focus, l'assistente: il tondino in basso a destra, la nuvoletta e la chat. */
-.focus { position: fixed; z-index: 58; right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+.focus { position: fixed; z-index: 210; right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
 .focus[hidden] { display: none; }
 .focus-bolla { position: relative; width: 68px; height: 68px; padding: 0; border-radius: 50% !important; border: 1px solid #444; background: var(--notte); cursor: pointer; overflow: hidden; display: block;
   transform: scale(0); transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), border-color .3s; box-shadow: 0 16px 34px -12px rgba(0, 0, 0, .9); }
@@ -26,7 +26,10 @@
 .fp-chi { display: grid; line-height: 1.2; min-width: 0; }
 .fp-chi b { font-size: 1rem; font-weight: 700; }
 .fp-chi small { display: flex; align-items: center; gap: 6px; font-size: .72rem; color: var(--nebbia); }
-.fp-chi small::before { content: ""; width: 7px; height: 7px; flex: none; background: var(--smeraldo); }
+.fp-ruolo { font-family: var(--f-mono); font-size: .62rem !important; letter-spacing: .1em; text-transform: uppercase; }
+.fp-stato { color: var(--latte) !important; }
+/* come su WhatsApp: il pallino verde che respira accanto a «online» */
+.fp-stato i { width: 8px; height: 8px; flex: none; border-radius: 50% !important; background: #25d366; box-shadow: 0 0 0 0 rgba(37, 211, 102, .6); animation: focus-vivo 2s ease-out infinite; }
 .fp-chiudi { margin-left: auto; width: 40px; height: 40px; border: 0; background: none; color: var(--nebbia); font-size: 1.5rem; cursor: pointer; }
 .fp-chiudi:hover, .fp-chiudi:focus-visible { color: var(--latte); outline: none; }
 .fp-msg { overflow-y: auto; overscroll-behavior: contain; padding: 14px 12px; display: flex; flex-direction: column; gap: 10px; }
@@ -58,16 +61,36 @@
 .fp-scrivi input:focus { outline: none; border-color: var(--latte); }
 .fp-scrivi button { width: 44px; height: 44px; border: 0; background: var(--latte); color: var(--notte); font-weight: 700; font-size: 1.1rem; cursor: pointer; }
 
-/* sul computer il tondino non copre l'avviso dei cookie */
-html:has(.cookie:not([hidden])) .focus:not(.aperta) { opacity: 0; pointer-events: none; }
+/* sul computer, con l'avviso dei cookie, il tondino sale sopra l'avviso: resta sempre visibile */
+@media (min-width: 901px) {
+  .focus { transition: bottom .4s var(--ease); }
+  html:has(.cookie:not([hidden])) .focus:not(.aperta) { bottom: calc(var(--cookie-alto, 170px) + 32px + env(safe-area-inset-bottom, 0px)); }
+}
+/* l'indice dei capitoli sul telefono copre lo schermo dal basso: lì il tondino si fa da parte */
+html:has(.cap-indice.aperto) .focus { opacity: 0; pointer-events: none; }
+
+/* il pallino verde «online» sul bordo del tondino, come le foto profilo di WhatsApp */
+.focus-online { position: absolute; right: 2px; top: 2px; width: 15px; height: 15px; border-radius: 50% !important; background: #25d366; border: 2.5px solid var(--notte); z-index: 2; transform: scale(0); transition: transform .4s cubic-bezier(.34, 1.56, .64, 1) .5s; pointer-events: none; }
+.focus.su:not(.aperta) .focus-online { transform: none; }
+.focus-online::after { content: ""; position: absolute; inset: -2.5px; border-radius: 50% !important; animation: focus-vivo 2s ease-out infinite; }
+@keyframes focus-vivo { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, .6); } 70%, 100% { box-shadow: 0 0 0 7px rgba(37, 211, 102, 0); } }
+
+/* il richiamo: ogni tanto due onde partono dal tondino e l'occhio fa un saltello, così si nota senza disturbare */
+.focus::before, .focus::after { content: ""; position: absolute; left: 0; top: 0; width: 68px; height: 68px; border-radius: 50% !important; border: 2px solid rgba(var(--latte-rgb), .55); opacity: 0; pointer-events: none; }
+.focus.su:not(.aperta)::before { animation: focus-onda 7s ease-out 1.2s infinite; }
+.focus.su:not(.aperta)::after { animation: focus-onda 7s ease-out 1.5s infinite; }
+@keyframes focus-onda { 0% { transform: scale(1); opacity: .9; } 22% { transform: scale(1.9); opacity: 0; } 100% { transform: scale(1.9); opacity: 0; } }
+.focus.su:not(.aperta) .focus-bolla { animation: focus-saltello 7s cubic-bezier(.3, 1.5, .5, 1) 1.2s infinite; }
+@keyframes focus-saltello { 0%, 12%, 100% { translate: 0 0; } 4% { translate: 0 -9px; } 8% { translate: 0 0; } 10% { translate: 0 -3px; } }
 
 /* telefono: solo il tondino, fisso in basso a destra (preventivo e WhatsApp sono dentro la chat) */
 @media (max-width: 900px) {
-  .focus { right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 45; }
+  .focus { right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
   .focus-bolla { width: 64px; height: 64px; }
+  .focus::before, .focus::after { width: 64px; height: 64px; }
   .focus-fumetto { right: 0; bottom: 78px; }
   .focus-fumetto-testo::after { right: 18px; bottom: -6px; border: 6px solid transparent; border-bottom: 0; border-top-color: var(--latte); }
   .focus-pannello { position: fixed; left: 0; right: 0; bottom: 0; width: auto; height: min(86svh, 640px); z-index: 70; transform: translateY(20px); }
   .focus.aperta { z-index: 70; }
 }
-@media (prefers-reduced-motion: reduce) { .focus-bolla, .focus-pannello, .focus-fumetto { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .focus-bolla, .focus-pannello, .focus-fumetto, .focus-online { transition: none; } .focus::before, .focus::after, .focus .focus-bolla, .focus-online::after, .fp-stato i { animation: none !important; } }

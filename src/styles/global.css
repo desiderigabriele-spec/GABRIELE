@@ -123,6 +123,10 @@ p { margin: 0; text-wrap: pretty; }
 .rassicura { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-size: .9rem; color: var(--nebbia); list-style: none; padding: 0; margin: 0; }
 .rassicura li { display: inline-flex; align-items: center; gap: .5rem; }
 .rassicura .micro-ico { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--latte); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.rassicura.centro { justify-content: center; }
+/* le rassicurazioni: in fila sul computer, una sotto l'altra sul telefono */
+@media (min-width: 821px) { .rassicura { flex-wrap: nowrap; } .rassicura li { white-space: nowrap; } }
+@media (max-width: 820px) { .rassicura { flex-direction: column; gap: .5rem; } .rassicura.centro { align-items: center; } }
 
 /* ---------- Scena 3D fissa ---------- */
 .scena { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
@@ -935,3 +939,27 @@ html.ridotto .cap-testo { animation: none; }
 .cap-foglio a em { display: none; margin-left: auto; font-style: normal; font-family: var(--f-mono); font-size: .66rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--rosso-testo); }
 .cap-foglio a.qui, .cap-foglio a.qui b { color: var(--rosso-testo); }
 .cap-foglio a.qui em { display: block; }
+
+/* I pacchetti sul telefono: ogni scheda sta in una schermata (titolo e badge sulla stessa riga, lista compatta) */
+@media (max-width: 820px) {
+  #prezzi .piano { grid-template-columns: minmax(0, 1fr) auto; column-gap: .6rem; padding: 18px 18px 16px; gap: .55rem; }
+  #prezzi .piano > * { grid-column: 1 / -1; }
+  #prezzi .piano > .piano-badge { grid-column: 2; grid-row: 1; align-self: center; font-size: .62rem; padding: .35rem .6rem; }
+  #prezzi .piano > .piano-nome { grid-column: 1; grid-row: 1; }
+  #prezzi .piano > .scia { grid-column: auto; grid-row: auto; }
+  #prezzi .piano-nome { font-size: 1.35rem; }
+  #prezzi .piano-per { font-size: .84rem; line-height: 1.4; min-height: 0; }
+  #prezzi .piano-prezzo { font-size: 2.05rem; }
+  #prezzi .piano-prezzo small { margin-top: .3rem; font-size: .78rem; }
+  #prezzi .piano .lista-check { padding-top: .7rem; gap: .3rem; }
+  #prezzi .piano .lista-check li { grid-template-columns: 16px 1fr; gap: .5rem; font-size: .82rem; line-height: 1.32; }
+  #prezzi .piano .lista-check li::before { width: 14px; height: 14px; margin-top: .12em; background-size: 8px; }
+  #prezzi .piano .btn { --pad: .8rem 1.1rem; font-size: .92rem; margin-top: .2rem; }
+}
+
+/* Gli altri servizi: una fila che scorre da destra a sinistra all'infinito (vita.js, filaInfinita).
+   Toccandola si ferma e si fa scorrere col dito o col mouse; ogni etichetta apre la pagina del servizio. */
+.altri-prezzi.infinita { mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); cursor: grab; user-select: none; -webkit-user-select: none; }
+.altri-prezzi.infinita.trascino { cursor: grabbing; }
+.altri-prezzi.infinita a { -webkit-user-drag: none; }
+@media (max-width: 820px) { .altri-prezzi.infinita { margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); } }
