@@ -461,7 +461,8 @@ const jsonLd = {
             <article class={`passo${i === 0 ? ' on' : ''}`}>
               <span class="passo-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <span class="capitolo">{String(i + 1).padStart(2, '0')} · {m.passo}</span>
-              <h3>{m.titolo}</h3>
+              {/* il verbo del passo è sottolineato: la linea si allunga mentre scorri il passo (vita.js, metodoNumeri) */}
+              <h3>{(() => { const k = m.verbo ? m.titolo.indexOf(m.verbo) : -1; return k < 0 ? m.titolo : <>{m.titolo.slice(0, k)}<span class="verbo">{m.verbo}</span>{m.titolo.slice(k + m.verbo.length)}</>; })()}</h3>
               <p class="passo-testa">{m.testa}</p>
               <div class="passo-tecnica">
                 <span class="mono">{T('Tecnica', 'Technique')} · {m.tecnica}</span>

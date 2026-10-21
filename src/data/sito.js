@@ -77,7 +77,7 @@ export const metodo = [
   {
     forma: 0,
     passo: 'Sguardo',
-    titolo: 'Prima ti devono notare.',
+    titolo: 'Prima ti devono notare.', verbo: 'notare',
     testa: '«Cos\'è questo?» In meno di un secondo il cervello decide se restare o andare via.',
     tecnica: 'Effetto Von Restorff',
     spiega: 'Ricordiamo ciò che è diverso. Per questo ogni progetto ha un elemento che non si dimentica: un colore, un movimento, una frase.',
@@ -85,7 +85,7 @@ export const metodo = [
   {
     forma: 1,
     passo: 'Interesse',
-    titolo: 'Poi ti devono capire.',
+    titolo: 'Poi ti devono capire.', verbo: 'capire',
     testa: '«Fa al caso mio?» Se per capirlo serve fatica, la persona se ne va.',
     tecnica: 'Fluidità cognitiva',
     spiega: 'Ciò che si capisce facilmente sembra anche più vero e più affidabile. Frasi corte, una sola idea alla volta, niente paroloni.',
@@ -93,7 +93,7 @@ export const metodo = [
   {
     forma: 2,
     passo: 'Fiducia',
-    titolo: 'Poi si devono fidare.',
+    titolo: 'Poi si devono fidare.', verbo: 'fidare',
     testa: '«Posso fidarmi?» Guardiamo cosa hanno fatto gli altri prima di decidere.',
     tecnica: 'Riprova sociale e autorità',
     spiega: 'Recensioni vere, lavori veri, numeri veri, messi proprio dove la persona sta decidendo.',
@@ -101,7 +101,7 @@ export const metodo = [
   {
     forma: 3,
     passo: 'Desiderio',
-    titolo: 'Poi ti devono volere.',
+    titolo: 'Poi ti devono volere.', verbo: 'volere',
     testa: '«Lo voglio.» Si decide con l\'emozione e si giustifica con la ragione.',
     tecnica: 'Ancoraggio e immaginazione del risultato',
     spiega: 'Mostriamo il risultato prima del prezzo e il prezzo nel contesto giusto. Chi immagina di avere già il risultato lo desidera di più.',
@@ -109,7 +109,7 @@ export const metodo = [
   {
     forma: 4,
     passo: 'Azione',
-    titolo: 'E infine ti scelgono.',
+    titolo: 'E infine ti scelgono.', verbo: 'scelgono',
     testa: '«Ok, ti scrivo.» Il passo deve essere facile, chiaro e senza rischi.',
     tecnica: 'Riduzione dell\'attrito',
     spiega: 'Un bottone che si vede, un modulo a passi con la prima domanda facilissima e una garanzia accanto. Il «sì» diventa naturale.',

@@ -271,6 +271,9 @@ function metodoNumeri() {
     const r = pista.getBoundingClientRect(), corsa = r.height - innerHeight;
     const p = Math.max(0, Math.min(0.999, -r.top / Math.max(1, corsa)));
     const i = Math.floor(p * passi.length);
+    // la sottolineatura del verbo segue lo scorrimento dentro il passo: arriva piena a metà, poi resta
+    const f = Math.min(1, (p * passi.length - i) / 0.5);
+    passi.forEach((s, k) => s.style.setProperty('--sotto', k < i ? 1 : k === i ? f.toFixed(3) : 0));
     if (i === attivo) return;
     attivo = i;
     numeri.forEach((n, k) => { n.classList.toggle('on', k === i); n.classList.toggle('fatto', k < i); });

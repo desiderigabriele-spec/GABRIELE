@@ -470,6 +470,11 @@ input[type='range']::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .passo { display: grid; align-content: center; gap: 1.1rem; padding-block: 40px; border-top: 1px solid var(--linea); }
 .passo-num { font-family: var(--f-titolo); font-size: clamp(3rem, 7vw, 5rem); line-height: .9; font-weight: 800; letter-spacing: -0.05em; color: var(--rosso); }
 .passo h3 { font-size: clamp(1.7rem, 3vw, 2.6rem); }
+/* il verbo di ogni passo: sottolineato in rosso, la linea si allunga mentre scorri */
+.passo .verbo { position: relative; display: inline-block; }
+.passo .verbo::after { content: ''; position: absolute; left: 0; right: 0; bottom: -.04em; height: .09em; background: var(--rosso); transform-origin: left; transform: scaleX(var(--sotto, 1)); }
+html.vita-on .passo .verbo::after { transition: transform .12s linear; }
+html.ridotto .passo .verbo::after { transform: none; }
 .passo-testa { font-family: var(--f-titolo); font-weight: 600; letter-spacing: -0.02em; font-size: clamp(1.15rem, 1.6vw, 1.5rem); color: var(--latte); line-height: 1.3; max-width: 34em; }
 .passo-tecnica { display: grid; gap: .4rem; padding: 1rem 1.1rem; background: rgba(var(--sup-rgb), .85); border: 1px solid var(--linea); border-left: 3px solid var(--rosso); max-width: 34em; }
 .passo-tecnica .mono { color: var(--latte); }
