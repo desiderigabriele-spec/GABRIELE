@@ -1,5 +1,6 @@
 ---
-// Il sito che si disegna (hero): linee bianche disegnano il sito di un'osteria pezzo per pezzo ([data-bz]),
+// Il sito che nasce dal codice (hero): prima la finestra si riempie di codice che scorre, poi il codice si raccoglie
+// in rettangoli che disegnano il sito di un'osteria pezzo per pezzo ([data-bz]),
 // poi la bozza prende vita in 3D: sei tasselli si girano e compongono la foto del piatto, e davanti galleggiano
 // il voto, il messaggio WhatsApp e il grafico. Logica in vita.js (bozza), stili in vita.css.
 // La foto è public/img/bozza-piatto.webp (3:2): finché non c'è, i tasselli restano color crema.
@@ -12,6 +13,7 @@ const conFoto = fs.existsSync(path.join(process.cwd(), 'public/img/bozza-piatto.
 ---
 <div class="bozza" data-bozza aria-hidden="true">
   <div class="bz-scena">
+    <div class="bz-pioggia"></div>
     <div class="bz-finestra" data-bz>
       <div class="bz-barra" data-bz><i></i><i></i><i></i><span>osterianavigli.it</span></div>
       <div class="bz-testa" data-bz><b>Osteria Navigli<span class="bz-q"></span></b><span class="bz-nav"><i></i><i></i><i></i></span></div>

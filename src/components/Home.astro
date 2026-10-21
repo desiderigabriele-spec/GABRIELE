@@ -5,7 +5,7 @@ import path from 'node:path';
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
 import PrimaDopo from './PrimaDopo.astro';
-import Mappa from './Mappa.astro';
+import Intruso from './Intruso.astro';
 import Bozza from './Bozza.astro';
 import LogoGigante from './LogoGigante.astro';
 import MicroIcona from './MicroIcona.astro';
@@ -489,7 +489,7 @@ const jsonLd = {
                 </summary>
                 <p class="pt-corpo">{m.spiega}</p>
               </details>
-              {i === 0 && <Mappa lang={lang} />}
+              {i === 0 && <Intruso lang={lang} />}
             </article>
           ))}
         </div>
@@ -709,7 +709,15 @@ const jsonLd = {
   <section class="sezione finale" id="azione" data-forma="4" data-luce="0.75" data-luce-mobile="0.5" data-scala="1.15">
     <div class="wrap finale-testo">
       <span class="capitolo" data-appare>{T('05 · Scrivici', '05 · Write to us')}</span>
-      <h2 data-righe data-peso>
+      <!-- qualcuno sta cercando adesso: la barra scrive da sola ricerche vere (vita.js, ricercaViva) -->
+      <div class="cerca-viva" data-cerca-viva data-ricerche={JSON.stringify(it
+        ? ['osteria milano stasera', 'dentista vicino a me', 'idraulico urgente milano', 'parrucchiere aperto sabato', 'cucina su misura preventivo']
+        : ['restaurant near me tonight', 'dentist near me', 'emergency plumber', 'hairdresser open saturday', 'custom kitchen quote'])} aria-hidden="true" data-appare>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+        <span class="cv-q">{it ? 'osteria milano stasera' : 'restaurant near me tonight'}</span>
+        <small class="cv-ora"><i></i>{T('adesso', 'right now')}</small>
+      </div>
+      <h2 data-righe>
         <span class="riga riga-nome" data-riga-nome hidden><span><span data-nome></span>,</span></span>
         <span class="riga"><span data-minuscola>{T('Il tuo prossimo cliente', 'Your next client')}</span></span>
         <span class="riga"><span>{T('ti sta', 'is')} <span class="em em-firma">{T('già cercando.', 'already looking for you.')}</span></span></span>

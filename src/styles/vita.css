@@ -36,6 +36,12 @@
 @keyframes bz-respira { 0%, 100% { filter: none; } 50% { filter: brightness(1.12); } }
 .bz-scena { position: absolute; inset: 6% 7% 9% 4%; transform-style: preserve-3d; transition: transform 1.4s var(--ease); }
 .bozza.inclinata .bz-scena { transform: rotateY(var(--ry, -16deg)) rotateX(var(--rx, 8deg)); transition: transform .5s ease-out; }
+/* la pioggia di codice: riempie la finestra prima che il sito si disegni, poi si spegne e lascia i blocchi */
+.bz-pioggia { display: none; position: absolute; inset: 0; background: #0f0f0f; border: 1px solid #2c2c2c; overflow: hidden; padding: 1.6cqw 2cqw; font: 400 max(7px, 1.45cqw)/1.42 var(--f-mono); color: #6b6b6b; white-space: pre; pointer-events: none; transition: color .5s, opacity .6s .5s; }
+.bz-pioggia .k { color: #ff7b72; } .bz-pioggia .s { color: #7ee2a8; } .bz-pioggia .r { color: #ff2d3a; }
+.bz-pioggia.spenta, .bz-pioggia.spenta span { color: transparent; }
+html.vita-on .bz-pioggia { display: block; }
+.bozza.viva .bz-pioggia { opacity: 0; }
 .bz-linee { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; transition: opacity .9s var(--ease); }
 .bz-linee rect { fill: none; stroke: rgba(var(--latte-rgb), .7); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .bozza.viva .bz-linee { opacity: 0; }
@@ -92,7 +98,7 @@
 .bz-grafico span i:last-child { background: var(--rosso); }
 /* prima che si disegni: i pezzi non si vedono (solo con gli effetti accesi) */
 html.vita-on .bozza:not(.viva) [data-bz] { opacity: 0; }
-.bozza [data-bz] { transition: opacity .6s var(--ease) calc(var(--i, 0) * 60ms), background-color .6s, border-color .6s; }
+.bozza.viva [data-bz] { transition: opacity .6s var(--ease) calc(var(--i, 0) * 60ms), background-color .6s, border-color .6s; }
 /* viva: in 3D, con i pezzi a profondità diverse e le animazioni */
 .bozza.inclinata .bz-sx { transform: translateZ(26px); }
 .bozza.inclinata .bz-foto { transform: translateZ(14px); }
@@ -140,8 +146,6 @@ html.tendina-arrivo::after { content: ''; position: fixed; inset: 0; z-index: 20
 @keyframes cin-sx { to { transform: translateX(-50%); } }
 @keyframes cin-dx { from { transform: translateX(-50%); } to { transform: translateX(0); } }
 
-/* 13 · lettere che prendono peso */
-[data-peso] .lettera { transition: font-weight .25s var(--ease); }
 
 /* 16 · la griglia viva */
 [data-griglia-viva] { position: relative; }
@@ -157,21 +161,19 @@ html.vita-on [data-griglia-viva]:not(.atterra) .lista-check li::before { transfo
 @keyframes compare { from { opacity: 0; } }
 
 
-/* 03 · mappa dell'attenzione (nel passo «Prima ti devono notare») */
-.mappa { position: relative; width: 100%; max-width: 30em; aspect-ratio: 16 / 9; border: 1px solid var(--linea); background: #111; overflow: hidden; user-select: none; }
-.mappa-tela { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
-.mappa-barra { position: absolute; left: 0; right: 0; top: 0; height: 9%; border-bottom: 1px solid #262626; display: flex; align-items: center; gap: 4%; padding: 0 4%; }
-.mappa-barra i { display: block; height: 22%; background: #333; }
-.mappa-titolo { position: absolute; left: 5%; top: 18%; font-family: var(--f-titolo); font-weight: 800; letter-spacing: -0.05em; font-size: clamp(1rem, 2.2vw, 1.6rem); line-height: .95; color: var(--latte); }
-.mappa-righe { position: absolute; left: 5%; top: 50%; width: 40%; display: grid; gap: 6px; }
-.mappa-righe i { display: block; height: 5px; background: #333; }
-.mappa-bottone { position: absolute; left: 5%; top: 70%; width: 30%; height: 13%; background: var(--rosso); color: var(--azione-testo); display: grid; place-items: center; font-size: .72rem; font-weight: 600; }
-.mappa-foto { position: absolute; right: 5%; top: 17%; width: 38%; height: 66%; background: #1c1c1c; border: 1px solid #2a2a2a; }
-.mappa [data-fissa] { position: absolute; z-index: 3; width: 22px; height: 22px; display: grid; place-items: center; background: var(--latte); color: var(--notte); font-family: var(--f-mono); font-size: .7rem; font-weight: 500; opacity: 0; transform: translate(-50%, -50%) scale(.4); transition: opacity .3s, transform .4s cubic-bezier(.34, 1.4, .5, 1); }
-.mappa [data-fissa]::after { content: attr(data-tempo); position: absolute; left: calc(100% + 6px); top: 50%; transform: translateY(-50%); white-space: nowrap; font-size: .62rem; font-weight: 400; letter-spacing: .04em; color: var(--latte); text-shadow: 0 0 6px #000; }
-.mappa [data-fissa]:last-of-type { background: var(--rosso); color: var(--latte); width: 26px; height: 26px; outline: 2px solid var(--latte); }
-.mappa [data-fissa].visto, html.ridotto .mappa [data-fissa] { opacity: 1; transform: translate(-50%, -50%); }
-.mappa-nota { margin-top: .5rem; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--nebbia-2); }
+/* 03 · trova l'intruso (nel passo «Prima ti devono notare»): dodici grigi e uno rosso, un anello lo raggiunge */
+.intruso { position: relative; width: 100%; max-width: 30em; aspect-ratio: 16 / 9; border: 1px solid var(--linea); background: #111; overflow: hidden; }
+.in-griglia { position: absolute; inset: 9% 7%; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr); gap: 7% 5%; }
+.in-griglia span { background: #2b2b2b; transition: opacity .6s var(--ease), transform .45s var(--ease), box-shadow .45s; }
+.in-griglia span.r { background: var(--rosso); }
+.intruso.trovato .in-griglia span:not(.r) { opacity: .4; }
+.intruso.trovato .in-griglia span.r { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(227, 6, 19, .25); }
+.in-anello { position: absolute; left: 50%; top: 50%; width: 22%; aspect-ratio: 1; border: 2px solid #fff; border-radius: 50% !important; transform: translate(-50%, -50%) scale(.4); opacity: 0; pointer-events: none; transition: left .5s cubic-bezier(.3, .9, .3, 1), top .5s cubic-bezier(.3, .9, .3, 1), opacity .3s, transform .5s var(--ease); }
+.intruso.cerca .in-anello { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.in-nota { margin-top: .6rem; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .06em; color: var(--nebbia); opacity: 0; transition: opacity .5s; }
+.in-nota b { color: var(--rosso-testo); font-weight: 500; }
+.intruso-box.visto .in-nota, html.ridotto .in-nota, html:not(.vita-on) .in-nota { opacity: 1; }
+html.ridotto .intruso .in-griglia span:not(.r) { opacity: .4; }
 
 /* 05 · il sito si compila  ·  07 · il terminale  (righe che si scrivono da sole) */
 [data-riga].scrivo::after { content: ''; display: inline-block; width: .55em; height: 1em; margin-left: 2px; vertical-align: -2px; background: var(--rosso); }

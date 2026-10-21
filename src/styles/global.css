@@ -69,7 +69,7 @@ html[data-tema='chiaro'] {
   color-scheme: light;
 }
 /* i dispositivi disegnati (telefoni, schermi, codice, finte app) restano scuri anche nella versione chiara */
-:is(.bozza, .st-fold, .pd-dopo, .compila-codice, .terminale, .mappa, .cursori, .cubo-f, .chiedi-occhio, .focus-bolla, .fp-occhio, .intro-bolla) {
+:is(.bozza, .st-fold, .pd-dopo, .compila-codice, .terminale, .intruso, .cursori, .cubo-f, .chiedi-occhio, .focus-bolla, .fp-occhio, .intro-bolla) {
   --latte: #ffffff; --latte-rgb: 255, 255, 255; --nebbia: #a3a3a3; --nebbia-2: #8a8a8a; --notte: #0a0a0a; --notte-rgb: 10, 10, 10;
   --linea: rgba(255, 255, 255, .12); --linea-forte: rgba(255, 255, 255, .24); --rosso-testo: #ff2d3a;
   color: var(--latte);
@@ -520,7 +520,7 @@ html.vita-on .metodo-passi .passo-num { display: none; }
   .passo h3 { font-size: 1.6rem; }
   .passo-testa { font-size: 1.05rem; }
   .passo-tecnica .pt-corpo { font-size: .86rem; }
-  .passo .mappa { max-width: 100%; }
+  .passo .intruso { max-width: 100%; }
 }
 
 /* ---------- Parlano di noi: i clienti e i loro siti ---------- */
@@ -639,6 +639,15 @@ html.vita-on .metodo-passi .passo-num { display: none; }
 .finale { min-height: 100svh; display: grid; place-items: center; text-align: center; }
 .finale-testo { display: grid; gap: 2rem; justify-items: center; max-width: 900px; }
 .finale h2 { font-size: clamp(2.6rem, 7vw, 6.2rem); }
+/* la barra di ricerca sopra il titolo finale: scrive da sola quello che le persone cercano adesso (il cursore non lampeggia: nel sito lampeggia solo quello del titolo) */
+.cerca-viva { display: inline-flex; align-items: center; gap: .7rem; min-width: min(100%, 26rem); padding: .75rem 1rem; border: 1px solid var(--linea-forte); background: rgba(var(--sup-rgb), .9); font-size: 1.02rem; color: var(--latte); text-align: left; }
+.cerca-viva svg { width: 18px; height: 18px; flex: none; color: var(--nebbia); }
+.cv-q { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html.vita-on .cv-q::after { content: ''; display: inline-block; width: 1.5px; height: 1.05em; margin-left: 2px; vertical-align: -.18em; background: var(--latte); }
+.cv-ora { margin-left: auto; display: inline-flex; align-items: center; gap: .4rem; font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--verde-azione-su); white-space: nowrap; transition: opacity .3s; }
+.cv-ora i { width: 7px; height: 7px; border-radius: 50% !important; background: var(--verde-azione); box-shadow: 0 0 0 3px rgba(16, 185, 129, .2); }
+.cerca-viva:not(.trovata) .cv-ora { opacity: 0; }
+html:not(.vita-on) .cerca-viva .cv-ora { opacity: 1; }
 
 /* ---------- Footer ---------- */
 .site-footer { border-top: 1px solid var(--linea); padding: 64px 0 120px; background: rgba(var(--notte-rgb),.85); }

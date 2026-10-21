@@ -1,0 +1,14 @@
+---
+// 03 · Trova l'intruso (nel passo «Prima ti devono notare»): dodici riquadri grigi e uno rosso.
+// L'occhio ci va da solo; un anello lo raggiunge e compare la frase. A ogni giro il rosso cambia posto (vita.js, intruso).
+interface Props { lang?: 'it' | 'en' }
+const { lang = 'it' } = Astro.props;
+const T = (a: string, b: string) => (lang === 'it' ? a : b);
+---
+<figure class="intruso-box" style="margin:0">
+  <div class="intruso" data-intruso role="img" aria-label={T('Dodici riquadri grigi e uno rosso: l’occhio va subito su quello rosso, prima ancora di leggere.', 'Twelve grey squares and one red one: the eye goes straight to the red one, before reading anything.')}>
+    <div class="in-griglia" aria-hidden="true">{Array.from({ length: 12 }, (_, i) => <span class={i === 6 ? 'r' : ''}></span>)}</div>
+    <span class="in-anello" aria-hidden="true"></span>
+  </div>
+  <figcaption class="in-nota">{T('L’hai visto per primo, vero?', 'You saw it first, didn’t you?')} <b>{T('Il diverso si nota sempre.', 'What’s different always stands out.')}</b></figcaption>
+</figure>

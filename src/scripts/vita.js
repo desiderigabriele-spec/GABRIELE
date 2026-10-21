@@ -129,15 +129,29 @@ function grigliaMagnetica() {
   });
 }
 
-// ---------- Il sito che si disegna: linee bianche, poi la bozza prende vita in 3D ----------
+// ---------- Il sito che nasce dal codice: pioggia di codice, poi i blocchi, poi la bozza prende vita in 3D ----------
 function bozza() {
   const el = document.querySelector('[data-bozza]');
   if (!el) return;
   const svg = el.querySelector('.bz-linee');
   const pezzi = [...el.querySelectorAll('[data-bz]')];
   pezzi.forEach((p, i) => p.style.setProperty('--i', i));
+  // i pezzi di codice che piovono nella finestra: sono quelli che servono davvero a questo sito
+  const pioggia = el.querySelector('.bz-pioggia');
+  const CODICE = ['<span class="k">&lt;header&gt;</span>', '<span class="k">&lt;h1&gt;</span>', '<span class="s">"Il tuo tavolo"</span>', 'display:grid;', '<span class="k">&lt;button&gt;</span>', 'prenota(4, "20:00")', 'color:<span class="r">#e30613</span>;', '<span class="k">&lt;img</span> src=<span class="s">"risotto.webp"</span>', 'gap:2rem;', 'wa.me/39…', '<span class="k">&lt;/section&gt;</span>', 'font-weight:800;', 'recensioni.media()', 'const posti = 4;', '<span class="k">&lt;nav&gt;</span>', 'aspect-ratio:3/2;'];
+  const piovi = () => {
+    let s = '';
+    for (let r = 0; r < 22; r++) { let riga = ''; for (let c = 0; c < 5; c++) riga += CODICE[(Math.random() * CODICE.length) | 0] + '   '; s += riga + '\n'; }
+    pioggia.innerHTML = s;
+  };
   const parti = () => {
     if (!el.offsetParent) return;
+    piovi();
+    const id = setInterval(piovi, 85);
+    // dopo un attimo il codice si spegne e restano i blocchi, disegnati dalle linee
+    setTimeout(() => { clearInterval(id); pioggia.classList.add('spenta'); disegna(); }, 1700);
+  };
+  const disegna = () => {
     // i rettangoli si prendono dalla bozza vera, così le linee combaciano con quello che comparirà
     // in percentuale della bozza: le linee restano al loro posto anche se lo schermo cambia misura
     const b = el.getBoundingClientRect();
@@ -146,9 +160,10 @@ function bozza() {
     svg.setAttribute('preserveAspectRatio', 'none');
     svg.innerHTML = pezzi.map((p) => { const r = p.getBoundingClientRect(); return `<rect x="${px(r.left - b.left, b.width)}" y="${px(r.top - b.top, b.height)}" width="${px(r.width, b.width)}" height="${px(r.height, b.height)}" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>`; }).join('');
     const rett = [...svg.querySelectorAll('rect')];
-    rett.forEach((r, i) => r.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 650, delay: i * 210, easing: 'cubic-bezier(.6,0,.3,1)', fill: 'forwards' }));
-    const fine = rett.length * 210 + 650;
+    rett.forEach((r, i) => r.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 550, delay: i * 140, easing: 'cubic-bezier(.6,0,.3,1)', fill: 'forwards' }));
+    const fine = rett.length * 140 + 550;
     setTimeout(() => el.classList.add('viva'), fine);
+    setTimeout(() => pioggia.remove(), fine + 1400);
     // il 3D solo con il mouse: su telefono la bozza resta piatta e nitida
     if (finePointer) setTimeout(() => { el.classList.add('inclinata'); inclina(); }, fine + 500);
     else setTimeout(() => el.classList.add('animata'), fine + 500);
@@ -451,49 +466,6 @@ function cinetica() {
   });
 }
 
-// ---------- 13 · Lettere che prendono peso: vicino al dito o al mouse diventano più spesse ----------
-function peso() {
-  document.querySelectorAll('[data-peso]').forEach((el) => {
-    if (!el.hasAttribute('aria-label')) el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
-    const lettere = [];
-    testi(el, '[data-nome], [data-saluto]').forEach((n) => {
-      const frag = document.createDocumentFragment();
-      for (const ch of n.textContent) {
-        if (ch === ' ') { frag.appendChild(document.createTextNode(' ')); continue; }
-        const s = document.createElement('span'); s.className = 'lettera'; s.textContent = ch; s.setAttribute('aria-hidden', 'true');
-        frag.appendChild(s); lettere.push(s);
-      }
-      n.replaceWith(frag);
-    });
-    const sezione = el.closest('section') || el;
-    const pesa = (px, py) => {
-      for (const s of lettere) {
-        const r = s.getBoundingClientRect();
-        const k = Math.max(0, 1 - Math.hypot(r.left + r.width / 2 - px, r.top + r.height / 2 - py) / 260);
-        s.style.fontWeight = String(Math.round(260 + 640 * k * k));
-      }
-    };
-    const riposo = () => lettere.forEach((s) => { s.style.fontWeight = ''; });
-    if (finePointer) {
-      sezione.addEventListener('pointermove', (e) => pesa(e.clientX, e.clientY));
-      sezione.addEventListener('pointerleave', riposo);
-    } else {
-      // su telefono un'onda passa da sola quando il titolo entra nello schermo
-      quandoVisibile(el, () => {
-        const r = el.getBoundingClientRect(), t0 = performance.now();
-        const giro = (t) => {
-          const k = (t - t0) / 1800;
-          if (k > 1) { riposo(); return; }
-          const b = el.getBoundingClientRect();
-          pesa(b.left - 150 + (b.width + 300) * k, b.top + b.height / 2);
-          requestAnimationFrame(giro);
-        };
-        if (r.width) requestAnimationFrame(giro);
-      }, 0.6);
-    }
-  });
-}
-
 // ---------- 16 · Le schede dei servizi: salgono, le spunte si spuntano una alla volta, il prezzo conta ----------
 function grigliaViva() {
   const lingua = html.lang === 'en' ? 'en-US' : 'it-IT';
@@ -531,38 +503,62 @@ function grigliaViva() {
   });
 }
 
-// ---------- 03 · Il percorso dello sguardo: quadratini numerati collegati da una linea, l'ultimo sul bottone ----------
-function mappaAttenzione() {
-  document.querySelectorAll('[data-mappa]').forEach((box) => {
-    const tela = document.createElement('canvas');
-    tela.className = 'mappa-tela';
-    box.appendChild(tela);
-    const ctx = tela.getContext('2d');
-    let W = 0, H = 0;
-    const misura = () => { const r = box.getBoundingClientRect(); W = r.width; H = r.height; const d = Math.min(devicePixelRatio || 1, 2); tela.width = W * d; tela.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0); };
-    misura();
-    window.addEventListener('resize', misura);
-    const fiss = [...box.querySelectorAll('[data-fissa]')];
-    const tappe = fiss.map((f) => f.dataset.fissa.split(',').map(Number));
-    const PASSO = 1300, CICLO = PASSO * tappe.length + 3200;
-    let t0 = 0;
-    mentreVisibile(box, (t) => {
-      if (!t0) t0 = t;
-      const c = (t - t0) % CICLO;
-      const via = c > CICLO - 700 ? 1 - (c - (CICLO - 700)) / 700 : 1;
-      ctx.clearRect(0, 0, W, H);
-      ctx.globalAlpha = via;
-      ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.lineWidth = 1;
-      tappe.forEach(([x, y], i) => {
-        const k = Math.min(1, Math.max(0, (c - 300 - i * PASSO) / 500));
-        fiss[i].classList.toggle('visto', k >= 1 && via > 0.5);
-        if (!i || !k) return;
-        const [px, py] = tappe[i - 1], e = 1 - Math.pow(1 - k, 3);
-        ctx.beginPath(); ctx.moveTo(px / 100 * W, py / 100 * H);
-        ctx.lineTo((px + (x - px) * e) / 100 * W, (py + (y - py) * e) / 100 * H); ctx.stroke();
-      });
-      ctx.globalAlpha = 1;
-    });
+// ---------- 03 · Trova l'intruso: un anello va sul riquadro rosso; a ogni giro il rosso cambia posto ----------
+function intruso() {
+  document.querySelectorAll('[data-intruso]').forEach((box) => {
+    const celle = [...box.querySelectorAll('.in-griglia span')], anello = box.querySelector('.in-anello'), fig = box.closest('.intruso-box');
+    const aspetta = (ms) => new Promise((r) => setTimeout(r, ms));
+    let dove = celle.findIndex((c) => c.classList.contains('r')), vivo = false, inCorso = false;
+    const giro = async () => {
+      if (inCorso) return; inCorso = true;
+      while (vivo) {
+        box.classList.remove('cerca', 'trovato');
+        anello.style.left = '50%'; anello.style.top = '50%';
+        await aspetta(900);
+        const b = box.getBoundingClientRect(), c = celle[dove].getBoundingClientRect();
+        box.classList.add('cerca');
+        await aspetta(120);
+        anello.style.left = `${((c.left + c.width / 2 - b.left) / b.width) * 100}%`;
+        anello.style.top = `${((c.top + c.height / 2 - b.top) / b.height) * 100}%`;
+        await aspetta(520);
+        box.classList.add('trovato'); fig?.classList.add('visto');
+        await aspetta(3600);
+        if (!vivo) break;
+        // il rosso si sposta in un altro riquadro, così il giro dopo si rifà la prova
+        box.classList.remove('cerca', 'trovato');
+        await aspetta(500);
+        celle[dove].classList.remove('r');
+        let nuovo = dove; while (nuovo === dove) nuovo = (Math.random() * celle.length) | 0;
+        dove = nuovo; celle[dove].classList.add('r');
+      }
+      inCorso = false;
+    };
+    new IntersectionObserver(([v]) => { vivo = v.isIntersecting; if (vivo) giro(); }, { threshold: 0.5 }).observe(box);
+  });
+}
+
+// ---------- La barra di ricerca del finale: scrive da sola le ricerche delle persone, una dopo l'altra ----------
+function ricercaViva() {
+  document.querySelectorAll('[data-cerca-viva]').forEach((box) => {
+    const q = box.querySelector('.cv-q');
+    let ricerche = [];
+    try { ricerche = JSON.parse(box.dataset.ricerche || '[]'); } catch (_) {}
+    if (!ricerche.length) return;
+    const aspetta = (ms) => new Promise((r) => setTimeout(r, ms));
+    let vivo = false, inCorso = false, i = 0;
+    const giro = async () => {
+      if (inCorso) return; inCorso = true;
+      while (vivo) {
+        const f = ricerche[i % ricerche.length]; i++;
+        box.classList.remove('trovata');
+        for (let n = q.textContent.length; n >= 0; n--) { q.textContent = q.textContent.slice(0, n); await aspetta(16); }
+        for (let n = 1; n <= f.length; n++) { q.textContent = f.slice(0, n); await aspetta(55 + Math.random() * 45); }
+        box.classList.add('trovata');
+        await aspetta(2200);
+      }
+      inCorso = false;
+    };
+    new IntersectionObserver(([v]) => { vivo = v.isIntersecting; if (vivo) giro(); }, { threshold: 0.3 }).observe(box);
   });
 }
 
@@ -641,9 +637,9 @@ export function avviaVita() {
   metodoNumeri();
   tabellone();
   cinetica();
-  peso();
   grigliaViva();
-  mappaAttenzione();
+  intruso();
+  ricercaViva();
   primaDopo();
   righeCheSiScrivono();
 }
