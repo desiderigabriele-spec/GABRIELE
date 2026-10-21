@@ -902,8 +902,8 @@ html.intro-fine .intro-cursore { animation: intro-cursore-via .5s var(--ease) fo
 .cn-azioni { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
 
 /* il nome si cambia toccandolo dove è scritto */
-.nome-tocca { cursor: text; text-decoration: underline dotted rgba(var(--rosso-rgb), .55); text-decoration-thickness: .06em; text-underline-offset: .14em; border-radius: 0; }
-.nome-tocca:hover, .nome-tocca:focus-visible { text-decoration-style: solid; outline: none; }
+.nome-tocca { cursor: text; border-radius: 0; }
+.nome-tocca:focus-visible { outline: 2px solid var(--latte); outline-offset: .08em; }
 .nome-modifica { outline: 2px solid var(--latte) !important; outline-offset: .08em; text-decoration: none; caret-color: var(--latte); min-width: 1ch; display: inline-block; }
 
 /* Sul telefono, nella home: la linea a capitoli sotto l'header e il capitolo in cui sei accanto al logo.

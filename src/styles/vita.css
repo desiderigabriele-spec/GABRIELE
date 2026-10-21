@@ -28,7 +28,7 @@
   .hero-spazio-occhio .bozza { width: min(100%, calc(var(--h, 27svh) * 4 / 3)); margin: 0 auto; }
   /* su telefono tutto resta dentro il riquadro, sopra al titolo */
   .bz-scena { inset: 3% 4% 4% 4%; }
-  .bz-voto { left: 0; top: 60%; } .bz-chat { right: 0; top: 10%; } .bz-grafico { right: 0; bottom: 0; width: 32%; }
+  .bz-voto { left: -10%; top: 56%; } .bz-chat { right: -14%; top: 5%; } .bz-grafico { right: -11%; bottom: -3%; }
   .bozza.animata .bz-foto i { animation: bz-gira .8s cubic-bezier(.2, .8, .2, 1) both calc(var(--k) * .12s), bz-respira 4.8s ease-in-out infinite calc(1.5s + var(--k) * .4s); }
   .bozza.animata .bz-btn::after { animation: bz-luce 4s ease-in-out infinite 1s; }
   .bozza.animata .bz-grafico span i { animation: bz-barra 1s cubic-bezier(.2,.8,.2,1) both calc(.4s + var(--k) * .08s); }
@@ -66,17 +66,18 @@
 .bz-scheda { border: 1px solid #262626; padding: 1.8cqw; display: grid; gap: 1cqw; background: #121212; }
 .bz-scheda i { width: 3.4cqw; height: 3.4cqw; border: 1.5px solid var(--rosso); }
 .bz-scheda b { height: 1cqw; background: #2a2a2a; } .bz-scheda b + b { width: 60%; }
-.bz-voto, .bz-chat, .bz-grafico { position: absolute; z-index: 2; }
-.bz-voto { left: -5%; top: 64%; background: #fff; color: #0a0a0a; padding: 1.6cqw 2cqw; display: grid; gap: .3cqw; }
-.bz-voto b { font-size: 3.4cqw; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
-.bz-voto span { color: #f5b301; font-size: 1.8cqw; letter-spacing: .08em; }
-.bz-voto small { font-size: 1.3cqw; color: #555; }
-.bz-chat { right: -5%; top: 12%; max-width: 38%; background: #0a0a0a; border: 1px solid #333; border-left: .6cqw solid var(--smeraldo); padding: 1.4cqw 1.8cqw; font-size: 1.7cqw; line-height: 1.35; }
-.bz-chat small { display: block; font-family: var(--f-mono); font-size: 1.2cqw; letter-spacing: .1em; color: var(--nebbia); margin-bottom: .4cqw; }
-.bz-grafico { right: -2%; bottom: -6%; width: 34%; background: #0a0a0a; border: 1px solid #333; padding: 1.6cqw 1.8cqw; display: grid; gap: 1.2cqw; }
-.bz-grafico small { font-family: var(--f-mono); font-size: 1.2cqw; letter-spacing: .1em; color: var(--nebbia); display: flex; justify-content: space-between; }
-.bz-grafico small b { color: var(--smeraldo); font-weight: 500; }
-.bz-grafico span { display: flex; align-items: end; gap: .7cqw; height: 7cqw; }
+.bz-voto, .bz-chat, .bz-grafico { position: absolute; z-index: 2; box-shadow: 0 2cqw 4cqw -1.5cqw rgba(0,0,0,.7); }
+/* voto, messaggio e grafico: più grandi delle linee del sito, e mai sotto una misura leggibile sul telefono */
+.bz-voto { left: -7%; top: 60%; background: #fff; color: #0a0a0a; padding: max(6px, 1.8cqw) max(8px, 2.4cqw); display: grid; gap: max(2px, .4cqw); }
+.bz-voto b { font-size: max(17px, 4.4cqw); font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.bz-voto span { color: #f5b301; font-size: max(10px, 2.3cqw); letter-spacing: .08em; line-height: 1; }
+.bz-voto small { font-size: max(8.5px, 1.7cqw); color: #555; }
+.bz-chat { right: -8%; top: 9%; width: max(128px, 44%); background: #0a0a0a; border: 1px solid #333; border-left: max(3px, .7cqw) solid var(--smeraldo); padding: max(6px, 1.6cqw) max(8px, 2cqw); font-size: max(10.5px, 2.2cqw); line-height: 1.35; }
+.bz-chat small { display: block; font-family: var(--f-mono); font-size: max(8px, 1.5cqw); letter-spacing: .1em; color: var(--nebbia); margin-bottom: max(2px, .5cqw); }
+.bz-grafico { right: -5%; bottom: -9%; width: max(112px, 40%); background: #0a0a0a; border: 1px solid #333; padding: max(7px, 1.8cqw) max(8px, 2cqw); display: grid; gap: max(5px, 1.4cqw); }
+.bz-grafico small { font-family: var(--f-mono); font-size: max(8px, 1.5cqw); letter-spacing: .1em; color: var(--nebbia); display: flex; justify-content: space-between; gap: .5em; }
+.bz-grafico small b { color: var(--smeraldo); font-weight: 500; font-size: 1.15em; }
+.bz-grafico span { display: flex; align-items: end; gap: max(2px, .7cqw); height: max(30px, 9cqw); }
 .bz-grafico span i { flex: 1; height: var(--h); background: #fff; transform-origin: bottom; }
 .bz-grafico span i:last-child { background: var(--rosso); }
 /* prima che si disegni: i pezzi non si vedono (solo con gli effetti accesi) */
