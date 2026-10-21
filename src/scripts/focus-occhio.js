@@ -108,14 +108,17 @@ export function creaOcchio(box) {
     if (m.battito) o.blink = 0;
   };
   // apri/chiudi la palpebra (0 = chiuso, 1 = aperto)
-  o.apri = (si = true) => { o.verso = si ? 1 : -1; };
+  o.apri = (si = true, vel = 2.2) => { o.verso = si ? 1 : -1; o.vel = vel; };
+  // per l'avvio: un battito quando lo dici tu, e niente battiti a caso finché serve
+  o.battito = () => { o.blink = 0; };
+  o.fermaBattiti = (si = true) => { o.senzaBattiti = si; if (!si) o.blink = performance.now() / 1000 + 3; };
   o.passo = (t, dt) => {
     if (!disegna) return;
-    if (o.verso) { o.apre = Math.max(0, Math.min(1, o.apre + o.verso * dt * 2.2)); if (o.apre === 0 || o.apre === 1) o.verso = 0; }
+    if (o.verso) { o.apre = Math.max(0, Math.min(1, o.apre + o.verso * dt * (o.vel || 2.2))); if (o.apre === 0 || o.apre === 1) o.verso = 0; }
     const k = Math.min(1, dt * 9);
     o.lx += (o.tx - o.lx) * k; o.ly += (o.ty - o.ly) * k;
     o.pup += (o.tp - o.pup) * Math.min(1, dt * 4);
-    if (t > o.blink) { o.blinkDa = t; o.blink = t + 4 + Math.random() * 5; }
+    if (t > o.blink) { o.blinkDa = t; o.blink = o.senzaBattiti ? Infinity : t + 4 + Math.random() * 5; }
     const b = (t - o.blinkDa) / 0.18;
     disegna({ lx: o.lx, ly: o.ly, pup: o.pup + Math.sin(t * 1.3) * 0.008, lid: Math.max(1 - o.apre, b < 1 ? Math.sin(b * Math.PI) : 0) });
   };

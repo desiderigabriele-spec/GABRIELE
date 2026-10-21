@@ -512,10 +512,13 @@ const jsonLd = {
           <a class="btn btn-azione" href={preventivo} data-azione>{T('Raccontami la tua', 'Tell me yours')} <span class="freccia" aria-hidden="true">→</span></a>
         </div>
         <div class="certificati" data-appare>
-          {(it
-            ? ['Social Media Manager · certificato ISO 9001 – MIUR – Google', 'AI per il Digital Marketing', 'Impresa e Startup · Ikigai Hub', "Creazione d'impresa · Confesercenti"]
-            : ['Social Media Manager · ISO 9001 – MIUR – Google certified', 'AI for Digital Marketing', 'Business and Startups · Ikigai Hub', 'Starting a business · Confesercenti']
-          ).map((c) => <span>{c}</span>)}
+          <span class="mono">{T('Certificazioni', 'Certifications')}</span>
+          <ul>
+            {(it
+              ? [['Social Media Manager', 'ISO 9001 · MIUR · Google'], ['AI per il Digital Marketing', 'Corso certificato'], ['Impresa e Startup', 'Ikigai Hub'], ['Creazione d’impresa', 'Confesercenti']]
+              : [['Social Media Manager', 'ISO 9001 · MIUR · Google'], ['AI for Digital Marketing', 'Certified course'], ['Business and Startups', 'Ikigai Hub'], ['Starting a business', 'Confesercenti']]
+            ).map(([nome, chi]) => <li><i aria-hidden="true"></i><b>{nome}</b><span>{chi}</span></li>)}
+          </ul>
         </div>
       </div>
       <ol class="storia-tempi" data-sequenza>

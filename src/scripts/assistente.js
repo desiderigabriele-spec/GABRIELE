@@ -228,6 +228,8 @@ export function avviaAssistente() {
     visibile = true;
     box.hidden = false;
     if (!occhio) occhio = creaOcchio(box.querySelector('[data-focus-occhio]'));
+    // arriva dall'avvio: l'occhio è già sveglio e ti guarda
+    if (subito) { occhio.apre = 1; occhio.umore('interessato'); setTimeout(() => occhio.umore('riposo'), 1400); }
     requestAnimationFrame(() => box.classList.add('su'));
     setTimeout(() => { occhio.apri(); guardaBottone(); }, ridotto || subito ? 0 : 450);
     setTimeout(mostraFumetto, 3200);

@@ -154,12 +154,10 @@ html.intro-attiva .intro { display: grid; }
 .intro-ic { width: var(--h); height: var(--h); display: block; flex: none; }
 .intro-sc { height: calc(var(--h) * .5); aspect-ratio: 1345.5 / 157.2; display: block; flex: none; }
 .intro-marchio svg { width: 100%; height: 100%; display: block; }
-.intro-occhio { position: fixed; left: -100px; top: -100px; width: 60px; height: 60px; border-radius: 50% !important; overflow: hidden; background: #e8e8e8; box-shadow: 0 0 0 2px var(--latte), 0 16px 34px -12px rgba(0, 0, 0, .9); transform: scale(0); }
-.io-iride { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50% !important; background: radial-gradient(circle, #111 0 34%, #4f4f4f 35% 70%, #777 71%); }
-.io-iride::after { content: ""; position: absolute; left: 9px; top: 8px; width: 5px; height: 5px; border-radius: 50% !important; background: var(--rosso); }
-.io-palpebra { position: absolute; left: -5%; right: -5%; height: 52%; background: var(--notte); }
-.io-palpebra.su { top: 0; transform-origin: top; }
-.io-palpebra.giu { bottom: 0; transform-origin: bottom; }
+/* il tondino dell'avvio è uguale a quello di Focus: dentro c'è l'occhio vero (scripts/intro.js) */
+.intro-bolla { position: fixed; left: -200px; top: -200px; width: 68px; height: 68px; border-radius: 50% !important; overflow: hidden; border: 1px solid #444; background: var(--notte); box-shadow: 0 16px 34px -12px rgba(0, 0, 0, .9); transform: scale(0); }
+.intro-bolla canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+@media (max-width: 900px) { .intro-bolla { width: 64px; height: 64px; } }
 
 /* ---------- Header ---------- */
 .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; height: var(--header-h); display: flex; align-items: center; transition: transform .5s var(--ease), background .4s, border-color .4s; border-bottom: 1px solid transparent; }
@@ -514,8 +512,16 @@ html.vita-on .metodo-passi .passo-num { display: none; }
 .percorso .anno { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .1em; color: var(--viola-chiaro); }
 .percorso strong { font-family: var(--f-titolo); font-size: 1.15rem; letter-spacing: -0.01em; }
 .percorso span { color: var(--nebbia); font-size: .95rem; }
-.certificati { display: flex; flex-wrap: wrap; gap: .5rem; }
-.certificati span { font-size: .85rem; padding: .5rem .85rem; border-radius: 99px; background: rgba(var(--latte-rgb),.05); border: 1px solid var(--linea); }
+/* le certificazioni: un elenco con il sigillo (quadrato bianco con il quadratino rosso), il corso e chi lo rilascia */
+.certificati { display: grid; gap: .5rem; }
+.certificati > .mono { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--nebbia); }
+.certificati ul { list-style: none; margin: 0; padding: 0; display: grid; }
+.certificati li { display: grid; grid-template-columns: 26px minmax(0, 1fr); column-gap: .8rem; padding: .7rem 0; border-top: 1px solid var(--linea); }
+.certificati li:last-child { border-bottom: 1px solid var(--linea); }
+.certificati i { grid-row: span 2; width: 22px; height: 22px; margin-top: .15rem; border: 1.5px solid var(--latte); position: relative; }
+.certificati i::after { content: ''; position: absolute; inset: 5px; background: var(--rosso); }
+.certificati b { font-size: .95rem; font-weight: 600; letter-spacing: -.01em; }
+.certificati li > span { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .06em; color: var(--nebbia); }
 @media (max-width: 900px) { .chi { grid-template-columns: 1fr; } }
 
 /* ---------- Prezzi ---------- */
@@ -812,7 +818,6 @@ html.stelle-titolo [data-stelle] { opacity: 0; }
 @media (min-width: 901px) {
   .piano .btn { --pad: .85rem 1.2rem; font-size: .95rem; margin-top: 0; }
   .piano .lista-check li { font-size: .92rem; }
-  .certificati span { font-size: .78rem; padding: .4rem .7rem; }
   .percorso span:not(.anno) { font-size: .92rem; }
   .cliente-sfida { font-size: .98rem; }
 }
