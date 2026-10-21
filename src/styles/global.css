@@ -481,24 +481,25 @@ input[type='range']::-moz-range-thumb { width: 16px; height: 16px; border-radius
 html.vita-on .passo .verbo::after { transition: transform .12s linear; }
 html.ridotto .passo .verbo::after { transform: none; }
 .passo-testa { font-family: var(--f-titolo); font-weight: 600; letter-spacing: -0.02em; font-size: clamp(1.15rem, 1.6vw, 1.5rem); color: var(--latte); line-height: 1.3; max-width: 34em; }
-/* la tecnica psicologica: chiusa, si apre con «Vedi la spiegazione psicologica» */
-.passo-tecnica { max-width: 34em; }
-.passo-tecnica summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: .65rem; padding: .35rem 0; font-family: var(--f-mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--nebbia); transition: color .25s; }
+/* la tecnica psicologica: il nome si vede sempre, la spiegazione si apre con «Vedi la spiegazione» */
+.passo-tecnica { max-width: 34em; background: rgba(var(--sup-rgb), .85); border: 1px solid var(--linea); border-left: 3px solid var(--rosso); }
+.passo-tecnica summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; padding: .85rem 1.1rem; }
 .passo-tecnica summary::-webkit-details-marker { display: none; }
-.passo-tecnica summary:hover, .passo-tecnica[open] summary { color: var(--latte); }
-.pt-piu { flex: none; position: relative; width: 20px; height: 20px; border: 1px solid var(--linea-forte); transition: border-color .3s; }
-.pt-piu::before, .pt-piu::after { content: ''; position: absolute; left: 50%; top: 50%; width: 9px; height: 1.5px; background: currentColor; transform: translate(-50%, -50%); }
+.pt-nome { color: var(--nebbia); }
+.pt-nome b { color: var(--latte); font-weight: 500; }
+.pt-vedi { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--nebbia); transition: color .25s; }
+.passo-tecnica summary:hover .pt-vedi, .passo-tecnica[open] .pt-vedi { color: var(--latte); }
+.pt-piu { flex: none; position: relative; width: 18px; height: 18px; border: 1px solid var(--linea-forte); transition: border-color .3s; }
+.pt-piu::before, .pt-piu::after { content: ''; position: absolute; left: 50%; top: 50%; width: 8px; height: 1.5px; background: currentColor; transform: translate(-50%, -50%); }
 .pt-piu::after { transform: translate(-50%, -50%) rotate(90deg); transition: transform .35s var(--ease); }
-.passo-tecnica[open] .pt-piu { border-color: var(--rosso); }
+.passo-tecnica summary:hover .pt-piu, .passo-tecnica[open] .pt-piu { border-color: var(--rosso); }
 .passo-tecnica[open] .pt-piu::after { transform: translate(-50%, -50%) rotate(0deg); }
 .pt-chiudi, .passo-tecnica[open] .pt-apri { display: none; }
 .passo-tecnica[open] .pt-chiudi { display: inline; }
-.pt-corpo { display: grid; gap: .4rem; margin-top: .6rem; padding: 1rem 1.1rem; background: rgba(var(--sup-rgb), .85); border: 1px solid var(--linea); border-left: 3px solid var(--rosso); }
+.passo-tecnica .pt-corpo { margin: 0; padding: 0 1.1rem 1rem; color: var(--nebbia); font-size: .95rem; }
 .passo-tecnica[open] .pt-corpo { animation: pt-apre .4s var(--ease); }
 @keyframes pt-apre { from { opacity: 0; transform: translateY(-6px); } }
 html.ridotto .passo-tecnica[open] .pt-corpo { animation: none; }
-.passo-tecnica .mono { color: var(--latte); }
-.passo-tecnica p { color: var(--nebbia); font-size: .95rem; }
 .metodo-numeri { display: none; }
 /* con gli effetti: un palco fermo mentre scorri, i numeri in verticale a sinistra e il passo attivo a destra */
 html.vita-on .metodo-pista { position: relative; height: calc(5 * 70svh + 100svh); }
@@ -517,7 +518,7 @@ html.vita-on .metodo-passi .passo-num { display: none; }
   html.vita-on .metodo-passi .passo { gap: .8rem; }
   .passo h3 { font-size: 1.6rem; }
   .passo-testa { font-size: 1.05rem; }
-  .passo-tecnica p { font-size: .86rem; }
+  .passo-tecnica .pt-corpo { font-size: .86rem; }
   .passo .mappa { max-width: 100%; }
 }
 
