@@ -481,10 +481,14 @@ const jsonLd = {
               {/* il verbo del passo è sottolineato: la linea si allunga mentre scorri il passo (vita.js, metodoNumeri) */}
               <h3>{(() => { const k = m.verbo ? m.titolo.indexOf(m.verbo) : -1; return k < 0 ? m.titolo : <>{m.titolo.slice(0, k)}<span class="verbo">{m.verbo}</span>{m.titolo.slice(k + m.verbo.length)}</>; })()}</h3>
               <p class="passo-testa">{m.testa}</p>
-              <div class="passo-tecnica">
-                <span class="mono">{T('Tecnica', 'Technique')} · {m.tecnica}</span>
-                <p>{m.spiega}</p>
-              </div>
+              {/* la psicologia dietro al passo è chiusa: la apre solo chi è curioso */}
+              <details class="passo-tecnica">
+                <summary><span class="pt-piu" aria-hidden="true"></span><span class="pt-apri">{T('Vedi la spiegazione psicologica', 'See the psychology behind it')}</span><span class="pt-chiudi">{T('Chiudi la spiegazione', 'Hide the explanation')}</span></summary>
+                <div class="pt-corpo">
+                  <span class="mono">{T('Tecnica', 'Technique')} · {m.tecnica}</span>
+                  <p>{m.spiega}</p>
+                </div>
+              </details>
               {i === 0 && <Mappa lang={lang} />}
             </article>
           ))}
