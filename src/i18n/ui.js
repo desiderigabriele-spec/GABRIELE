@@ -46,6 +46,10 @@ export const ui = {
     ptTitolo: 'Il tuo nome', ptNome: 'Come ti chiami?', ptNomeSegnaposto: 'Il tuo nome',
     ptNota: 'Lo usiamo solo per parlarti meglio. Resta sul tuo dispositivo.', ptInvito: '',
     cnTitolo: 'Prima di iniziare: come ti chiami?', cnTesto: 'Così ti parliamo come si deve. Il nome resta solo sul tuo dispositivo.', cnEntra: 'Entra', cnChiudi: 'Chiudi',
+    bvPrima: 'Prima di iniziare', bvTitolo: 'Come ti chiami?', bvSegnaposto: 'Il tuo nome (se ti va)',
+    bvCookieTitolo: 'I cookie, in breve',
+    bvCookie: 'Con il tuo ok usiamo cookie di statistica per capire cosa migliorare.', bvNomeResta: 'Il nome resta sul tuo dispositivo.',
+    bvSi: 'Accetta ed entra', bvNo: 'Solo necessari', bvAccetta: 'Accetta', bvEntra: 'Entra',
   },
   en: {
     lang: 'en', locale: 'en_GB', vaiContenuto: 'Skip to content', menu: 'Menu',
@@ -67,5 +71,9 @@ export const ui = {
     ptTitolo: 'Your name', ptNome: "What's your name?", ptNomeSegnaposto: 'Your first name',
     ptNota: 'We only use it to talk to you better. It stays on your device.', ptInvito: '',
     cnTitolo: 'Before we start: what’s your name?', cnTesto: 'So we can talk to you properly. Your name stays on your device only.', cnEntra: 'Enter', cnChiudi: 'Close',
+    bvPrima: 'Before we start', bvTitolo: 'What’s your name?', bvSegnaposto: 'Your name (if you like)',
+    bvCookieTitolo: 'Cookies, in short',
+    bvCookie: 'With your OK we use analytics cookies to see what to improve.', bvNomeResta: 'Your name stays on your device.',
+    bvSi: 'Accept and enter', bvNo: 'Necessary only', bvAccetta: 'Accept', bvEntra: 'Enter',
   },
 };

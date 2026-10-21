@@ -590,11 +590,6 @@ html.vita-on .metodo-passi .passo-num { display: none; }
 @media (max-width: 820px) { .footer-grid { grid-template-columns: 1fr; } }
 
 /* ---------- Cookie ---------- */
-.cookie { position: fixed; z-index: 60; right: 16px; bottom: 16px; max-width: 360px; padding: 1.1rem; font-size: .84rem !important; border-radius: var(--r); background: rgba(var(--sup-rgb),.95); border: 1px solid var(--linea-forte); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: grid; gap: 1rem; font-size: .9rem; color: var(--nebbia); }
-.cookie[hidden] { display: none; }
-.cookie-azioni { display: flex; gap: .6rem; }
-.cookie-azioni .btn { flex: 1; }
-@media (max-width: 900px) { .cookie { left: 12px; right: 12px; bottom: calc(86px + env(safe-area-inset-bottom)); max-width: none; padding: .9rem; gap: .7rem; font-size: .78rem !important; } .cookie .btn { --pad: .6rem .9rem; font-size: .85rem; } }
 
 /* ---------- Pagine semplici ---------- */
 .pagina { padding-top: calc(var(--header-h) + 72px); padding-bottom: 120px; }
@@ -897,22 +892,6 @@ html.stelle-titolo [data-stelle] { opacity: 0; }
   .servizio-include .lista-check li { font-size: .8rem; }
 }
 
-/* ---------- Il nome, chiesto all'ingresso (una volta sola) ---------- */
-.chiedi-nome { width: min(460px, calc(100vw - 32px)); max-width: none; padding: 0; border: 1px solid var(--linea-forte); background: var(--notte); color: var(--latte); opacity: 0; transform: translateY(12px); transition: opacity .35s var(--ease), transform .35s var(--ease), overlay .35s allow-discrete, display .35s allow-discrete; }
-.chiedi-nome[open] { opacity: 1; transform: none; }
-@starting-style { .chiedi-nome[open] { opacity: 0; transform: translateY(12px); } }
-.chiedi-nome::backdrop { background: rgba(0, 0, 0, .78); }
-.cn-box { position: relative; display: grid; gap: .9rem; padding: clamp(1.4rem, 4vw, 2rem); border-top: 3px solid var(--rosso); }
-.cn-chiudi { position: absolute; top: .5rem; right: .5rem; width: 44px; height: 44px; display: grid; place-items: center; background: none; border: 1px solid transparent; color: var(--nebbia); font-size: 1.7rem; line-height: 1; cursor: pointer; }
-.cn-chiudi:hover, .cn-chiudi:focus-visible { color: var(--latte); border-color: var(--linea-forte); outline: none; }
-.cn-box .mascotte { width: 34px; height: 34px; }
-.cn-box h2 { margin: 0; padding-right: 2.2rem; font-family: var(--f-titolo); font-weight: 700; font-size: clamp(1.45rem, 4.6vw, 1.9rem); line-height: 1.08; letter-spacing: -0.03em; }
-.cn-box p { margin: 0; font-size: .92rem; color: var(--nebbia); }
-.cn-box input { width: 100%; height: 54px; padding: 0 1rem; border: 1px solid var(--linea-forte); background: transparent; color: var(--latte); font: inherit; font-size: 1.15rem; }
-.cn-box input:focus { outline: none; border-color: var(--rosso); }
-.cn-box input::placeholder { color: var(--nebbia-2); }
-.cn-azioni { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-
 /* il nome si cambia toccandolo dove è scritto */
 .nome-tocca { cursor: text; border-radius: 0; }
 .nome-tocca:focus-visible { outline: 2px solid var(--latte); outline-offset: .08em; }
@@ -1022,3 +1001,33 @@ html.ridotto .cap-testo { animation: none; }
   .storia-firma { order: 4; }
   .storia .certificati { order: 5; }
 }
+
+/* Il benvenuto: piccolo, in basso a destra accanto a Focus (su telefono a tutta larghezza, Focus sale sopra). Nome e cookie con una sola conferma */
+.benvenuto { position: fixed; z-index: 120; right: calc(20px + 68px + 16px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); width: min(400px, calc(100vw - 32px)); background: var(--superficie); border: 1px solid var(--linea-forte); border-top: 2px solid var(--rosso); box-shadow: 0 30px 70px -25px rgba(0, 0, 0, .95); opacity: 0; transform: translateY(16px); transition: opacity .35s var(--ease), transform .45s var(--ease); }
+.benvenuto.su { opacity: 1; transform: none; }
+.bv-box { position: relative; display: grid; gap: .8rem; padding: 1rem 1rem .95rem; }
+.bv-nome { display: grid; gap: .35rem; padding-right: 2.2rem; }
+.bv-prima { font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--nebbia); }
+.bv-titolo { font-family: var(--f-titolo); font-weight: 800; font-size: 1.2rem; letter-spacing: -.03em; line-height: 1.1; }
+.bv-nome input { margin-top: .2rem; width: 100%; height: 44px; padding: 0 .8rem; background: transparent; border: 1px solid var(--linea-forte); color: var(--latte); font: inherit; font-size: 16px; }
+.bv-nome input:focus { outline: none; border-color: var(--latte); }
+.bv-nome input::placeholder { color: var(--nebbia-2); }
+.bv-cookie { display: grid; gap: .35rem; padding-right: 2.2rem; }
+.bv-nome:not([hidden]) + .bv-cookie { padding-right: 0; }
+.bv-cookie p { margin: 0; font-size: .78rem; line-height: 1.45; color: var(--nebbia); }
+.bv-cookie a { color: var(--latte); }
+.bv-azioni { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+.bv-azioni .btn { justify-content: center; --pad: .75rem .6rem; font-size: .88rem; }
+.bv-azioni .btn[hidden] { display: none; }
+.bv-azioni:has(.btn[hidden]) { grid-template-columns: 1fr; }
+.bv-chiudi { position: absolute; top: .35rem; right: .35rem; width: 40px; height: 40px; display: grid; place-items: center; background: none; border: 1px solid transparent; color: var(--nebbia); font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.bv-chiudi:hover, .bv-chiudi:focus-visible { color: var(--latte); border-color: var(--linea-forte); outline: none; }
+@media (max-width: 900px) {
+  .benvenuto { left: 10px; right: 10px; width: auto; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+  .bv-box { gap: .65rem; padding: .85rem .9rem .85rem; }
+  .bv-nome > .bv-prima { display: none; }
+  .bv-titolo { font-size: 1.1rem; }
+  .bv-cookie p { font-size: .74rem; }
+}
+.benvenuto [hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) { .benvenuto { transition: none; } }

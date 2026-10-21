@@ -245,15 +245,7 @@ if (finePointer && !ridotto) {
   });
 }
 
-// ---------- Cookie ----------
-const banner = document.querySelector('[data-cookie]');
-function salvaCookie(v) { try { localStorage.setItem(CHIAVE_COOKIE, v); } catch (_) {} banner.hidden = true; }
-if (banner) {
-  if (!consenso()) setTimeout(() => { banner.hidden = false; }, 2500);
-  banner.querySelector('[data-cookie-si]').addEventListener('click', () => salvaCookie('si'));
-  banner.querySelector('[data-cookie-no]').addEventListener('click', () => salvaCookie('no'));
-  document.querySelector('[data-cookie-apri]')?.addEventListener('click', () => { banner.hidden = false; });
-}
+// ---------- Cookie: il consenso si dà nel benvenuto in basso (benvenuto.js) ----------
 
 // ---------- Scena 3D: si carica dopo il testo, solo se serve ----------
 let scena = null;

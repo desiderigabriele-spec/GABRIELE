@@ -219,7 +219,6 @@ export function avviaAssistente() {
   // ---------- quando spunta ----------
   // dopo 3 secondi e poi resta lì, fisso; mai sopra la finestra del nome
   function puoMostrare() {
-    if (document.querySelector('[data-chiedi-nome]')?.open) return false;
     if (html.classList.contains('menu-aperto') || html.classList.contains('intro-attiva')) return false;
     return true;
   }
@@ -234,9 +233,6 @@ export function avviaAssistente() {
     setTimeout(() => { occhio.apri(); guardaBottone(); }, ridotto || subito ? 0 : 450);
     setTimeout(mostraFumetto, 3200);
   }
-  // l'avviso dei cookie: il tondino sale sopra di lui di quanto è alto
-  const cookie = document.querySelector('.cookie');
-  if (cookie && 'ResizeObserver' in window) new ResizeObserver(() => html.style.setProperty('--cookie-alto', `${cookie.offsetHeight}px`)).observe(cookie);
   let pronto = false;
   setTimeout(() => { pronto = true; }, 3000);
   // all'avvio l'occhio vola nel tondino: lì il tondino c'è già, senza entrata, e l'occhio è aperto

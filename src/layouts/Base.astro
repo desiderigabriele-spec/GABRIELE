@@ -168,21 +168,6 @@ const hrefEn = lang === 'en' ? path : alt;
       </div>
     </header>
 
-    <!-- All'ingresso: il nome, chiesto una volta sola. Poi compare solo nei punti che contano (titolo, preventivo, finale, messaggi). -->
-    <dialog class="chiedi-nome" data-chiedi-nome aria-labelledby="cn-titolo">
-      <form method="dialog" class="cn-box" data-cn-form>
-        <Cursore stato="aspetta" />
-        <h2 id="cn-titolo">{t.cnTitolo}</h2>
-        <p>{t.cnTesto}</p>
-        <label class="sr-only" for="cn-nome">{t.ptNome}</label>
-        <input id="cn-nome" name="nome" type="text" autocomplete="given-name" maxlength="24" placeholder={t.ptNomeSegnaposto} enterkeyhint="go" data-cn-nome autofocus />
-        <div class="cn-azioni">
-          <button class="btn btn-azione" type="submit" value="si" data-cn-si>{t.cnEntra} <span class="freccia" aria-hidden="true">→</span></button>
-        </div>
-        <!-- dopo i bottoni: così Invio nel campo vale «Entra» -->
-        <button class="cn-chiudi" type="submit" value="no" formnovalidate aria-label={t.cnChiudi}><span aria-hidden="true">×</span></button>
-      </form>
-    </dialog>
 
     <div class="menu-mobile" id="menu-mobile" data-menu inert data-lenis-prevent>
       <ul class="mm-voci" role="list">
@@ -249,12 +234,26 @@ const hrefEn = lang === 'en' ? path : alt;
 
     <Assistente lang={lang} />
 
-    <div class="cookie" data-cookie hidden role="dialog" aria-label="Cookie">
-      <p>{t.cookie} <a href={url('privacy', lang)}>{t.dettagli}</a></p>
-      <div class="cookie-azioni">
-        <button class="btn btn-vetro btn-piccolo" type="button" data-cookie-no>{t.cookieNo}</button>
-        <button class="btn btn-vetro btn-piccolo" type="button" data-cookie-si>{t.cookieSi}</button>
-      </div>
+    <!-- Il benvenuto, in basso e piccolo: il nome e i cookie con una sola conferma. Il nome si chiede una volta sola;
+         i cookie finché non scegli. «Accetta ed entra» e «Solo necessari» sono grandi uguali, la × vale «Solo necessari».
+         Logica in scripts/benvenuto.js. -->
+    <div class="benvenuto" data-benvenuto hidden role="dialog" aria-labelledby="bv-titolo">
+      <form class="bv-box" data-bv-form>
+        <div class="bv-nome" data-bv-nome-parte>
+          <span class="mono bv-prima">{t.bvPrima}</span>
+          <label class="bv-titolo" id="bv-titolo" for="bv-nome">{t.bvTitolo}</label>
+          <input id="bv-nome" name="nome" type="text" autocomplete="given-name" maxlength="24" placeholder={t.bvSegnaposto} enterkeyhint="done" data-bv-nome />
+        </div>
+        <div class="bv-cookie" data-bv-cookie-parte>
+          <span class="mono bv-prima" data-bv-cookie-titolo hidden>{t.bvCookieTitolo}</span>
+          <p>{t.bvCookie} <span data-bv-nome-resta>{t.bvNomeResta}</span> <a href={url('privacy', lang)}>{t.dettagli}</a></p>
+        </div>
+        <div class="bv-azioni">
+          <button class="btn btn-azione btn-piccolo" type="submit" value="si" data-bv-si data-testi={JSON.stringify([t.bvSi, t.bvAccetta, t.bvEntra])}>{t.bvSi}</button>
+          <button class="btn btn-vetro btn-piccolo" type="submit" value="no" data-bv-no>{t.bvNo}</button>
+        </div>
+        <button class="bv-chiudi" type="button" aria-label={t.cnChiudi} data-bv-chiudi><span aria-hidden="true">×</span></button>
+      </form>
     </div>
 
     <div class="ritorno" data-ritorno hidden role="status">
