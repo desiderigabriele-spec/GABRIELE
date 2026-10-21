@@ -1178,27 +1178,32 @@ html.vita-on .sf-chat.chiusa .sf-finestra { opacity: 0; transform: scale(.6) tra
 
 
 /* Il pieghevole in 3D. Ogni metà ha la sua cornice in titanio; la sinistra è un'anta che ruota sulla cerniera.
-   Chiuso: l'anta è girata di 180° sopra la metà destra e si vede la sua faccia esterna; il telefono è stretto e centrato. */
-.st-fold { position: relative; width: min(100%, 560px); aspect-ratio: 1.16; container-type: inline-size; perspective: 1800px; perspective-origin: 50% 40%; }
+   Chiuso: l'anta è girata di 180° sopra la metà destra e si vede la sua faccia esterna; il telefono è stretto e centrato.
+   Gli angoli tondi sono ritagliati anche con clip-path: Safari, sui pezzi in 3D, a volte ignora border-radius e lascia gli spigoli. */
+.st-fold { --sf-r: clamp(26px, 7.5cqw, 44px); --sf-rv: clamp(20px, 6.2cqw, 37px); position: relative; width: min(100%, 560px); aspect-ratio: 1.16; container-type: inline-size; perspective: 1800px; perspective-origin: 50% 40%; }
 .sf-meta, .sf-faccia { position: absolute; top: 0; bottom: 0; width: 100%; padding: clamp(5px, 1.3cqw, 8px);
   background: linear-gradient(150deg, #4a5366 0%, #262c37 22%, #1b2029 50%, #2a303c 78%, #444c5d 100%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08); }
-.sf-destra { right: 0; width: 50%; z-index: 1; padding-left: 1.5px; border-radius: 0 clamp(26px, 7.5cqw, 44px) clamp(26px, 7.5cqw, 44px) 0 !important; box-shadow: 30px 50px 80px -45px rgba(0, 0, 0, .9), inset 0 0 0 1px rgba(255, 255, 255, .08); }
-.sf-anta { position: absolute; top: 0; bottom: 0; left: 0; width: 50%; transform-origin: right center; transform-style: preserve-3d; z-index: 2; }
+.sf-destra { right: 0; width: 50%; z-index: 1; padding-left: 1.5px; box-shadow: 30px 50px 80px -45px rgba(0, 0, 0, .9), inset 0 0 0 1px rgba(255, 255, 255, .08); }
+.sf-anta { position: absolute; top: 0; bottom: 0; left: 0; width: 50%; transform-origin: right center; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; z-index: 2; }
 .sf-faccia { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-.sf-fronte { padding-right: 1.5px; border-radius: clamp(26px, 7.5cqw, 44px) 0 0 clamp(26px, 7.5cqw, 44px) !important; }
-.sf-retro { transform: rotateY(180deg); border-radius: clamp(26px, 7.5cqw, 44px) !important; }
+.sf-fronte { padding-right: 1.5px; }
+.sf-retro { transform: rotateY(180deg); }
 .sf-vetro { position: relative; width: 100%; height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; background: #050505; }
-.sf-destra .sf-vetro { border-radius: 0 clamp(20px, 6.2cqw, 37px) clamp(20px, 6.2cqw, 37px) 0 !important; }
-.sf-retro .sf-vetro { border-radius: clamp(20px, 6.2cqw, 37px) !important; }
-/* da chiuso anche la metà destra ha gli angoli tondi verso la cerniera, così non spuntano da sotto il dorso */
-html.vita-on .st-fold .sf-destra { border-radius: clamp(26px, 7.5cqw, 44px) !important; transition: border-radius .5s .6s; }
-html.vita-on .st-fold .sf-destra .sf-vetro { border-radius: clamp(20px, 6.2cqw, 37px) !important; transition: border-radius .5s .6s; }
-html.vita-on .st-fold.aperto .sf-destra { border-radius: 0 clamp(26px, 7.5cqw, 44px) clamp(26px, 7.5cqw, 44px) 0 !important; }
-html.vita-on .st-fold.aperto .sf-destra .sf-vetro { border-radius: 0 clamp(20px, 6.2cqw, 37px) clamp(20px, 6.2cqw, 37px) 0 !important; }
-.sf-fronte .sf-vetro { border-radius: clamp(20px, 6.2cqw, 37px) 0 0 clamp(20px, 6.2cqw, 37px) !important; }
 .sf-esterno { color: #fff; }
 /* l'ombra che passa sulle facce mentre l'anta gira, e quella che l'anta getta sulla metà destra */
-.sf-faccia::after, .sf-destra::after { content: ''; position: absolute; inset: 0; border-radius: inherit !important; background: #000; opacity: 0; pointer-events: none; z-index: 5; }
+.sf-faccia::after, .sf-destra::after { content: ''; position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; z-index: 5; }
+/* le forme: aperto la cerniera è dritta; da chiuso la metà destra è tonda tutto intorno, così non spunta da sotto il dorso */
+.sf-fronte, .sf-fronte::after { border-radius: var(--sf-r) 0 0 var(--sf-r) !important; clip-path: inset(0 round var(--sf-r) 0 0 var(--sf-r)); }
+.sf-fronte .sf-vetro { border-radius: var(--sf-rv) 0 0 var(--sf-rv) !important; clip-path: inset(0 round var(--sf-rv) 0 0 var(--sf-rv)); }
+.sf-retro, .sf-retro::after { border-radius: var(--sf-r) !important; clip-path: inset(0 round var(--sf-r)); }
+.sf-retro .sf-vetro { border-radius: var(--sf-rv) !important; clip-path: inset(0 round var(--sf-rv)); }
+.sf-destra, .sf-destra::after { border-radius: 0 var(--sf-r) var(--sf-r) 0 !important; }
+.sf-destra::after { clip-path: inset(0 round 0 var(--sf-r) var(--sf-r) 0); }
+.sf-destra .sf-vetro { border-radius: 0 var(--sf-rv) var(--sf-rv) 0 !important; clip-path: inset(0 round 0 var(--sf-rv) var(--sf-rv) 0); }
+html.vita-on .st-fold:not(.aperto) .sf-destra, html.vita-on .st-fold:not(.aperto) .sf-destra::after { border-radius: var(--sf-r) !important; }
+html.vita-on .st-fold:not(.aperto) .sf-destra::after { clip-path: inset(0 round var(--sf-r)); }
+html.vita-on .st-fold:not(.aperto) .sf-destra .sf-vetro { border-radius: var(--sf-rv) !important; clip-path: inset(0 round var(--sf-rv)); }
+html.vita-on .st-fold .sf-destra, html.vita-on .st-fold .sf-destra::after, html.vita-on .st-fold .sf-destra .sf-vetro { transition: border-radius .5s .6s, clip-path .5s .6s; }
 html.vita-on .st-fold { transform: translateX(-25%); transition: transform 1.1s cubic-bezier(.65, 0, .25, 1); }
 html.vita-on .st-fold .sf-anta { transform: rotateY(-180deg); transition: transform 1.1s cubic-bezier(.65, 0, .25, 1); }
 html.vita-on .st-fold.aperto { transform: none; }
