@@ -25,7 +25,9 @@
 }
 .bozza { position: relative; width: 100%; aspect-ratio: 4 / 3; container-type: inline-size; perspective: 1400px; }
 @media (max-width: 820px) {
-  .hero-spazio-occhio .bozza { width: min(100%, calc(var(--h, 27svh) * 4 / 3)); margin: 0 auto; }
+  /* su telefono il disegno sta a sinistra (al massimo il 60% della riga), e a destra c'è la colonna con messaggio e grafico */
+  .hero-spazio-occhio .bozza { --bw: min(calc(var(--h, 27svh) * 4 / 3), calc((100vw - 2 * var(--gutter)) * .6)); width: var(--bw); margin: 0; }
+  .hero-spazio-occhio:has(.bozza) { justify-items: start; }
   /* su telefono tutto resta dentro il riquadro, sopra al titolo */
   .bz-scena { inset: 3% 4% 4% 4%; }
   .bozza.animata .bz-foto i { animation: bz-gira .8s cubic-bezier(.2, .8, .2, 1) both calc(var(--k) * .12s), bz-respira 4.8s ease-in-out infinite calc(1.5s + var(--k) * .4s); }
@@ -78,16 +80,15 @@
 .bz-grafico small b { color: var(--smeraldo); font-weight: 500; font-size: 1.15em; }
 .bz-grafico span { display: flex; align-items: end; gap: max(2px, .7cqw); height: max(30px, 9cqw); }
 @media (max-width: 820px) {
-  /* voto, messaggio e grafico escono ai lati del disegno, nello spazio vuoto: si leggono e non lo coprono.
-     Escono al massimo fino al margine dello schermo (quanto spazio c'è ai lati dipende dall'altezza del telefono). */
-  .bz-voto { top: 46%; left: max(-78px, calc((100% - 100vw) / 2 + 16px)); }
-  .bz-chat { top: -2%; right: max(-96px, calc((100% - 100vw) / 2 + 16px)); width: 118px; padding: 6px 8px; font-size: 10.5px; }
+  /* messaggio e grafico in colonna a destra del disegno, nello spazio libero; il voto sull'angolo in basso, sopra le schede finte */
+  .bz-chat, .bz-grafico { left: calc(100% + var(--bw, 0px) * .04 + 12px); right: auto; width: calc(100vw - 2 * var(--gutter) - var(--bw, 0px) - 12px); max-width: 190px; }
+  .bz-chat { top: 0; padding: 6px 8px; font-size: 10.5px; }
   .bz-chat small { font-size: 8px; }
-  .bz-grafico { bottom: -2%; right: max(-84px, calc((100% - 100vw) / 2 + 16px)); width: 104px; padding: 7px 8px; gap: 5px; }
+  .bz-grafico { top: auto; bottom: 0; padding: 7px 8px; gap: 5px; }
   .bz-grafico small { font-size: 8px; }
-  .bz-grafico span { height: 26px; }
-  .bz-voto { padding: 6px 8px; }
-  .bz-voto b { font-size: 17px; } .bz-voto span { font-size: 10px; } .bz-voto small { font-size: 8.5px; }
+  .bz-grafico span { height: 24px; }
+  .bz-voto { top: auto; bottom: -7%; left: -6px; padding: 5px 7px; gap: 1px; }
+  .bz-voto b { font-size: 15px; } .bz-voto span { font-size: 9px; } .bz-voto small { font-size: 8px; }
 }
 .bz-grafico span i { flex: 1; height: var(--h); background: #fff; transform-origin: bottom; }
 .bz-grafico span i:last-child { background: var(--rosso); }
