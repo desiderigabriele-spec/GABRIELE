@@ -131,6 +131,13 @@ button { font: inherit; color: inherit; }
 
 .wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
 .sezione { position: relative; padding-block: clamp(72px, 12vw, 120px); }
+/* lo stacco tra le sezioni: aria sopra e sotto e, in mezzo, una fila di stelle che si accendono a onda (site.js) */
+.stelle-fila { position: relative; z-index: 1; width: min(1180px, calc(100% - 2 * var(--gutter))); margin: clamp(28px, 7svh, 96px) auto; height: 12px; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
+.stelle-fila i { width: 2px; height: 2px; background: var(--latte); opacity: .16; }
+.stelle-fila.vista i { animation: stella-fila 3.2s ease-in-out infinite; animation-delay: calc(var(--k) * 45ms); }
+@keyframes stella-fila { 0%, 100% { opacity: .16; transform: none; } 22% { opacity: .9; transform: scale(1.8); } 40% { opacity: .16; transform: none; } }
+html.ridotto .stelle-fila i { animation: none; opacity: .3; }
+@media (max-width: 900px) { .stelle-fila { margin-block: 30px; } .stelle-fila i:nth-child(2n) { display: none; } }
 
 /* ---------- Tipografia ---------- */
 h1, h2, h3, h4 { font-family: var(--f-titolo); font-weight: 800; line-height: 1.02; letter-spacing: -0.04em; margin: 0; text-wrap: balance; }

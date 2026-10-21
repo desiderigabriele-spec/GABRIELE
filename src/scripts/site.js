@@ -174,6 +174,22 @@ toggle?.addEventListener('click', () => {
 menu?.addEventListener('click', (e) => { if (e.target.closest('a')) chiudiMenu(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') chiudiMenu(); });
 
+// ---------- Tra una sezione e l'altra: più aria e una fila di stelle che si accendono una dopo l'altra ----------
+// (non tra sezioni dello stesso capitolo, segnate con data-attaccata, né dove c'è già uno stacco come le righe che scorrono)
+(function fileDiStelle() {
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver((voci) => voci.forEach((v) => v.target.classList.toggle('vista', v.isIntersecting)), { rootMargin: '0px 0px -10% 0px' }) : null;
+  document.querySelectorAll('main section.sezione').forEach((sez) => {
+    const prima = sez.previousElementSibling;
+    if (!prima || !prima.matches('section') || sez.hasAttribute('data-attaccata')) return;
+    const fila = document.createElement('div');
+    fila.className = 'stelle-fila';
+    fila.setAttribute('aria-hidden', 'true');
+    fila.innerHTML = Array.from({ length: 56 }, (_, k) => `<i style="--k:${k}"></i>`).join('');
+    sez.before(fila);
+    if (io) io.observe(fila); else fila.classList.add('vista');
+  });
+})();
+
 // ---------- Animazioni d'ingresso ----------
 function animaIngressi() {
   if (ridotto) return;
