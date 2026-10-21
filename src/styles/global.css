@@ -997,3 +997,21 @@ html.ridotto .cap-testo { animation: none; }
 .sv-altri.infinita::-webkit-scrollbar { display: none; }
 .sv-altri.infinita > a { flex: none; white-space: nowrap; -webkit-user-drag: none; }
 .sv-altri.infinita.trascino { cursor: grabbing; }
+/* un solo referente: sotto la storia, una riga intera con il titolo a sinistra e i tre passi a destra */
+.referente { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(24px, 5vw, 80px); align-items: start; padding-top: clamp(28px, 5svh, 56px); border-top: 1px solid var(--linea); }
+.referente-testo { display: grid; gap: 1rem; }
+.referente-testo h3 { font-family: var(--f-titolo); font-weight: 800; font-size: clamp(1.7rem, 3vw, 2.6rem); line-height: 1.02; letter-spacing: -.045em; margin: 0; }
+.referente-testo p { margin: 0; color: var(--nebbia); font-size: clamp(.95rem, 1.05vw, 1.05rem); line-height: 1.55; }
+.referente-testo p strong { color: var(--latte); font-weight: 600; }
+.referente-passi { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.referente-passi li { border-top: 2px solid var(--latte); padding-top: .9rem; display: grid; gap: .4rem; align-content: start; }
+.referente-passi li:last-child { border-color: var(--rosso); }
+.referente-passi small { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--nebbia); }
+.referente-passi b { font-size: 1.05rem; letter-spacing: -.02em; }
+.referente-passi span { color: var(--nebbia); font-size: .9rem; line-height: 1.5; }
+@media (max-width: 900px) {
+  .referente { order: 3; grid-template-columns: minmax(0, 1fr); gap: 1.2rem; }
+  .referente-passi { grid-template-columns: minmax(0, 1fr); }
+  .storia-firma { order: 4; }
+  .storia .certificati { order: 5; }
+}

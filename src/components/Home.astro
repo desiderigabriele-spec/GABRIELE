@@ -514,7 +514,7 @@ const jsonLd = {
           <b>{T('Che il tuo prossimo cliente scelga te, e sappia dire perché.', 'That your next client chooses you, and can say why.')}</b>
         </div>
         <div class="storia-firma" data-appare>
-          <span class="storia-nome">Gabriele Desideri<small>{T('Fondatore · Milano', 'Founder · Milan')}</small></span>
+          <span class="storia-nome">Gabriele Desideri<small>{T('Il tuo referente, dall’inizio alla fine', 'Your one contact, start to finish')}</small></span>
           <a class="btn btn-azione" href={preventivo} data-azione>{T('Raccontami la tua', 'Tell me yours')} <span class="freccia" aria-hidden="true">→</span></a>
         </div>
         <div class="certificati" data-appare>
@@ -537,6 +537,27 @@ const jsonLd = {
           ['Today', 'Desideri & Code is a studio in Milan. <em>You always talk to me</em>, from the first message to the last tweak, and you sign the price before we start.'],
         ]).map(([titolo, testo], k) => <li><b aria-hidden="true">{String(k + 1).padStart(2, '0')}</b><div><h3>{titolo}</h3><p set:html={testo} /></div></li>)}
       </ol>
+      <!-- un solo referente: chi ti ascolta è chi disegna il sito -->
+      <div class="referente" data-appare>
+        <div class="referente-testo">
+          <span class="capitolo">{T('Come lavoriamo', 'How we work')}</span>
+          <h3>{it ? <>Chi ti ascolta è chi <span class="em em-firma">disegna</span> il tuo sito.</> : <>The person who listens is the one who <span class="em em-firma">designs</span> your site.</>}</h3>
+          <p>{it
+            ? <>Niente commerciali che spariscono dopo la firma, niente ticket, niente «le passo un collega». <strong>Dalla prima chiamata all’ultimo ritocco parli con la stessa persona</strong>, che sa tutto del tuo progetto.</>
+            : <>No salespeople who vanish after you sign, no tickets, no “let me pass you to a colleague”. <strong>From the first call to the last tweak you talk to the same person</strong>, who knows everything about your project.</>}</p>
+        </div>
+        <ol class="referente-passi" data-sequenza>
+          {(it ? [
+            ['01 · Ascolto', 'Una chiamata di 20 minuti', 'Mi racconti cosa vendi e a chi. Gratis, senza impegno.'],
+            ['02 · Progetto', 'Lo vedi prima che esista', 'Ti mostro il sito disegnato; lo ritocchiamo finché ti convince.'],
+            ['03 · Online', 'In 3-5 settimane', 'Con il prezzo firmato all’inizio. Sito, codice e account sono tuoi.'],
+          ] : [
+            ['01 · Listen', 'A 20-minute call', 'You tell me what you sell and to whom. Free, no commitment.'],
+            ['02 · Design', 'You see it before it exists', 'I show you the designed site; we tweak it until you’re convinced.'],
+            ['03 · Live', 'In 3-5 weeks', 'With the price signed at the start. Site, code and accounts are yours.'],
+          ]).map(([n, t, d]) => <li><small>{n}</small><b>{t}</b><span>{d}</span></li>)}
+        </ol>
+      </div>
     </div>
   </section>
 
