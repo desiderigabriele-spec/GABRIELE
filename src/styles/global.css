@@ -1183,34 +1183,32 @@ html.vita-on .sf-chat.chiusa .sf-finestra { opacity: 0; transform: scale(.6) tra
 .st-fold { --sf-r: clamp(26px, 7.5cqw, 44px); --sf-rv: clamp(20px, 6.2cqw, 37px); --sf-t: clamp(5px, 1.8cqw, 10px); position: relative; width: min(100%, 560px); aspect-ratio: 1.16; container-type: inline-size; perspective: 1100px; perspective-origin: 50% 35%; }
 .sf-meta, .sf-faccia { position: absolute; top: 0; bottom: 0; width: 100%; padding: clamp(5px, 1.3cqw, 8px);
   background: linear-gradient(150deg, #4a5366 0%, #262c37 22%, #1b2029 50%, #2a303c 78%, #444c5d 100%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08); }
-.sf-destra { right: 0; width: 50%; z-index: 1; padding-left: 1.5px; box-shadow: 30px 50px 80px -45px rgba(0, 0, 0, .9), inset 0 0 0 1px rgba(255, 255, 255, .08); }
+.sf-destra { right: 0; width: 50%; z-index: 1; padding-left: 0; box-shadow: 30px 50px 80px -45px rgba(0, 0, 0, .9), inset 0 0 0 1px rgba(255, 255, 255, .08); }
 .sf-anta { position: absolute; top: 0; bottom: 0; left: 0; width: 50%; transform-origin: right center; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; z-index: 2; }
 .sf-faccia { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-.sf-fronte { padding-right: 1.5px; }
+.sf-fronte { padding-right: 0; }
 .sf-vetro { position: relative; width: 100%; height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; background: #050505; }
 .sf-esterno { color: #fff; }
 /* l'ombra che passa sulle facce mentre l'anta gira, e quella che l'anta getta sulla metà destra */
 .sf-faccia::after, .sf-destra::after { content: ''; position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; z-index: 5; }
-/* le forme: da aperto e fermo la cerniera è dritta. Finché si muove (e da chiuso) le due metà sono tonde tutto intorno:
-   così durante la rotazione non spunta mai uno spigolo. «piatto» lo mette vita.js quando l'anta ha finito di girare. */
+/* le forme: come nel telefono vero, verso la cerniera niente angoli tondi. Aperto, le due metà dello schermo interno
+   si toccano e sembrano un solo schermo che si piega; chiuso, il lato della cerniera (a sinistra) è dritto. */
 .sf-fronte, .sf-fronte::after { border-radius: var(--sf-r) 0 0 var(--sf-r) !important; clip-path: inset(0 round var(--sf-r) 0 0 var(--sf-r)); }
 .sf-fronte .sf-vetro { border-radius: var(--sf-rv) 0 0 var(--sf-rv) !important; clip-path: inset(0 round var(--sf-rv) 0 0 var(--sf-rv)); }
-.sf-retro, .sf-retro::after { border-radius: var(--sf-r) !important; clip-path: inset(0 round var(--sf-r)); }
-.sf-retro .sf-vetro { border-radius: var(--sf-rv) !important; clip-path: inset(0 round var(--sf-rv)); }
+.sf-retro, .sf-retro::after { border-radius: 0 var(--sf-r) var(--sf-r) 0 !important; clip-path: inset(0 round 0 var(--sf-r) var(--sf-r) 0); }
+.sf-retro .sf-vetro { border-radius: 0 var(--sf-rv) var(--sf-rv) 0 !important; clip-path: inset(0 round 0 var(--sf-rv) var(--sf-rv) 0); }
 .sf-destra, .sf-destra::after { border-radius: 0 var(--sf-r) var(--sf-r) 0 !important; }
 .sf-destra::after { clip-path: inset(0 round 0 var(--sf-r) var(--sf-r) 0); }
 .sf-destra .sf-vetro { border-radius: 0 var(--sf-rv) var(--sf-rv) 0 !important; clip-path: inset(0 round 0 var(--sf-rv) var(--sf-rv) 0); }
-html.vita-on .st-fold:not(.piatto) :is(.sf-destra, .sf-fronte) { border-radius: var(--sf-r) !important; }
-html.vita-on .st-fold:not(.piatto) .sf-fronte, html.vita-on .st-fold:not(.piatto) .sf-fronte::after, html.vita-on .st-fold:not(.piatto) .sf-destra::after { border-radius: var(--sf-r) !important; clip-path: inset(0 round var(--sf-r)); }
-html.vita-on .st-fold:not(.piatto) :is(.sf-destra, .sf-fronte) .sf-vetro { border-radius: var(--sf-rv) !important; clip-path: inset(0 round var(--sf-rv)); }
-html.vita-on .st-fold :is(.sf-destra, .sf-fronte), html.vita-on .st-fold :is(.sf-destra, .sf-fronte) .sf-vetro { transition: border-radius .3s, clip-path .3s; }
+/* la piega: una riga appena visibile al centro dello schermo aperto */
+.sf-destra .sf-vetro::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: rgba(255, 255, 255, .07); z-index: 6; pointer-events: none; }
 /* il corpo: la metà destra, l'anta e i bordi in metallo stanno nello stesso spazio 3D, così si vede lo spessore */
 .sf-corpo { position: absolute; inset: 0; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transform-origin: 75% 50%; }
 .sf-retro { transform: translateZ(calc(var(--sf-t) * -1)) rotateY(180deg); }
 /* lo spessore: qualche lastra di metallo parallela allo schermo, una dietro l'altra. Viste di sbieco fanno il bordo,
    tondo come gli angoli; non ci sono piani di traverso, così il browser non sbaglia mai cosa sta davanti */
-.sf-strato { position: absolute; inset: 0; border-radius: var(--sf-r) !important; background: linear-gradient(150deg, #5b6477, #2a303c 45%, #4a5366); transform: translateZ(calc(var(--sf-t) * var(--z) * -.25)); pointer-events: none; }
-.sf-strato.sf-base { left: 50%; }
+.sf-strato { position: absolute; inset: 0; border-radius: var(--sf-r) 0 0 var(--sf-r) !important; background: linear-gradient(150deg, #5b6477, #2a303c 45%, #4a5366); transform: translateZ(calc(var(--sf-t) * var(--z) * -.25)); pointer-events: none; }
+.sf-strato.sf-base { left: 50%; border-radius: 0 var(--sf-r) var(--sf-r) 0 !important; }
 /* chiuso: il telefono è stretto, centrato e un po' inclinato, come tenuto in mano; poi la copertina viene verso di te,
    passa di taglio (si vede il bordo) e si distende a sinistra. Lo schermo esterno si spegne, quello interno si accende
    sfocato e diventa nitido quando il telefono è piatto: come nei video del pieghevole vero. */
