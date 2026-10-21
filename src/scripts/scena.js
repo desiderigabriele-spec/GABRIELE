@@ -7,6 +7,9 @@
 //   3 CUORE      → desiderio (batte), con il cuore rosso al centro
 //   4 FRECCIA    → azione, il passo verso il «sì»
 // La forma attiva la decide la sezione al centro dello schermo ([data-forma]).
+// Le forme dei capitoli però non si mostrano più: al loro posto c'è «il viaggio» nel cielo stellato.
+// A ogni capitolo si va più veloci tra le stelle (fermi su «Guarda», scie su «Scrivici»), e scorrendo si accelera.
+// Le particelle tornano visibili solo per la finestra di uscita (l'occhio che guarda l'offerta).
 import * as THREE from 'three';
 
 const NOISE = /* glsl */ `
@@ -409,15 +412,19 @@ export function avviaScena(canvas) {
     uAspect: { value: 1 }, uRis: { value: new THREE.Vector2(1, 1) },
     uOcchio: { value: new THREE.Vector4(0, 0, 0, 0) },      // centro e raggio dell'occhio in pixel, quanto è occhio
     uWarp: { value: 0 },                                     // 0 fermo · 1 scroll velocissimo: le stelle diventano strisce
+    uViaggio: { value: 0 },                                  // 0 cielo fermo · 1 si vola tra le stelle
+    uPercorso: { value: 0 },                                 // quanta strada si è fatta (cresce con la velocità)
+    uScia: { value: 0 },                                     // 0 stelle tonde · 1 le stelle vicine diventano scie
   };
   const smat = new THREE.ShaderMaterial({
     uniforms: suni, transparent: true, depthWrite: false, blending: fusione(),
     vertexShader: /* glsl */ `
-      uniform float uTime, uScroll, uPR, uAspect, uWarp;
+      uniform float uTime, uScroll, uPR, uAspect, uWarp, uViaggio, uPercorso, uScia;
       uniform vec2 uParallasse, uRis;
       uniform vec4 uOcchio;
       attribute vec4 aSeme;
       varying float vLuce, vTinta, vStira;
+      varying vec2 vDir;
       void main(){
         float v = aSeme.z;
         // deriva lenta verso sinistra e salita con lo scroll: le stelle vicine si muovono di più (profondità)
@@ -427,6 +434,11 @@ export function avviaScena(canvas) {
         float meta = (7.0 - position.z) * 0.3153 * 1.04;
         vec3 p = vec3(u * meta * uAspect, w * meta, position.z);
         p.xy += uParallasse * (0.15 + v * 0.6);
+        // il viaggio: ogni stella ha la sua profondità, che avanza verso di noi e ricomincia da lontano
+        float fase = fract(aSeme.w * 7.31 + aSeme.x * 0.159 + uPercorso);
+        vec3 pv = vec3(vec2(position.x * uAspect, position.y) * 9.2, -22.0 + fase * 25.0);
+        pv.xy += uParallasse * 0.4;
+        p = mix(p, pv, uViaggio);
         vec4 mv = modelViewMatrix * vec4(p, 1.0);
         gl_Position = projectionMatrix * mv;
         // scintillio: ognuna col suo ritmo
@@ -444,18 +456,30 @@ export function avviaScena(canvas) {
         // velocità della luce: scorrendo forte la stella si allunga in verticale (più quelle vicine)
         vStira = 1.0 + uWarp * 6.0 * (0.25 + min(v, 1.3));
         vLuce *= 1.0 + uWarp * 0.6;
+        // nel viaggio: le stelle nascono lontane e piccole, crescono avvicinandosi e si allungano verso l'esterno
+        vec2 ndc0 = gl_Position.xy / gl_Position.w;
+        vec2 radiale = normalize(ndc0 * vec2(uAspect, 1.0) + 1e-4);
+        vDir = normalize(mix(vec2(0.0, 1.0), radiale, uViaggio));
+        float vita = smoothstep(0.0, 0.3, fase) * (1.0 - smoothstep(0.86, 1.0, fase));
+        vLuce *= mix(1.0, vita * (0.9 + fase * 1.2), uViaggio);
+        base = mix(base, (1.6 + 2.8 * aSeme.w) * uPR * clamp(10.0 / -mv.z, 0.5, 3.0), uViaggio);
+        vStira = mix(vStira, 1.0 + (uScia * 9.0 + uWarp * 5.0) * fase * fase, uViaggio);
         gl_PointSize = base * vStira;
       }`,
     fragmentShader: /* glsl */ `
       uniform vec3 uColore;
       uniform float uOpacita;
       varying float vLuce, vTinta, vStira;
+      varying vec2 vDir;
       void main(){
         vec2 q = gl_PointCoord - 0.5;
-        q.x *= vStira;                                   // la larghezza resta quella della stella, cresce solo l'altezza
-        float d = length(q);
+        // la scia va nella direzione della stella (in verticale scorrendo, verso l'esterno nel viaggio):
+        // la larghezza resta quella della stella, cresce solo la lunghezza
+        vec2 dir = vec2(vDir.x, -vDir.y);
+        float lungo = dot(q, dir), largo = dot(q, vec2(-dir.y, dir.x)) * vStira;
+        float d = length(vec2(largo, lungo));
         if (d > 0.5) discard;
-        float a = pow(smoothstep(0.5, 0.0, d), 1.8) * (vStira > 1.05 ? smoothstep(0.5, 0.15, abs(q.y)) : 1.0);
+        float a = pow(smoothstep(0.5, 0.0, d), 1.8) * (vStira > 1.05 ? smoothstep(0.5, 0.15, abs(lungo)) : 1.0);
         vec3 c = uColore;
         if (vTinta < 0.2) c = mix(c, vec3(1.0), 0.55);                   // qualche stella più bianca
         gl_FragColor = vec4(c * vLuce, a * uOpacita);
@@ -527,6 +551,9 @@ export function avviaScena(canvas) {
   // data-forma="0..4", data-lato="destra|sinistra|centro", data-luce="0..1", data-scala
   const sezioni = [...document.querySelectorAll('[data-forma]')];
   const obiettivo = { forma: 0, x: 0, y: 0, luce: 1, scala: 1 };
+  let capitolo = 0;
+  // velocità del viaggio per capitolo (strada al secondo): fermi, si parte piano, sicuri, si accelera, scie
+  const VIAGGIO = [0, 0.035, 0.07, 0.13, 0.24];
   function leggiStato() {
     const c = H * 0.5;
     let scelta = null;
@@ -541,14 +568,15 @@ export function avviaScena(canvas) {
     const lato = scelta.dataset.lato || 'centro';
     const spost = mobile ? 0 : larghezzaMondo * 0.24;
     obiettivo.forma = Number(scelta.dataset.forma) || 0;
+    capitolo = obiettivo.forma;
     const quanto = Number(scelta.dataset.x) || 1; // data-x: quanto spingere la forma verso il bordo
     obiettivo.x = (lato === 'destra' ? spost : lato === 'sinistra' ? -spost : 0) * quanto;
     obiettivo.y = (mobile ? Number(scelta.dataset.yMobile) || 0 : Number(scelta.dataset.y) || 0) * altezzaMondo;
     obiettivo.luce = scelta.dataset.luce != null ? Number(scelta.dataset.luce) : 1;
     // su telefono la forma sta dietro al testo: più tenue, per lasciarlo leggibile
     if (mobile) obiettivo.luce *= scelta.dataset.luceMobile != null ? Number(scelta.dataset.luceMobile) : 0;
-    // la griglia col quadratino (forma 0) non si mostra più: al suo posto c'è solo il cielo
-    if (obiettivo.forma === 0) obiettivo.luce = 0;
+    // le forme dei capitoli non si mostrano più: c'è solo il cielo, e il viaggio tra le stelle
+    obiettivo.luce = 0;
     obiettivo.scala = mobile && scelta.dataset.scalaMobile ? Number(scelta.dataset.scalaMobile) : (Number(scelta.dataset.scala) || 1) * (mobile ? 0.82 : 1);
     if (segnali.sorpresa) {
       // chi sta per andarsene: le particelle tornano occhio, al centro, e lo guardano
@@ -786,6 +814,11 @@ export function avviaScena(canvas) {
     // velocità della luce
     suni.uWarp.value = morbido(suni.uWarp.value, ridotto ? 0 : THREE.MathUtils.smoothstep(Math.abs(vel), 0.18, 1.3), 6);
     suni.uScroll.value = (sy / H) * 0.6;
+    // il viaggio: si parte dal secondo capitolo; scorrendo si accelera un po'
+    const velViaggio = ridotto ? 0 : VIAGGIO[capitolo] + Math.min(Math.abs(vel), 1.5) * 0.12 * (capitolo > 0 ? 1 : 0);
+    suni.uViaggio.value = morbido(suni.uViaggio.value, ridotto || capitolo === 0 ? 0 : 1, 1.4);
+    suni.uPercorso.value += velViaggio * dt * suni.uViaggio.value;
+    suni.uScia.value = morbido(suni.uScia.value, THREE.MathUtils.smoothstep(velViaggio, 0.1, 0.26), 3);
     suni.uParallasse.value.set(mouse.x < 5 ? -mouse.x * 0.25 : 0, mouse.y < 5 ? -mouse.y * 0.15 : 0);
     // una stella cadente ogni 10-25 secondi (mai con «riduci movimento»)
     if (!ridotto) {
