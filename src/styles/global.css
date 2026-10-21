@@ -1180,14 +1180,13 @@ html.vita-on .sf-chat.chiusa .sf-finestra { opacity: 0; transform: scale(.6) tra
 /* Il pieghevole in 3D. Ogni metà ha la sua cornice in titanio; la sinistra è un'anta che ruota sulla cerniera.
    Chiuso: l'anta è girata di 180° sopra la metà destra e si vede la sua faccia esterna; il telefono è stretto e centrato.
    Gli angoli tondi sono ritagliati anche con clip-path: Safari, sui pezzi in 3D, a volte ignora border-radius e lascia gli spigoli. */
-.st-fold { --sf-r: clamp(26px, 7.5cqw, 44px); --sf-rv: clamp(20px, 6.2cqw, 37px); position: relative; width: min(100%, 560px); aspect-ratio: 1.16; container-type: inline-size; perspective: 1800px; perspective-origin: 50% 40%; }
+.st-fold { --sf-r: clamp(26px, 7.5cqw, 44px); --sf-rv: clamp(20px, 6.2cqw, 37px); --sf-t: clamp(5px, 1.8cqw, 10px); position: relative; width: min(100%, 560px); aspect-ratio: 1.16; container-type: inline-size; perspective: 1100px; perspective-origin: 50% 35%; }
 .sf-meta, .sf-faccia { position: absolute; top: 0; bottom: 0; width: 100%; padding: clamp(5px, 1.3cqw, 8px);
   background: linear-gradient(150deg, #4a5366 0%, #262c37 22%, #1b2029 50%, #2a303c 78%, #444c5d 100%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08); }
 .sf-destra { right: 0; width: 50%; z-index: 1; padding-left: 1.5px; box-shadow: 30px 50px 80px -45px rgba(0, 0, 0, .9), inset 0 0 0 1px rgba(255, 255, 255, .08); }
 .sf-anta { position: absolute; top: 0; bottom: 0; left: 0; width: 50%; transform-origin: right center; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; z-index: 2; }
 .sf-faccia { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .sf-fronte { padding-right: 1.5px; }
-.sf-retro { transform: rotateY(180deg); }
 .sf-vetro { position: relative; width: 100%; height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; background: #050505; }
 .sf-esterno { color: #fff; }
 /* l'ombra che passa sulle facce mentre l'anta gira, e quella che l'anta getta sulla metà destra */
@@ -1205,14 +1204,27 @@ html.vita-on .st-fold:not(.piatto) :is(.sf-destra, .sf-fronte) { border-radius: 
 html.vita-on .st-fold:not(.piatto) .sf-fronte, html.vita-on .st-fold:not(.piatto) .sf-fronte::after, html.vita-on .st-fold:not(.piatto) .sf-destra::after { border-radius: var(--sf-r) !important; clip-path: inset(0 round var(--sf-r)); }
 html.vita-on .st-fold:not(.piatto) :is(.sf-destra, .sf-fronte) .sf-vetro { border-radius: var(--sf-rv) !important; clip-path: inset(0 round var(--sf-rv)); }
 html.vita-on .st-fold :is(.sf-destra, .sf-fronte), html.vita-on .st-fold :is(.sf-destra, .sf-fronte) .sf-vetro { transition: border-radius .3s, clip-path .3s; }
-html.vita-on .st-fold { transform: translateX(-25%); transition: transform 1.1s cubic-bezier(.65, 0, .25, 1); }
-html.vita-on .st-fold .sf-anta { transform: rotateY(180deg); transition: transform 1.1s cubic-bezier(.65, 0, .25, 1); }
-html.vita-on .st-fold.aperto { transform: none; }
-html.vita-on .st-fold.aperto .sf-anta { transform: none; }
-html.vita-on .st-fold.aperto .sf-fronte::after { animation: sf-luce-fronte 1.1s cubic-bezier(.65, 0, .25, 1); }
-html.vita-on .st-fold.aperto .sf-retro::after { animation: sf-luce-retro 1.1s cubic-bezier(.65, 0, .25, 1); }
-html.vita-on .st-fold.aperto .sf-destra::after { animation: sf-ombra 1.1s cubic-bezier(.65, 0, .25, 1); }
-@keyframes sf-luce-fronte { 0%, 45% { opacity: .75; } 100% { opacity: 0; } }
+/* il corpo: la metà destra, l'anta e i bordi in metallo stanno nello stesso spazio 3D, così si vede lo spessore */
+.sf-corpo { position: absolute; inset: 0; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transform-origin: 75% 50%; }
+.sf-retro { transform: translateZ(calc(var(--sf-t) * -1)) rotateY(180deg); }
+/* lo spessore: qualche lastra di metallo parallela allo schermo, una dietro l'altra. Viste di sbieco fanno il bordo,
+   tondo come gli angoli; non ci sono piani di traverso, così il browser non sbaglia mai cosa sta davanti */
+.sf-strato { position: absolute; inset: 0; border-radius: var(--sf-r) !important; background: linear-gradient(150deg, #5b6477, #2a303c 45%, #4a5366); transform: translateZ(calc(var(--sf-t) * var(--z) * -.25)); pointer-events: none; }
+.sf-strato.sf-base { left: 50%; }
+/* chiuso: il telefono è stretto, centrato e un po' inclinato, come tenuto in mano; poi la copertina viene verso di te,
+   passa di taglio (si vede il bordo) e si distende a sinistra. Lo schermo esterno si spegne, quello interno si accende
+   sfocato e diventa nitido quando il telefono è piatto: come nei video del pieghevole vero. */
+html.vita-on .st-fold { transform: translateX(-25%); transition: transform 1.6s cubic-bezier(.4, 0, .2, 1); }
+html.vita-on .st-fold .sf-corpo { transform: rotateX(9deg) rotateY(16deg); transition: transform 1.8s cubic-bezier(.45, 0, .2, 1); }
+html.vita-on .st-fold .sf-anta { transform: rotateY(180deg); transition: transform 1.6s cubic-bezier(.4, 0, .2, 1); }
+html.vita-on .st-fold.aperto, html.vita-on .st-fold.aperto .sf-corpo, html.vita-on .st-fold.aperto .sf-anta { transform: none; }
+html.vita-on .st-fold.aperto .sf-retro .sf-vetro > * { opacity: 0; transition: opacity .3s; }
+html.vita-on .st-fold :is(.sf-fronte, .sf-destra) .sf-vetro > * { transition: filter .6s, opacity .6s; }
+html.vita-on .st-fold:not(.piatto) :is(.sf-fronte, .sf-destra) .sf-vetro > * { filter: blur(3px); opacity: .75; }
+html.vita-on .st-fold.aperto .sf-fronte::after { animation: sf-luce-fronte 1.6s cubic-bezier(.4, 0, .2, 1); }
+html.vita-on .st-fold.aperto .sf-retro::after { animation: sf-luce-retro 1.6s cubic-bezier(.4, 0, .2, 1); }
+html.vita-on .st-fold.aperto .sf-destra::after { animation: sf-ombra 1.6s cubic-bezier(.4, 0, .2, 1); }
+@keyframes sf-luce-fronte { 0%, 45% { opacity: .7; } 100% { opacity: 0; } }
 @keyframes sf-luce-retro { 0% { opacity: 0; } 55%, 100% { opacity: .75; } }
 @keyframes sf-ombra { 0% { opacity: .55; } 60% { opacity: .15; } 100% { opacity: 0; } }
 html.vita-on .st-fold:not(.aperto) .sf-destra::after { opacity: .55; }

@@ -255,10 +255,10 @@ function notifiche() {
       const apre = 1500;
       if (fold) setTimeout(() => fold.classList.add('aperto'), apre);
       // quando l'anta è distesa la cerniera torna dritta (finché gira, gli angoli restano tondi)
-      if (fold) setTimeout(() => fold.classList.add('piatto'), apre + 1150);
+      if (fold) setTimeout(() => fold.classList.add('piatto'), apre + 1650);
       // 3 · dentro arrivano le altre notifiche, e sul sito riparte la chat di stanotte
-      voci.slice(1).forEach((v, i) => setTimeout(() => v.classList.add('su'), apre + 1300 + i * 650));
-      const via = apre + 1300;
+      voci.slice(1).forEach((v, i) => setTimeout(() => v.classList.add('su'), apre + 1900 + i * 650));
+      const via = apre + 1900;
       if (chat) { setTimeout(() => chat.classList.add('bussa'), via); setTimeout(() => chat.classList.add('aperta'), via + 500); setTimeout(() => chat.classList.add('chiusa'), via + 5600); }
       passi.forEach((p) => {
         setTimeout(() => p.classList.add('su'), via + Number(p.dataset.sfPasso));
