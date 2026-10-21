@@ -352,7 +352,6 @@ html.scena-on.sguardo-usato .sguardo-hint { opacity: 0; transition-delay: 2.5s; 
 .risparmio .hero-azioni { gap: 1.2rem; }
 .stanotte { display: grid; gap: 14px; justify-items: center; }
 /* il telefono alle 6 di mattina, con le notifiche arrivate di notte una dopo l'altra (vita.js, notifiche) */
-.st-telefono { width: min(100%, 320px); height: clamp(420px, 58svh, 540px); border: 10px solid #1a1a1a; border-radius: 42px !important; outline: 1px solid #333; overflow: hidden; background: radial-gradient(120% 70% at 50% 0%, #1f1f1f, #050505 70%); padding: 40px 12px 12px; display: grid; align-content: start; gap: 8px; }
 .st-ora-grande { text-align: center; font-family: var(--f-titolo); font-size: clamp(54px, 8svh, 68px); font-weight: 300; letter-spacing: -0.04em; line-height: 1; }
 .st-giorno { text-align: center; font-size: .82rem; color: var(--nebbia); margin-bottom: 12px; }
 .st-notifiche { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
@@ -1031,3 +1030,59 @@ html.ridotto .cap-testo { animation: none; }
 }
 .benvenuto [hidden] { display: none !important; }
 @media (prefers-reduced-motion: reduce) { .benvenuto { transition: none; } }
+
+/* «Stanotte»: un telefono pieghevole aperto. Cornice in titanio, piega al centro, fotocamera sul lato destro.
+   A sinistra il sito del cliente (chiaro, con la chat di stanotte), a destra la schermata di blocco con le notifiche */
+.st-fold { position: relative; width: min(100%, 560px); aspect-ratio: 1.12; container-type: inline-size; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto minmax(0, 1fr);
+  border: 7px solid #1c1c1e; border-radius: 30px !important; outline: 1px solid #48484a; outline-offset: 0; background: #050505; overflow: hidden;
+  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .9), inset 0 0 0 1px #000; }
+.sf-barra { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; padding: clamp(6px, 1.6cqw, 10px) clamp(12px, 3cqw, 18px) clamp(3px, .8cqw, 5px); font-family: var(--f-titolo); font-weight: 600; font-size: clamp(10px, 2.3cqw, 13px); color: #fff; position: relative; z-index: 2; background: linear-gradient(90deg, #f4f2ee 50%, transparent 50%); }
+.sf-barra > span:first-child { color: #111; }
+.sf-icone { display: flex; align-items: center; gap: 5px; }
+.sf-rete { display: flex; align-items: end; gap: 1.5px; height: 9px; }
+.sf-rete b { width: 2.5px; background: #fff; border-radius: 1px !important; }
+.sf-rete b:nth-child(1) { height: 3px; } .sf-rete b:nth-child(2) { height: 5px; } .sf-rete b:nth-child(3) { height: 7px; } .sf-rete b:nth-child(4) { height: 9px; }
+.sf-wifi { width: 13px; height: 10px; color: #fff; display: block; }
+.sf-batteria { width: 18px; height: 9px; border: 1.5px solid rgba(255,255,255,.75); border-radius: 3px !important; position: relative; }
+.sf-batteria::after { content: ""; position: absolute; inset: 1.5px 3px 1.5px 1.5px; background: #fff; border-radius: 1px !important; }
+/* sinistra: il sito del cliente */
+.sf-sx { grid-row: 2; background: #f4f2ee; color: #141414; display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; gap: clamp(6px, 1.8cqw, 12px); padding: clamp(6px, 1.6cqw, 10px) clamp(9px, 2.4cqw, 14px) clamp(9px, 2.4cqw, 14px); min-width: 0; }
+.sf-sito-testa { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #ddd8cf; padding-bottom: clamp(4px, 1.2cqw, 8px); }
+.sf-sito-testa b { font-family: var(--f-titolo); font-weight: 800; font-size: clamp(10px, 2.5cqw, 14px); letter-spacing: -.03em; }
+.sf-sito-testa b i { display: inline-block; width: .3em; height: .3em; margin-left: .08em; background: #b4572e; }
+.sf-sito-testa span { font-family: var(--f-mono); font-size: clamp(7px, 1.5cqw, 9px); letter-spacing: .12em; text-transform: uppercase; color: #8a8378; }
+.sf-sito-hero { display: grid; gap: clamp(5px, 1.4cqw, 9px); justify-items: start; }
+.sf-sito-hero b { font-family: var(--f-titolo); font-weight: 800; font-size: clamp(12px, 3.6cqw, 20px); line-height: 1.02; letter-spacing: -.04em; }
+.sf-btn { background: #141414; color: #fff; font-size: clamp(8px, 1.7cqw, 10px); font-weight: 600; padding: clamp(4px, 1.1cqw, 7px) clamp(7px, 1.8cqw, 11px); }
+.sf-foto { position: relative; min-height: 0; border-radius: 6px !important; overflow: hidden;
+  background: linear-gradient(180deg, #e8e2d8 0 38%, #2b2a28 38% 44%, transparent 44%), repeating-linear-gradient(90deg, #c49a6c 0 23%, #b48858 23% 24%), #c49a6c; }
+.sf-foto::before, .sf-foto::after { content: ""; position: absolute; left: 12%; top: 14%; width: 22%; height: 16%; background: #2b2a28; opacity: .85; }
+.sf-foto::after { left: 46%; }
+.sf-foto span { position: absolute; left: 6px; bottom: 6px; background: rgba(255,255,255,.88); font-family: var(--f-mono); font-size: clamp(7px, 1.4cqw, 9px); letter-spacing: .06em; padding: 3px 6px; color: #141414; }
+.sf-chat { align-self: end; background: #fff; border: 1px solid #e4dfd6; border-radius: 12px !important; padding: clamp(6px, 1.6cqw, 10px); display: grid; gap: clamp(4px, 1.1cqw, 7px); box-shadow: 0 10px 24px -14px rgba(0, 0, 0, .35); }
+.sf-chat small { display: flex; align-items: center; gap: 5px; font-family: var(--f-mono); font-size: clamp(7px, 1.4cqw, 8.5px); letter-spacing: .06em; color: #8a8378; }
+.sf-chat small i { width: 6px; height: 6px; border-radius: 50% !important; background: #22c55e; }
+.sf-chat p { margin: 0; font-size: clamp(8.5px, 1.95cqw, 11px); line-height: 1.35; padding: clamp(4px, 1.1cqw, 7px) clamp(6px, 1.5cqw, 9px); max-width: 92%; }
+.sf-lei { justify-self: start; background: #eeeae3; border-radius: 10px 10px 10px 3px !important; }
+.sf-lui { justify-self: end; background: #141414; color: #fff; border-radius: 10px 10px 3px 10px !important; }
+.sf-scrive { justify-self: end; display: flex; gap: 3px; background: #141414; border-radius: 10px !important; }
+.sf-scrive i { width: 4px; height: 4px; border-radius: 50% !important; background: #999; animation: fm-punto 1s infinite; }
+.sf-scrive i:nth-child(2) { animation-delay: .15s; } .sf-scrive i:nth-child(3) { animation-delay: .3s; }
+html.vita-on .sf-chat [data-sf-passo] { opacity: 0; transform: translateY(6px); transition: opacity .35s var(--ease), transform .35s var(--ease); }
+html.vita-on .sf-chat [data-sf-passo].su { opacity: 1; transform: none; }
+html.vita-on .sf-chat .sf-scrive:not(.su) { display: none; }
+/* destra: la schermata di blocco del mattino */
+.sf-dx { grid-row: 2; position: relative; min-width: 0; background: radial-gradient(120% 70% at 50% 0%, #232323, #050505 72%); padding: clamp(4px, 1.4cqw, 10px) clamp(7px, 1.8cqw, 11px) clamp(8px, 2cqw, 12px); display: grid; align-content: start; gap: clamp(4px, 1.1cqw, 7px); }
+.sf-dx .st-ora-grande { font-size: clamp(30px, 9cqw, 54px); }
+.sf-dx .st-giorno { font-size: clamp(8px, 1.8cqw, 11px); margin-bottom: clamp(2px, 1cqw, 8px); }
+.sf-dx .st-notifiche { gap: clamp(4px, 1.1cqw, 7px); }
+.sf-dx .st-notifiche li { grid-template-columns: clamp(16px, 4cqw, 24px) 1fr auto; gap: 2px clamp(5px, 1.3cqw, 8px); padding: clamp(5px, 1.3cqw, 8px) clamp(6px, 1.5cqw, 9px); border-radius: clamp(9px, 2.4cqw, 14px) !important; }
+.sf-dx .st-app { width: clamp(16px, 4cqw, 24px); height: clamp(16px, 4cqw, 24px); border-radius: 5px !important; }
+.sf-dx .st-app::before { left: 2px; top: 2px; font-size: clamp(5px, 1.2cqw, 7px); }
+.sf-dx .st-app::after { left: clamp(6px, 1.5cqw, 9px); bottom: clamp(3px, 1cqw, 6px); width: 2px; height: 2px; }
+.sf-dx .st-notifiche b { font-size: clamp(8px, 1.75cqw, 10.5px); }
+.sf-dx .st-notifiche small { font-size: clamp(7.5px, 1.6cqw, 10px); }
+.sf-dx .st-notifiche span { font-size: clamp(8.5px, 1.9cqw, 11px); }
+/* la piega dello schermo e la fotocamera */
+.sf-piega { position: absolute; top: 0; bottom: 0; left: 50%; width: 18px; transform: translateX(-50%); pointer-events: none; z-index: 3; background: linear-gradient(90deg, transparent, rgba(255,255,255,.05) 35%, rgba(0,0,0,.35) 50%, rgba(255,255,255,.05) 65%, transparent); }
+.sf-camera { position: absolute; top: clamp(6px, 1.5cqw, 9px); right: 25%; width: clamp(7px, 1.6cqw, 10px); height: clamp(7px, 1.6cqw, 10px); margin-right: -5px; border-radius: 50% !important; background: radial-gradient(circle at 40% 40%, #2a3a55, #050505 60%); box-shadow: 0 0 0 2px #0b0b0b; z-index: 4; }

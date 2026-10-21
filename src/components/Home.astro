@@ -298,22 +298,42 @@ const jsonLd = {
       </div>
       <!-- l'assaggio: cosa ha fatto da solo il software stanotte -->
       <div class="stanotte" data-stanotte>
-        <div class="st-telefono" aria-hidden="true">
-          <span class="st-ora-grande">06:00</span>
-          <span class="st-giorno">{T('Lunedì · la sveglia suona', 'Monday · the alarm goes off')}</span>
-          <ul class="st-notifiche">
-            {(it ? [
-              ['23:47', 'Risposto a Laura, che chiedeva un preventivo'],
-              ['01:12', 'Copiato 12 ordini nel gestionale'],
-              ['03:30', 'Preparato 3 preventivi da approvare'],
-              ['06:00', 'Mandato i promemoria degli appuntamenti di oggi'],
-            ] : [
-              ['23:47', 'Replied to Laura, who asked for a quote'],
-              ['01:12', 'Copied 12 orders into your software'],
-              ['03:30', 'Drafted 3 quotes for you to approve'],
-              ['06:00', 'Sent the reminders for today’s appointments'],
-            ]).map(([ora, cosa], i) => <li style={`--i:${i}`}><i class="st-app"></i><b>{T('Il tuo software', 'Your software')}</b><small>{ora}</small><span>{cosa}</span></li>)}
-          </ul>
+        <!-- un telefono pieghevole aperto: a sinistra il sito del cliente con la chat di stanotte, a destra le notifiche del mattino -->
+        <div class="st-fold" aria-hidden="true">
+          <div class="sf-barra"><span>06:00</span><span class="sf-icone"><i class="sf-rete"><b></b><b></b><b></b><b></b></i><svg class="sf-wifi" viewBox="0 0 16 12" aria-hidden="true"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0Zm-4.3-4.3a6 6 0 0 1 8.6 0l-1.3 1.3a4.2 4.2 0 0 0-6 0ZM1 4.5a9.9 9.9 0 0 1 14 0l-1.3 1.3a8.1 8.1 0 0 0-11.4 0Z" fill="currentColor"/></svg><i class="sf-batteria"></i></span></div>
+          <div class="sf-sx">
+            <div class="sf-sito-testa"><b>Arredi Conti<i></i></b><span>{T('Cucine', 'Kitchens')}</span></div>
+            <div class="sf-sito-hero">
+              <b>{T('La cucina che hai in mente, in 30 giorni.', 'The kitchen you have in mind, in 30 days.')}</b>
+              <span class="sf-btn">{T('Chiedi il preventivo', 'Get a quote')}</span>
+            </div>
+            <div class="sf-foto"><span>{T('Cucina Sole · 3,2 m', 'Sole kitchen · 3.2 m')}</span></div>
+            <div class="sf-chat">
+              <small><i></i>{T('Chat del sito · 23:46', 'Site chat · 11:46 pm')}</small>
+              <p class="sf-lei" data-sf-passo="200">{T('Buonasera, quanto costa una cucina di 3 metri?', 'Hi, how much is a 3-metre kitchen?')}</p>
+              <p class="sf-scrive" data-sf-passo="800" data-sf-via="1500"><i></i><i></i><i></i></p>
+              <p class="sf-lui" data-sf-passo="1500">{T('Ciao Laura! Da 6.800 €, posa inclusa. Ti preparo il preventivo?', 'Hi Laura! From €6,800, fitting included. Shall I prepare a quote?')}</p>
+            </div>
+          </div>
+          <div class="sf-dx">
+            <span class="st-ora-grande">06:00</span>
+            <span class="st-giorno">{T('Lunedì · la sveglia suona', 'Monday · the alarm goes off')}</span>
+            <ul class="st-notifiche">
+              {(it ? [
+                ['23:47', 'Risposto a Laura, che chiedeva un preventivo'],
+                ['01:12', 'Copiato 12 ordini nel gestionale'],
+                ['03:30', 'Preparato 3 preventivi da approvare'],
+                ['06:00', 'Mandato i promemoria degli appuntamenti di oggi'],
+              ] : [
+                ['23:47', 'Replied to Laura, who asked for a quote'],
+                ['01:12', 'Copied 12 orders into your software'],
+                ['03:30', 'Drafted 3 quotes for you to approve'],
+                ['06:00', 'Sent the reminders for today’s appointments'],
+              ]).map(([ora, cosa], i) => <li style={`--i:${i}`}><i class="st-app"></i><b>{T('Il tuo software', 'Your software')}</b><small>{ora}</small><span>{cosa}</span></li>)}
+            </ul>
+          </div>
+          <span class="sf-piega"></span>
+          <span class="sf-camera"></span>
         </div>
         <p class="sr-only">{T('Stanotte, mentre dormivi, il tuo software ha risposto a Laura che chiedeva un preventivo, copiato 12 ordini nel gestionale, preparato 3 preventivi da approvare e mandato i promemoria degli appuntamenti di oggi.', 'Last night, while you slept, your software replied to Laura who asked for a quote, copied 12 orders, drafted 3 quotes and sent today’s appointment reminders.')}</p>
         <button class="st-domanda" type="button" data-calcolo-apri>

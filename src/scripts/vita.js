@@ -244,7 +244,16 @@ function giornata() {
 function notifiche() {
   document.querySelectorAll('[data-stanotte]').forEach((box) => {
     const voci = [...box.querySelectorAll('.st-notifiche li')];
-    quandoVisibile(box, () => voci.forEach((v, i) => setTimeout(() => v.classList.add('su'), 300 + i * 900)), 0.4);
+    // a sinistra la chat di stanotte (Laura chiede, il software scrive e risponde), poi a destra arrivano le notifiche
+    const passi = [...box.querySelectorAll('[data-sf-passo]')];
+    quandoVisibile(box, () => {
+      passi.forEach((p) => {
+        setTimeout(() => p.classList.add('su'), Number(p.dataset.sfPasso));
+        if (p.dataset.sfVia) setTimeout(() => p.classList.remove('su'), Number(p.dataset.sfVia));
+      });
+      const parte = passi.length ? 2000 : 300;
+      voci.forEach((v, i) => setTimeout(() => v.classList.add('su'), parte + i * 850));
+    }, 0.4);
   });
 }
 
