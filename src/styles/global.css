@@ -354,16 +354,19 @@ html.scena-no .occhio-riserva { opacity: 1; }
 .scorri-linea::after { content: ''; position: absolute; left: 0; top: -40%; width: 1px; height: 40%; background: var(--rosso); animation: scorri 2s var(--ease) infinite; }
 @keyframes scorri { to { top: 110%; } }
 @media (max-width: 900px) { .scorri { display: none; } }
-.didascalia { position: absolute; right: var(--gutter); bottom: 11vh; width: min(360px, 34vw); display: grid; gap: .7rem; justify-items: start; }
-.didascalia-testo { margin: 0; font-size: .98rem; line-height: 1.45; color: var(--nebbia); padding-left: 1rem; border-left: 2px solid var(--rosso); }
-.didascalia-testo .em { display: block; margin-top: .3rem; font-family: var(--f-titolo); font-weight: 700; font-size: 1.3em; line-height: 1.2; letter-spacing: -0.02em; }
+.didascalia { display: grid; gap: .7rem; justify-items: start; width: min(100%, 400px); }
+/* la citazione: virgolette grandi in rosso, la frase, la chiusa in grassetto */
+.didascalia-testo { position: relative; margin: 0; padding: .2rem 0 0 2.6rem; }
+.didascalia-testo::before { content: '“'; position: absolute; left: -.1rem; top: -.55rem; font-family: var(--f-titolo); font-weight: 800; font-size: 4.2rem; line-height: 1; color: var(--rosso); }
+.didascalia-testo p { margin: 0; font-family: var(--f-titolo); font-size: 1.12rem; font-weight: 500; line-height: 1.35; letter-spacing: -0.01em; color: var(--nebbia); font-style: italic; }
+.didascalia .sguardo-hint { padding-left: 2.6rem; }
+.didascalia-testo b { display: block; margin-top: .35rem; font-style: normal; font-weight: 800; font-size: 1.45rem; line-height: 1.15; letter-spacing: -0.03em; color: var(--latte); }
 .sguardo-hint { margin: 0; padding-left: 1rem; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--nebbia); display: flex; align-items: center; gap: .7rem; opacity: 0; transition: opacity 1s var(--ease); pointer-events: none; }
 .sguardo-hint::before { content: ''; width: 8px; height: 8px; background: var(--rosso); }
 html.scena-on .sguardo-hint { opacity: 1; transition-delay: 1.2s; }
 html.scena-on.sguardo-usato .sguardo-hint { opacity: 0; transition-delay: 2.5s; }
 .sguardo-dito { display: none; }
 @media (hover: none) { .sguardo-mouse { display: none; } .sguardo-dito { display: inline; } }
-@media (max-width: 900px) { .didascalia { position: static; width: auto; margin: 2.2rem var(--gutter) 0; } }
 @keyframes hint-pulsa { 50% { transform: scale(1.6); opacity: .5; } }
 
 /* ---------- Problema ---------- */

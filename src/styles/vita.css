@@ -21,7 +21,9 @@
 /* il sito che si disegna, accanto al titolo (su telefono sopra) */
 @media (min-width: 821px) {
   #inizio .hero-testo { max-width: min(820px, 56%); }
-  #inizio .hero-spazio-occhio { display: block; position: absolute; right: 0; top: 50%; width: min(41%, 620px); transform: translateY(-50%); }
+  #inizio .hero-spazio-occhio { display: flex; flex-direction: column; gap: clamp(2.4rem, 6vh, 3.6rem); position: absolute; right: 0; top: 50%; width: min(41%, 620px); transform: translateY(-50%); }
+  /* la citazione sta sotto il disegno, allineata al suo bordo sinistro: i riquadri che sporgono non la coprono più */
+  #inizio .hero-spazio-occhio .didascalia { margin-left: 4%; }
 }
 .bozza { position: relative; width: 100%; aspect-ratio: 4 / 3; container-type: inline-size; perspective: 1400px; }
 @media (max-width: 820px) {

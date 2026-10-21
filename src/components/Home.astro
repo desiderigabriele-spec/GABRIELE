@@ -121,7 +121,20 @@ const jsonLd = {
     <div class="griglia-magnetica" data-griglia-magnetica aria-hidden="true"></div>
     <div class="wrap">
       <div class="hero-testo">
-        <div class="hero-spazio-occhio" aria-hidden="true"><Bozza lang={lang} /></div>
+        {/* a destra: il sito che nasce dal codice e, sotto, la citazione (sempre staccata, mai coperta) */}
+        <div class="hero-spazio-occhio">
+          <Bozza lang={lang} />
+        <div class="didascalia">
+          {/* una citazione: le virgolette grandi, la frase, e la seconda parte che chiude in grassetto */}
+          <blockquote class="didascalia-testo">
+            <p>{T("L'attenzione è la moneta più preziosa di oggi.", "Attention is today's most valuable currency.")} <b>{T('Chi la cattura, vince.', 'Whoever captures it, wins.')}</b></p>
+          </blockquote>
+          <p class="sguardo-hint" aria-hidden="true">
+            <span class="sguardo-mouse">{T("Passa sulle parole e guarda dove va l'attenzione", 'Hover over the words and watch where attention goes')}</span>
+            <span class="sguardo-dito">{T("Tocca le parole e guarda dove va l'attenzione", 'Tap the words and watch where attention goes')}</span>
+          </p>
+        </div>
+        </div>
         <span class="capitolo" data-appare>{T('01 · Guarda', '01 · Look')}</span>
         {it ? (
           <h1 data-righe>
@@ -159,15 +172,6 @@ const jsonLd = {
           <li><MicroIcona nome="luogo" />{contatti.zona}</li>
         </ul>
       </div>
-    </div>
-    <div class="didascalia">
-      {it
-        ? <p class="didascalia-testo">L'attenzione è la moneta più preziosa di oggi. <span class="em em-firma">Chi la cattura, vince.</span></p>
-        : <p class="didascalia-testo">Attention is today's most valuable currency. <span class="em em-firma">Whoever captures it, wins.</span></p>}
-      <p class="sguardo-hint" aria-hidden="true">
-        <span class="sguardo-mouse">{T("Passa sulle parole e guarda dove va l'attenzione", 'Hover over the words and watch where attention goes')}</span>
-        <span class="sguardo-dito">{T("Tocca le parole e guarda dove va l'attenzione", 'Tap the words and watch where attention goes')}</span>
-      </p>
     </div>
     <a class="scorri" href="#problema" aria-label={T('Scorri', 'Scroll')}>
       <span class="mono">{T('Scorri', 'Scroll')}</span>
