@@ -93,24 +93,72 @@ const hrefEn = lang === 'en' ? path : alt;
   </head>
   <body>
     <div class="intro" aria-hidden="true">
-      <span class="intro-cursore"></span>
+      <span class="intro-marchio"><span class="intro-ic" set:html={logoIcona} /><span class="intro-sc" set:html={logoScritta} /></span>
+      <span class="intro-occhio"><span class="io-iride"></span><span class="io-palpebra su"></span><span class="io-palpebra giu"></span></span>
     </div>
     <script is:inline>
-      // Intro della prima visita: il cursore lampeggia, poi vola verso il logo e la pagina si apre
+      // Avvio della prima visita: compare il logo; dal suo quadratino rosso nasce l'occhio di Focus, che si apre,
+      // si guarda intorno e fa l'occhiolino. Poi il logo vola al suo posto nell'header e l'occhio nel tondino in basso a destra.
       (function () {
         var h = document.documentElement;
         if (!h.classList.contains('intro-attiva')) return;
-        var t0 = performance.now(), chiusa = false;
-        var ridotto = h.classList.contains('ridotto'), minimo = ridotto ? 200 : 1700;
-        function chiudi() {
+        var ridotto = h.classList.contains('ridotto'), chiusa = false, caricata = false, pronto = false, partito = false;
+        var intro = document.querySelector('.intro'), marchio = intro.querySelector('.intro-marchio'), ic = intro.querySelector('.intro-ic');
+        var occhio = intro.querySelector('.intro-occhio'), iride = occhio.querySelector('.io-iride'), palpebre = [].slice.call(occhio.querySelectorAll('.io-palpebra'));
+        var EASE = 'cubic-bezier(.7,0,.2,1)', LATO = 60, su = 0, cx = 0, cy = 0;
+        function fine(occhioArrivato) {
           if (chiusa) return; chiusa = true;
-          h.classList.add('intro-fine');
           try { sessionStorage.setItem('gd-intro', '1'); } catch (e) {}
-          setTimeout(function () { h.classList.remove('intro-attiva', 'intro-fine'); window.dispatchEvent(new Event('gd-intro-fine')); }, ridotto ? 30 : 700);
+          h.classList.remove('intro-attiva');
+          window.dispatchEvent(new CustomEvent('gd-intro-fine', { detail: { occhio: !!occhioArrivato } }));
         }
-        function pronta() { setTimeout(chiudi, Math.max(0, minimo - (performance.now() - t0))); }
-        if (document.readyState === 'complete') pronta(); else window.addEventListener('load', pronta);
-        setTimeout(chiudi, 3500); // mai bloccare chi ha una connessione lenta
+        function vola() {
+          if (chiusa || partito || !pronto || !caricata) return;
+          partito = true;
+          var mobile = innerWidth <= 900, lato = mobile ? 64 : 68, bordo = mobile ? 16 : 20;
+          var tx = innerWidth - bordo - lato / 2, ty = innerHeight - bordo - lato / 2;
+          var viaggio = occhio.animate([
+            { transform: 'translateY(' + (-su) + 'px) scale(1.1)' },
+            { transform: 'translate(' + (tx - cx) + 'px,' + (ty - cy) + 'px) scale(' + (lato / LATO) + ')' }
+          ], { duration: 650, easing: EASE, fill: 'forwards' });
+          var brand = document.querySelector('.site-header .brand-icona');
+          if (brand) {
+            var a = brand.getBoundingClientRect(), d = ic.getBoundingClientRect(), m = marchio.getBoundingClientRect(), k = a.height / d.height;
+            var dx = a.left + a.width / 2 - (d.left + d.width / 2), dy = a.top + a.height / 2 - (d.top + d.height / 2);
+            marchio.style.transformOrigin = (d.left + d.width / 2 - m.left) + 'px ' + (d.top + d.height / 2 - m.top) + 'px';
+            marchio.animate([
+              { transform: 'none', opacity: 1 },
+              { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + k + ')', opacity: 1, offset: .82 },
+              { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + k + ')', opacity: 0 }
+            ], { duration: 650, easing: EASE, fill: 'forwards' });
+          }
+          intro.animate([{ backgroundColor: 'rgb(10,10,10)' }, { backgroundColor: 'rgba(10,10,10,0)' }], { duration: 650, easing: 'ease-in', fill: 'forwards' });
+          viaggio.onfinish = function () { fine(true); };
+        }
+        if (ridotto || !intro.animate) { setTimeout(fine, 200); return; }
+        if (document.readyState === 'complete') caricata = true;
+        else window.addEventListener('load', function () { caricata = true; vola(); });
+        setTimeout(function () { caricata = true; vola(); }, 3200); // mai bloccare chi ha una connessione lenta
+        setTimeout(fine, 6000);
+        var dopo = function (anim, fn) { anim.onfinish = fn; return anim; };
+        // 1 · il logo
+        marchio.animate([{ opacity: 0, transform: 'scale(.92)' }, { opacity: 1, transform: 'none' }], { duration: 320, easing: 'ease-out', fill: 'both' });
+        setTimeout(function () {
+          // 2 · l'occhio nasce dal quadratino rosso del logo e sale sopra di lui
+          var r = ic.getBoundingClientRect();
+          cx = r.left + r.width * .494; cy = r.top + r.height * .813; su = r.height * .813 + 46; // sopra il logo, staccato
+          occhio.style.left = (cx - LATO / 2) + 'px'; occhio.style.top = (cy - LATO / 2) + 'px';
+          dopo(occhio.animate([{ transform: 'translateY(0) scale(0)', opacity: 1 }, { transform: 'translateY(' + (-su) + 'px) scale(1.1)', opacity: 1 }], { duration: 440, easing: 'cubic-bezier(.3,1.4,.5,1)', fill: 'forwards' }), function () {
+            // 3 · si apre, si guarda intorno, occhiolino
+            palpebre.forEach(function (p) { p.animate([{ transform: 'scaleY(1)' }, { transform: 'scaleY(0)' }], { duration: 260, easing: 'ease-out', fill: 'forwards' }); });
+            setTimeout(function () {
+              dopo(iride.animate([{ transform: 'translate(0,0)' }, { transform: 'translate(-9px,1px)', offset: .3 }, { transform: 'translate(9px,1px)', offset: .7 }, { transform: 'translate(0,0)' }], { duration: 700, easing: 'ease-in-out', fill: 'forwards' }), function () {
+                palpebre.forEach(function (p) { p.animate([{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)', offset: .5 }, { transform: 'scaleY(0)' }], { duration: 220, fill: 'forwards' }); });
+                setTimeout(function () { pronto = true; vola(); }, 240);
+              });
+            }, 260);
+          });
+        }, 340);
       })();
     </script>
 

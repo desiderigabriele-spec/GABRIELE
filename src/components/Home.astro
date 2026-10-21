@@ -488,35 +488,35 @@ const jsonLd = {
     </div>
   </section>
 
-  <!-- LO STUDIO -->
+  <!-- LO STUDIO: la storia in quattro tempi, dal primo «no» a oggi -->
   <section class="sezione" id="chi-sono" data-forma="2" data-lato="destra" data-luce="0.32" data-scala="0.85">
-    <div class="wrap chi">
+    <div class="wrap chi storia">
       <div class="chi-testo">
         <span class="capitolo" data-appare>{T('Lo studio', 'The studio')}</span>
         {it ? (
           <h2 data-righe>
-            <span class="riga"><span>Desideri di nome,</span></span>
-            <span class="riga"><span><span class="em em-firma">risultati</span> di fatto.</span></span>
+            <span class="riga"><span>Ho collezionato</span></span>
+            <span class="riga"><span>più <span class="em em-firma">«no»</span></span></span>
+            <span class="riga"><span>che caffè.</span></span>
           </h2>
         ) : (
           <h2 data-righe>
-            <span class="riga"><span>Desideri by name,</span></span>
-            <span class="riga"><span><span class="em em-firma">results</span> by design.</span></span>
+            <span class="riga"><span>I've collected</span></span>
+            <span class="riga"><span>more <span class="em em-firma">“no”s</span></span></span>
+            <span class="riga"><span>than coffees.</span></span>
           </h2>
         )}
-        {it ? (
-          <>
-            <p data-appare><strong>Desideri & Code</strong> è uno studio di Milano che unisce design, vendita e intelligenza artificiale. L’ha fondato <strong>Gabriele Desideri</strong>, che prima di disegnare siti ha provato <strong>ogni tipo di vendita a freddo</strong>: per capire come decidono le persone e per allenarsi, perché è una cosa che gli piace.</p>
-            <p data-appare>Da lì viene la lezione su cui lavoriamo ogni giorno: <strong>le persone non comprano un prodotto, comprano come si sentono quando lo scelgono.</strong> Per questo studiamo psicologia, marketing, neuromarketing e intelligenza artificiale, e proviamo ogni tecnica sul campo prima di usarla per un cliente.</p>
-            <p data-appare>Quello che amiamo è tutto il viaggio: <strong>dal primo sguardo alla conversione.</strong> Ogni colore, ogni parola e ogni movimento di un nostro progetto ha un motivo preciso.</p>
-          </>
-        ) : (
-          <>
-            <p data-appare><strong>Desideri & Code</strong> is a Milan studio that brings together design, sales and artificial intelligence. It was founded by <strong>Gabriele Desideri</strong>, who before designing websites tried <strong>every kind of cold selling</strong>: to understand how people decide and to train, because it is something he enjoys.</p>
-            <p data-appare>That is where the lesson we work on every day comes from: <strong>people don't buy a product, they buy how they feel when they choose it.</strong> That is why we study psychology, marketing, neuromarketing and artificial intelligence, and test every technique in the field before using it for a client.</p>
-            <p data-appare>What we love is the whole journey: <strong>from first glance to conversion.</strong> Every colour, every word and every movement in our projects is there for a reason.</p>
-          </>
-        )}
+        <p data-appare>{it
+          ? <>Sono <strong>Gabriele Desideri</strong>. Prima di disegnare siti ho venduto a freddo, per capire una cosa sola: <strong>perché una persona dice sì.</strong></>
+          : <>I'm <strong>Gabriele Desideri</strong>. Before designing websites I did cold selling, to understand one thing: <strong>why a person says yes.</strong></>}</p>
+        <div class="storia-obiettivo" data-appare>
+          <small>{T('Il nostro obiettivo', 'Our goal')}</small>
+          <b>{T('Che il tuo prossimo cliente scelga te, e sappia dire perché.', 'That your next client chooses you, and can say why.')}</b>
+        </div>
+        <div class="storia-firma" data-appare>
+          <span class="storia-nome">Gabriele Desideri<small>{T('Fondatore · Milano', 'Founder · Milan')}</small></span>
+          <a class="btn btn-azione" href={preventivo} data-azione>{T('Raccontami la tua', 'Tell me yours')} <span class="freccia" aria-hidden="true">→</span></a>
+        </div>
         <div class="certificati" data-appare>
           {(it
             ? ['Social Media Manager · certificato ISO 9001 – MIUR – Google', 'AI per il Digital Marketing', 'Impresa e Startup · Ikigai Hub', "Creazione d'impresa · Confesercenti"]
@@ -524,20 +524,18 @@ const jsonLd = {
           ).map((c) => <span>{c}</span>)}
         </div>
       </div>
-      <ol class="percorso" data-sequenza>
+      <ol class="storia-tempi" data-sequenza>
         {(it ? [
-          ['Vendita', 'Provata sul campo', 'Ogni tipo di vendita a freddo, fatta per capire come decide una persona. Ogni progetto parte da lì.'],
-          ['Online', 'Negozi e pubblicità', 'Negozi online lanciati e campagne su Meta, Google, LinkedIn e TikTok: sappiamo cosa porta clienti e cosa brucia budget.'],
-          ['Da zero', 'Una startup costruita', 'Strategia di crescita e marketing di un prodotto nuovo, partendo da un foglio bianco.'],
-          ['Metodo', 'Psicologia applicata', 'Neuromarketing e psicologia della scelta, usati per guidare le persone dal primo sguardo al «sì».'],
-          ['Oggi', 'Software e sistemi con AI', 'Design, vendita e intelligenza artificiale in un solo studio, per far crescere le aziende e togliere loro il lavoro inutile.'],
+          ['Il «no»', 'Porta a porta, al telefono, per strada. Ogni «no» mi ha insegnato cosa fa scappare una persona: confusione, fretta, poca fiducia.'],
+          ['La scoperta', 'Le persone non comprano un prodotto. <em>Comprano come si sentono quando lo scelgono</em>: chiarezza, fiducia, un po’ di desiderio.'],
+          ['Il metodo', 'Ho unito psicologia della scelta, design e intelligenza artificiale per costruire siti che fanno provare proprio quella sensazione, dal primo sguardo al «sì».'],
+          ['Oggi', 'Desideri & Code è uno studio a Milano. <em>Parli sempre con me</em>, dal primo messaggio all’ultimo ritocco, e il prezzo lo firmi prima di iniziare.'],
         ] : [
-          ['Sales', 'Tested in the field', 'Every kind of cold selling, done to understand how people decide. Every project starts there.'],
-          ['Online', 'Stores and advertising', 'Online stores launched and campaigns on Meta, Google, LinkedIn and TikTok: we know what brings clients and what burns budget.'],
-          ['From scratch', 'A startup built', 'Growth strategy and marketing for a brand-new product, starting from a blank page.'],
-          ['Method', 'Applied psychology', 'Neuromarketing and the psychology of choice, used to guide people from first glance to “yes”.'],
-          ['Today', 'AI software and systems', 'Design, sales and artificial intelligence in one studio, to help companies grow and take pointless work off their hands.'],
-        ]).map(([anno, titolo, testo]) => <li><span class="anno">{anno}</span><strong>{titolo}</strong><span>{testo}</span></li>)}
+          ['The “no”', 'Door to door, on the phone, on the street. Every “no” taught me what makes people walk away: confusion, pressure, too little trust.'],
+          ['The discovery', 'People don’t buy a product. <em>They buy how they feel when they choose it</em>: clarity, trust, a little desire.'],
+          ['The method', 'I brought together the psychology of choice, design and artificial intelligence to build websites that create exactly that feeling, from first glance to “yes”.'],
+          ['Today', 'Desideri & Code is a studio in Milan. <em>You always talk to me</em>, from the first message to the last tweak, and you sign the price before we start.'],
+        ]).map(([titolo, testo], k) => <li><b aria-hidden="true">{String(k + 1).padStart(2, '0')}</b><div><h3>{titolo}</h3><p set:html={testo} /></div></li>)}
       </ol>
     </div>
   </section>

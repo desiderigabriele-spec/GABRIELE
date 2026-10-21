@@ -223,13 +223,13 @@ export function avviaAssistente() {
     if (html.classList.contains('menu-aperto') || html.classList.contains('intro-attiva')) return false;
     return true;
   }
-  function spunta() {
+  function spunta(subito = false) {
     if (visibile) return;
     visibile = true;
     box.hidden = false;
     if (!occhio) occhio = creaOcchio(box.querySelector('[data-focus-occhio]'));
     requestAnimationFrame(() => box.classList.add('su'));
-    setTimeout(() => { occhio.apri(); guardaBottone(); }, ridotto ? 0 : 450);
+    setTimeout(() => { occhio.apri(); guardaBottone(); }, ridotto || subito ? 0 : 450);
     setTimeout(mostraFumetto, 3200);
   }
   // l'avviso dei cookie: il tondino sale sopra di lui di quanto è alto
@@ -237,6 +237,14 @@ export function avviaAssistente() {
   if (cookie && 'ResizeObserver' in window) new ResizeObserver(() => html.style.setProperty('--cookie-alto', `${cookie.offsetHeight}px`)).observe(cookie);
   let pronto = false;
   setTimeout(() => { pronto = true; }, 3000);
+  // all'avvio l'occhio vola nel tondino: lì il tondino c'è già, senza entrata, e l'occhio è aperto
+  window.addEventListener('gd-intro-fine', (e) => {
+    if (!e.detail?.occhio || visibile) return;
+    pronto = true;
+    box.classList.add('subito');
+    spunta(true);
+    setTimeout(() => box.classList.remove('subito'), 600);
+  });
   setInterval(() => {
     if (!pronto) return;
     if (!visibile && puoMostrare()) spunta();
