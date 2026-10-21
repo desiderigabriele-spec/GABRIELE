@@ -366,3 +366,12 @@ Tre passi, il meno possibile da leggere e da scrivere.
 - Velocità: [web.dev — Milliseconds make millions](https://web.dev/case-studies/milliseconds-make-millions) · Prezzi: [NN/G — Show price](https://www.nngroup.com/articles/show-price/) · [NN/G — Show prices for common scenarios](https://www.nngroup.com/articles/show-prices-for-common-scenarios/)
 - Form: [Zuko](https://www.zuko.io/blog/single-page-or-multi-step-form) · [Leadgen Economy](https://www.leadgen-economy.com/blog/multi-step-forms-conversion-optimization/) · Prove sociali: [KlientBoost](https://www.klientboost.com/landing-pages/landing-page-testimonials/) · [Theoriq](https://www.theoriq.fr/en/post/high-converting-agency-website-examples)
 - Colori: [Labrecque & Milne / studio sul colore e la fiducia](https://run.unl.pt/entities/publication/276bb2e1-b4f7-4bdb-b40c-be90464c9a85/full) · [Coloring Trust (critica)](https://ogarev-online.ru/2782-2184/article/view/298120)
+
+### Ultime scelte (bottoni, avvio, studio, pagine)
+- **Bottoni d'azione:** verde smeraldo pieno con la scritta quasi nera (`--verde-azione`). Regola: il rosso è il marchio (logo, quadratini, parole evidenziate), il verde è l'azione e il «fatto» (bottoni e spunte).
+- **Avvio della prima visita:** compare il logo; dal suo quadratino rosso nasce l'occhio di Focus, che si apre, si guarda intorno, fa l'occhiolino e vola nel tondino in basso a destra, mentre il logo vola nell'header (script nel layout). Chi torna nella stessa visita entra subito.
+- **Focus:** pallino verde «online» sul tondino, due onde e un saltello ogni 7 secondi; nella chat «Assistente AI di Desideri&Code» e «online · risponde subito». Sta sopra la tendina tra le pagine, sopra l'avviso dei cookie e sopra il riepilogo del preventivo.
+- **Lo studio:** la storia in quattro tempi («Ho collezionato più "no" che caffè»: il no, la scoperta, il metodo, oggi), obiettivo, firma e certificati. Niente agenti AI e niente persone che non ci sono; quando arriveranno i collaboratori si aggiunge la loro sezione.
+- **Prezzi:** sul telefono ogni pacchetto sta in una schermata; gli altri servizi scorrono in una fila infinita (`[data-fila]`), che si ferma al tocco e si trascina.
+- **Pagine dei servizi e AI:** stessi capitoli della home (linea a sinistra sul computer, capitolo nell'header sul telefono), rassicurazioni con le icone, pacchetti a slider, altri servizi in fila.
+- **Lingua:** il cambio lingua è immediato, senza tendina.
