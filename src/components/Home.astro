@@ -547,27 +547,25 @@ const jsonLd = {
     </div>
   </section>
 
-  <!-- LO STUDIO: la storia in quattro tempi, dal primo «no» a oggi -->
+  <!-- LO STUDIO: la storia in quattro tempi, dalla vendita per strada a oggi -->
   <section class="sezione" id="chi-sono" data-forma="2" data-lato="destra" data-luce="0.32" data-scala="0.85">
     <div class="wrap chi storia">
       <div class="chi-testo">
         <span class="capitolo" data-appare>{T('Lo studio', 'The studio')}</span>
         {it ? (
           <h2 data-righe>
-            <span class="riga"><span>Ho collezionato</span></span>
-            <span class="riga"><span>più <span class="em em-firma">«no»</span></span></span>
-            <span class="riga"><span>che caffè.</span></span>
+            <span class="riga"><span>Prima di disegnare siti,</span></span>
+            <span class="riga"><span>ho imparato a vendere<span class="quadratino" aria-hidden="true"></span></span></span>
           </h2>
         ) : (
           <h2 data-righe>
-            <span class="riga"><span>I've collected</span></span>
-            <span class="riga"><span>more <span class="em em-firma">“no”s</span></span></span>
-            <span class="riga"><span>than coffees.</span></span>
+            <span class="riga"><span>Before designing websites,</span></span>
+            <span class="riga"><span>I learned to sell<span class="quadratino" aria-hidden="true"></span></span></span>
           </h2>
         )}
         <p data-appare>{it
-          ? <>Sono <strong>Gabriele Desideri</strong>. Prima di disegnare siti ho venduto a freddo, per capire una cosa sola: <strong>perché una persona dice sì.</strong></>
-          : <>I'm <strong>Gabriele Desideri</strong>. Before designing websites I did cold selling, to understand one thing: <strong>why a person says yes.</strong></>}</p>
+          ? <>Sono <strong>Gabriele Desideri</strong>. Ho iniziato vendendo a freddo, porta a porta e al telefono, per capire una cosa sola: <strong>perché una persona dice sì.</strong></>
+          : <>I'm <strong>Gabriele Desideri</strong>. I started out cold selling, door to door and on the phone, to understand one thing: <strong>why a person says yes.</strong></>}</p>
         <div class="storia-obiettivo" data-appare>
           <small>{T('Il nostro obiettivo', 'Our goal')}</small>
           <b>{T('Che il tuo prossimo cliente scelga te, e sappia dire perché.', 'That your next client chooses you, and can say why.')}</b>
@@ -588,12 +586,12 @@ const jsonLd = {
       </div>
       <ol class="storia-tempi" data-sequenza>
         {(it ? [
-          ['Il «no»', 'Porta a porta, al telefono, per strada. Ogni «no» mi ha insegnato cosa fa scappare una persona: confusione, fretta, poca fiducia.'],
+          ['La strada', 'Porta a porta, al telefono, per strada: ho imparato cosa fa scegliere una persona e cosa la fa scappare. Confusione, fretta e poca fiducia la fanno andare via.'],
           ['La scoperta', 'Le persone non comprano un prodotto. <em>Comprano come si sentono quando lo scelgono</em>: chiarezza, fiducia, un po’ di desiderio.'],
           ['Il metodo', 'Ho unito psicologia della scelta, design e intelligenza artificiale per costruire siti che fanno provare proprio quella sensazione, dal primo sguardo al «sì».'],
           ['Oggi', 'Desideri&Code è uno studio a Milano. <em>Parli sempre con me</em>, dal primo messaggio all’ultimo ritocco, e il prezzo lo firmi prima di iniziare.'],
         ] : [
-          ['The “no”', 'Door to door, on the phone, on the street. Every “no” taught me what makes people walk away: confusion, pressure, too little trust.'],
+          ['The street', 'Door to door, on the phone, on the street: I learned what makes people choose and what makes them walk away. Confusion, pressure and too little trust send them off.'],
           ['The discovery', 'People don’t buy a product. <em>They buy how they feel when they choose it</em>: clarity, trust, a little desire.'],
           ['The method', 'I brought together the psychology of choice, design and artificial intelligence to build websites that create exactly that feeling, from first glance to “yes”.'],
           ['Today', 'Desideri&Code is a studio in Milan. <em>You always talk to me</em>, from the first message to the last tweak, and you sign the price before we start.'],
