@@ -72,6 +72,7 @@ html[data-tema='chiaro'] {
 :is(.bozza, .st-fold, .pd-dopo, .compila-codice, .terminale, .mappa, .cursori, .cubo-f, .chiedi-occhio, .focus-bolla, .fp-occhio, .intro-bolla) {
   --latte: #ffffff; --latte-rgb: 255, 255, 255; --nebbia: #a3a3a3; --nebbia-2: #8a8a8a; --notte: #0a0a0a; --notte-rgb: 10, 10, 10;
   --linea: rgba(255, 255, 255, .12); --linea-forte: rgba(255, 255, 255, .24); --rosso-testo: #ff2d3a;
+  color: var(--latte);
 }
 .st-fold .sf-dx { color: #ffffff; }
 html[data-tema='chiaro'] .cap-velo { background: rgba(10, 10, 10, .35); }
