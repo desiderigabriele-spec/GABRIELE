@@ -89,7 +89,8 @@ html.tema-cambia, html.tema-cambia * { transition: background-color .35s ease, c
 .nome-btn:hover, .nome-btn:focus-visible { outline: none; }
 .nome-btn:focus-visible svg { outline: 2px solid var(--rosso-testo); outline-offset: 5px; }
 /* quando il nome c'è: il punto verde, come «online» */
-html.ha-nome .nome-btn::after { content: ''; position: absolute; top: 4px; right: 3px; width: 7px; height: 7px; border-radius: 50% !important; background: var(--verde-azione); box-shadow: 0 0 0 2px var(--notte); }
+/* sta fuori dalle lettere, in alto a destra: non copre la O */
+html.ha-nome .nome-btn::after { content: ''; position: absolute; top: 1px; right: -3px; width: 6px; height: 6px; border-radius: 50% !important; background: var(--verde-azione); }
 .nome-pop { position: fixed; right: 16px; top: calc(var(--header-h, 64px) + 8px); z-index: 120; width: min(320px, calc(100vw - 32px)); display: grid; gap: .6rem; padding: 1rem; background: var(--notte); border: 1px solid var(--linea-forte); box-shadow: 0 24px 48px -24px rgba(0, 0, 0, .7); }
 .nome-pop[hidden] { display: none; }
 .nome-pop label { font-family: var(--f-titolo); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; color: var(--latte); }
