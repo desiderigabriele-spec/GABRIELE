@@ -17,8 +17,11 @@ export function avviaPersonalizza(scena) {
 
 // ---------- il benvenuto: nome e cookie in un pannellino in basso, una sola conferma ----------
 // Il nome si chiede una volta sola, i cookie finché non scegli. «Accetta ed entra» e «Solo necessari»
-// hanno lo stesso peso. Il consenso non è mai già spuntato.
+// «Personalizza» apre le scelte nello stesso riquadro, tutte spente; «Continua senza accettare» rifiuta subito.
+// Il consenso non è mai già spuntato.
 const CHIAVE_COOKIE = 'gd-cookie';
+const CHIAVE_SCELTE = 'gd-cookie-scelte';
+const leggiScelte = () => { try { return JSON.parse(localStorage.getItem(CHIAVE_SCELTE) || '{}') || {}; } catch (_) { return {}; } };
 const leggi = (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } };
 const scrivi = (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} };
 
@@ -31,28 +34,46 @@ function benvenuto(scena) {
   const parteNome = box.querySelector('[data-bv-nome-parte]');
   const parteCookie = box.querySelector('[data-bv-cookie-parte]');
   const titoloCookie = box.querySelector('[data-bv-cookie-titolo]');
-  const si = box.querySelector('[data-bv-si]'), no = box.querySelector('[data-bv-no]');
-  const [testoSi, testoAccetta, testoEntra] = JSON.parse(si.dataset.testi);
-  let chiediNome = false, chiediCookie = false;
+  const scelte = box.querySelector('[data-bv-scelte]');
+  const categorie = [...box.querySelectorAll('[data-bv-cat]:not([disabled])')];
+  const si = box.querySelector('[data-bv-si]'), no = box.querySelector('[data-bv-no]'), senza = box.querySelector('[data-bv-senza]');
+  const [testoSi, testoAccetta, testoEntra, testoTutti] = JSON.parse(si.dataset.testi);
+  const [testoPersonalizza, testoSalva] = JSON.parse(no.dataset.testi);
+  let chiediNome = false, chiediCookie = false, personalizzo = false;
 
   const misura = () => html.style.setProperty('--benvenuto-alto', `${box.offsetHeight}px`);
   if ('ResizeObserver' in window) new ResizeObserver(misura).observe(box);
 
+  // la vista: il testo con «Personalizza | Accetta», oppure le scelte con «Salva le mie scelte | Accetta tutti»
+  function vista() {
+    parteCookie.hidden = !chiediCookie || personalizzo;
+    scelte.hidden = !chiediCookie || !personalizzo;
+    no.hidden = !chiediCookie;
+    senza.hidden = !chiediCookie || personalizzo;
+    no.textContent = personalizzo ? testoSalva : testoPersonalizza;
+    si.firstChild.textContent = `${personalizzo ? testoTutti : chiediNome && chiediCookie ? testoSi : chiediCookie ? testoAccetta : testoEntra} `;
+    requestAnimationFrame(misura);
+  }
   function mostra(nome, cookie) {
-    chiediNome = nome; chiediCookie = cookie;
+    chiediNome = nome; chiediCookie = cookie; personalizzo = false;
     if (!nome && !cookie) return;
     parteNome.hidden = !nome;
-    parteCookie.hidden = !cookie;
     titoloCookie.hidden = nome;
     box.querySelector('[data-bv-nome-resta]').hidden = !nome;
-    no.hidden = !cookie;
-    si.firstChild.textContent = `${nome && cookie ? testoSi : cookie ? testoAccetta : testoEntra} `;
+    // le scelte partono sempre spente (o come le avevi lasciate): il consenso si dà solo con un gesto
+    const prima = leggiScelte();
+    categorie.forEach((c) => { c.checked = !!prima[c.dataset.bvCat]; });
+    vista();
     box.hidden = false;
     requestAnimationFrame(() => { box.classList.add('su'); misura(); });
     traccia(nome ? 'nome_chiesto' : 'cookie_chiesti');
   }
-  function chiudi(sceltaCookie) {
-    if (chiediCookie && sceltaCookie) scrivi(CHIAVE_COOKIE, sceltaCookie);
+  // scelta: { statistica, pubblicita } oppure null se non si chiedevano i cookie
+  function chiudi(scelta) {
+    if (chiediCookie && scelta) {
+      scrivi(CHIAVE_SCELTE, JSON.stringify(scelta));
+      scrivi(CHIAVE_COOKIE, scelta.statistica || scelta.pubblicita ? 'si' : 'no');
+    }
     if (chiediNome) {
       scrivi('gd-nome-chiesto', '1');
       const nome = pulisciNome(campo.value);
@@ -69,12 +90,19 @@ function benvenuto(scena) {
     }
     box.classList.remove('su');
     setTimeout(() => { box.hidden = true; html.style.setProperty('--benvenuto-alto', '0px'); }, 350);
-    chiediNome = chiediCookie = false;
+    chiediNome = chiediCookie = personalizzo = false;
   }
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    chiudi(e.submitter === no ? 'no' : 'si');
+  const tutti = () => ({ statistica: true, pubblicita: true });
+  const nessuno = () => ({ statistica: false, pubblicita: false });
+  const quelliScelti = () => Object.fromEntries(categorie.map((c) => [c.dataset.bvCat, c.checked]));
+  // «Accetta» / «Accetta tutti» (anche dalle scelte vale per tutto, come dice il bottone)
+  form.addEventListener('submit', (e) => { e.preventDefault(); chiudi(chiediCookie ? tutti() : null); });
+  // «Personalizza» apre le scelte; lì diventa «Salva le mie scelte» e salva esattamente quello che è acceso
+  no.addEventListener('click', () => {
+    if (!personalizzo) { personalizzo = true; vista(); categorie[0]?.focus({ preventScroll: true }); return; }
+    chiudi(quelliScelti());
   });
+  senza.addEventListener('click', () => chiudi(nessuno()));
   // Invio nel campo chiude solo la tastiera e porta ai bottoni: il consenso si dà sempre con un tocco sul bottone
   campo.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter') return;
@@ -83,7 +111,7 @@ function benvenuto(scena) {
     campo.blur();
     si.focus({ preventScroll: true });
   });
-  document.querySelectorAll('[data-cookie-apri]').forEach((b) => b.addEventListener('click', () => mostra(false, true)));
+  document.querySelectorAll('[data-cookie-apri]').forEach((b) => b.addEventListener('click', () => { mostra(false, true); personalizzo = true; vista(); }));
 
   const p = leggiProfilo();
   const serveNome = !p.nome && !leggi('gd-nome-chiesto');

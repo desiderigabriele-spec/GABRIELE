@@ -249,11 +249,23 @@ const hrefEn = lang === 'en' ? path : alt;
           <span class="mono bv-prima" data-bv-cookie-titolo hidden>{t.bvCookieTitolo}</span>
           <p>{t.bvCookie} <span data-bv-nome-resta>{t.bvNomeResta}</span> <a href={url('privacy', lang)}>{t.dettagli}</a></p>
         </div>
+        <!-- «Personalizza» apre le scelte qui dentro, al posto del testo: tutte spente tranne i necessari -->
+        <fieldset class="bv-scelte" data-bv-scelte hidden>
+          <legend class="mono bv-prima">{t.bvScelte}</legend>
+          {t.bvCat.map(([id, nome, cosa]) => (
+            <label class="bv-cat">
+              <span><b>{nome}</b><small>{cosa}</small></span>
+              <input type="checkbox" name={id} data-bv-cat={id} checked={id === 'necessari'} disabled={id === 'necessari'} />
+              <i class="bv-tog" aria-hidden="true"></i>
+            </label>
+          ))}
+        </fieldset>
         <div class="bv-azioni">
-          <!-- «Solo necessari» a sinistra, «Accetta» a destra dove va il pollice e lo sguardo per ultimo: stessa grandezza, il rifiuto resta ben leggibile -->
-          <button class="btn btn-vetro btn-piccolo" type="submit" value="no" data-bv-no>{t.bvNo}</button>
-          <button class="btn btn-azione btn-piccolo" type="submit" value="si" data-bv-si data-testi={JSON.stringify([t.bvSi, t.bvAccetta, t.bvEntra])}>{t.bvSi} <span class="freccia" aria-hidden="true">→</span></button>
+          <!-- a sinistra «Personalizza» (poi «Salva le mie scelte»), a destra «Accetta», l'unico pieno, dove va il pollice -->
+          <button class="btn btn-vetro btn-piccolo" type="button" data-bv-no data-testi={JSON.stringify([t.bvNo, t.bvSalva])}>{t.bvNo}</button>
+          <button class="btn btn-azione btn-piccolo" type="submit" value="si" data-bv-si data-testi={JSON.stringify([t.bvSi, t.bvAccetta, t.bvEntra, t.bvTutti])}>{t.bvSi} <span class="freccia" aria-hidden="true">→</span></button>
         </div>
+        <button class="bv-senza" type="button" data-bv-senza>{t.bvSenza}</button>
       </form>
     </div>
 
