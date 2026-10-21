@@ -88,7 +88,9 @@
 .passi-ai p { margin: 0; color: var(--nebbia); font-size: .95rem; }
 
 /* Prezzi */
-.prezzi-ai { width: 100%; max-width: 900px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-@media (max-width: 820px) { .prezzi-ai { grid-template-columns: minmax(0, 1fr); } }
+.prezzi-ai { width: 100%; max-width: 900px; display: grid; gap: 10px; overflow: visible; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.prezzi-ai > div { display: flex; flex-direction: column; gap: .35rem; border: 1px solid var(--linea-forte); padding: .9rem 1rem; text-align: left; color: var(--nebbia); font-size: .9rem; }
+.prezzi-ai > div strong { color: var(--latte); font-family: var(--f-titolo); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; white-space: nowrap; flex: none; text-align: right; }
+@media (max-width: 820px) { .prezzi-ai { grid-template-columns: minmax(0, 1fr); } .prezzi-ai > div { flex-direction: row; justify-content: space-between; align-items: baseline; } }
 .prezzi-ai .intero { white-space: nowrap; }
 .ai-demo-link { display: inline-flex; margin-top: .7rem; }

@@ -4,6 +4,7 @@
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
 import Illustrazione from './Illustrazione.astro';
+import MicroIcona from './MicroIcona.astro';
 import Compila from './Compila.astro';
 import TuoSoftware from './TuoSoftware.astro';
 import Demo from './Demo.astro';
@@ -51,7 +52,16 @@ const jsonLd = {
   description={p.meta}
   jsonLd={jsonLd}
 >
-  <section class="hero sv-hero" data-forma="0" data-lato="sinistra" data-luce="0.16" data-scala="0.7" data-luce-mobile="0.1">
+  <!-- i capitoli della pagina, come nella home: linea a sinistra sul computer, capitolo nell'header sul telefono -->
+  <nav class="guida" aria-label={T('Capitoli', 'Chapters')} data-percorso>
+    <span class="guida-luce" aria-hidden="true"></span>
+    {(lang === 'it'
+      ? [['inizio', 'Il servizio'], ['cosa', 'Cosa ottieni'], ['come', 'Come funziona'], ['pacchetti', 'Prezzi'], ['azione', 'Inizia']]
+      : [['inizio', 'The service'], ['cosa', 'What you get'], ['come', 'How it works'], ['pacchetti', 'Prices'], ['azione', 'Start']]
+    ).map(([cap, nome], i) => <a href={`#${cap}`} data-capitolo={cap}><span>{String(i + 1).padStart(2, '0')} · {nome}</span></a>)}
+  </nav>
+
+  <section class="hero sv-hero" id="inizio" data-forma="0" data-lato="sinistra" data-luce="0.16" data-scala="0.7" data-luce-mobile="0.1">
     <div class="wrap sv-hero-griglia">
       <div class="hero-testo sv-testo">
         <a class="sv-indietro" href={`${url('home', lang)}#servizi`}><span aria-hidden="true">←</span> {T('Tutti i servizi', 'All services')}</a>
@@ -66,6 +76,11 @@ const jsonLd = {
           <a class="btn btn-azione btn-grande" href={`${preventivo}?s=${id}`} data-azione><span class="scia" aria-hidden="true"></span>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
           <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
         </div>
+        <ul class="rassicura" data-appare="0.5">
+          <li><MicroIcona nome="tempo" />{T('Preventivo in 2 minuti', 'Quote in 2 minutes')}</li>
+          <li><MicroIcona nome="risposta" />{T('Risposta entro 24 ore', 'Reply within 24 hours')}</li>
+          <li><MicroIcona nome="gratis" />{T('Prezzo firmato prima di iniziare', 'Price signed before we start')}</li>
+        </ul>
       </div>
       <div class="sv-ill" data-appare="0.15">{id === 'sito' ? <Compila lang={lang} /> : <Illustrazione id={id} lang={lang} />}</div>
     </div>
@@ -157,7 +172,7 @@ const jsonLd = {
         </h2>
         <p class="lead" data-appare>{T('Scegli quello che ti somiglia: nel preventivo lo trovi già selezionato e aggiungi solo quello che ti serve. Prezzi IVA esclusa.', 'Pick the one that fits you: it comes pre-selected in the quote, where you add only what you need. Prices excl. VAT.')}</p>
       </div>
-      <div class="prezzi" data-sequenza>
+      <div class="prezzi" data-sequenza data-pacchetti>
         {c.livelli.map((l) => (
           <article class={`card piano${l.top ? ' top' : ''}`}>
             {l.top && <span class="scia" aria-hidden="true"></span>}
@@ -170,6 +185,7 @@ const jsonLd = {
           </article>
         ))}
       </div>
+      <div class="prezzi-guida" aria-hidden="true"><span class="segmenti">{c.livelli.map((l) => <i class={l.top ? 'on' : undefined}></i>)}</span><span class="conta" data-pacchetti-conta>{c.livelli.findIndex((l) => l.top) + 1} / {c.livelli.length}</span></div>
       {c.extra.length > 0 && (
         <div class="sv-extra" data-appare>
           <span class="mono">{T('Puoi aggiungere', 'You can add')}</span>
@@ -211,7 +227,7 @@ const jsonLd = {
         <a class="btn btn-azione btn-grande" href={`${preventivo}?s=${id}`} data-azione>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
         <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
       </div>
-      <nav class="sv-altri" aria-label={T('Gli altri servizi', 'Other services')} data-appare>
+      <nav class="sv-altri" aria-label={T('Gli altri servizi', 'Other services')} data-appare data-fila>
         {altri.map((a) => (
           <a href={urlServizio(a.id, lang)}>
             <span class="servizio-icona"><Icona nome={a.icona} /></span>

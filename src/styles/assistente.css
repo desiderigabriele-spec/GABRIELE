@@ -95,3 +95,9 @@ html:has(.cap-indice.aperto) .focus { opacity: 0; pointer-events: none; }
   .focus.aperta { z-index: 70; }
 }
 @media (prefers-reduced-motion: reduce) { .focus-bolla, .focus-pannello, .focus-fumetto, .focus-online { transition: none; } .focus::before, .focus::after, .focus .focus-bolla, .focus-online::after, .fp-stato i { animation: none !important; } }
+
+/* nel preventivo, su telefono e tablet, il riepilogo sta in fondo allo schermo: il tondino sale sopra di lui */
+@media (max-width: 980px) {
+  html:has(.pv-riepilogo) .focus:not(.aperta) { bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
+  html:has(.pv-riepilogo.aperto) .focus:not(.aperta) { opacity: 0; pointer-events: none; }
+}

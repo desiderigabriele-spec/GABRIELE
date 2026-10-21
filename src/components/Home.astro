@@ -577,7 +577,7 @@ const jsonLd = {
       </div>
       <div class="prezzi-guida" aria-hidden="true"><span class="segmenti"><i></i><i class="on"></i><i></i></span><span class="conta" data-pacchetti-conta>2 / 3</span></div>
       <!-- gli altri servizi: in piccolo, una fila da far scorrere -->
-      <ul class="altri-prezzi" role="list" data-appare>
+      <ul class="altri-prezzi" role="list" data-appare data-fila>
         {altri.map((a) => <li><a href={urlServizio(a.id, lang)}>{a.nome} <strong>{T('da', 'from')} {a.prezzo}</strong></a></li>)}
       </ul>
     </div>

@@ -337,12 +337,14 @@ function tabellone() {
   });
 }
 
-// ---------- Gli altri prezzi: la fila scorre da destra a sinistra all'infinito ----------
+// ---------- Le file di servizi ([data-fila]): scorrono da destra a sinistra all'infinito ----------
 // La seconda copia delle etichette serve solo al giro senza fine (nascosta ai lettori di schermo e al tasto Tab).
 // Toccandola, trascinandola o con la rotella si ferma; riparte da sola dopo qualche secondo.
 function filaInfinita() {
-  const fila = document.querySelector('.altri-prezzi');
-  if (!fila || fila.children.length < 2) return;
+  document.querySelectorAll('[data-fila]').forEach(fila1);
+}
+function fila1(fila) {
+  if (fila.children.length < 2) return;
   [...fila.children].forEach((li) => {
     const c = li.cloneNode(true);
     c.setAttribute('aria-hidden', 'true');

@@ -142,7 +142,16 @@ const demo = it ? {
   )}
 >
   <!-- Cos'è, in una frase -->
-  <section class="hero ai-hero" data-forma="1" data-lato="destra" data-x="1.05" data-scala="0.8" data-y-mobile="0.22" data-scala-mobile="0.55" data-luce-mobile="0.7">
+  <!-- i capitoli della pagina, come nella home -->
+  <nav class="guida" aria-label={T('Capitoli', 'Chapters')} data-percorso>
+    <span class="guida-luce" aria-hidden="true"></span>
+    {(lang === 'it'
+      ? [['inizio', 'L’idea'], ['esempio', 'Guardalo'], ['benefici', 'I vantaggi'], ['come', 'Come lavoriamo'], ['azione', 'Inizia']]
+      : [['inizio', 'The idea'], ['esempio', 'Watch it'], ['benefici', 'The benefits'], ['come', 'How we work'], ['azione', 'Start']]
+    ).map(([cap, nome], i) => <a href={`#${cap}`} data-capitolo={cap}><span>{String(i + 1).padStart(2, '0')} · {nome}</span></a>)}
+  </nav>
+
+  <section class="hero ai-hero" id="inizio" data-forma="1" data-lato="destra" data-x="1.05" data-scala="0.8" data-y-mobile="0.22" data-scala-mobile="0.55" data-luce-mobile="0.7">
     <div class="wrap">
       <div class="hero-testo">
         <div class="hero-spazio-occhio" aria-hidden="true"><Cursore stato="griglia" class="occhio-riserva" /></div>

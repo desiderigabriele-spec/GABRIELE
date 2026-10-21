@@ -195,7 +195,7 @@ html.vita-on [data-griglia-viva]:not(.atterra) .lista-check li::before { transfo
 .cs-titolo { position: absolute; left: 12px; top: 46px; font-family: var(--f-titolo); font-weight: 800; letter-spacing: -0.05em; font-size: 1.45rem; line-height: .95; }
 .cs-testo { position: absolute; left: 12px; top: 108px; font-size: .7rem; color: #555; }
 .cs-bottone { position: absolute; left: 12px; top: 130px; padding: 8px 12px; background: var(--rosso); color: #fff; font-size: .7rem; font-weight: 600; }
-.cs-foto { position: absolute; right: 12px; top: 46px; width: 38%; height: 104px; background: #d6d4cf; }
+.cs-foto { position: absolute; right: 12px; top: 46px; width: 38%; height: 104px; background: #d6d4cf url("/img/bozza-piatto.webp") center / cover no-repeat; }
 .cs-chat { position: absolute; left: 12px; right: 12px; top: 186px; padding: 8px 10px; background: #fff; border: 1px solid #ddd; font-size: .68rem; line-height: 1.4; }
 .cs-online { position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; font-family: var(--f-mono); font-size: .62rem; }
 .cs-online i { width: 8px; height: 8px; background: var(--rosso); }
