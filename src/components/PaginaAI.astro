@@ -161,13 +161,13 @@ const demo = it ? {
           <h1 data-righe>
             <span class="riga"><span>Il collaboratore</span></span>
             <span class="riga"><span>che fa i lavori</span></span>
-            <span class="riga"><span><span class="em em-firma">noiosi al posto tuo.</span></span></span>
+            <span class="riga"><span>noiosi al posto tuo<span class="quadratino" aria-hidden="true"></span></span></span>
           </h1>
         ) : (
           <h1 data-righe>
             <span class="riga"><span>The colleague</span></span>
             <span class="riga"><span>who does the</span></span>
-            <span class="riga"><span><span class="em em-firma">boring work for you.</span></span></span>
+            <span class="riga"><span>boring work for you<span class="quadratino" aria-hidden="true"></span></span></span>
           </h1>
         )}
         <p class="lead" data-appare="0.25">{T(
@@ -362,7 +362,7 @@ const demo = it ? {
       <h2 data-righe>
         <span class="riga"><span>{T('Il primo lavoro', 'The first job')}</span></span>
         <span class="riga"><span>{T('che ti togli', 'off your')}</span></span>
-        <span class="riga"><span class="em em-firma">{T('di dosso.', 'plate.')}</span></span>
+        <span class="riga"><span>{T('di dosso', 'plate')}<span class="quadratino" aria-hidden="true"></span></span></span>
       </h2>
       <div class="altri-prezzi prezzi-ai" data-appare>
         <div><span>{T('Un collegamento tra due programmi', 'One connection between two programs')}</span><strong>{T('da', 'from')} {eur(pCollegamento.una!)}</strong></div>
