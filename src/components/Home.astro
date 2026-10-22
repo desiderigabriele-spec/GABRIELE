@@ -155,7 +155,7 @@ const jsonLd = {
           </p>
         )}
         <div class="hero-azioni" data-appare="0.4">
-          <a class="btn btn-azione btn-grande" href={preventivo} data-azione><span class="scia" aria-hidden="true"></span>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="btn btn-azione btn-grande" href={preventivo} data-azione>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
           <a class="btn btn-vetro btn-grande" href="#metodo">{T('Guarda come funziona', 'See how it works')}</a>
         </div>
         <ul class="rassicura" data-appare="0.55">
@@ -301,7 +301,7 @@ const jsonLd = {
           'Answering the same questions, copying data, preparing quotes. Software with artificial intelligence does it for you, even at night. Find out in a minute how much time and money it gives back.',
         )}</p>
         <div class="hero-azioni" data-appare>
-          <button class="btn btn-azione btn-grande" type="button" data-calcolo-apri><span class="scia" aria-hidden="true"></span>{T('Calcola quanto risparmi', 'Work out what you save')} <span class="freccia" aria-hidden="true">→</span></button>
+          <button class="btn btn-azione btn-grande" type="button" data-calcolo-apri>{T('Calcola quanto risparmi', 'Work out what you save')} <span class="freccia" aria-hidden="true">→</span></button>
           <a class="link-freccia" href={url('demo', lang)}>{T('Guarda le demo dal vivo', 'See the live demos')} <span class="freccia" aria-hidden="true">→</span></a>
         </div>
       </div>
@@ -647,7 +647,6 @@ const jsonLd = {
       <div class="prezzi" data-sequenza data-pacchetti>
         {piani.map((p) => (
           <article class={`card piano${p.top ? ' top' : ''}`}>
-            {p.top && <span class="scia" aria-hidden="true"></span>}
             {p.top && <span class="piano-badge">{T('Il più scelto', 'Most popular')}</span>}
             <span class="piano-nome">{p.nome}</span>
             <p class="piano-per">{perChi[p.id]}</p>

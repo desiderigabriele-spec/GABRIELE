@@ -74,7 +74,7 @@ const jsonLd = {
         <p class="lead" data-appare="0.2">{p.sotto}</p>
         <p class="sv-prezzo" data-appare="0.3"><span class="mono">{T('A partire da', 'Starting from')}</span><strong>{eur(s.da)}{s.mese && <small> {mese}</small>}</strong><span class="sv-iva">{T('IVA esclusa', 'excl. VAT')}</span></p>
         <div class="hero-azioni" data-appare="0.4">
-          <a class="btn btn-azione btn-grande" href={`${preventivo}?s=${id}`} data-azione><span class="scia" aria-hidden="true"></span>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="btn btn-azione btn-grande" href={`${preventivo}?s=${id}`} data-azione>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
           <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
         </div>
         <ul class="rassicura" data-appare="0.5">
@@ -176,7 +176,6 @@ const jsonLd = {
       <div class="prezzi" data-sequenza data-pacchetti>
         {c.livelli.map((l) => (
           <article class={`card piano${l.top ? ' top' : ''}`}>
-            {l.top && <span class="scia" aria-hidden="true"></span>}
             {l.top && <span class="piano-badge">{T('Il più scelto', 'Most popular')}</span>}
             <span class="piano-nome">{l.nome}</span>
             <p class="piano-per">{l.spiega}</p>

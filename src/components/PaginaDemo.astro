@@ -81,7 +81,7 @@ const waTesto = T('Ciao! Ho visto le demo di Desideri&Code e vorrei capire cosa 
       )}</p>
       <div class="demo-cursori" data-appare><Cursori lang={lang} /></div>
       <div class="hero-azioni" data-appare style="justify-content:center">
-        <a class="btn btn-azione btn-grande" href={`${preventivo}?s=software`} data-azione><span class="scia" aria-hidden="true"></span>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
+        <a class="btn btn-azione btn-grande" href={`${preventivo}?s=software`} data-azione>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
         <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
       </div>
     </div>

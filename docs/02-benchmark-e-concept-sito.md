@@ -100,7 +100,7 @@ I nomi storici (`--viola`, `--ciano`, `--ambra`) restano nel codice ma ora valgo
 ### Solo nero e rosso
 Il sito ha una sola versione: sfondo nero `#0A0A0A`, testo bianco e il rosso del logo `#E30613`. La versione chiara e i colori a scelta sono stati provati e tolti: il sito deve essere riconoscibile sempre allo stesso modo. Nei **video social** il quadratino del logo può ancora cambiare colore (da rivedere quando si rifanno i video).
 
-**Il verde smeraldo** `#10B981` compare in un solo posto: le spunte («incluso», «fatto») nelle card dei servizi, dei piani e del preventivo. Così il verde vuol dire sempre «questo è tuo» e non compete con il rosso, che resta per le azioni.
+**Il verde acido** `#C6F432` è il colore dell'azione e del «fatto»: i bottoni d'azione e le spunte («incluso», «fatto») nelle card dei servizi, dei piani e del preventivo, con il segno nero. Di giorno, quando è scritta o filo sottile sulla carta, diventa oliva scuro `#4D7A00` (`--verde-testo`); i bottoni hanno un filo nero intorno.
 
 **Le icone dei servizi** hanno un bordo rosso e il disegno bianco, con il punto rosso del logo; passandoci sopra il riquadro si riempie di rosso.
 
@@ -225,7 +225,7 @@ Scelte dal canvas «Idee di animazione Desideri&Code» e messe tutte nel sito, o
 - Card con inclinazione 3D e bagliore che segue il mouse.
 - Contatori che salgono quando entrano nello schermo.
 - **Effetti** (scelti dalla prova «Effetti Desideri&Code», codice in `src/scripts/effetti.js`, `scena.js`, `global.css`):
-  1. scia luminosa che gira sul bordo del bottone dell'hero, del piano "Il più scelto" e del riepilogo del preventivo;
+  1. (tolta) la scia luminosa che girava sul bordo dei bottoni: al suo posto il riflesso di luce che attraversa di continuo i bottoni verdi;
   2. sulle card si accende il tratto di bordo vicino al mouse;
   3. (tolto: era la corona d'eclisse attorno all'occhio);
   4. velocità della luce: scorrendo forte le stelle si allungano in strisce;
@@ -368,7 +368,7 @@ Tre passi, il meno possibile da leggere e da scrivere.
 - Colori: [Labrecque & Milne / studio sul colore e la fiducia](https://run.unl.pt/entities/publication/276bb2e1-b4f7-4bdb-b40c-be90464c9a85/full) · [Coloring Trust (critica)](https://ogarev-online.ru/2782-2184/article/view/298120)
 
 ### Ultime scelte (bottoni, avvio, studio, pagine)
-- **Bottoni d'azione:** verde smeraldo pieno con la scritta quasi nera (`--verde-azione`). Regola: il rosso è il marchio (logo, quadratini, parole evidenziate), il verde è l'azione e il «fatto» (bottoni e spunte).
+- **Bottoni d'azione:** verde acido pieno con la scritta nera (`--verde-azione`) e un riflesso di luce che li attraversa di continuo. Regola: il rosso è il marchio (logo, quadratini, parole evidenziate), il verde è l'azione e il «fatto» (bottoni e spunte).
 - **Avvio della prima visita:** compare il logo; dal suo quadratino rosso nasce l'occhio di Focus, che si apre, si guarda intorno, fa l'occhiolino e vola nel tondino in basso a destra, mentre il logo vola nell'header (script nel layout). Chi torna nella stessa visita entra subito.
 - **Focus:** pallino verde «online» sul tondino, due onde e un saltello ogni 7 secondi; nella chat «Assistente AI di Desideri&Code» e «online · risponde subito». Sta sopra la tendina tra le pagine, sopra l'avviso dei cookie e sopra il riepilogo del preventivo.
 - **Lo studio:** la storia in quattro tempi («Ho collezionato più "no" che caffè»: il no, la scoperta, il metodo, oggi), obiettivo, firma e certificati. Niente agenti AI e niente persone che non ci sono; quando arriveranno i collaboratori si aggiunge la loro sezione.
