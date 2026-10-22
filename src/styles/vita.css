@@ -417,7 +417,7 @@ html.ridotto .cursori-testo span { width: auto; }
 .gi-esito { width: 22px; height: 22px; flex: none; border: 2px solid var(--rosso); position: relative; transition: background .35s, border-color .35s; }
 .gi-esito::before, .gi-esito::after { content: ""; position: absolute; left: 50%; top: 50%; width: 11px; height: 2px; background: var(--rosso); transform: translate(-50%, -50%) rotate(45deg); }
 .gi-esito::after { transform: translate(-50%, -50%) rotate(-45deg); }
-.giornata.noi .gi-esito { border-color: var(--verde-spunta); background: var(--verde-spunta) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A0A0A' stroke-width='3.6' stroke-linecap='square'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 14px no-repeat; }
+.giornata.noi .gi-esito { border-color: var(--verde-spunta); background: var(--verde-spunta) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='3.6' stroke-linecap='square'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 14px no-repeat; }
 .giornata.noi .gi-esito::before, .giornata.noi .gi-esito::after { opacity: 0; }
 .gi-stato { display: grid; gap: .4rem; transition: opacity .35s var(--ease), transform .35s var(--ease); }
 .gi-stato b { font-family: var(--f-titolo); font-size: clamp(1.25rem, 2vw, 1.6rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }

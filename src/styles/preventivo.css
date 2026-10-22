@@ -62,7 +62,7 @@
 .pv-include-titolo { margin-top: .5rem; padding-top: .7rem; border-top: 1px solid var(--linea); font-family: var(--f-mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--nebbia-2); }
 .pv-include { list-style: none; margin: 0; padding: 0; display: grid; gap: .32rem; }
 .pv-include li { position: relative; padding-left: 1.25rem; font-size: .82rem; line-height: 1.35; color: var(--nebbia); }
-.pv-include li::before { content: ''; position: absolute; left: 0; top: .28em; width: 12px; height: 12px; background: var(--verde-spunta) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A0A0A' stroke-width='4' stroke-linecap='square'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 9px no-repeat; }
+.pv-include li::before { content: ''; position: absolute; left: 0; top: .28em; width: 12px; height: 12px; background: var(--verde-spunta) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='4' stroke-linecap='square'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 9px no-repeat; }
 .pv-livello:has(input:checked) .pv-include li { color: var(--latte); }
 .pv-badge { flex: none; font-family: var(--f-mono); font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; padding: .28rem .5rem; background: var(--caldo); color: var(--azione-testo); font-weight: 700; }
 @media (max-width: 900px) { .pv-livelli { grid-template-columns: minmax(0, 1fr); } }
@@ -225,7 +225,7 @@
 .pv-pillola { position: relative; cursor: pointer; }
 .pv-pillola input { position: absolute; opacity: 0; pointer-events: none; }
 .pv-pillola > span { display: inline-block; padding: .45rem .75rem; border: 1px solid var(--linea-forte); font-size: .86rem; color: var(--nebbia); transition: border-color .2s, color .2s; }
-.pv-pillola input:checked + span { border-color: var(--verde-testo); color: var(--latte); }
+.pv-pillola input:checked + span { border-color: var(--verde-azione); color: var(--latte); }
 .pv-pillola input:focus-visible + span { outline: 2px solid var(--rosso-testo); outline-offset: 2px; }
 @media (max-width: 560px) { .pv-altro-testa { grid-template-columns: auto minmax(0, 1fr) auto; } .pv-altro-testa .pv-extra-prezzo { grid-column: 2; grid-row: 2; } .pv-altro-livelli { padding-left: 0; } }
 

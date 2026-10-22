@@ -17,7 +17,7 @@
   --viola: #ffffff;            --brand-rgb: 255, 255, 255;
   --viola-chiaro: #d4d4d4;
   --ciano: #ffffff;            --dati-rgb: 255, 255, 255;
-  --verde-spunta: #00a651;     /* le spunte: «fatto, incluso» (lo stesso verde dei bottoni, con il segno nero) */
+  --verde-spunta: #10b981;     /* le spunte: «fatto, incluso» (lo stesso verde dei bottoni, con il segno bianco) */
   --firma: linear-gradient(#ffffff, #ffffff);
   --linea: rgba(var(--latte-rgb), 0.12);
   --linea-forte: rgba(var(--latte-rgb), 0.24);
@@ -30,10 +30,10 @@
   --caldo: linear-gradient(var(--rosso), var(--rosso));
   --azione-rgb: 227, 6, 19;
   --azione-testo: #ffffff;
-  /* i bottoni d'azione: verde segnale pieno, scritta quasi nera (rosso per guardare, verde per agire: «stop» e «via») */
-  --verde-azione: #00a651; --verde-azione-su: #00bf5f; --verde-azione-scritta: #021a0c; --verde-rgb: 0, 166, 81;
-  /* il verde quando è scritta o filo sottile: un filo più chiaro sul nero, un filo più scuro sulla carta */
-  --verde-testo: #00c060;
+  /* i bottoni d'azione: verde smeraldo pieno, scritta quasi nera (rosso per guardare, verde per agire) */
+  --verde-azione: #10b981; --verde-azione-su: #34d399; --verde-azione-scritta: #04130d; --verde-rgb: 16, 185, 129;
+  /* il verde quando è scritta: un filo più chiaro sul nero, un filo più scuro sulla carta */
+  --verde-testo: #34d399;
 
   --f-titolo: 'Inter Tight Variable', 'Inter Tight', system-ui, sans-serif;
   --f-testo: 'Inter Variable', 'Inter', system-ui, sans-serif;
@@ -64,7 +64,7 @@ html[data-tema='chiaro'] {
   --firma: linear-gradient(#0a0a0a, #0a0a0a);
   --ambra: #0a0a0a;
   --rosso-testo: #d10512;
-  --verde-testo: #008a43;
+  --verde-azione-su: #0f9f6e; --verde-testo: #0f9f6e;
   color-scheme: light;
 }
 /* i dispositivi disegnati (telefoni, schermi, codice, finte app) restano scuri anche nella versione chiara */
@@ -92,7 +92,7 @@ html.tema-cambia, html.tema-cambia * { transition: background-color .35s ease, c
 .nome-pop label { font-family: var(--f-titolo); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; color: var(--latte); }
 .nome-pop div { display: flex; gap: .5rem; min-width: 0; }
 .nome-pop input { flex: 1; min-width: 0; width: 100%; font: 500 16px/1 var(--f-testo); color: var(--latte); background: transparent; border: 1px solid var(--linea-forte); padding: .7rem .8rem; }
-.nome-pop input:focus { outline: none; border-color: var(--verde-testo); }
+.nome-pop input:focus { outline: none; border-color: var(--verde-azione); }
 .nome-pop .btn { padding: .7rem 1rem; }
 .nome-pop small { color: var(--nebbia); font-size: .82rem; }
 @media (max-width: 430px) { .nome-btn { width: 32px; } .header-bar .header-strumenti { gap: .35rem; } }
@@ -577,7 +577,7 @@ html.vita-on .metodo-passi .passo-num { display: none; }
 .pacchetto-tag { justify-self: start; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; padding: .45rem .8rem; border: 1px solid rgba(var(--brand-rgb),.45); color: var(--viola-chiaro); }
 .lista-check { list-style: none; padding: 0; margin: 0; display: grid; gap: .55rem; }
 .lista-check li { display: grid; grid-template-columns: 22px 1fr; gap: .6rem; color: var(--nebbia); }
-.lista-check li::before { content: ''; width: 18px; height: 18px; margin-top: .22em; background: var(--verde-spunta) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230A0A0A' stroke-width='3.6' stroke-linecap='square'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 12px no-repeat; }
+.lista-check li::before { content: ''; width: 18px; height: 18px; margin-top: .22em; background: var(--verde-spunta) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='3.6' stroke-linecap='square'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 12px no-repeat; }
 
 /* ---------- Chi sono ---------- */
 .chi { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 6vw, 96px); align-items: start; }
