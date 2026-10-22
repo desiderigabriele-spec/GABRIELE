@@ -2,7 +2,6 @@
 export const contatti = {
   nome: 'Gabriele Desideri',
   studio: 'Desideri&Code', // il nome commerciale: in fattura «Desideri&Code di Gabriele Desideri»
-  ruolo: 'Siti web · AI · Gestionali · Pubblicità online',
   email: 'desiderigabriele@gmail.com',
   telefono: '+39 338 342 4098',
   whatsapp: '393383424098',
@@ -72,10 +71,9 @@ export const servizi = [
   },
 ];
 
-// Il metodo: i 5 passi dal primo sguardo al sì. "forma" = forma delle particelle (scena.js).
+// Il metodo: i 5 passi dal primo sguardo al sì.
 export const metodo = [
   {
-    forma: 0,
     passo: 'Sguardo',
     titolo: 'Prima ti devono notare.', verbo: 'notare',
     testa: '«Cos\'è questo?» In meno di un secondo il cervello decide se restare o andare via.',
@@ -83,7 +81,6 @@ export const metodo = [
     spiega: 'Ricordiamo ciò che è diverso. Per questo ogni progetto ha un elemento che non si dimentica: un colore, un movimento, una frase.',
   },
   {
-    forma: 1,
     passo: 'Interesse',
     titolo: 'Poi ti devono capire.', verbo: 'capire',
     testa: '«Fa al caso mio?» Se per capirlo serve fatica, la persona se ne va.',
@@ -91,7 +88,6 @@ export const metodo = [
     spiega: 'Ciò che si capisce facilmente sembra anche più vero e più affidabile. Frasi corte, una sola idea alla volta, niente paroloni.',
   },
   {
-    forma: 2,
     passo: 'Fiducia',
     titolo: 'Poi si devono fidare.', verbo: 'fidare',
     testa: '«Posso fidarmi?» Guardiamo cosa hanno fatto gli altri prima di decidere.',
@@ -99,7 +95,6 @@ export const metodo = [
     spiega: 'Recensioni vere, lavori veri, numeri veri, messi proprio dove la persona sta decidendo.',
   },
   {
-    forma: 3,
     passo: 'Desiderio',
     titolo: 'Poi ti devono volere.', verbo: 'volere',
     testa: '«Lo voglio.» Si decide con l\'emozione e si giustifica con la ragione.',
@@ -107,7 +102,6 @@ export const metodo = [
     spiega: 'Mostriamo il risultato prima del prezzo e il prezzo nel contesto giusto. Chi immagina di avere già il risultato lo desidera di più.',
   },
   {
-    forma: 4,
     passo: 'Azione',
     titolo: 'E infine ti scelgono.', verbo: 'scelgono',
     testa: '«Ok, ti scrivo.» Il passo deve essere facile, chiaro e senza rischi.',
@@ -133,7 +127,6 @@ export const lavori = [
       'Scena 3D a particelle che racconta il metodo',
       'Guida interattiva e chat che porta a WhatsApp',
     ],
-    tag: ['Astro', 'three.js', 'GSAP', 'Copy', 'Brand'],
     recensione: null,
   },
   {
@@ -151,7 +144,6 @@ export const lavori = [
       'Chiama, WhatsApp e preventivo sempre a portata di pollice',
       'SEO locale sulle zone servite',
     ],
-    tag: ['Lead generation', 'SEO locale', 'Automazione', 'Copy'],
     recensione: null,
   },
 ];

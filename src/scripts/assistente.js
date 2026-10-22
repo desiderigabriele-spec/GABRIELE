@@ -232,7 +232,8 @@ export function avviaAssistente() {
   function guardaBottone() {
     if (!occhio || aperta || performance.now() - mano < 3000) return;
     const r = bolla.getBoundingClientRect();
-    const b = [...document.querySelectorAll('.btn-azione, [data-azione]')].map((el) => el.getBoundingClientRect()).find((x) => x.width && x.bottom > 0 && x.top < innerHeight);
+    let b = null;
+    for (const el of document.querySelectorAll('.btn-azione, [data-azione]')) { const x = el.getBoundingClientRect(); if (x.width && x.bottom > 0 && x.top < innerHeight) { b = x; break; } }
     if (b && Math.random() < 0.7) occhio.guarda(((b.left + b.width / 2) - (r.left + r.width / 2)) / 500, -((b.top + b.height / 2) - (r.top + r.height / 2)) / 400);
     else occhio.guarda((Math.random() - 0.7) * 0.9, (Math.random() - 0.3) * 0.6);
   }
@@ -265,9 +266,10 @@ export function avviaAssistente() {
     spunta(true);
     setTimeout(() => box.classList.remove('subito'), 600);
   });
-  setInterval(() => {
+  const attesa = setInterval(() => {
     if (!pronto) return;
     if (!visibile && puoMostrare()) spunta();
+    if (visibile) clearInterval(attesa); // una volta fuori resta lì: non serve più controllare
   }, 400);
 
   // ---------- il disegno: solo quando si vede ----------

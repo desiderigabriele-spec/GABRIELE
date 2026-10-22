@@ -9,12 +9,12 @@ const TESTI = {
   en: { cambia: (n) => `Your name: ${n}. Press to change it`, suggerimento: 'Tap to change your name' },
 }[lang];
 
-export function avviaPersonalizza(scena) {
+export function avviaPersonalizza() {
   applicaProfilo(leggiProfilo());
   nomeModificabile();
   nomeHeader();
   nomeCheSiDecodifica();
-  benvenuto(scena);
+  benvenuto();
 }
 
 // ---------- il nome nell'header: NO/ME apre un campo piccolo, «Salva» chiama il sito con il tuo nome ----------
@@ -35,7 +35,7 @@ function nomeHeader() {
   pop.addEventListener('submit', (e) => {
     e.preventDefault();
     const q = leggiProfilo(); const prima = q.nome || '';
-    q.nome = pulisciNome(campo.value); q.fatto = true;
+    q.nome = pulisciNome(campo.value);
     salvaProfilo(q); applicaProfilo(q);
     apri(false); bt.focus();
     if (q.nome && q.nome !== prima) { decodificaTutti(); traccia('nome_cambiato'); }
@@ -78,7 +78,7 @@ const leggiScelte = () => { try { return JSON.parse(localStorage.getItem(CHIAVE_
 const leggi = (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } };
 const scrivi = (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} };
 
-function benvenuto(scena) {
+function benvenuto() {
   const html = document.documentElement;
   const box = document.querySelector('[data-benvenuto]');
   if (!box) return;
@@ -132,13 +132,9 @@ function benvenuto(scena) {
       const nome = pulisciNome(campo.value);
       if (nome) {
         const p = leggiProfilo();
-        p.nome = nome; p.fatto = true;
+        p.nome = nome;
         salvaProfilo(p); applicaProfilo(p);
         traccia('nome_dato');
-        // le stelle scrivono il nome appena la scena è pronta
-        let prove = 0;
-        const scriviStelle = () => { const sc = scena(); if (sc?.scrivi) sc.scrivi(nome); else if (prove++ < 20) setTimeout(scriviStelle, 250); };
-        scriviStelle();
       } else traccia('nome_saltato');
     }
     box.classList.remove('su');
@@ -220,7 +216,6 @@ function nomeModificabile() {
       if (el.textContent.length > 24) { el.textContent = el.textContent.slice(0, 24); const c = document.createRange(); c.selectNodeContents(el); c.collapse(false); s.removeAllRanges(); s.addRange(c); }
       const q = leggiProfilo();
       q.nome = pulisciNome(el.textContent);
-      q.fatto = true;
       salvaProfilo(q);
       applicaProfilo(q); // cambia il nome in tutti gli altri punti (questo resta com'è mentre scrivi)
     };

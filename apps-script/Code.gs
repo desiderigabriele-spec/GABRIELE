@@ -22,7 +22,9 @@ function doPost(e) {
       una: Number(d.una) || 0, mese: Number(d.mese) || 0, sito: cut_(d.sito_attuale, 200), msg: cut_(d.messaggio, 1500),
       progetto: cut_(d.progetto, 4000), pagina: cut_(d.pagina, 200)
     };
-    if (!r.nome || String(r.tel).replace(/\D/g, '').length < 6 || r.email.indexOf('@') < 1) return out_({ success: false, error: 'dati' });
+    // il modulo chiede un solo contatto (telefono o email): basta che ce ne sia uno valido
+    var telOk = String(r.tel).replace(/\D/g, '').length >= 6, mailOk = r.email.indexOf('@') > 0;
+    if (!r.nome || (!telOk && !mailOk)) return out_({ success: false, error: 'dati' });
     if (!rateOk_()) return out_({ success: false, error: 'limite' });
 
     var salvata = true, errore = '';

@@ -141,7 +141,6 @@ const demo = it ? {
     'What AI can do for your business, with real examples: quotes, emails, appointments, documents. No jargon. Milan, Italy and Switzerland.',
   )}
 >
-  <!-- Cos'è, in una frase -->
   <!-- i capitoli della pagina, come nella home -->
   <nav class="guida" aria-label={T('Capitoli', 'Chapters')} data-percorso>
     <span class="guida-luce" aria-hidden="true"></span>
@@ -151,10 +150,10 @@ const demo = it ? {
     ).map(([cap, nome], i) => <a href={`#${cap}`} data-capitolo={cap}><span>{String(i + 1).padStart(2, '0')} · {nome}</span></a>)}
   </nav>
 
-  <section class="hero ai-hero" id="inizio" data-forma="1" data-lato="destra" data-x="1.05" data-scala="0.8" data-y-mobile="0.22" data-scala-mobile="0.55" data-luce-mobile="0.7">
+  <section class="hero ai-hero" id="inizio" data-forma="1">
     <div class="wrap">
       <div class="hero-testo">
-        <div class="hero-spazio-occhio" aria-hidden="true"><Cursore stato="griglia" class="occhio-riserva" /></div>
+        <div class="hero-spazio-occhio" aria-hidden="true"></div>
         <span class="icona-titolo"><Icona nome="chip" /></span>
         <span class="capitolo" data-appare>{T('Intelligenza artificiale per aziende', 'AI for business')}</span>
         {it ? (
@@ -175,7 +174,7 @@ const demo = it ? {
           'It answers customers, drafts quotes, reads documents and moves data from one program to another. It works inside the tools you already use, day and night. You check, it does the work.',
         )}</p>
         <div class="hero-azioni" data-appare="0.4">
-          <a class="btn btn-azione btn-grande" href="#esempio" data-sguardo-meta>{T('Guardalo al lavoro', 'See it at work')} <span class="freccia" aria-hidden="true">↓</span></a>
+          <a class="btn btn-azione btn-grande" href="#esempio">{T('Guardalo al lavoro', 'See it at work')} <span class="freccia" aria-hidden="true">↓</span></a>
           <a class="btn btn-vetro btn-grande" href={`${preventivo}?s=software`}>{T('Calcola quanto costa', 'See what it costs')}</a>
         </div>
         <ul class="rassicura" data-appare="0.55">
@@ -188,7 +187,7 @@ const demo = it ? {
   </section>
 
   <!-- Guardalo al lavoro -->
-  <section class="sezione" id="esempio" data-forma="1" data-lato="sinistra" data-luce="0.35" data-scala="0.7">
+  <section class="sezione" id="esempio" data-forma="1">
     <div class="wrap">
       <div class="testa-sezione">
         <span class="capitolo" data-appare>{T('Guardalo al lavoro', 'See it at work')}</span>
@@ -228,13 +227,13 @@ const demo = it ? {
           </div>
         </div>
       </div>
-      <p class="demo-avviso">{T('Esempio dimostrativo: nomi e prezzi sono inventati.', 'Demonstration example: names and prices are made up.')}</p>
+      <p class="ai-avviso">{T('Esempio dimostrativo: nomi e prezzi sono inventati.', 'Demonstration example: names and prices are made up.')}</p>
       <a class="ai-demo-link link-freccia" href={url('demo', lang)}>{T('Guarda le demo complete, passo per passo', 'See the full demos, step by step')} <span class="freccia" aria-hidden="true">→</span></a>
     </div>
   </section>
 
   <!-- Esempi per settore -->
-  <section class="sezione" id="esempi" data-forma="1" data-lato="destra" data-y="0.2" data-luce="0.3" data-scala="0.7">
+  <section class="sezione" id="esempi" data-forma="1">
     <div class="wrap">
       <div class="testa-sezione">
         <span class="capitolo" data-appare>{T('Nella tua attività', 'In your business')}</span>
@@ -243,16 +242,16 @@ const demo = it ? {
           <span class="riga"><span><span class="em">{T('come diventa.', 'how it could be.')}</span></span></span>
         </h2>
       </div>
-      <div class="settori" role="tablist" aria-label={T('Scegli il tuo settore', 'Choose your sector')} data-settori>
+      <div class="settori" role="tablist" aria-label={T('Scegli il tuo settore', 'Choose your sector')}>
         {settori.map((s, i) => <button type="button" role="tab" id={`tab-${s.id}`} aria-controls={`pannello-${s.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-settore-tab={s.id}>{s.nome}</button>)}
       </div>
       {settori.map((s, i) => (
         <div class="pannello" role="tabpanel" id={`pannello-${s.id}`} aria-labelledby={`tab-${s.id}`} data-settore-pannello={s.id} hidden={i !== 0}>
           {s.esempi.map(([titolo, prima, dopo]) => (
-            <article class="card prima-dopo">
+            <article class="card ai-confronto">
               <h3>{titolo}</h3>
-              <div class="pd-riga pd-prima"><span class="mono">{T('Oggi', 'Today')}</span><p>{prima}</p></div>
-              <div class="pd-riga pd-dopo"><span class="mono">{T('Con l’AI', 'With AI')}</span><p>{dopo}</p></div>
+              <div class="ai-riga ai-oggi"><span class="mono">{T('Oggi', 'Today')}</span><p>{prima}</p></div>
+              <div class="ai-riga ai-con"><span class="mono">{T('Con l’AI', 'With AI')}</span><p>{dopo}</p></div>
             </article>
           ))}
         </div>
@@ -261,7 +260,7 @@ const demo = it ? {
   </section>
 
   <!-- Benefici -->
-  <section class="sezione" id="benefici" data-forma="2" data-lato="destra" data-luce="0.3" data-scala="0.8">
+  <section class="sezione" id="benefici" data-forma="2">
     <div class="wrap">
       <div class="testa-sezione">
         <span class="capitolo" data-appare>{T('Cosa ci guadagni', 'What you gain')}</span>
@@ -283,7 +282,7 @@ const demo = it ? {
   </section>
 
   <!-- Il programma su misura -->
-  <section class="sezione" id="su-misura" data-forma="2" data-lato="sinistra" data-luce="0.3" data-scala="0.8">
+  <section class="sezione" id="su-misura" data-forma="2">
     <div class="wrap su-misura">
       <div class="testa-sezione" style="margin-bottom:0">
         <span class="capitolo" data-appare>{T('Il programma su misura', 'Your own software')}</span>
@@ -318,7 +317,7 @@ const demo = it ? {
   <TuoSoftware lang={lang} />
 
   <!-- Come lavoriamo -->
-  <section class="sezione" id="come" data-forma="3" data-luce="0.2" data-scala="1.2">
+  <section class="sezione" id="come" data-forma="3">
     <div class="wrap">
       <div class="testa-sezione">
         <span class="capitolo" data-appare>{T('Come lavoriamo', 'How we work')}</span>
@@ -338,7 +337,7 @@ const demo = it ? {
   </section>
 
   <!-- Paure comuni -->
-  <section class="sezione" id="dubbi" data-forma="3" data-luce="0.12" data-scala="1.4">
+  <section class="sezione" id="dubbi" data-forma="3">
     <div class="wrap">
       <div class="testa-sezione centro">
         <span class="capitolo" data-appare>{T('I dubbi di tutti', 'Everyone’s doubts')}</span>
@@ -356,7 +355,7 @@ const demo = it ? {
   </section>
 
   <!-- Prezzi e invito -->
-  <section class="sezione finale" id="azione" data-forma="4" data-luce="0.7" data-luce-mobile="0.45" data-scala="1.15">
+  <section class="sezione finale" id="azione" data-forma="4">
     <div class="wrap finale-testo">
       <span class="capitolo" data-appare>{T('Quanto costa', 'What it costs')}</span>
       <h2 data-righe>

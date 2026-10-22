@@ -3,7 +3,8 @@
 // e cambia pupilla con l'umore. Senza WebGL resta un occhio disegnato in SVG.
 
 const PRE = `precision highp float;
-uniform vec2 uRes; uniform vec2 uLook; uniform float uPup; uniform float uLid; uniform float uScala;
+uniform vec2 uRes; uniform vec2 uLook; uniform float uPup; uniform float uLid;
+const float SCALA = 1.2;
 float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float noise(vec2 p){ vec2 i = floor(p), f = fract(p); vec2 u = f * f * (3. - 2. * f);
   return mix(mix(hash(i), hash(i + vec2(1., 0.)), u.x), mix(hash(i + vec2(0., 1.)), hash(i + vec2(1., 1.)), u.x), u.y); }
@@ -16,7 +17,7 @@ const vec3 ROSSO = vec3(.89, .024, .075);
 // un bulbo che ruota verso dove guarda, dentro una fessura a mandorla nel nero
 const FRAG = `
 void main(){
-  vec2 d = (gl_FragCoord.xy - .5 * uRes) / min(uRes.x, uRes.y * 1.25) * uScala;
+  vec2 d = (gl_FragCoord.xy - .5 * uRes) / min(uRes.x, uRes.y * 1.25) * SCALA;
   vec3 bg = vec3(.039), col = bg;
   float W = .5, Rb = .52;
   float xx = clamp(d.x / W, -1., 1.);
@@ -71,15 +72,18 @@ function conGL(canvas) {
   g.bindBuffer(g.ARRAY_BUFFER, g.createBuffer());
   g.bufferData(g.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), g.STATIC_DRAW);
   const loc = g.getAttribLocation(pr, 'p'); g.enableVertexAttribArray(loc); g.vertexAttribPointer(loc, 2, g.FLOAT, false, 0, 0);
-  const U = {}; ['uRes', 'uLook', 'uPup', 'uLid', 'uScala'].forEach((n) => { U[n] = g.getUniformLocation(pr, n); });
-  return (o) => {
+  const U = {}; ['uRes', 'uLook', 'uPup', 'uLid'].forEach((n) => { U[n] = g.getUniformLocation(pr, n); });
+  const disegna = (o) => {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const w = Math.max(1, Math.round(canvas.clientWidth * dpr)), h = Math.max(1, Math.round(canvas.clientHeight * dpr));
     if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
     g.viewport(0, 0, w, h);
-    g.uniform2f(U.uRes, w, h); g.uniform2f(U.uLook, o.lx, o.ly); g.uniform1f(U.uPup, o.pup); g.uniform1f(U.uLid, o.lid); g.uniform1f(U.uScala, 1.2);
+    g.uniform2f(U.uRes, w, h); g.uniform2f(U.uLook, o.lx, o.ly); g.uniform1f(U.uPup, o.pup); g.uniform1f(U.uLid, o.lid);
     g.drawArrays(g.TRIANGLES, 0, 3);
   };
+  // a fine lavoro (l'occhio dell'avvio) si libera la scheda grafica
+  disegna.spegni = () => { g.getExtension('WEBGL_lose_context')?.loseContext(); canvas.remove(); };
+  return disegna;
 }
 
 // l'occhio in SVG, quando WebGL non c'è
@@ -98,12 +102,12 @@ export function creaOcchio(box) {
   const canvas = document.createElement('canvas');
   box.appendChild(canvas);
   const disegna = conGL(canvas);
-  const o = { lx: 0, ly: 0, tx: 0, ty: 0, pup: 0.32, tp: 0.32, apre: 0, verso: 0, blink: 2 + Math.random() * 2, blinkDa: -9, stato: 'riposo' };
+  const o = { lx: 0, ly: 0, tx: 0, ty: 0, pup: 0.32, tp: 0.32, apre: 0, verso: 0, blink: 2 + Math.random() * 2, blinkDa: -9 };
   if (!disegna) { canvas.remove(); box.insertAdjacentHTML('beforeend', SVG); }
   o.guarda = (x, y) => { o.tx = Math.max(-1, Math.min(1, x)); o.ty = Math.max(-1, Math.min(1, y)); };
   o.umore = (u) => {
     const m = UMORI[u] || UMORI.riposo;
-    o.stato = u; o.tp = m.pup;
+    o.tp = m.pup;
     if (m.guarda) o.guarda(...m.guarda);
     if (m.battito) o.blink = 0;
   };
@@ -111,7 +115,8 @@ export function creaOcchio(box) {
   o.apri = (si = true, vel = 2.2) => { o.verso = si ? 1 : -1; o.vel = vel; };
   // per l'avvio: un battito quando lo dici tu, e niente battiti a caso finché serve
   o.battito = () => { o.blink = 0; };
-  o.fermaBattiti = (si = true) => { o.senzaBattiti = si; if (!si) o.blink = performance.now() / 1000 + 3; };
+  o.fermaBattiti = () => { o.senzaBattiti = true; };
+  o.spegni = () => disegna?.spegni();
   o.passo = (t, dt) => {
     if (!disegna) return;
     if (o.verso) { o.apre = Math.max(0, Math.min(1, o.apre + o.verso * dt * (o.vel || 2.2))); if (o.apre === 0 || o.apre === 1) o.verso = 0; }

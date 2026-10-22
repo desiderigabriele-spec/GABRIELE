@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 // Telefoni con iOS vecchio (es. iPhone 7 su iOS 15): prima di ogni misura in svh
 // (altezza dello schermo) scriviamo la stessa misura in vh, che capiscono tutti.
@@ -17,12 +18,22 @@ const BROWSER = ['safari14', 'ios14', 'chrome90', 'firefox90', 'edge90'];
 export default defineConfig({
   site: 'https://www.gabrieledesideri.it',
   trailingSlash: 'never',
-  // CSS dentro ogni pagina: nessun file di stile da scaricare a parte, quindi la pagina
-  // non può mai restare «nuda» per un CSS vecchio o rotto rimasto nella cache del browser.
-  // _sd: cartella nuova per JS e font, così nessun browser riusa file salvati con il vecchio nome.
-  build: { format: 'file', inlineStylesheets: 'always', assets: '_sd' },
+  // la mappa del sito per Google (senza la pagina 404)
+  integrations: [sitemap({ filter: (pagina) => !/\/404\/?$/.test(pagina) })],
+  // un link si inizia a scaricare appena lo tocchi o lo clicchi: col salto tra le stelle (440 ms) la pagina dopo è già pronta
+  prefetch: { prefetchAll: true, defaultStrategy: 'tap' },
+  // CSS: il blocco comune a tutte le pagine è un file a parte, con il nome che cambia a ogni modifica,
+  // così il browser lo scarica una volta sola e lo riusa su ogni pagina; i pezzetti piccoli restano dentro la pagina.
+  // Contro la pagina «nuda» (un CSS che non arriva): l'HTML non resta mai in cache (vercel.json)
+  // e se un file di stile manca la pagina lo richiede e al bisogno si ricarica (Base.astro).
+  // _sd: cartella nuova per JS, CSS e font, così nessun browser riusa file salvati con il vecchio nome.
+  build: { format: 'file', inlineStylesheets: 'auto', assets: '_sd' },
   vite: {
-    build: { target: BROWSER, cssTarget: ['safari14', 'ios14', 'chrome90', 'firefox90', 'edge90'] },
+    build: {
+      target: BROWSER, cssTarget: ['safari14', 'ios14', 'chrome90', 'firefox90', 'edge90'],
+      // dentro la pagina solo i CSS sotto i 12 KB; per font e immagini resta la regola di Vite (4 KB)
+      assetsInlineLimit: (file, contenuto) => (file.endsWith('.css') ? contenuto.length < 12000 : undefined),
+    },
     css: { postcss: { plugins: [svhDiRiserva()] } },
   },
 });

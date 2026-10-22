@@ -1,7 +1,5 @@
 ---
-import '@fontsource-variable/inter-tight';
-import '@fontsource-variable/inter';
-import '@fontsource-variable/jetbrains-mono';
+import '../styles/caratteri.css';
 import '../styles/global.css';
 import '../styles/vita.css';
 import '../styles/assistente.css';
@@ -9,6 +7,9 @@ import { dati } from '../i18n/dati.js';
 import { ui, url, urlServizio } from '../i18n/ui.js';
 import logoScritta from '../assets/logo-scritta.svg?raw';
 import logoIcona from '../assets/logo-icona.svg?raw';
+// i due caratteri del primo testo (titolo e testo dell'hero): si chiedono subito, senza aspettare il CSS
+import interTight from '@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2?url';
+import inter from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import Cursore from '../components/Cursore.astro';
 import Icona from '../components/Icona.astro';
 import Assistente from '../components/Assistente.astro';
@@ -19,15 +20,21 @@ interface Props {
   description: string;
   path?: string;
   scena?: boolean;
-  barra?: boolean;
+  // pagina da non indicizzare (la 404): niente canonical né lingue alternative
+  noindex?: boolean;
   jsonLd?: Record<string, unknown> | null;
   lang?: 'it' | 'en';
   // la stessa pagina nell'altra lingua (null = non esiste)
   alt?: string | null;
 }
 
-const { title, description, path = '/', scena = true, barra = true, jsonLd = null, lang = 'it' } = Astro.props;
+const { title, description, path = '/', scena = true, noindex = false, jsonLd = null, lang = 'it' } = Astro.props;
 const t = ui[lang];
+// i loghi si disegnano una volta sola (in cima al body) e poi si richiamano con <use>: icona e scritta compaiono tre volte per pagina
+const dentro = (svg: string) => svg.replace(/^<svg[^>]*>|<\/svg>\s*$/g, '');
+const uso = (id: string, vb: string) => `<svg viewBox="${vb}" aria-hidden="true" focusable="false"><use href="#${id}"/></svg>`;
+const icona = uso('logo-ic', '0 0 512 512');
+const scritta = uso('logo-sc', '0 0 1345.5 157.2');
 const altLang = lang === 'it' ? 'en' : 'it';
 const alt = Astro.props.alt === undefined ? url('home', altLang) : Astro.props.alt;
 const { contatti, servizi } = dati(lang);
@@ -49,16 +56,29 @@ const hrefEn = lang === 'en' ? path : alt;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <link rel="preload" href={interTight} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={inter} as="font" type="font/woff2" crossorigin />
+    <script is:inline>
+      // se un file di stile non arriva (rete, o una pagina vecchia rimasta in memoria dopo un aggiornamento del sito)
+      // lo si richiede una volta; se manca ancora, la pagina si ricarica (al massimo una volta al minuto)
+      addEventListener('error', function (e) {
+        var l = e.target;
+        if (!l || l.tagName !== 'LINK' || l.rel !== 'stylesheet') return;
+        if (!l.dataset.riprova) { var n = l.cloneNode(); n.dataset.riprova = '1'; n.href = l.href.split('?')[0] + '?r=' + Date.now(); l.after(n); return; }
+        try { if (Date.now() - (+sessionStorage.getItem('gd-ricarica') || 0) < 60000) return; sessionStorage.setItem('gd-ricarica', String(Date.now())); } catch (_) { return; }
+        location.reload();
+      }, true);
+    </script>
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <meta name="theme-color" content="#0A0A0A" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/img/icona-512.png" type="image/png" sizes="512x512" />
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={t.locale} />
-    {alt && hrefIt && hrefEn && (
+    {!noindex && alt && hrefIt && hrefEn && (
       <>
         <link rel="alternate" hreflang="it" href={new URL(hrefIt, Astro.site).toString()} />
         <link rel="alternate" hreflang="en" href={new URL(hrefEn, Astro.site).toString()} />
@@ -74,18 +94,10 @@ const hrefEn = lang === 'en' ? path : alt;
       (function () {
         var h = document.documentElement;
         h.classList.add('js');
-        // .at() per Safari prima della 15.4 (iPhone vecchi): lo usa la scena 3D
-        var at = function (n) { n = Math.trunc(n) || 0; if (n < 0) n += this.length; return this[n]; };
-        [Array, String, Float32Array, Uint8Array, Uint16Array, Uint32Array, Int32Array].forEach(function (C) { if (C && !C.prototype.at) Object.defineProperty(C.prototype, 'at', { value: at, writable: true, configurable: true }); });
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) h.classList.add('ridotto');
-        // il nome scelto all'ingresso o in «Aa»
-        try {
-          var p = JSON.parse(localStorage.getItem('gd-profilo') || 'null') || {};
-          if (p.nome) h.classList.add('ha-nome');
-        } catch (e) {}
         // lo sfondo chiaro o scuro scelto col bottone nell'header (prima del disegno, così non lampeggia)
         try { if (localStorage.getItem('gd-tema') === 'chiaro') h.dataset.tema = 'chiaro'; } catch (e) {}
-        // Intro col cursore rosso: solo alla prima pagina della visita
+        // l'avvio col logo e l'occhio di Focus: solo alla prima pagina della visita
         try { if (!sessionStorage.getItem('gd-intro')) h.classList.add('intro-attiva'); } catch (e) {}
         // arrivo da un'altra pagina del sito con il salto tra le stelle: la pagina nasce nascosta e appare mentre le stelle rallentano (vita.js)
         try { if (sessionStorage.getItem('gd-salto')) h.classList.add('salto-arrivo'); } catch (e) {}
@@ -94,8 +106,9 @@ const hrefEn = lang === 'en' ? path : alt;
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="logo-ic" viewBox="0 0 512 512" set:html={dentro(logoIcona)} /><symbol id="logo-sc" viewBox="0 0 1345.5 157.2" set:html={dentro(logoScritta)} /></svg>
     <div class="intro" aria-hidden="true">
-      <span class="intro-marchio"><span class="intro-ic" set:html={logoIcona} /><span class="intro-sc" set:html={logoScritta} /></span>
+      <span class="intro-marchio"><span class="intro-ic" set:html={icona} /><span class="intro-sc" set:html={scritta} /></span>
       <span class="intro-bolla"></span>
     </div>
     <script is:inline>
@@ -117,13 +130,12 @@ const hrefEn = lang === 'en' ? path : alt;
 
     {scena && <div class="scena" aria-hidden="true"><canvas data-scena></canvas></div>}
     <div class="velo" aria-hidden="true"></div>
-    <div class="grana" aria-hidden="true"></div>
 
     <header class="site-header" data-header>
       <div class="wrap header-bar">
         <a class="brand" href={home} aria-label={t.home}>
-          <span class="brand-icona" set:html={logoIcona} />
-          <span class="brand-logo" set:html={logoScritta} />
+          <span class="brand-icona" set:html={icona} />
+          <span class="brand-logo" set:html={scritta} />
         </a>
         <nav class="nav" aria-label={t.navEtichetta} data-nav>
           <span class="nav-luce" aria-hidden="true"></span>
@@ -136,7 +148,7 @@ const hrefEn = lang === 'en' ? path : alt;
                 <div class="mega-griglia">
                   <span class="mono mega-titolo">{t.megaTitolo}</span>
                   {servizi.map((s) => (
-                    <a class="mega-voce" href={urlServizio(s.id, lang)} aria-current={isCurrent(urlServizio(s.id, lang))} data-iride={s.id}>
+                    <a class="mega-voce" href={urlServizio(s.id, lang)} aria-current={isCurrent(urlServizio(s.id, lang))}>
                       <span class="servizio-icona"><Icona nome={s.icona} /></span>
                       <span class="mega-testo"><strong>{s.titolo}</strong><small>{s.semplice}</small></span>
                       <span class="mega-prezzo">{prezzoDa(s)}</span>
@@ -152,7 +164,7 @@ const hrefEn = lang === 'en' ? path : alt;
               </div>
             </div>
           ) : (
-            <a class={`nav-voce${v.id === '@ai' ? ' nav-ai' : ''}${isCurrent(v.href) ? ' attiva' : ''}`} href={v.href} aria-current={isCurrent(v.href)} data-sezione={v.id.startsWith('@') ? undefined : v.id}>{v.testo}</a>
+            <a class={`nav-voce${isCurrent(v.href) ? ' attiva' : ''}`} href={v.href} aria-current={isCurrent(v.href)} data-sezione={v.id.startsWith('@') ? undefined : v.id}>{v.testo}</a>
           ))}
         </nav>
         <div class="header-strumenti">
@@ -185,7 +197,7 @@ const hrefEn = lang === 'en' ? path : alt;
             </a>
           )}
         </div>
-        <a class="btn btn-azione btn-piccolo header-cta" href={preventivo} data-magnete data-azione>{t.ctaPreventivo}</a>
+        <a class="btn btn-azione btn-piccolo header-cta" href={preventivo} data-azione>{t.ctaPreventivo}</a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-mobile" data-menu-toggle>
           <span></span><span></span><span class="sr-only">{t.menu}</span>
         </button>
@@ -221,8 +233,8 @@ const hrefEn = lang === 'en' ? path : alt;
         <div class="footer-grid">
           <div>
             <a class="brand brand-impilato" href={home} aria-label={t.home}>
-              <span class="brand-icona" set:html={logoIcona} />
-              <span class="brand-logo" set:html={logoScritta} />
+              <span class="brand-icona" set:html={icona} />
+              <span class="brand-logo" set:html={scritta} />
             </a>
             <span class="brand-ruolo">{t.ruolo}</span>
             <p class="footer-claim">{t.footerClaim}</p>
@@ -254,7 +266,7 @@ const hrefEn = lang === 'en' ? path : alt;
       </div>
     </footer>
 
-    <!-- su telefono niente barra in basso: c'è solo Focus, e dentro la chat il preventivo e WhatsApp -->
+    <!-- su telefono c'è Focus, l'assistente: dentro la chat il preventivo e WhatsApp -->
 
     <Assistente lang={lang} />
 

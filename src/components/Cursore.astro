@@ -3,9 +3,8 @@
 // Al posto delle espressioni dell'occhio cambia stato. Animazioni in global.css (.mascotte).
 //   aspetta  → lampeggia: tocca a te          pensa → tre quadratini che saltano: l'AI lavora
 //   fatto    → spunta: lavoro finito          festa → quadratini che schizzano via
-//   perso    → punto di domanda (pagina 404)  saluta → cuore, per chi torna
-//   griglia  → il disegno della prima schermata (puntini + quadratino) quando la scena 3D non parte
-type Stato = 'aspetta' | 'pensa' | 'fatto' | 'festa' | 'perso' | 'saluta' | 'griglia';
+//   perso    → punto di domanda (pagina 404)
+type Stato = 'aspetta' | 'pensa' | 'fatto' | 'festa' | 'perso';
 interface Props { stato?: Stato; class?: string }
 const { stato = 'aspetta', class: classe = '' } = Astro.props;
 
@@ -13,23 +12,10 @@ const { stato = 'aspetta', class: classe = '' } = Astro.props;
 const ROSSO = 'var(--rosso, #E30613)';
 const q = (x: number, y: number, l: number, cls = '', fill = ROSSO) => `<rect class="${cls}" x="${x}" y="${y}" width="${l}" height="${l}" style="fill:${fill}"/>`;
 let s = '';
-let box = '0 0 48 48';
 if (stato === 'aspetta') s = q(14, 14, 20, 'c-lampeggia');
 else if (stato === 'pensa') s = q(3, 19, 10, 'c-pensa') + q(19, 19, 10, 'c-pensa') + q(35, 19, 10, 'c-pensa');
 else if (stato === 'fatto') s = q(8, 8, 32, 'c-entra') + `<path d="M15.5 24.5l6 6L33 18" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="square"/>`;
 else if (stato === 'festa') s = q(14, 14, 20, 'c-entra') + q(4, 6, 5, 'c-schizza') + q(40, 4, 4, 'c-schizza', '#fff') + q(41, 38, 5, 'c-schizza') + q(3, 39, 4, 'c-schizza', '#fff');
-else if (stato === 'perso') s = q(8, 8, 32) + `<path d="M19 19.5a5 5 0 1 1 7.6 4.3c-1.7 1-2.6 1.9-2.6 3.7" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="square"/>` + q(22.2, 31, 3.6, '', '#fff');
-else if (stato === 'saluta') s = q(8, 8, 32, 'c-battito') + `<path d="M24 33c-6-4-9.5-7.2-9.5-10.6a4.6 4.6 0 0 1 9.5-1.8 4.6 4.6 0 0 1 9.5 1.8C33.5 25.8 30 29 24 33Z" fill="#fff"/>`;
-else {
-  // 12 × 12 puntini, più grandi vicino al quadratino in basso a destra (come l'icona del logo)
-  box = '0 0 240 220';
-  const N = 12, passo = 16, x0 = 14, y0 = 14, fx = 222, fy = 196;
-  for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
-    const x = x0 + c * passo, y = y0 + r * passo;
-    const d = Math.hypot(x - fx, y - fy);
-    s += `<circle cx="${x}" cy="${y}" r="${Math.max(1.6, 3.8 - d / 90).toFixed(2)}" fill="#fff"/>`;
-  }
-  s += q(212, 182, 22, 'c-lampeggia');
-}
+else s = q(8, 8, 32) + `<path d="M19 19.5a5 5 0 1 1 7.6 4.3c-1.7 1-2.6 1.9-2.6 3.7" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="square"/>` + q(22.2, 31, 3.6, '', '#fff');
 ---
-<svg class={`mascotte mascotte-${stato} ${classe}`} viewBox={box} aria-hidden="true" set:html={s} />
+<svg class={`mascotte mascotte-${stato} ${classe}`} viewBox="0 0 48 48" aria-hidden="true" set:html={s} />

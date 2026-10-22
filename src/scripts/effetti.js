@@ -1,10 +1,8 @@
-// Effetti di luce sopra la pagina: stelline al clic sui bottoni d'azione,
-// la parola firma del titolo che nasce dalle stelle e il percorso dei capitoli sul bordo sinistro.
+// Effetti di luce sopra la pagina: stelline al clic sui bottoni d'azione
+// e il percorso dei capitoli sul bordo sinistro (sul telefono, la linea sotto l'header).
 const html = document.documentElement;
 const ridotto = html.classList.contains('ridotto');
 const rnd = (a, b) => a + Math.random() * (b - a);
-const liscia = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
-const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} } };
 
 // ---------- 7 + 8 · un livello trasparente sopra la pagina ----------
 let tela = null, ctx = null, parti = [], inCorso = false, dpr = 1;
@@ -50,8 +48,8 @@ function scoppio(x, y) {
   const t = cs.getPropertyValue('--latte').trim() || '#ffffff', a = cs.getPropertyValue('--rosso').trim() || '#e30613';
   const COLORI = [t, t, a, a, cs.getPropertyValue('--nebbia').trim() || '#a3a3a3'];
   for (let i = 0; i < 26; i++) {
-    const a = rnd(0, 6.283), v = rnd(1.6, 5.2);
-    aggiungi({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.5, vita: 0, durata: rnd(650, 1100), r: rnd(1.6, 3.4), c: COLORI[(Math.random() * COLORI.length) | 0], stella: Math.random() < 0.45, g: 0.09, alone: 8 });
+    const ang = rnd(0, 6.283), v = rnd(1.6, 5.2);
+    aggiungi({ x, y, vx: Math.cos(ang) * v, vy: Math.sin(ang) * v - 1.5, vita: 0, durata: rnd(650, 1100), r: rnd(1.6, 3.4), c: COLORI[(Math.random() * COLORI.length) | 0], stella: Math.random() < 0.45, g: 0.09, alone: 8 });
   }
 }
 
@@ -67,64 +65,6 @@ function stelline() {
   });
 }
 
-// ---------- 6 · la parola firma del titolo nasce dalle stelle ----------
-function titoloDalleStelle() {
-  const el = document.querySelector('[data-stelle]');
-  const fine = () => { html.classList.remove('stelle-titolo'); ss.set('gd-stelle', '1'); };
-  if (!el || !html.classList.contains('stelle-titolo') || ridotto) { html.classList.remove('stelle-titolo'); return; }
-  setTimeout(fine, 5000); // in ogni caso la parola non resta mai nascosta
-  const r = el.getBoundingClientRect();
-  if (!r.width || r.bottom < 0 || r.top > innerHeight) { fine(); return; }
-  const pad = 24, w = Math.ceil(r.width + pad * 2), h = Math.ceil(r.height + pad * 2), d = Math.min(window.devicePixelRatio || 1, 2);
-  const c = document.createElement('canvas');
-  c.className = 'stelle-tela';
-  c.setAttribute('aria-hidden', 'true');
-  Object.assign(c.style, { left: `${r.left + scrollX - pad}px`, top: `${r.top + scrollY - pad}px`, width: `${w}px`, height: `${h}px` });
-  c.width = w * d; c.height = h * d;
-  document.body.appendChild(c);
-  const g = c.getContext('2d');
-  g.setTransform(d, 0, 0, d, 0, 0);
-  // disegno la parola con lo stesso carattere, poi prendo i pixel pieni come stelle
-  const cs = getComputedStyle(el);
-  const off = document.createElement('canvas'); off.width = w; off.height = h;
-  const o = off.getContext('2d');
-  o.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
-  if ('letterSpacing' in o) o.letterSpacing = cs.letterSpacing;
-  const m = o.measureText(el.textContent);
-  o.fillStyle = cs.color;
-  o.fillText(el.textContent, pad, pad + (m.fontBoundingBoxAscent || r.height * 0.8));
-  const px = o.getImageData(0, 0, w, h).data;
-  const punti = [];
-  const passo = r.height > 70 ? 3 : 2;
-  for (let y = 0; y < h; y += passo) for (let x = 0; x < w; x += passo) {
-    const i = (y * w + x) * 4;
-    if (px[i + 3] > 140) punti.push({ tx: x, ty: y, x: rnd(-w * 0.6, w * 1.6), y: rnd(-h * 1.2, h * 2), col: `rgb(${px[i]},${px[i + 1]},${px[i + 2]})`, r: rnd(0.7, 1.5), ritardo: (x / w) * 0.45 + Math.random() * 0.25 });
-  }
-  const t0 = performance.now();
-  let rivelata = false;
-  function anima(ora) {
-    const t = (ora - t0) / 1000;
-    g.clearRect(0, 0, w, h);
-    let tutti = true;
-    for (const p of punti) {
-      const k = liscia((t - p.ritardo) / 1.1);
-      if (k < 1) tutti = false;
-      g.globalAlpha = 0.35 + 0.65 * k;
-      g.fillStyle = p.col;
-      g.beginPath(); g.arc(p.x + (p.tx - p.x) * k, p.y + (p.ty - p.y) * k, p.r, 0, 6.283); g.fill();
-    }
-    if (tutti && !rivelata) {
-      rivelata = true;
-      fine(); // la parola vera torna visibile con una dissolvenza, le stelle si spengono
-      c.style.transition = 'opacity .8s ease';
-      requestAnimationFrame(() => { c.style.opacity = '0'; });
-      setTimeout(() => c.remove(), 900);
-    }
-    if (!rivelata || t < 3) requestAnimationFrame(anima);
-  }
-  requestAnimationFrame(anima);
-}
-
 // ---------- 5 · il percorso: la luce scende con te e accende il capitolo in cui sei ----------
 function percorso() {
   const nav = document.querySelector('[data-percorso]');
@@ -132,6 +72,8 @@ function percorso() {
   const voci = [...nav.querySelectorAll('[data-capitolo]')];
   const sezioni = voci.map((a) => document.getElementById(a.dataset.capitolo));
   const luce = nav.querySelector('.guida-luce');
+  // si riscrive solo quello che cambia: l'altezza della luce, e le voci quando cambia il capitolo
+  let altezza = '', capitolo = -1;
   function aggiorna() {
     const y = scrollY + innerHeight * 0.4;
     const tops = sezioni.map((s) => (s ? s.getBoundingClientRect().top + scrollY : 0));
@@ -140,14 +82,19 @@ function percorso() {
     const dopo = tops[i + 1] ?? document.documentElement.scrollHeight;
     const f = Math.min(1, Math.max(0, (y - tops[i]) / Math.max(dopo - tops[i], 1)));
     const quota = Math.min(1, (i + (i < voci.length - 1 ? f : 0)) / (voci.length - 1));
-    luce.style.height = `${quota * 100}%`;
-    voci.forEach((a, j) => { a.classList.toggle('fatto', j < i); a.classList.toggle('qui', j === i); if (j === i) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    const h = `${quota * 100}%`;
+    if (h !== altezza) { altezza = h; luce.style.height = h; }
+    if (i !== capitolo) {
+      capitolo = i;
+      voci.forEach((a, j) => { a.classList.toggle('fatto', j < i); a.classList.toggle('qui', j === i); if (j === i) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    }
     telefono?.(i, f);
   }
   const telefono = capitoliTelefono(voci);
   window.addEventListener('scroll', aggiorna, { passive: true });
   window.addEventListener('resize', aggiorna);
   aggiorna();
+  document.fonts?.ready.then(aggiorna); // con i caratteri caricati le sezioni hanno la misura vera
 }
 
 // ---------- 5b · sul telefono: la linea a capitoli sotto l'header e il capitolo in cui sei accanto al logo ----------
@@ -156,7 +103,6 @@ function capitoliTelefono(voci) {
   const header = document.querySelector('[data-header]');
   const bar = header?.querySelector('.header-bar');
   if (!bar) return null;
-  const html = document.documentElement;
   const nomi = voci.map((a) => a.textContent.trim());
   const etichetta = html.lang === 'en' ? 'Chapters' : 'Capitoli';
   const qui = html.lang === 'en' ? 'you are here' : 'sei qui';
@@ -201,10 +147,14 @@ function capitoliTelefono(voci) {
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !indice.hidden) { chiudi(); btn.focus(); } });
 
   let ultimo = -1;
+  const riempito = pezzi.map(() => '');
   return (i, f) => {
     // il capitolo compare dopo il titolo dell'hero e prende il posto del nome accanto al logo
     html.classList.toggle('cap-su', scrollY > innerHeight * 0.55);
-    pezzi.forEach((p, k) => p.style.setProperty('--f', k < i ? 1 : k === i ? f.toFixed(3) : 0));
+    pezzi.forEach((p, k) => {
+      const v = String(k < i ? 1 : k === i ? f.toFixed(3) : 0);
+      if (v !== riempito[k]) { riempito[k] = v; p.style.setProperty('--f', v); }
+    });
     if (i === ultimo) return;
     ultimo = i;
     btn.innerHTML = `<span class="cap-testo">${nomi[i].replace(/^(\d+)/, '<b>$1</b>')}</span>`;
@@ -216,6 +166,4 @@ function capitoliTelefono(voci) {
 export function avviaEffetti() {
   stelline();
   percorso();
-  // dopo l'ingresso a tenda delle righe del titolo
-  setTimeout(titoloDalleStelle, ridotto ? 0 : 1250);
 }

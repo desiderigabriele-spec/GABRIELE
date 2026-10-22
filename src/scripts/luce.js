@@ -28,9 +28,12 @@ export function avviaLuce() {
 
   const misura = () => {
     const dpr = Math.min(devicePixelRatio || 1, 1.5);
+    const w0 = w, h0 = h;
     w = innerWidth; h = innerHeight;
     cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
     c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // sul telefono la barra del browser va e viene scorrendo: cambia solo l'altezza, e i granelli restano dove sono
+    if (w0 === w && granelli.length) { granelli.forEach((p) => { p.y *= h / h0; }); return; }
     // tanti granelli quanto è grande lo schermo, più fitti dentro i raggi
     const n = Math.round(Math.min(220, (w * h) / 6500));
     granelli = Array.from({ length: n }, () => ({ x: rand(0, w), y: rand(0, h), r: rand(.6, 2.1), v: rand(.04, .22), f: rand(0, 6.28), wx: rand(-1, 1), wy: rand(-1, 1), z: Math.random() }));
@@ -57,7 +60,8 @@ export function avviaLuce() {
       c.fillStyle = g;
       c.beginPath(); c.moveTo(x0, -10); c.lineTo(x0 + largo, -10); c.lineTo(x0 + largo - cala, h + 10); c.lineTo(x0 - cala, h + 10); c.fill();
     }
-    // il pulviscolo: sale piano, ondeggia, si scansa dal dito
+    // il pulviscolo: sale piano, ondeggia, si scansa dal dito (un solo colore, la trasparenza cambia per granello)
+    c.fillStyle = c.strokeStyle = 'rgb(170, 122, 55)'; c.lineCap = 'round';
     for (const p of granelli) {
       if (!ridotto) {
         p.y -= p.v; p.x += Math.sin(s + p.f) * .15;
@@ -75,14 +79,15 @@ export function avviaLuce() {
         r += ((.5 + p.r * .7) * (.6 + f * 1.4) - r) * viaggio;
         if (scia > .02 && viaggio > .5) {
           const dx = X - w / 2, dy = Y - h / 2, d = Math.hypot(dx, dy) || 1, L = scia * 30 * f * f;
-          c.strokeStyle = `rgba(170, 122, 55, ${a * .8})`; c.lineWidth = r; c.lineCap = 'round';
+          c.globalAlpha = a * .8; c.lineWidth = r;
           c.beginPath(); c.moveTo(x, y); c.lineTo(x - (dx / d) * L, y - (dy / d) * L); c.stroke();
         }
       }
       if (x < -30 || x > w + 30 || y < -30 || y > h + 30) continue;
-      c.fillStyle = `rgba(170, 122, 55, ${a})`;
+      c.globalAlpha = a;
       c.beginPath(); c.arc(x, y, r, 0, 6.28); c.fill();
     }
+    c.globalAlpha = 1;
   };
   const giro = (t) => { disegna(t); id = ridotto ? 0 : requestAnimationFrame(giro); };
   const accendi = () => {

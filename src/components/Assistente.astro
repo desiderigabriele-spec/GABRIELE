@@ -21,7 +21,7 @@ const config = {
 const testi = it ? {
   apri: 'Apri la chat con Focus, l’assistente', chiudi: 'Chiudi la chat',
   ruolo: 'Assistente AI di Desideri&Code', stato: 'online · risponde subito',
-  fumetto: 'ti calcolo il prezzo in 2 minuti?', fumettoSenzaNome: 'Ti calcolo il prezzo in 2 minuti?',
+  fumetto: 'ti calcolo il prezzo in 2 minuti?',
   // la nuvoletta cambia con la sezione in cui sei: {n} è il nome, se c'è
   contesti: {
     problema: 'vuoi sapere perché oggi ti scelgono poco? Te lo dico in 2 minuti.',
@@ -60,7 +60,7 @@ const testi = it ? {
 } : {
   apri: 'Open the chat with Focus, the assistant', chiudi: 'Close the chat',
   ruolo: 'Desideri&Code AI assistant', stato: 'online · replies instantly',
-  fumetto: 'shall I work out your price in 2 minutes?', fumettoSenzaNome: 'Shall I work out your price in 2 minutes?',
+  fumetto: 'shall I work out your price in 2 minutes?',
   contesti: {
     problema: 'want to know why people pick you less today? I’ll tell you in 2 minutes.',
     servizi: 'looking at the services: shall I tell you which one you really need?',
@@ -96,7 +96,9 @@ const testi = it ? {
   nomi: { sito: 'a website', ecommerce: 'an online store', software: 'an AI automation', gestionale: 'custom software', ads: 'online advertising', cura: 'website care' },
   waSaluto: 'Hi, I’m {n}.', waSalutoSenzaNome: 'Hi!', waServizio: 'I need {s}', waFine: 'I saw the Desideri&Code website.', waGenerico: 'I’d like to talk to you about a project.', waDomanda: 'I have a question: “{q}”',
 };
-const dati_ = { ...config, testi };
+// nella pagina vanno solo le frasi che legge assistente.js: le etichette fisse restano qui nel markup
+const { ruolo, stato, scrivi, invia, calcola, whatsapp, ...testiJs } = testi;
+const dati_ = { ...config, testi: testiJs };
 ---
 <div class="focus" data-focus hidden>
   <div class="focus-fumetto" data-focus-fumetto hidden>

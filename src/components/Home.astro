@@ -1,6 +1,4 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
 // La home in italiano (/) e in inglese (/en/): stessa struttura, testi nella lingua della pagina.
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
@@ -36,8 +34,6 @@ const perChi: Record<string, string> = it ? {
   impulso: 'To get started fast or launch a promotion.',
 };
 // gli altri servizi dal più caro al più economico: il primo prezzo fa da àncora e quelli dopo sembrano leggeri
-// la foto della cucina nel telefono di «Stanotte»: se manca resta un'illustrazione
-const fotoCucina = fs.existsSync(path.join(process.cwd(), 'public/img/stanotte-cucina.webp'));
 const altri = ['ecommerce', 'software', 'gestionale', 'ads', 'cura'].map((id) => {
   const c = categorie.find((x) => x.id === id)!;
   const l = c.livelli[0];
@@ -116,7 +112,7 @@ const jsonLd = {
   </nav>
 
   <!-- 01 · ATTENZIONE -->
-  <section class="hero" id="inizio" data-forma="0" data-luce="0" data-lato="destra" data-x="1.13" data-scala="0.86" data-y-mobile="0.3" data-scala-mobile="0.42" data-luce-mobile="1">
+  <section class="hero" id="inizio" data-forma="0">
     <LogoGigante />
     <div class="griglia-magnetica" data-griglia-magnetica aria-hidden="true"></div>
     <div class="wrap">
@@ -129,10 +125,6 @@ const jsonLd = {
           <blockquote class="didascalia-testo">
             <p>{T("L'attenzione è la moneta più preziosa di oggi.", "Attention is today's most valuable currency.")} <b>{T('Chi la cattura, vince.', 'Whoever captures it, wins.')}</b></p>
           </blockquote>
-          <p class="sguardo-hint" aria-hidden="true">
-            <span class="sguardo-mouse">{T("Passa sulle parole e guarda dove va l'attenzione", 'Hover over the words and watch where attention goes')}</span>
-            <span class="sguardo-dito">{T("Tocca le parole e guarda dove va l'attenzione", 'Tap the words and watch where attention goes')}</span>
-          </p>
         </div>
         </div>
         <span class="capitolo" data-appare>{T('01 · Guarda', '01 · Look')}</span>
@@ -153,17 +145,17 @@ const jsonLd = {
         )}
         {it ? (
           <p class="lead" data-appare="0.25">
-            <a class="parola-iride" href="#servizi" data-iride="sito">Siti web</a>, <a class="parola-iride" href="#servizi" data-iride="ecommerce">negozi online</a>, <a class="parola-iride" href="#servizi" data-iride="software">software con intelligenza artificiale</a> e <a class="parola-iride" href="#servizi" data-iride="ads">pubblicità</a>.
+            <a class="parola-iride" href="#servizi">Siti web</a>, <a class="parola-iride" href="#servizi">negozi online</a>, <a class="parola-iride" href="#servizi">software con intelligenza artificiale</a> e <a class="parola-iride" href="#servizi">pubblicità</a>.
             Progettati con la psicologia per portare le persone <strong style="color:var(--latte);font-weight:600">dal primo sguardo al «sì»</strong>.
           </p>
         ) : (
           <p class="lead" data-appare="0.25">
-            <a class="parola-iride" href="#servizi" data-iride="sito">Websites</a>, <a class="parola-iride" href="#servizi" data-iride="ecommerce">online stores</a>, <a class="parola-iride" href="#servizi" data-iride="software">AI software</a> and <a class="parola-iride" href="#servizi" data-iride="ads">advertising</a>.
+            <a class="parola-iride" href="#servizi">Websites</a>, <a class="parola-iride" href="#servizi">online stores</a>, <a class="parola-iride" href="#servizi">AI software</a> and <a class="parola-iride" href="#servizi">advertising</a>.
             Designed with psychology to take people <strong style="color:var(--latte);font-weight:600">from first glance to "yes"</strong>.
           </p>
         )}
         <div class="hero-azioni" data-appare="0.4">
-          <a class="btn btn-azione btn-grande" href={preventivo} data-azione data-sguardo-meta><span class="scia" aria-hidden="true"></span>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="btn btn-azione btn-grande" href={preventivo} data-azione><span class="scia" aria-hidden="true"></span>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
           <a class="btn btn-vetro btn-grande" href="#metodo">{T('Guarda come funziona', 'See how it works')}</a>
         </div>
         <ul class="rassicura" data-appare="0.55">
@@ -188,7 +180,7 @@ const jsonLd = {
   </div>
 
   <!-- IL PROBLEMA -->
-  <section class="sezione" id="problema" data-forma="0" data-lato="destra" data-y="0.34" data-luce="0.22" data-scala="0.5">
+  <section class="sezione" id="problema" data-forma="0">
     <div class="wrap">
       <div class="testa-sezione">
         <span class="capitolo" data-appare>{T('Il problema', 'The problem')}</span>
@@ -241,7 +233,7 @@ const jsonLd = {
   </section>
 
   <!-- 02 · INTERESSE -->
-  <section class="sezione" id="servizi" data-forma="1" data-lato="destra" data-y="0.18" data-luce="0.45" data-scala="0.8">
+  <section class="sezione" id="servizi" data-forma="1">
     <div class="wrap">
       <div class="testa-sezione testa-riga">
         <span class="capitolo" data-appare>{T('02 · Scegli', '02 · Choose')}</span>
@@ -256,7 +248,7 @@ const jsonLd = {
       </div>
       <div class="servizi-griglia" data-griglia-viva>
         {servizi.map((s) => (
-          <article class="card servizio" data-iride={s.id}>
+          <article class="card servizio">
             <div class="servizio-top">
               <span class="servizio-icona"><Icona nome={s.icona} /></span>
               <h3><a class="servizio-link" href={urlServizio(s.id, lang)}>{s.titolo}</a></h3>
@@ -280,7 +272,7 @@ const jsonLd = {
   </section>
 
   <!-- SOFTWARE CON AI: un assaggio che incuriosisce; il calcolo si fa in tre passi in una finestra -->
-  <section class="sezione" id="risparmio" data-forma="1" data-lato="sinistra" data-luce="0.35" data-scala="0.9">
+  <section class="sezione" id="risparmio" data-forma="1">
     <div class="wrap risparmio">
       <div class="testa-sezione" style="margin-bottom:0">
         <span class="capitolo" data-appare>{T('Automazioni e AI', 'AI & automation')}</span>
@@ -339,7 +331,7 @@ const jsonLd = {
           <!-- il sito del cliente: un vero sito di cucine, con la chat piccola nell'angolo che si apre da sola -->
           <div class="sf-sx">
             <div class="sf-sito-testa"><b>Arredi Conti<i></i></b><span class="sf-menu"><i></i><i></i></span></div>
-            <div class={`sf-foto${fotoCucina ? ' con-foto' : ''}`}>
+            <div class="sf-foto con-foto">
               <span class="sf-chip">★ 4,9 · {T('312 cucine montate', '312 kitchens fitted')}</span>
               <b>{T('La cucina che hai in mente, in 30 giorni.', 'The kitchen you have in mind, in 30 days.')}</b>
               <span class="sf-btn">{T('Progettala con noi', 'Design it with us')} →</span>
@@ -442,7 +434,7 @@ const jsonLd = {
         <ul class="lista-check" data-cl-scelti></ul>
         <p class="cl-tuo">{T('Il software te lo consegniamo pronto e resta tuo, con i tuoi dati.', 'We hand the software over ready, and it stays yours, with your data.')}</p>
         <div class="cl-piede">
-          <a class="btn btn-azione btn-grande" href={`${preventivo}?s=software`} data-azione data-cl-preventivo>{T('Richiedi il preventivo', 'Request a quote')} <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="btn btn-azione btn-grande" href={`${preventivo}?s=software`} data-azione>{T('Richiedi il preventivo', 'Request a quote')} <span class="freccia" aria-hidden="true">→</span></a>
           <a class="btn btn-vetro" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener" data-cl-wa>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
         </div>
         <button class="cl-indietro" type="button" data-cl-vai="2">{T('Cambia i numeri', 'Change the numbers')}</button>
@@ -451,7 +443,7 @@ const jsonLd = {
   </dialog>
 
   <!-- 03 · IL METODO: i cinque passi. Scorrendo si accende un numero alla volta (rosso) e a destra entra il suo passo (vita.js, metodoNumeri) -->
-  <section class="sezione" id="metodo" data-forma="2" data-luce="0">
+  <section class="sezione" id="metodo" data-forma="2">
     <div class="wrap">
       <div class="testa-sezione">
         <span class="capitolo">{T('03 · Fidati', '03 · Trust')}</span>
@@ -502,7 +494,7 @@ const jsonLd = {
   </section>
 
   <!-- PARLANO DI NOI: i clienti e i loro siti, da guardare dal vivo -->
-  <section class="sezione" id="lavori" data-forma="2" data-lato="destra" data-y="0.22" data-luce="0.25" data-scala="0.75">
+  <section class="sezione" id="lavori" data-forma="2">
     <div class="wrap">
       <div class="testa-sezione testa-riga">
         <span class="capitolo" data-appare>{T('Parlano di noi', 'What clients say')}</span>
@@ -520,7 +512,7 @@ const jsonLd = {
           const dominio = new URL(l.url).hostname.replace(/^www\./, '');
           const iniziali = l.cliente.replace(/^Dott\.\s*/, '').split(' ').map((p) => p[0]).slice(0, 2).join('');
           return (
-            <article class="card cliente" data-lavoro={l.id}>
+            <article class="card cliente">
               <a class="cliente-anteprima" href={l.url} target="_blank" rel="noopener" aria-label={T(`Apri il sito di ${l.cliente}`, `Open ${l.cliente}'s website`)}>
                 <span class="browser" aria-hidden="true"><i></i><i></i><i></i><span>{dominio}</span></span>
                 <img src={l.img} alt={T(`La home del sito di ${l.cliente}`, `The home page of ${l.cliente}'s website`)} width="1440" height="900" loading="lazy" decoding="async" />
@@ -548,7 +540,7 @@ const jsonLd = {
   </section>
 
   <!-- LO STUDIO: la storia in quattro tempi, dalla vendita per strada a oggi -->
-  <section class="sezione" id="chi-sono" data-forma="2" data-lato="destra" data-luce="0.32" data-scala="0.85">
+  <section class="sezione" id="chi-sono" data-forma="2">
     <div class="wrap chi storia">
       <div class="chi-testo">
         <span class="capitolo" data-appare>{T('Lo studio', 'The studio')}</span>
@@ -622,7 +614,7 @@ const jsonLd = {
   </section>
 
   <!-- 04 · DESIDERIO: PREZZI -->
-  <section class="sezione" id="prezzi" data-forma="3" data-luce="0.2" data-scala="1.35">
+  <section class="sezione" id="prezzi" data-forma="3">
     <div class="wrap">
       <div class="testa-sezione testa-riga">
         <span class="capitolo" data-appare>{T('04 · Calcola', '04 · Work it out')}</span>
@@ -665,7 +657,7 @@ const jsonLd = {
   </section>
 
   <!-- GARANZIE -->
-  <section class="sezione" id="garanzie" data-forma="3" data-luce="0.14" data-scala="1.5" data-attaccata style="padding-top:0">
+  <section class="sezione" id="garanzie" data-forma="3" data-attaccata style="padding-top:0">
     <div class="wrap">
       <!-- le garanzie in piccolo: una fila di badge, icona e tre parole -->
       <ul class="garanzie-fila" role="list">
@@ -688,7 +680,7 @@ const jsonLd = {
   </section>
 
   <!-- DOMANDE -->
-  <section class="sezione" id="domande" data-forma="3" data-luce="0.1" data-scala="1.6">
+  <section class="sezione" id="domande" data-forma="3">
     <div class="wrap">
       <div class="testa-sezione centro">
         <span class="capitolo" data-appare>{T('Domande frequenti', 'Frequently asked questions')}</span>
@@ -708,7 +700,7 @@ const jsonLd = {
   </section>
 
   <!-- 05 · AZIONE -->
-  <section class="sezione finale" id="azione" data-forma="4" data-luce="0.75" data-luce-mobile="0.5" data-scala="1.15">
+  <section class="sezione finale" id="azione" data-forma="4">
     <div class="wrap finale-testo">
       <span class="capitolo" data-appare>{T('05 · Scrivici', '05 · Write to us')}</span>
       <!-- qualcuno sta cercando adesso: la barra scrive da sola ricerche vere (vita.js, ricercaViva) -->
@@ -742,16 +734,11 @@ const jsonLd = {
   </section>
 </Base>
 
-<style>
-  
-</style>
-
 <script>
   // Il calcolo in tre passi, in una finestra: lavori spuntati → ore ed euro in un anno → preventivo già compilato
   import { numero, euro } from '../data/formato.js';
   const box = document.querySelector<HTMLDialogElement>('[data-calcolo]');
   if (box) {
-    const html = document.documentElement;
     const lang = box.dataset.lang === 'en' ? 'en' : 'it';
     const T = (a: string, b: string) => (lang === 'it' ? a : b);
     const ore1 = (n: number) => String(n).replace('.', lang === 'it' ? ',' : '.');
@@ -806,13 +793,12 @@ const jsonLd = {
     function apri() {
       if (box.open) return;
       box.showModal();
-      html.classList.add('calcolo-aperto');
       (window as any).gdLenis?.stop();
       vai(1);
       (window as any).gdTrack?.('calcolo_aperto');
     }
     function chiudi() { box.close(); }
-    box.addEventListener('close', () => { html.classList.remove('calcolo-aperto'); (window as any).gdLenis?.start(); });
+    box.addEventListener('close', () => { (window as any).gdLenis?.start(); });
     box.addEventListener('click', (e) => { if (e.target === box) chiudi(); }); // clic sullo sfondo
     box.querySelector('[data-calcolo-chiudi]')!.addEventListener('click', chiudi);
     document.querySelectorAll('[data-calcolo-apri]').forEach((b) => b.addEventListener('click', apri));
@@ -821,11 +807,4 @@ const jsonLd = {
     aggiorna();
     if (location.hash === '#calcola') apri();
   }
-
-  // l'assaggio: le righe si spuntano una alla volta quando la scheda entra nello schermo
-  const stanotte = document.querySelector('[data-stanotte]');
-  if (stanotte && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver((v) => { if (v.some((x) => x.isIntersecting)) { stanotte.classList.add('in-corso'); io.disconnect(); } }, { threshold: 0.4 });
-    io.observe(stanotte);
-  } else stanotte?.classList.add('in-corso');
 </script>

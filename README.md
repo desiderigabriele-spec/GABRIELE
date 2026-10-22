@@ -1,8 +1,8 @@
 # Desideri&Code — sito di Gabriele Desideri
 
-**Stato:** prima versione completa (anteprima, alcuni dati da confermare) · aggiornato il 16 ottobre 2026
+**Stato:** prima versione completa (anteprima, alcuni dati da confermare) · aggiornato il 22 ottobre 2026
 
-Sito che porta il visitatore **dal primo sguardo al «sì»**: cinque capitoli (Attenzione, Interesse, Fiducia, Desiderio, Azione) accompagnati da migliaia di particelle 3D che cambiano forma (occhio → rete neurale → spirale → cuore → stella), più un **preventivo automatico** dove il cliente compone il progetto e vede il prezzo in tempo reale.
+Sito che porta il visitatore **dal primo sguardo al «sì»**: cinque capitoli (Attenzione, Interesse, Fiducia, Desiderio, Azione) accompagnati da un cielo stellato: a ogni capitolo si viaggia più veloci tra le stelle (con lo sfondo chiaro, la luce del mattino), più un **preventivo automatico** dove il cliente compone il progetto e vede il prezzo in tempo reale.
 
 ## Avviare il sito
 
@@ -13,7 +13,7 @@ npm run build    # build statica in dist/
 npm run preview  # anteprima della build
 ```
 
-Stack: Astro (statico) · three.js (shader scritti a mano) · GSAP + ScrollTrigger · Lenis · font Syne / Inter / Instrument Serif / JetBrains Mono ospitati in locale. Deploy pronto per Vercel (`vercel.json`).
+Stack: Astro (statico) · WebGL scritto a mano per il cielo (nessuna libreria 3D) · Lenis per lo scroll fluido · animazioni d'ingresso in `src/scripts/moto.js` · font Inter Tight / Inter / JetBrains Mono ospitati in locale, solo alfabeto latino (`src/styles/caratteri.css`; Bodoni Moda, Hanken Grotesk e DM Mono solo nel confronto prima/dopo). Deploy pronto per Vercel (`vercel.json`).
 
 ## Dove si cambia cosa
 
@@ -23,12 +23,12 @@ Stack: Astro (statico) · three.js (shader scritti a mano) · GSAP + ScrollTrigg
 | **Prezzi del preventivo automatico** (livelli, extra, sconti, voucher) | `src/data/listino.js` |
 | Home (italiano e inglese) | `src/components/Home.astro` · pagine `src/pages/index.astro`, `src/pages/en/index.astro` |
 | Testi in inglese | interfaccia `src/i18n/ui.js` · dati (servizi, listino, FAQ) `src/data/en.js` |
-| Personalizza: nome e colore dal bottone nell'header | `src/scripts/benvenuto.js` · `src/scripts/profilo.js` |
+| Il nome del visitatore: benvenuto e bottone NO/ME nell'header | `src/scripts/benvenuto.js` · `src/scripts/profilo.js` |
 | Pagine dei servizi (testi, illustrazioni) | `src/components/PaginaServizio.astro` · `src/data/pagine-servizi.js` · `src/components/Illustrazione.astro` · `src/styles/servizio.css` (pagine `/servizi/...`, `/en/services/...`) |
 | Pagina «AI per aziende» (spiegata semplice) | `src/components/PaginaAI.astro` (pagine `/intelligenza-artificiale`, `/en/ai`) · `src/styles/ai.css` |
 | Preventivo automatico | `src/components/Preventivo.astro` (pagine `/preventivo`, `/en/quote`) · `src/scripts/preventivo.js` · `src/styles/preventivo.css` |
-| Scena 3D a particelle | `src/scripts/scena.js` (forma per sezione: attributo `data-forma` 0-4, `data-lato`, `data-luce`, `data-scala`) |
-| Colori, temi (blu, rosso, viola, verde), tipografia, componenti | `src/styles/global.css` |
+| Cielo stellato e «viaggio» | `src/scripts/scena.js` (velocità per capitolo: attributo `data-forma` 0-4 sulle sezioni) · sfondo chiaro `src/scripts/luce.js` |
+| Colori (nero e rosso, sfondo chiaro o scuro), tipografia, componenti | `src/styles/global.css` · effetti `src/styles/vita.css` · Focus `src/styles/assistente.css` |
 | Invio preventivi su Google Fogli + Telegram | `apps-script/Code.gs` + variabile `PUBLIC_PREVENTIVO_ENDPOINT` (vedi `.env.example`) |
 
 ## Documenti
@@ -42,6 +42,8 @@ Stack: Astro (statico) · three.js (shader scritti a mano) · GSAP + ScrollTrigg
 ## Accessibilità e prestazioni
 
 - Testo vero, contrasto alto, navigazione da tastiera, link "Vai al contenuto".
-- Con "riduci movimento" attivo: niente scroll fluido, niente animazioni, particelle ferme.
-- La scena 3D si carica **dopo** il testo e usa meno particelle su telefoni e computer poco potenti; senza WebGL il sito funziona uguale.
+- Con "riduci movimento" attivo: niente scroll fluido, niente animazioni, cielo fermo.
+- Il cielo stellato si carica **dopo** il testo, si ferma con la scheda nascosta e con lo sfondo chiaro; senza WebGL il sito funziona uguale.
+- Il CSS comune è un file a parte con il nome che cambia a ogni modifica: si scarica una volta e resta in cache; l'HTML invece si ricontrolla sempre (`vercel.json`).
+- Le animazioni che non si vedono (fuori dallo schermo o nel menu chiuso) stanno in pausa.
 - Statistiche e pubblicità solo dopo il consenso cookie (`window.gdTrack` invia a `dataLayer` solo con consenso).

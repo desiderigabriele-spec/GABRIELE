@@ -30,7 +30,7 @@ const eur2 = (v: number) => {
 const evid = (testo: string, acceso: string) => testo.split(/\[\[|\]\]/).map((x, i) => ({ x, on: i % 2 === 1, acceso }));
 const totale = id === 'preventivo' ? P.righe.reduce((s: number, r: [string, number]) => s + r[1], 0) : 0;
 ---
-<section class="sezione demo-sez" id={`demo-${id}`} data-forma={forma} data-lato="sinistra" data-luce="0.12" data-scala="0.7">
+<section class="sezione demo-sez" id={`demo-${id}`} data-forma={forma}>
   <div class="wrap">
     <div class="testa-sezione testa-riga demo-testa">
       <span class="capitolo" data-appare>{numero ? `Demo ${numero} · ` : 'Demo · '}{d.etichetta}</span>
@@ -221,7 +221,7 @@ const totale = id === 'preventivo' ? P.righe.reduce((s: number, r: [string, numb
                     <strong>{P.nome}</strong>
                     <span class="sf sf-1"></span><span class="sf sf-2"></span><span class="sf sf-3"></span>
                     <span class="sf-bottone"></span>
-                    <span class="sf-foto"></span>
+                    <span class="sf-immagine"></span>
                   </div>
                   <div class="chat">
                     <div class="chat-testa"><span class="chat-avatar"><Icona nome="chat" /></span><span class="tel-nome"><strong>{P.chat}</strong><small><i class="chat-online"></i>{P.chatSotto}</small></span></div>

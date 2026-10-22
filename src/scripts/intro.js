@@ -15,13 +15,14 @@ export function avviaIntro() {
   const bolla = intro?.querySelector('.intro-bolla');
   let chiusa = false;
   const fine = (occhio) => {
-    if (chiusa) return;
+    // se la rete di sicurezza di Base.astro ha già aperto la pagina, non si riannuncia la fine
+    if (chiusa || !html.classList.contains('intro-attiva')) { chiusa = true; return; }
     chiusa = true;
     try { sessionStorage.setItem('gd-intro', '1'); } catch (_) {}
     html.classList.remove('intro-attiva');
     window.dispatchEvent(new CustomEvent('gd-intro-fine', { detail: { occhio } }));
   };
-  if (!intro || !marchio || !bolla || html.classList.contains('ridotto') || !intro.animate) { setTimeout(() => fine(false), 200); return; }
+  if (!intro || !marchio || !ic || !bolla || html.classList.contains('ridotto') || !intro.animate) { setTimeout(() => fine(false), 200); return; }
 
   const caricata = new Promise((ok) => {
     if (document.readyState === 'complete') ok();
@@ -71,5 +72,8 @@ export function avviaIntro() {
     await Promise.all(voli);
     vivo = false;
     fine(true);
-  })().catch(() => fine(false));
+    // l'avvio è finito: Focus ha il suo occhio, questo si spegne e il nero dell'avvio se ne va
+    o.spegni();
+    intro.remove();
+  })().catch(() => { vivo = false; fine(false); });
 }

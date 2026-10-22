@@ -1,7 +1,7 @@
 // Preventivo automatico: legge le scelte del modulo, calcola i totali in tempo reale,
 // salva il progetto nel browser e invia la richiesta.
-import gsap from 'gsap';
-import { dati as datiLingua } from '../i18n/dati.js';
+import { anima, cubicaOut } from './moto.js';
+import { listinoLingua as datiLingua } from '../i18n/listino-lingua.js';
 import { euro as euroIn, franchi } from '../data/formato.js';
 import { leggiProfilo } from './profilo.js';
 
@@ -20,7 +20,7 @@ const TESTI = {
     voucher: (e) => `In Lombardia il Voucher Doppia Transizione potrebbe coprire fino a ${e} della parte AI. Lo verifichiamo insieme.`,
     intro: 'Ciao Desideri&Code, ecco il mio progetto dal preventivo automatico:',
     tempi: 'Tempi', scontoRiga: 'Sconto pacchetto', totale: 'Totale indicativo', una: 'una tantum', iva: 'IVA esclusa',
-    nome: 'Nome', attivita: 'Attività', settore: 'Settore', telefono: 'Telefono', preferisco: 'Preferisco', sito: 'Sito/social attuale', obiettivo: 'Obiettivo',
+    nome: 'Nome', telefono: 'Telefono', preferisco: 'Preferisco', sito: 'Sito/social attuale', obiettivo: 'Obiettivo',
     oggetto: 'Richiesta di preventivo · Desideri&Code',
     inviaWa: 'Invia su WhatsApp', inviaMail: 'Invia per email', invio: 'Invio in corso…', riprova: 'Riprova',
     errore: (wa) => `Non siamo riusciti a inviare la richiesta. Puoi mandarla <a href="${wa}" target="_blank" rel="noopener">su WhatsApp</a> con un clic.`,
@@ -39,7 +39,7 @@ const TESTI = {
     voucher: (e) => `In Lombardy the "Doppia Transizione" voucher could cover up to ${e} of the AI part. We check it together.`,
     intro: "Hi Desideri&Code, here's my project from the instant quote:",
     tempi: 'Timing', scontoRiga: 'Bundle discount', totale: 'Indicative total', una: 'one-off', iva: 'excl. VAT',
-    nome: 'Name', attivita: 'Business', settore: 'Sector', telefono: 'Phone', preferisco: 'Preferred contact', sito: 'Current site/social', obiettivo: 'Goal',
+    nome: 'Name', telefono: 'Phone', preferisco: 'Preferred contact', sito: 'Current site/social', obiettivo: 'Goal',
     oggetto: 'Quote request · Desideri&Code',
     inviaWa: 'Send on WhatsApp', inviaMail: 'Send by email', invio: 'Sending…', riprova: 'Try again',
     errore: (wa) => `We couldn't send your request. You can send it <a href="${wa}" target="_blank" rel="noopener">on WhatsApp</a> in one click.`,
@@ -147,9 +147,8 @@ export function avviaPreventivo() {
     const da = mostrati[chiave];
     mostrati[chiave] = valore;
     if (ridotto || da === valore) { el.textContent = euro(valore); return; }
-    const o = { v: da };
-    gsap.killTweensOf(o);
-    gsap.to(o, { v: valore, duration: 0.6, ease: 'power2.out', onUpdate: () => { el.textContent = euro(Math.round(o.v)); } });
+    el._ferma?.();
+    el._ferma = anima({ durata: 0.6, curva: cubicaOut, passo: (k) => { el.textContent = euro(Math.round(da + (valore - da) * k)); } });
     el.classList.add('lampo'); clearTimeout(el._lampo); el._lampo = setTimeout(() => el.classList.remove('lampo'), 500);
   }
 
@@ -262,7 +261,10 @@ export function avviaPreventivo() {
     });
     if (progresso) progresso.style.width = `${[0, 10, 38, 66, 90, 100][n]}%`;
     const attivo = passi.find((p) => Number(p.dataset.passo) === n);
-    if (!ridotto && attivo) gsap.fromTo(attivo, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: 'expo.out' });
+    if (!ridotto && attivo) {
+      attivo._ferma?.();
+      attivo._ferma = anima({ durata: 0.6, passo: (k, fine) => { attivo.style.opacity = String(k); attivo.style.transform = fine ? 'translate(0px, 0px)' : `translate3d(0px, ${24 * (1 - k)}px, 0px)`; } });
+    }
     if (focus) {
       const top = form.getBoundingClientRect().top + window.scrollY - 210;
       if (window.gdLenis) window.gdLenis.scrollTo(top, { duration: 0.8 }); else window.scrollTo({ top, behavior: ridotto ? 'auto' : 'smooth' });
@@ -330,8 +332,6 @@ export function avviaPreventivo() {
     righe.push(`${t.totale}: ${inEuro(r.una)} ${t.una}${r.mese ? ` + ${inEuro(r.mese)}${t.mese}` : ''}${chf} (${t.iva})`);
     if (d) {
       righe.push('', `${t.nome}: ${d.nome}`);
-      if (d.azienda) righe.push(`${t.attivita}: ${d.azienda}`);
-      if (d.settore) righe.push(`${t.settore}: ${d.settore}`);
       if (d.email) righe.push(`Email: ${d.email}`);
       if (d.telefono) righe.push(`${t.telefono}: ${d.telefono}`);
       righe.push(`${t.preferisco}: ${d.canale}`);
@@ -366,7 +366,7 @@ export function avviaPreventivo() {
       nome: f.nome.value.trim(), email: f.email.value.trim(), telefono: f.telefono.value.trim(),
       messaggio: f.messaggio.value.trim(), canale: f.canale.value,
       // campi che il foglio Preventivi si aspetta ancora: restano vuoti
-      azienda: '', settore: '', sito_attuale: (f.sito?.value || '').trim(),
+      sito_attuale: (f.sito?.value || '').trim(),
     };
   }
 

@@ -4,10 +4,10 @@
 const html = document.documentElement;
 const ridotto = html.classList.contains('ridotto');
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} }, via: (k) => { try { sessionStorage.removeItem(k); } catch (_) {} } };
+const ss = { set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} }, via: (k) => { try { sessionStorage.removeItem(k); } catch (_) {} } };
 const SEGNI = '01<>/{}[]#$%&*+=?;:_';
 // i colori del sito: il rosso del logo e il bianco
-const tinte = { accento: '#e30613', accentoRgb: '227, 6, 19', testo: '#ffffff' };
+const tinte = { accento: '#e30613', testo: '#ffffff' };
 
 // chiama fn la prima volta che el entra nello schermo
 function quandoVisibile(el, fn, soglia = 0.25) {
@@ -60,8 +60,8 @@ function cursoreCheScrive() {
 }
 
 // ---------- 02 · Dietro all'hero: il logo gigante e la griglia di puntini ----------
-// Con il mouse: puntini bianchi che si gonfiano sotto il puntatore, rossi i più vicini. Su telefono
-// (niente puntatore) un'onda lenta in diagonale. In entrambi i casi i puntini non entrano nelle lettere del logo.
+// Con il mouse: puntini bianchi che si gonfiano sotto il puntatore, rossi i più vicini.
+// I puntini non entrano nelle lettere del logo. Su telefono niente puntini.
 function grigliaMagnetica() {
   const box = document.querySelector('[data-griglia-magnetica]');
   // su telefono niente puntini: distraggono dal testo
@@ -73,7 +73,7 @@ function grigliaMagnetica() {
   box.appendChild(tela);
   const ctx = tela.getContext('2d');
   let W = 0, H = 0, dpr = 1, punti = [];
-  const P = finePointer ? 30 : 26;
+  const P = 30;
   const misura = () => {
     const r = box.getBoundingClientRect();
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -95,35 +95,28 @@ function grigliaMagnetica() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   };
   misura();
-  window.addEventListener('resize', misura);
+  // ridimensionando la finestra si rimisura una volta per fotogramma, non a ogni evento
+  let rimisura = 0;
+  window.addEventListener('resize', () => { if (!rimisura) rimisura = requestAnimationFrame(() => { rimisura = 0; misura(); }); });
   const p = { x: -999, y: -999 }, g = { x: -999, y: -999 };
-  let mano = -1e9, forza = 0;
-  if (finePointer) window.addEventListener('pointermove', (e) => { const r = box.getBoundingClientRect(); p.x = e.clientX - r.left; p.y = e.clientY - r.top; mano = performance.now(); }, { passive: true });
+  let mano = -1e9, forza = 0, pulito = false;
+  window.addEventListener('pointermove', (e) => { const r = box.getBoundingClientRect(); p.x = e.clientX - r.left; p.y = e.clientY - r.top; mano = performance.now(); }, { passive: true });
   mentreVisibile(box, (t) => {
+    const fermo = t - mano > 1800;
+    forza += ((fermo ? 0 : 1) - forza) * (fermo ? 0.03 : 0.2);
+    g.x += (p.x - g.x) * 0.25; g.y += (p.y - g.y) * 0.25;
+    // mouse fermo da un po': nessun puntino è abbastanza acceso da vedersi, basta pulire una volta
+    if (forza < 0.02) { if (!pulito) { ctx.clearRect(0, 0, W, H); pulito = true; } return; }
+    pulito = false;
     ctx.clearRect(0, 0, W, H);
-    if (finePointer) {
-      const fermo = t - mano > 1800;
-      forza += ((fermo ? 0 : 1) - forza) * (fermo ? 0.03 : 0.2);
-      g.x += (p.x - g.x) * 0.25; g.y += (p.y - g.y) * 0.25;
-      const R = Math.min(190, W * 0.3);
-      for (let i = 0; i < punti.length; i += 2) {
-        const x = punti[i], y = punti[i + 1], d = Math.hypot(x - g.x, y - g.y);
-        const k = Math.max(0, 1 - d / R) * forza, s = 1.6 + 6 * k * k;
-        if (k < 0.02) continue;
-        ctx.globalAlpha = 0.6 * k;
-        ctx.fillStyle = d < 54 && forza > 0.3 ? tinte.accento : tinte.testo;
-        ctx.beginPath(); ctx.arc(x, y, s / 2, 0, 6.283); ctx.fill();
-      }
-    } else {
-      ctx.fillStyle = tinte.testo;
-      const tt = t / 1000;
-      for (let i = 0; i < punti.length; i += 2) {
-        const x = punti[i], y = punti[i + 1];
-        const o = Math.max(0, Math.sin((x + y) / W * 4 - tt * 0.7)), k = o * o * o;
-        ctx.globalAlpha = 0.08 + 0.26 * k;
-        const r = 0.9 + 1.6 * k;
-        ctx.fillRect(x - r, y - r, r * 2, r * 2);
-      }
+    const R = Math.min(190, W * 0.3);
+    for (let i = 0; i < punti.length; i += 2) {
+      const x = punti[i], y = punti[i + 1], d = Math.hypot(x - g.x, y - g.y);
+      const k = Math.max(0, 1 - d / R) * forza, s = 1.6 + 6 * k * k;
+      if (k < 0.02) continue;
+      ctx.globalAlpha = 0.6 * k;
+      ctx.fillStyle = d < 54 && forza > 0.3 ? tinte.accento : tinte.testo;
+      ctx.beginPath(); ctx.arc(x, y, s / 2, 0, 6.283); ctx.fill();
     }
     ctx.globalAlpha = 1;
   });
@@ -168,15 +161,19 @@ function bozza() {
     if (finePointer) setTimeout(() => { el.classList.add('inclinata'); inclina(); }, fine + 500);
     else setTimeout(() => el.classList.add('animata'), fine + 500);
   };
-  // la bozza segue il mouse (pochi gradi); su telefono ondeggia piano da sola
+  // la bozza segue il mouse (pochi gradi)
   function inclina() {
     const base = { x: -16, y: 8 };
-    let tx = base.x, ty = base.y, x = base.x, y = base.y;
-    if (finePointer) window.addEventListener('pointermove', (e) => { tx = base.x + (e.clientX / innerWidth - 0.5) * 16; ty = base.y - (e.clientY / innerHeight - 0.5) * 10; }, { passive: true });
-    mentreVisibile(el, (t) => {
-      if (!finePointer) { tx = base.x * 0.6 + Math.sin(t / 2600) * 7; ty = base.y * 0.6 + Math.cos(t / 3300) * 3; }
+    let tx = base.x, ty = base.y, x = base.x, y = base.y, ultima = '';
+    const scena = el.querySelector('.bz-scena') || el; // l'inclinazione la usa solo lei
+    window.addEventListener('pointermove', (e) => { tx = base.x + (e.clientX / innerWidth - 0.5) * 16; ty = base.y - (e.clientY / innerHeight - 0.5) * 10; }, { passive: true });
+    mentreVisibile(el, () => {
       x += (tx - x) * 0.06; y += (ty - y) * 0.06;
-      el.style.setProperty('--ry', `${x.toFixed(2)}deg`); el.style.setProperty('--rx', `${y.toFixed(2)}deg`);
+      // si riscrive solo quando l'inclinazione cambia davvero (a mouse fermo resta uguale)
+      const ry = x.toFixed(2), rx = y.toFixed(2);
+      if (ry + rx === ultima) return;
+      ultima = ry + rx;
+      scena.style.setProperty('--ry', `${ry}deg`); scena.style.setProperty('--rx', `${rx}deg`);
     });
   }
   const parti2 = () => quandoVisibile(el, () => setTimeout(parti, 300), 0.3);
@@ -218,7 +215,8 @@ function pacchettiSlider() {
     seg.forEach((s, k) => s.classList.toggle('on', k === i));
     if (conta) conta.textContent = `${i + 1} / ${carte.length}`;
   };
-  box.addEventListener('scroll', () => requestAnimationFrame(segna), { passive: true });
+  let inCoda = false;
+  box.addEventListener('scroll', () => { if (!inCoda) { inCoda = true; requestAnimationFrame(() => { inCoda = false; segna(); }); } }, { passive: true });
   const parti = () => {
     if (!telefono()) return;
     const top = carte.findIndex((c) => c.classList.contains('top'));
@@ -260,7 +258,7 @@ function notifiche() {
   document.querySelectorAll('[data-stanotte]').forEach((box) => {
     const fold = box.querySelector('.st-fold');
     const esterna = box.querySelector('[data-sf-esterna]');
-    const voci = [...box.querySelectorAll('.sf-destra .st-notifiche li, .stanotte > .st-notifiche li')];
+    const voci = [...box.querySelectorAll('.sf-destra .st-notifiche li')];
     const passi = [...box.querySelectorAll('[data-sf-passo]')];
     const chat = box.querySelector('[data-sf-chat]');
     quandoVisibile(box, () => {
@@ -268,9 +266,9 @@ function notifiche() {
       setTimeout(() => { esterna?.classList.add('su'); voci[0]?.classList.add('su'); }, 300);
       // 2 · subito dopo si apre: l'anta gira sulla cerniera
       const apre = 1500;
-      if (fold) setTimeout(() => fold.classList.add('aperto'), apre);
+      setTimeout(() => fold?.classList.add('aperto'), apre);
       // quando l'anta è distesa la cerniera torna dritta (finché gira, gli angoli restano tondi)
-      if (fold) setTimeout(() => fold.classList.add('piatto'), apre + 1650);
+      setTimeout(() => fold?.classList.add('piatto'), apre + 1650);
       // 3 · dentro arrivano le altre notifiche, e sul sito riparte la chat di stanotte
       voci.slice(1).forEach((v, i) => setTimeout(() => v.classList.add('su'), apre + 1900 + i * 650));
       const via = apre + 1900;
@@ -289,6 +287,8 @@ function metodoNumeri() {
   if (!pista) return;
   const numeri = [...pista.querySelectorAll('.metodo-numeri li')], passi = [...pista.querySelectorAll('.metodo-passi .passo')];
   let attivo = 0, in_coda = false;
+  // si riscrive solo quello che cambia (da lontano lo stato resta giusto, ma senza toccare la pagina)
+  const sotto = passi.map(() => '');
   const leggi = () => {
     in_coda = false;
     const r = pista.getBoundingClientRect(), corsa = r.height - innerHeight;
@@ -296,7 +296,10 @@ function metodoNumeri() {
     const i = Math.floor(p * passi.length);
     // la sottolineatura del verbo segue lo scorrimento dentro il passo: arriva piena a metà, poi resta
     const f = Math.min(1, (p * passi.length - i) / 0.5);
-    passi.forEach((s, k) => s.style.setProperty('--sotto', k < i ? 1 : k === i ? f.toFixed(3) : 0));
+    passi.forEach((s, k) => {
+      const v = String(k < i ? 1 : k === i ? f.toFixed(3) : 0);
+      if (v !== sotto[k]) { sotto[k] = v; s.style.setProperty('--sotto', v); }
+    });
     if (i === attivo) return;
     attivo = i;
     numeri.forEach((n, k) => { n.classList.toggle('on', k === i); n.classList.toggle('fatto', k < i); });
@@ -325,7 +328,7 @@ function puntoTitoli() {
 
 // ---------- 09 · Il tabellone: i prezzi girano come le palette delle stazioni ----------
 function tabellone() {
-  document.querySelectorAll('.piano-prezzo, .altri-prezzi strong, .prezzo-da strong, [data-tabellone]').forEach((el) => {
+  document.querySelectorAll('.piano-prezzo, .altri-prezzi strong, .prezzo-da strong').forEach((el) => {
     const cifre = [];
     testi(el, 'small').forEach((n) => {
       if (!/\d/.test(n.textContent)) return;
@@ -430,10 +433,9 @@ function salto() {
     const u = new URL(a.href, location.href);
     if (u.origin !== location.origin || (u.pathname === location.pathname && u.search === location.search)) return;
     e.preventDefault();
-    const dopo = 0;
     window.dispatchEvent(new CustomEvent('gd-salto'));
-    setTimeout(() => html.classList.add('salto-via'), dopo);
-    setTimeout(() => { ss.set('gd-salto', '1'); location.assign(u.href); }, dopo + 440);
+    setTimeout(() => html.classList.add('salto-via'), 0);
+    setTimeout(() => { ss.set('gd-salto', '1'); location.assign(u.href); }, 440);
   });
 }
 
@@ -441,46 +443,28 @@ function salto() {
 function cinetica() {
   const el = document.querySelector('[data-cinetica]');
   if (!el) return;
-  let ultimo = scrollY, inclina = 0;
+  let ultimo = scrollY, inclina = 0, scritta = '';
+  // l'inclinazione va solo alle righe che la usano
+  const righe = el.querySelectorAll('.cinetica-riga');
   mentreVisibile(el, () => {
     const v = scrollY - ultimo; ultimo = scrollY;
     inclina += (Math.max(-14, Math.min(14, -v * 0.35)) - inclina) * 0.12;
-    el.style.setProperty('--inclina', `${inclina.toFixed(2)}deg`);
+    // si riscrive solo se cambia: da fermi resta uguale e il browser non ricalcola le due righe giganti
+    const s = inclina.toFixed(2);
+    if (s !== scritta) { scritta = s; righe.forEach((r) => r.style.setProperty('--inclina', `${s}deg`)); }
   });
 }
 
-// ---------- 16 · Le schede dei servizi: salgono, le spunte si spuntano una alla volta, il prezzo conta ----------
+// ---------- 16 · Le schede dei servizi: salgono e le spunte si spuntano una alla volta (il prezzo gira col tabellone) ----------
 function grigliaViva() {
-  const lingua = html.lang === 'en' ? 'en-US' : 'it-IT';
   document.querySelectorAll('[data-griglia-viva]').forEach((g) => {
     const schede = [...g.children];
     schede.forEach((c, i) => {
       c.style.setProperty('--i', i);
       c.querySelectorAll('.lista-check li').forEach((li, k) => li.style.setProperty('--k', k));
     });
-    // il numero del prezzo: si conta da zero mantenendo il resto del testo (valuta, «/mese»)
-    const prezzi = schede.map((c) => {
-      const n = c.querySelector('.prezzo-da strong')?.firstChild;
-      const m = n?.nodeType === 3 && n.textContent.match(/\d[\d.,]*/);
-      return m ? { n, prima: n.textContent.slice(0, m.index), dopo: n.textContent.slice(m.index + m[0].length), val: Number(m[0].replace(/[.,]/g, '')) } : null;
-    });
-    const scrivi = (p, v) => { p.n.textContent = p.prima + v.toLocaleString(lingua) + p.dopo; };
-    prezzi.forEach((p) => p && scrivi(p, 0));
     quandoVisibile(g, () => {
       g.classList.add('atterra');
-      const t0 = performance.now();
-      const conta = (t) => {
-        let finito = true;
-        prezzi.forEach((p, i) => {
-          if (!p) return;
-          const k = Math.min(1, Math.max(0, (t - t0 - 600 - i * 120) / 1100));
-          if (k < 1) finito = false;
-          const e = 1 - Math.pow(1 - k, 3);
-          scrivi(p, k < 1 ? Math.round((p.val * e) / (p.val >= 100 ? 10 : 1)) * (p.val >= 100 ? 10 : 1) : p.val);
-        });
-        if (!finito) requestAnimationFrame(conta);
-      };
-      requestAnimationFrame(conta);
       setTimeout(() => g.classList.add('atterrata'), 3600);
     }, 0.04);
   });
@@ -552,11 +536,16 @@ function primaDopo() {
     let mano = false;
     // il «dopo» entra in scena (titolo, arco, cartellino) quando il riquadro arriva sullo schermo
     quandoVisibile(box, () => box.classList.add('visto'), 0.35);
-    const metti = (x) => box.style.setProperty('--x', `${x}%`);
-    r.addEventListener('input', () => { mano = true; metti(r.value); });
+    // la posizione della lama va solo ai due pezzi che la usano: il «dopo» ritagliato e la lama
+    // (sul riquadro intero farebbe ricalcolare a ogni fotogramma tutto il sito finto che c'è dentro)
+    const pezzi = [box.querySelector('.pd-dopo'), box.querySelector('.pd-lama')].filter(Boolean);
+    const metti = (x) => pezzi.forEach((p) => p.style.setProperty('--x', `${x}%`));
+    let valore = r.value;
+    const cursore = (v) => { if (v !== valore) { valore = v; r.value = v; } };
+    r.addEventListener('input', () => { mano = true; valore = r.value; metti(r.value); });
     // col dito o col mouse: tocchi un punto e trascini, la lama segue (lo scorrimento in verticale resta libero)
     let giu = false;
-    const segui = (e) => { const b = box.getBoundingClientRect(); const x = Math.max(0, Math.min(100, ((e.clientX - b.left) / b.width) * 100)); metti(x.toFixed(2)); r.value = Math.round(x); };
+    const segui = (e) => { const b = box.getBoundingClientRect(); const x = Math.max(0, Math.min(100, ((e.clientX - b.left) / b.width) * 100)); metti(x.toFixed(2)); cursore(String(Math.round(x))); };
     box.addEventListener('pointerdown', (e) => { mano = true; giu = true; box.setPointerCapture?.(e.pointerId); segui(e); });
     box.addEventListener('pointermove', (e) => { if (giu) segui(e); });
     const su = () => { giu = false; };
@@ -566,7 +555,7 @@ function primaDopo() {
       if (mano) return;
       if (!t0) t0 = t;
       const x = 50 - 36 * Math.sin((t - t0) / 1800);
-      metti(x.toFixed(2)); r.value = Math.round(x);
+      metti(x.toFixed(2)); cursore(String(Math.round(x)));
     });
   });
 }
@@ -581,8 +570,11 @@ function righeCheSiScrivono() {
     const vel = Number(box.dataset.scrittura) || 28;
     righe.forEach((r) => { r.textContent = ''; });
     const aspetta = (ms) => new Promise((ok) => setTimeout(ok, ms));
+    // gira solo mentre si vede: uscito dallo schermo finisce il giro e si ferma, rientrando riparte
+    let vivo = false, inCorso = false;
     async function giro() {
-      for (;;) {
+      if (inCorso) return; inCorso = true;
+      while (vivo) {
         righe.forEach((r) => { r.textContent = ''; r.classList.remove('scrivo'); });
         pezzi.forEach((p) => p.classList.remove('acceso'));
         fine?.classList.remove('acceso');
@@ -599,12 +591,24 @@ function righeCheSiScrivono() {
         fine?.classList.add('acceso');
         await aspetta(4200);
       }
+      inCorso = false;
     }
-    quandoVisibile(box, giro, 0.3);
+    if (!('IntersectionObserver' in window)) { vivo = true; giro(); return; }
+    new IntersectionObserver(([v]) => { vivo = v.isIntersecting; if (vivo) giro(); }, { threshold: 0.3 }).observe(box);
+  });
+}
+
+// il confronto prima/dopo scarica caratteri e foto solo quando si avvicina (vita.css, .vicino)
+function vicini() {
+  document.querySelectorAll('[data-prima-dopo]').forEach((b) => {
+    if (!('IntersectionObserver' in window)) { b.classList.add('vicino'); return; }
+    const io = new IntersectionObserver((v) => { if (v.some((x) => x.isIntersecting)) { io.disconnect(); b.classList.add('vicino'); } }, { rootMargin: '150% 0px' });
+    io.observe(b);
   });
 }
 
 export function avviaVita() {
+  vicini(); // anche con «riduci movimento»
   salto();
   giornata(); // l'interruttore funziona anche con «riduci movimento»
   pacchettiSlider();

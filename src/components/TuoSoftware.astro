@@ -3,8 +3,8 @@
 // Sulle pagine Automazioni e AI, Gestionale su misura e AI per aziende. Le frasi sull'AI descrivono le condizioni delle API
 // professionali (niente addestramento sui dati, conservazione breve): vedi DA-CONFERMARE.md.
 import Icona from './Icona.astro';
-interface Props { lang?: 'it' | 'en'; id?: string }
-const { lang = 'it', id = 'tuo' } = Astro.props;
+interface Props { lang?: 'it' | 'en' }
+const { lang = 'it' } = Astro.props;
 const it = lang === 'it';
 const T = (a: string, b: string) => (it ? a : b);
 const affitto = it ? [
@@ -41,7 +41,7 @@ const ai = it ? [
   ['preventivo', 'All in writing, as GDPR requires', 'We tell you in writing where your data is and who processes it. The AI key can be in your name: you pay actual usage and can switch provider whenever you like.'],
 ];
 ---
-<section class="sezione tuo-software" id={id} data-forma="3" data-lato="sinistra" data-luce="0.14" data-scala="0.8">
+<section class="sezione" id="tuo" data-forma="3">
   <div class="wrap">
     <div class="testa-sezione testa-riga">
       <span class="capitolo" data-appare>{T('Tuo, non in affitto', 'Yours, not rented')}</span>
@@ -81,7 +81,7 @@ const ai = it ? [
   .ts-colonna { display: grid; gap: .9rem; align-content: start; padding: clamp(18px, 2.4svh, 28px) clamp(20px, 2vw, 30px); }
   .ts-colonna ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
   .ts-colonna li { position: relative; padding-left: 1.7rem; font-size: .97rem; line-height: 1.4; }
-  .ts-colonna li::before { position: absolute; left: 0; top: .05em; width: 1.15rem; height: 1.15rem; border-radius: 50%; display: grid; place-items: center; font-size: .7rem; font-weight: 700; }
+  .ts-colonna li::before { position: absolute; left: 0; top: .05em; width: 1.15rem; height: 1.15rem; display: grid; place-items: center; font-size: .7rem; font-weight: 700; }
   .ts-affitto { opacity: .85; }
   .ts-affitto li { color: var(--nebbia); }
   .ts-affitto li::before { content: '×'; background: rgba(var(--latte-rgb), .08); color: var(--nebbia); }
@@ -91,7 +91,7 @@ const ai = it ? [
   .ts-tuo li::before { content: '✓'; background: var(--viola); color: var(--notte); }
   .ts-ai { margin-top: clamp(16px, 3svh, 32px); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); }
   .ts-punto { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .5rem .8rem; align-items: center; align-content: start; }
-  .ts-punto .servizio-icona { width: 40px; height: 40px; border-radius: 12px; }
+  .ts-punto .servizio-icona { width: 40px; height: 40px; }
   .ts-punto .servizio-icona :global(svg) { width: 24px; height: 24px; }
   .ts-punto strong { font-family: var(--f-titolo); font-size: 1.02rem; line-height: 1.25; }
   .ts-punto p { grid-column: 1 / -1; margin: 0; color: var(--nebbia); font-size: .88rem; line-height: 1.45; }

@@ -3,10 +3,7 @@
 // a destra «Pietra e luce», il sito che faremmo: lo showroom di sera, il bagno dentro un arco, il prezzo su un cartellino.
 // Si muove da solo finché non lo tocchi (vita.js, primaDopo). Stili in vita.css; misure in cqw, così scala con il riquadro.
 // I caratteri del «dopo» (Bodoni Moda, Hanken Grotesk, DM Mono) sono solo qui: non sono i nostri.
-import '@fontsource-variable/bodoni-moda/opsz.css';
-import '@fontsource-variable/bodoni-moda/opsz-italic.css';
-import '@fontsource-variable/hanken-grotesk/wght.css';
-import '@fontsource/dm-mono/400.css';
+import '../styles/caratteri-dopo.css';
 interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
 const T = (a: string, b: string) => (lang === 'it' ? a : b);

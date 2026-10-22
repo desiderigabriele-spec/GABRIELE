@@ -1,4 +1,4 @@
-// Il profilo del visitatore: il nome, chiesto all'ingresso (o cambiato da «Aa»).
+// Il profilo del visitatore: il nome, chiesto all'ingresso (o cambiato col bottone NO/ME o toccandolo dove è scritto).
 // Resta solo nel suo browser (localStorage) e serve a rendere il sito più suo.
 const CHIAVE = 'gd-profilo';
 const html = document.documentElement;
@@ -33,7 +33,6 @@ export function pulisciNome(v) {
 const originali = new WeakMap();
 export function applicaProfilo(p = leggiProfilo()) {
   const nome = p.nome || '';
-  html.classList.toggle('ha-nome', !!nome);
   // il nome che si sta scrivendo resta com'è (così il cursore non salta)
   document.querySelectorAll('[data-nome]:not([data-in-modifica])').forEach((el) => { el.textContent = nome; });
   // nell'hero il nome arriva con il saluto dell'ora: Buongiorno, Ciao (pomeriggio), Buonasera

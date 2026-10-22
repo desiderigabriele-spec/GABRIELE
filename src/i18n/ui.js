@@ -1,6 +1,4 @@
 // Testi dell'interfaccia in italiano e inglese. L'italiano è la lingua predefinita.
-export const LINGUE = ['it', 'en'];
-
 // Percorsi equivalenti nelle due lingue
 const PERCORSI = {
   home: { it: '/', en: '/en' },
@@ -22,30 +20,21 @@ export const SLUG_SERVIZI = {
 };
 export const urlServizio = (id, lang = 'it') => (lang === 'en' ? `/en/services/${SLUG_SERVIZI[id].en}` : `/servizi/${SLUG_SERVIZI[id].it}`);
 
-// Unisce i campi tradotti di un oggetto dati ({ ..., en: { ... } })
-export const tr = (o, lang) => (lang === 'en' && o && o.en ? { ...o, ...o.en } : o);
-
 export const ui = {
   it: {
-    lang: 'it', locale: 'it_IT', vaiContenuto: 'Vai al contenuto', menu: 'Menu',
+    locale: 'it_IT', vaiContenuto: 'Vai al contenuto', menu: 'Menu',
     nav: [['servizi', 'Servizi'], ['@ai', 'AI per aziende'], ['metodo', 'Metodo'], ['lavori', 'Clienti'], ['chi-sono', 'Lo studio'], ['prezzi', 'Prezzi']],
-    megaTitolo: 'Sei servizi, un solo studio', megaTutti: 'Tutti i servizi in home', megaAi: 'L’AI per aziende, spiegata semplice', megaAiTesto: 'Cosa può fare nella tua attività, con un esempio dal vivo.', megaVai: 'Scopri come funziona', da: 'da', mese: '/mese', menuServizi: 'I servizi',
-    navEtichetta: 'Principale', home: 'Desideri&Code, home', tagline: 'Dal primo sguardo al sì', ruolo: 'Siti web · AI · Pubblicità',
-    ctaPreventivo: 'Calcola il preventivo', whatsapp: 'Scrivici su WhatsApp', personalizza: 'Il tuo nome',
-    zona: 'Milano, Italia e Svizzera',
+    megaTitolo: 'Sei servizi, un solo studio', megaAi: 'L’AI per aziende, spiegata semplice', megaAiTesto: 'Cosa può fare nella tua attività, con un esempio dal vivo.', megaVai: 'Scopri come funziona', da: 'da', mese: '/mese', menuServizi: 'I servizi',
+    navEtichetta: 'Principale', home: 'Desideri&Code, home', ruolo: 'Siti web · AI · Pubblicità',
+    ctaPreventivo: 'Calcola il preventivo', whatsapp: 'Scrivici su WhatsApp',
     footerClaim: 'Desideri di nome, risultati di fatto.',
     footerServizi: 'Servizi', footerParliamone: 'Parliamone',
     footerAi: 'AI per aziende, spiegata semplice', footerDemo: 'Demo dal vivo', footerPreventivo: 'Preventivo automatico',
     privacy: 'Privacy e cookie', preferenzeCookie: 'Preferenze cookie',
-    cookie: 'Usiamo cookie di statistica e pubblicità solo se ci dai il permesso: servono a capire cosa funziona e a non sprecare annunci. Il sito funziona benissimo anche senza.',
-    dettagli: 'Dettagli', cookieNo: 'No, grazie', cookieSi: 'Va bene',
-    bentornato: 'Rieccoti', bentornatoTesto: 'Riprendiamo da dove eravamo?', bentornatoProgetto: "Il tuo progetto è ancora qui, come l'avevi lasciato.",
-    riprendi: 'Riprendi il preventivo', chiudi: 'Chiudi',
-    altraLingua: 'English', altraLinguaBreve: 'EN', temaChiaro: 'Passa allo sfondo chiaro', temaScuro: 'Passa allo sfondo scuro', questaLinguaBreve: 'IT', cambiaLingua: 'Read this site in English',
+    dettagli: 'Dettagli',
+    chiudi: 'Chiudi',
+    altraLingua: 'English', altraLinguaBreve: 'EN', temaChiaro: 'Passa allo sfondo chiaro', temaScuro: 'Passa allo sfondo scuro', cambiaLingua: 'Read this site in English',
     avvisoLingua: 'Prefer English?', avvisoLinguaLink: 'Switch to English',
-    ptTitolo: 'Il tuo nome', ptNome: 'Come ti chiami?', ptNomeSegnaposto: 'Il tuo nome',
-    ptNota: 'Lo usiamo solo per parlarti meglio. Resta sul tuo dispositivo.', ptInvito: '',
-    cnTitolo: 'Prima di iniziare: come ti chiami?', cnTesto: 'Così ti parliamo come si deve. Il nome resta solo sul tuo dispositivo.', cnEntra: 'Entra', cnChiudi: 'Chiudi',
     nomeBtn: 'Il tuo nome', nomeSalva: 'Salva', bvPrima: 'Prima di iniziare', bvTitolo: 'Come ti chiami?', bvPerche: 'Serve solo per chiamarti per nome.', bvSegnaposto: 'Il tuo nome (se ti va)',
     bvCookieTitolo: 'I cookie, in breve',
     bvCookie: 'Con il tuo ok vediamo quali pagine ti servono davvero e miglioriamo il sito per te.', bvNomeResta: 'Il nome resta sul tuo dispositivo.',
@@ -53,25 +42,19 @@ export const ui = {
     bvCat: [['necessari', 'Necessari', 'Fanno funzionare il sito e il preventivo. Sempre attivi.'], ['statistica', 'Statistica', 'Ci dicono quali pagine ti servono, così le miglioriamo.'], ['pubblicita', 'Pubblicità', 'Ti mostriamo solo offerte che ti interessano, non a caso.']], bvAccetta: 'Accetta', bvEntra: 'Entra',
   },
   en: {
-    lang: 'en', locale: 'en_GB', vaiContenuto: 'Skip to content', menu: 'Menu',
+    locale: 'en_GB', vaiContenuto: 'Skip to content', menu: 'Menu',
     nav: [['servizi', 'Services'], ['@ai', 'AI for business'], ['metodo', 'Method'], ['lavori', 'Clients'], ['chi-sono', 'The studio'], ['prezzi', 'Pricing']],
-    megaTitolo: 'Six services, one studio', megaTutti: 'All services on the home page', megaAi: 'AI for business, in plain words', megaAiTesto: 'What it can do for your business, with a live example.', megaVai: 'See how it works', da: 'from', mese: '/month', menuServizi: 'Services',
-    navEtichetta: 'Main', home: 'Desideri&Code, home', tagline: 'From first glance to yes', ruolo: 'Websites · AI · Advertising',
-    ctaPreventivo: 'Get a quote', whatsapp: 'Message us on WhatsApp', personalizza: 'Your name',
-    zona: 'Milan · Italy and Switzerland',
+    megaTitolo: 'Six services, one studio', megaAi: 'AI for business, in plain words', megaAiTesto: 'What it can do for your business, with a live example.', megaVai: 'See how it works', da: 'from', mese: '/month', menuServizi: 'Services',
+    navEtichetta: 'Main', home: 'Desideri&Code, home', ruolo: 'Websites · AI · Advertising',
+    ctaPreventivo: 'Get a quote', whatsapp: 'Message us on WhatsApp',
     footerClaim: 'Desideri by name, results by design.',
     footerServizi: 'Services', footerParliamone: "Let's talk",
     footerAi: 'AI for business, in plain words', footerDemo: 'Live demos', footerPreventivo: 'Instant quote',
     privacy: 'Privacy and cookies', preferenzeCookie: 'Cookie preferences',
-    cookie: 'We only use analytics and advertising cookies if you allow it: they help us see what works and avoid wasting ad money. The site works perfectly without them.',
-    dettagli: 'Details', cookieNo: 'No, thanks', cookieSi: 'OK',
-    bentornato: 'Welcome back', bentornatoTesto: 'Shall we pick up where we left off?', bentornatoProgetto: 'Your project is still here, just as you left it.',
-    riprendi: 'Resume your quote', chiudi: 'Close',
-    altraLingua: 'Italiano', altraLinguaBreve: 'IT', temaChiaro: 'Switch to light background', temaScuro: 'Switch to dark background', questaLinguaBreve: 'EN', cambiaLingua: 'Leggi il sito in italiano',
+    dettagli: 'Details',
+    chiudi: 'Close',
+    altraLingua: 'Italiano', altraLinguaBreve: 'IT', temaChiaro: 'Switch to light background', temaScuro: 'Switch to dark background', cambiaLingua: 'Leggi il sito in italiano',
     avvisoLingua: 'Preferisci l\'italiano?', avvisoLinguaLink: 'Passa all\'italiano',
-    ptTitolo: 'Your name', ptNome: "What's your name?", ptNomeSegnaposto: 'Your first name',
-    ptNota: 'We only use it to talk to you better. It stays on your device.', ptInvito: '',
-    cnTitolo: 'Before we start: what’s your name?', cnTesto: 'So we can talk to you properly. Your name stays on your device only.', cnEntra: 'Enter', cnChiudi: 'Close',
     nomeBtn: 'Your name', nomeSalva: 'Save', bvPrima: 'Before we start', bvTitolo: 'What’s your name?', bvPerche: 'Only so we can call you by name.', bvSegnaposto: 'Your name (if you like)',
     bvCookieTitolo: 'Cookies, in short',
     bvCookie: 'With your OK we see which pages really help you and improve the site for you.', bvNomeResta: 'Your name stays on your device.',

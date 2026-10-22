@@ -62,7 +62,7 @@ const jsonLd = {
     ).map(([cap, nome], i) => <a href={`#${cap}`} data-capitolo={cap}><span>{String(i + 1).padStart(2, '0')} · {nome}</span></a>)}
   </nav>
 
-  <section class="hero sv-hero" id="inizio" data-forma="0" data-lato="sinistra" data-luce="0.16" data-scala="0.7" data-luce-mobile="0.1">
+  <section class="hero sv-hero" id="inizio" data-forma="0">
     <div class="wrap sv-hero-griglia">
       <div class="hero-testo sv-testo">
         <a class="sv-indietro" href={`${url('home', lang)}#servizi`}><span aria-hidden="true">←</span> {T('Tutti i servizi', 'All services')}</a>
@@ -88,7 +88,7 @@ const jsonLd = {
   </section>
 
   <!-- Cosa ottieni -->
-  <section class="sezione" id="cosa" data-forma="1" data-lato="destra" data-luce="0.18" data-scala="0.8">
+  <section class="sezione" id="cosa" data-forma="1">
     <div class="wrap">
       <div class="testa-sezione testa-riga">
         <span class="capitolo" data-appare>{T('Cosa ottieni', 'What you get')}</span>
@@ -111,7 +111,7 @@ const jsonLd = {
   </section>
 
   <!-- Come funziona: il percorso illustrato -->
-  <section class="sezione" id="come" data-forma="2" data-lato="destra" data-luce="0.14" data-scala="0.7">
+  <section class="sezione" id="come" data-forma="2">
     <div class="wrap">
       <div class="testa-sezione">
         <span class="capitolo" data-appare>{T('Come funziona', 'How it works')}</span>
@@ -140,7 +140,7 @@ const jsonLd = {
   {ai && <TuoSoftware lang={lang} />}
 
   <!-- Per esempio -->
-  <section class="sezione" id="esempi" data-forma="2" data-lato="sinistra" data-luce="0.14" data-scala="0.7">
+  <section class="sezione" id="esempi" data-forma="2">
     <div class="wrap">
       <div class="testa-sezione testa-riga">
         <span class="capitolo" data-appare>{T('Per esempio', 'For example')}</span>
@@ -163,7 +163,7 @@ const jsonLd = {
   </section>
 
   <!-- Pacchetti, dal listino -->
-  <section class="sezione" id="pacchetti" data-forma="3" data-luce="0.16" data-scala="1.3">
+  <section class="sezione" id="pacchetti" data-forma="3">
     <div class="wrap">
       <div class="testa-sezione testa-riga">
         <span class="capitolo" data-appare>{T('Pacchetti e prezzi', 'Packages and prices')}</span>
@@ -198,7 +198,7 @@ const jsonLd = {
   </section>
 
   <!-- Domande -->
-  <section class="sezione" id="domande" data-forma="3" data-luce="0.1" data-scala="1.5">
+  <section class="sezione" id="domande" data-forma="3">
     <div class="wrap">
       <div class="testa-sezione centro">
         <span class="capitolo" data-appare>{T('Domande', 'Questions')}</span>
@@ -216,7 +216,7 @@ const jsonLd = {
   </section>
 
   <!-- Azione e altri servizi -->
-  <section class="sezione finale sv-finale" id="azione" data-forma="4" data-luce="0.6" data-luce-mobile="0.4" data-scala="1.1">
+  <section class="sezione finale sv-finale" id="azione" data-forma="4">
     <div class="wrap finale-testo">
       <span class="capitolo" data-appare>{T('Il prossimo passo', 'The next step')}</span>
       <h2 data-righe>

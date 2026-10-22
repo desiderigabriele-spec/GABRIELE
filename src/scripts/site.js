@@ -1,11 +1,9 @@
 // Comportamenti comuni a tutte le pagine: scroll fluido, animazioni d'ingresso,
-// cursore, effetto magnetico, card che si inclinano, header, menu, cookie e scena 3D.
+// card che si inclinano, header, menu, tema chiaro/scuro e cielo stellato.
 import { avviaIntro } from './intro.js';
 import { avviaLuce } from './luce.js';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
-import { numero } from '../data/formato.js';
+import { anima, quandoArriva } from './moto.js';
 import { avviaPersonalizza } from './benvenuto.js';
 import { avviaEffetti } from './effetti.js';
 import { avviaVita } from './vita.js';
@@ -17,9 +15,9 @@ avviaIntro();
 // lo sfondo della versione chiara: la luce del mattino al posto delle stelle
 avviaLuce();
 
-gsap.registerPlugin(ScrollTrigger);
-
 const html = document.documentElement;
+// il salto tra le stelle: chi arriva da un'altra pagina vede le stelle rallentare (va letto subito, poi la classe sparisce)
+const arrivoSalto = html.classList.contains('salto-arrivo');
 const ridotto = html.classList.contains('ridotto');
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
@@ -35,10 +33,7 @@ window.gdTrack = function (evento, dati = {}) {
 // ---------- Scroll fluido ----------
 let lenis = null;
 if (!ridotto) {
-  lenis = new Lenis({ duration: 1.15, smoothWheel: true, wheelMultiplier: 0.95 });
-  lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add((t) => lenis.raf(t * 1000));
-  gsap.ticker.lagSmoothing(0);
+  lenis = new Lenis({ duration: 1.15, smoothWheel: true, wheelMultiplier: 0.95, autoRaf: true });
 }
 window.gdLenis = lenis;
 
@@ -60,7 +55,6 @@ document.addEventListener('click', (e) => {
 
 // ---------- Header che si nasconde scendendo e ricompare salendo ----------
 const header = document.querySelector('[data-header]');
-const barra = document.querySelector('[data-barra]');
 let ultimo = 0;
 function suScroll() {
   const y = window.scrollY;
@@ -70,7 +64,6 @@ function suScroll() {
     const resta = html.classList.contains('con-capitoli') && window.innerWidth <= 900;
     header.classList.toggle('nascosto', y > 400 && y > ultimo && !resta && !html.classList.contains('menu-aperto'));
   }
-  if (barra) barra.classList.toggle('visibile', y > window.innerHeight * 0.6);
   ultimo = y;
 }
 window.addEventListener('scroll', suScroll, { passive: true });
@@ -101,10 +94,14 @@ suScroll();
   const servizi = document.getElementById('servizi');
   if (sezioni.length || servizi) {
     const tutte = [...sezioni, ...(servizi && btnServizi ? [[btnServizi, servizi]] : [])];
+    // la luce si sposta solo quando cambia la sezione (passando col mouse o aprendo il pannello la rimettono a posto loro)
+    let prima;
     const aggiorna = () => {
       const y = innerHeight * 0.4;
       let qui = null;
       tutte.forEach(([v, s]) => { const r = s.getBoundingClientRect(); if (r.top <= y && r.bottom > y) qui = v; });
+      if (qui === prima) return;
+      prima = qui;
       voci.forEach((v) => v.classList.toggle('attiva', v === qui));
       if (!nav.matches(':hover') && !aperto) su(qui);
     };
@@ -190,63 +187,63 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') chiudiMenu
   });
 })();
 
+// ---------- Le illustrazioni dei servizi si muovono solo quando si vedono ----------
+// (fuori dallo schermo restano in pausa e riprendono da dove erano)
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((voci) => voci.forEach((v) => v.target.classList.toggle('in-vista', v.isIntersecting)));
+  document.querySelectorAll('.sv-ill').forEach((el) => io.observe(el));
+} else document.querySelectorAll('.sv-ill').forEach((el) => el.classList.add('in-vista'));
+
 // ---------- Animazioni d'ingresso ----------
+// le transform scritte come le scriveva GSAP: in 3D mentre si muove, in 2D alla fine
+const sposta = (y, fine = false) => (fine ? 'translate(0px, 0px)' : `translate3d(0px, ${y}px, 0px)`);
 function animaIngressi() {
   if (ridotto) return;
   // titoli divisi in righe: ogni riga sale da sotto una "tenda"
   document.querySelectorAll('[data-righe]').forEach((el) => {
-    const righe = el.querySelectorAll('.riga > span');
-    gsap.from(righe, {
-      yPercent: 115, rotate: 2, duration: 1.1, ease: 'expo.out', stagger: 0.09,
-      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-    });
+    const righe = [...el.querySelectorAll('.riga > span')];
+    const metti = (r, k, fine) => { r.style.transform = fine ? 'translate(0%, 0%)' : `translate(0%, ${115 * (1 - k)}%) rotate(${2 * (1 - k)}deg)`; };
+    righe.forEach((r) => metti(r, 0));
+    quandoArriva(el, 0.88, () => righe.forEach((r, i) => anima({ durata: 1.1, ritardo: i * 0.09, passo: (k, fine) => metti(r, k, fine) })));
   });
   document.querySelectorAll('[data-appare]').forEach((el) => {
-    gsap.to(el, {
-      opacity: 1, y: 0, duration: 1, ease: 'expo.out', delay: Number(el.dataset.appare) || 0,
-      scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-    });
+    quandoArriva(el, 0.9, () => anima({
+      durata: 1, ritardo: Number(el.dataset.appare) || 0,
+      passo: (k, fine) => { el.style.opacity = String(k); el.style.transform = sposta(28 * (1 - k), fine); },
+    }));
   });
   // gruppi in sequenza (card, passi, prezzi)
   document.querySelectorAll('[data-sequenza]').forEach((g) => {
-    // a fine animazione tolgo transform e opacità scritti da GSAP: le card hanno una transizione CSS
+    // a fine animazione tolgo transform e opacità: le card hanno una transizione CSS
     // sul transform (l'inclinazione al passaggio del mouse) che altrimenti le lascia 40px più in basso
-    gsap.from(g.children, {
-      opacity: 0, y: 40, duration: 1, ease: 'expo.out', stagger: 0.08, clearProps: 'transform,opacity',
-      scrollTrigger: { trigger: g, start: 'top 85%', once: true },
-    });
+    const figli = [...g.children];
+    const metti = (f, k) => { f.style.opacity = String(k); f.style.transform = sposta(40 * (1 - k)); };
+    // in attesa restano in 2D (come con GSAP): niente livelli grafici in più per le card ferme
+    figli.forEach((f) => { f.style.opacity = '0'; f.style.transform = 'translate(0px, 40px)'; });
+    quandoArriva(g, 0.85, () => figli.forEach((f, i) => anima({
+      durata: 1, ritardo: i * 0.08,
+      passo: (k) => metti(f, k),
+      fine: () => { f.style.removeProperty('transform'); f.style.removeProperty('opacity'); },
+    })));
   });
 }
-
-// ---------- Contatori ----------
-const fmt = { format: (n) => numero(n, lang) };
-document.querySelectorAll('[data-conta]').forEach((el) => {
-  const fine = Number(el.dataset.conta);
-  if (ridotto) { el.textContent = fmt.format(fine); return; }
-  const o = { v: 0 };
-  gsap.to(o, {
-    v: fine, duration: 1.6, ease: 'power3.out',
-    onUpdate: () => { el.textContent = fmt.format(Math.round(o.v)); },
-    scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-  });
-});
-
-// ---------- Sui bottoni d'azione il fuoco dello sfondo si accende (il puntatore resta quello del sistema) ----------
-document.addEventListener('pointerover', (e) => {
-  if (scena) scena.battito = e.target.closest('[data-azione], .btn-azione') ? 1 : 0;
-});
 
 // ---------- Card: bagliore che segue il mouse + leggera inclinazione ----------
 if (finePointer && !ridotto) {
   document.querySelectorAll('.card').forEach((el) => {
-    el.addEventListener('pointermove', (e) => {
+    // un calcolo per fotogramma, anche con i mouse che mandano più eventi al secondo
+    let ultimo = null, id = 0;
+    const metti = () => {
+      id = 0;
+      if (!ultimo) return;
       const r = el.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      const px = (ultimo.clientX - r.left) / r.width, py = (ultimo.clientY - r.top) / r.height;
       el.style.setProperty('--mx', `${px * 100}%`);
       el.style.setProperty('--my', `${py * 100}%`);
       el.style.transform = `perspective(900px) rotateX(${(0.5 - py) * 5}deg) rotateY(${(px - 0.5) * 6}deg)`;
-    });
-    el.addEventListener('pointerleave', () => { el.style.transform = ''; });
+    };
+    el.addEventListener('pointermove', (e) => { ultimo = e; if (!id) id = requestAnimationFrame(metti); });
+    el.addEventListener('pointerleave', () => { ultimo = null; cancelAnimationFrame(id); id = 0; el.style.transform = ''; });
   });
 }
 
@@ -271,24 +268,31 @@ if (finePointer && !ridotto) {
 
 // ---------- Cookie: il consenso si dà nel benvenuto in basso (benvenuto.js) ----------
 
-// ---------- Scena 3D: si carica dopo il testo, solo se serve ----------
-let scena = null;
+// ---------- Cielo stellato: si carica dopo il testo; con lo sfondo chiaro aspetta che si torni allo scuro ----------
 const canvas = document.querySelector('[data-scena]');
-// profilo del visitatore (nome e colore) e pannello «Personalizza»
-avviaPersonalizza(() => scena);
+// il nome del visitatore (benvenuto e bottone NO/ME) e Focus, l'assistente
+avviaPersonalizza();
 avviaAssistente();
+// il modulo (piccolo) si scarica comunque, così passando allo scuro le stelle ci sono subito
 function caricaScena() {
-  if (!canvas || scena) return;
-  // se la scena 3D non parte (telefono vecchio, WebGL spento), al suo posto si vede la griglia disegnata
-  const senza = () => html.classList.add('scena-no');
-  import('./scena.js').then((m) => { scena = m.avviaScena(canvas) || null; if (scena) html.classList.add('scena-on'); else senza(); }).catch(senza);
+  if (!canvas) return;
+  import('./scena.js').then((m) => {
+    let partita = false;
+    const parti = () => {
+      if (partita || html.dataset.tema === 'chiaro') return;
+      partita = true;
+      window.removeEventListener('gd-tema', parti);
+      m.avviaScena(canvas, { arrivo: arrivoSalto }); // se WebGL non c'è il sito resta completo, solo senza stelle
+    };
+    window.addEventListener('gd-tema', parti);
+    parti();
+  }).catch(() => {});
 }
 
 function avvio() {
   animaIngressi();
   avviaEffetti();
   avviaVita();
-  ScrollTrigger.refresh();
   if ('requestIdleCallback' in window) requestIdleCallback(caricaScena, { timeout: 800 }); else setTimeout(caricaScena, 200);
 }
 if (html.classList.contains('intro-attiva')) window.addEventListener('gd-intro-fine', avvio, { once: true });
@@ -302,30 +306,10 @@ document.addEventListener('click', (e) => {
   window.gdTrack('clic_contatto', { tipo, posizione: a.closest('section')?.id || 'header' });
 });
 
-// ==========================================================================
-// Il fuoco: i puntini si accendono di rosso sul servizio che guardi, un cuore a chi torna
-// ==========================================================================
-// un solo colore per tutti i servizi: il rosso del logo
-const accento = () => getComputedStyle(html).getPropertyValue('--rosso').trim() || '#e30613';
+// ---------- Chi torna: lo saluta Focus, l'occhio, nella sua nuvoletta ----------
 const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (_) {} } };
 const ls = { get: (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} } };
 
-// ---------- 1. I puntini prendono il rosso quando guardi un servizio ----------
-let tintaTimer = 0;
-function tinta(id) {
-  clearTimeout(tintaTimer);
-  if (scena) scena.tinta = id ? accento() : null;
-}
-document.querySelectorAll('[data-iride]').forEach((el) => {
-  el.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') tinta(el.dataset.iride); });
-  el.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'touch') tinta(null); });
-  el.addEventListener('focus', () => tinta(el.dataset.iride));
-  el.addEventListener('blur', () => tinta(null));
-  // su touch il colore resta qualche secondo dopo il tocco
-  el.addEventListener('touchstart', () => { tinta(el.dataset.iride); tintaTimer = setTimeout(() => tinta(null), 2600); }, { passive: true });
-});
-
-// ---------- 3. Chi torna riceve un occhiolino ----------
 const RITORNO = {
   it: { bentornato: 'Rieccoti', progetto: 'Il tuo preventivo è ancora qui: lo riprendiamo?', semplice: 'Ti calcolo il prezzo in 2 minuti?' },
   en: { bentornato: 'Welcome back', progetto: 'Your quote is still here: shall we pick it up?', semplice: 'Shall I work out your price in 2 minutes?' },
@@ -345,11 +329,10 @@ const RITORNO = {
     testo: `${nome ? `${t.bentornato}, ${nome}!` : `${t.bentornato}!`} ${haProgetto ? t.progetto : t.semplice}`,
     preventivo: haProgetto,
   };
-  setTimeout(() => scena?.occhiolino?.(), 1400);
   window.gdTrack('bentornato');
 })();
 
-// ---------- 4. Lingua: chi ha il browser in un'altra lingua riceve un avviso discreto ----------
+// ---------- Lingua: chi ha il browser in un'altra lingua riceve un avviso discreto ----------
 document.addEventListener('click', (e) => {
   const a = e.target.closest('a[data-lingua]');
   if (!a) return;

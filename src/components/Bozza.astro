@@ -3,13 +3,10 @@
 // in rettangoli che disegnano il sito di un'osteria pezzo per pezzo ([data-bz]),
 // poi la bozza prende vita in 3D: sei tasselli si girano e compongono la foto del piatto, e davanti galleggiano
 // il voto, il messaggio WhatsApp e il grafico. Logica in vita.js (bozza), stili in vita.css.
-// La foto è public/img/bozza-piatto.webp (3:2): finché non c'è, i tasselli restano color crema.
-import fs from 'node:fs';
-import path from 'node:path';
+// La foto è public/img/bozza-piatto.webp (3:2).
 interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
 const T = (a: string, b: string) => (lang === 'it' ? a : b);
-const conFoto = fs.existsSync(path.join(process.cwd(), 'public/img/bozza-piatto.webp'));
 ---
 <div class="bozza" data-bozza aria-hidden="true">
   <div class="bz-scena">
@@ -23,7 +20,7 @@ const conFoto = fs.existsSync(path.join(process.cwd(), 'public/img/bozza-piatto.
           <b class="bz-titolo" data-bz>{T('Il tuo tavolo', 'Your table')}<br>{T('è pronto', 'is ready')}<span class="bz-q"></span></b>
           <span class="bz-btn" data-bz>{T('Prenota un tavolo', 'Book a table')} →</span>
         </div>
-        <div class={`bz-foto${conFoto ? ' con-foto' : ''}`} data-bz>{Array.from({ length: 6 }, (_, i) => <i style={`--k:${i};--c:${i % 3};--r:${Math.floor(i / 3)}`}></i>)}</div>
+        <div class="bz-foto con-foto" data-bz>{Array.from({ length: 6 }, (_, i) => <i style={`--k:${i};--c:${i % 3};--r:${Math.floor(i / 3)}`}></i>)}</div>
       </div>
       <div class="bz-schede">
         {[0, 1, 2].map((i) => <span class="bz-scheda" data-bz style={`--k:${i}`}><i></i><b></b><b></b></span>)}
