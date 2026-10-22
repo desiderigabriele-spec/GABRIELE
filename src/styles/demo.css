@@ -353,10 +353,31 @@
   .sito-finto { display: none; }
   .chat { margin: 8px; }
   .dp-foglio { justify-content: flex-start; }
-  .demo-guida { padding: 16px; }
+  .demo-guida { padding: 12px 14px; gap: .55rem; }
   .dg-passi { overflow: visible; }
-  .dg-passi h3 { font-size: 1.25rem; }
-  .dg-passi p { font-size: .95rem; }
+  .dg-passi li { gap: .4rem; }
+  .dg-passi h3 { font-size: 1.15rem; }
+  .dg-passi p { font-size: .92rem; line-height: 1.45; }
+  .dg-come { padding-top: .4rem; }
+  .dg-indietro { height: 42px; }
+}
+/* sul telefono la demo intera (tappe, palco, testo e bottoni) sta in uno schermo */
+@media (max-width: 900px) {
+  .dm-tappe { flex-direction: row; gap: 6px; }
+  .dm-tappe ol { margin-right: 0; padding-right: 0; }
+  .dm-tappe ol button { padding: .42rem .6rem .52rem; font-size: .76rem; }
+  .dm-auto { align-self: stretch; height: auto; width: 42px; padding: 0; justify-content: center; }
+  .dm-auto [data-demo-auto-testo] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .demo { gap: 8px; }
+  .demo-palco { height: clamp(260px, 42svh, 380px); padding: 8px; gap: 8px; }
+  .dm-corpo { gap: 8px; }
+  .dm-catena li { flex-direction: row; justify-content: center; padding: .35rem .3rem; gap: .3rem; }
+  .dm-catena li svg { width: 15px; height: 15px; flex: none; }
+  .dg-attivita { display: none; }
+  .dg-num b { font-size: 1.15rem; }
+  /* i riquadri prendono l'altezza che serve, senza il nero vuoto sotto (il telefono e il sito restano pieni) */
+  .dp-pannello.fuoco-mobile:not(.dp-tel):not(.dp-sito) { height: auto; max-height: 100%; align-self: start; }
+  .ia-campi dd { font-size: .8rem; }
 }
 
 /* ---------- pagina /demo: l'indice nell'hero ---------- */

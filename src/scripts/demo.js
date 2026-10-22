@@ -245,7 +245,16 @@ document.querySelectorAll('[data-demo]').forEach((demo) => {
     autoTesto.textContent = suo ? demo.dataset.pausa : demo.dataset.play;
     demo.classList.toggle('da-sola', suo);
   }
-  function prendi() { suo = false; segna(); riempi(); }
+  function prendi() { suo = false; segna(); riempi(); centra(); }
+  // sul telefono, quando la si usa, la demo si mette intera nello schermo (sotto l'header)
+  function centra() {
+    if (window.innerWidth > 900) return;
+    const r = demo.getBoundingClientRect();
+    const sopraH = document.querySelector('[data-header]')?.offsetHeight || 0;
+    if (r.top >= sopraH - 2 && r.bottom <= window.innerHeight + 2) return;
+    const y = r.top + window.scrollY - sopraH - 8;
+    if (window.gdLenis) window.gdLenis.scrollTo(y, { duration: 0.6 }); else window.scrollTo({ top: y, behavior: ridotto ? 'auto' : 'smooth' });
+  }
 
   avanti.addEventListener('click', () => { prendi(); vai(cur === n ? 1 : cur + 1); });
   indietro.addEventListener('click', () => { prendi(); vai(cur - 1, false); });
