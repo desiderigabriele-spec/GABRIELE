@@ -166,10 +166,6 @@ export const faq = [
     r: 'Vuol dire togliere alle persone il lavoro noioso e ripetitivo. Esempio: un cliente ti manda una mail con una richiesta e il software ti prepara il preventivo da controllare. Tu approvi con un clic. Il software te lo consegniamo pronto, resta tuo e i dati restano tuoi. Partiamo sempre da un\'analisi: se l\'AI non ti fa risparmiare tempo o soldi, te lo diciamo.',
   },
   {
-    d: 'Usate l\'AI per fare i siti? Allora sono tutti uguali?',
-    r: 'Usiamo Claude e ChatGPT come un artigiano usa gli attrezzi migliori: per lavorare più veloce e con più precisione. Strategia, design, testi e scelte sono nostri e sono su misura per te. Il risultato è unico, e arriva prima.',
-  },
-  {
     d: 'Esistono contributi per pagare meno?',
     r: 'In Lombardia c\'è il Voucher Doppia Transizione della Camera di Commercio: copre fino al 50% della spesa (massimo 10.000 €) per progetti con intelligenza artificiale da almeno 4.000 €. Lo sportello apre e chiude in fretta: prima di contarci verifichiamo insieme che sia ancora disponibile.',
   },

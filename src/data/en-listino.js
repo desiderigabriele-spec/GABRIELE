@@ -19,7 +19,7 @@ export const enCategorie = {
       seoch: { nome: 'Local SEO for Switzerland', spiega: 'To be found in Switzerland too: Swiss Google Business Profile, listings on local.ch and search.ch, pages for Ticino and cities, and the words Swiss people actually search for.' },
       seo: { nome: 'SEO copy for a service page', spiega: 'Copy written to show up on Google when people search for exactly that service.' },
       logo: { nome: 'Logo and visual identity', spiega: 'Logo, colours and typefaces that make you recognisable everywhere.' },
-      media: { nome: 'AI-generated photos and videos', spiega: 'Original images and short videos for the site, when you don\'t have your own.' },
+      media: { nome: 'Custom photos and videos', spiega: 'Original images and short videos for the site, when you don\'t have your own.' },
       blog: { nome: 'Blog or news section', spiega: 'A section where you publish articles yourself, without calling anyone.' },
     },
   },

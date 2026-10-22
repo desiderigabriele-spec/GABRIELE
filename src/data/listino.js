@@ -17,7 +17,7 @@ export const categorie = [
       { id: 'seoch', nome: 'SEO locale per la Svizzera', una: 590, spiega: 'Per farti trovare anche in Svizzera: Google Business Profile svizzero, iscrizione a local.ch e search.ch, pagine per Ticino e città e le parole che usano gli svizzeri quando cercano.' },
       { id: 'seo', nome: 'Testo SEO per una pagina servizio', una: 190, max: 20, spiega: 'Un testo scritto per comparire su Google quando cercano proprio quel servizio.' },
       { id: 'logo', nome: 'Logo e identità visiva', una: 850, spiega: 'Logo, colori e caratteri che ti rendono riconoscibile ovunque.' },
-      { id: 'media', nome: 'Foto e video creati con l\'AI', una: 390, spiega: 'Immagini e brevi video originali per il sito, quando non hai materiale tuo.' },
+      { id: 'media', nome: 'Foto e video su misura', una: 390, spiega: 'Immagini e brevi video originali per il sito, quando non hai materiale tuo.' },
       { id: 'blog', nome: 'Blog o area notizie', una: 690, spiega: 'Una sezione dove pubblichi articoli da solo, senza chiamare nessuno.' },
     ],
   },

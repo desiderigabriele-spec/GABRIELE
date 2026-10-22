@@ -121,10 +121,6 @@ export const en = {
       r: 'It means taking boring, repetitive work off people\'s plates. For example: a customer emails a request and the software drafts the quote for you to check. You approve it with one click. We always start with an analysis: if AI won\'t save you time or money, we\'ll tell you. The software is handed over ready, it stays yours and so does your data.',
     },
     {
-      d: 'You use AI to build sites? So they all look the same?',
-      r: 'We use Claude and ChatGPT the way a craftsman uses the best tools: to work faster and more precisely. Strategy, design, copy and decisions are ours and made for you. The result is unique, and it arrives sooner.',
-    },
-    {
       d: 'Are there grants to help with the cost?',
       r: 'In Lombardy the Chamber of Commerce runs the "Doppia Transizione" voucher: it covers up to 50% of the cost (max €10,000) for AI projects of at least €4,000. The window opens and closes quickly, so we check together that it\'s still available before counting on it.',
     },
