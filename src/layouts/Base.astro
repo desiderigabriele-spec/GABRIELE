@@ -101,6 +101,18 @@ const hrefEn = lang === 'en' ? path : alt;
         try { if (!sessionStorage.getItem('gd-intro')) h.classList.add('intro-attiva'); } catch (e) {}
         // arrivo da un'altra pagina del sito con il salto tra le stelle: la pagina nasce nascosta e appare mentre le stelle rallentano (vita.js)
         try { if (sessionStorage.getItem('gd-salto')) h.classList.add('salto-arrivo'); } catch (e) {}
+        // aggiornando la pagina si riparte dall'inizio, dall'hero; avanti e indietro invece ti riportano dov'eri
+        try {
+          var nav = performance.getEntriesByType('navigation')[0];
+          if (nav && nav.type === 'reload' && !location.hash) {
+            // il browser rimette comunque la posizione di prima all'arrivo: la si azzera subito dopo
+            var su = function () { window.scrollTo(0, 0); };
+            history.scrollRestoration = 'manual';
+            su();
+            window.addEventListener('load', function () { su(); requestAnimationFrame(su); }, { once: true });
+            window.addEventListener('pagehide', function () { history.scrollRestoration = 'auto'; });
+          }
+        } catch (e) {}
       })();
     </script>
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}

@@ -38,7 +38,7 @@ function nomeHeader() {
     q.nome = pulisciNome(campo.value);
     salvaProfilo(q); applicaProfilo(q);
     apri(false); bt.focus();
-    if (q.nome && q.nome !== prima) { decodificaTutti(); traccia('nome_cambiato'); }
+    if (q.nome && q.nome !== prima) { decodificaTutti(); vaiAlNome(); traccia('nome_cambiato'); }
   });
   document.addEventListener('click', (e) => { if (!pop.hidden && !pop.contains(e.target) && e.target !== bt) apri(false); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !pop.hidden) { apri(false); bt.focus(); } });
@@ -61,6 +61,15 @@ function decodifica(el) {
 }
 function decodificaTutti() {
   document.querySelectorAll('[data-nome]').forEach((el) => { const r = el.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight) decodifica(el); });
+}
+// dato il nome (benvenuto o NO/ME), se l'hero non si vede si torna su: il saluto col tuo nome si scrive davanti a te
+function vaiAlNome() {
+  const el = document.querySelector('#inizio [data-nome]');
+  if (!el) return;
+  const r = el.getBoundingClientRect();
+  if (r.bottom > 0 && r.top < innerHeight) return;
+  if (window.gdLenis) window.gdLenis.scrollTo(0, { duration: 1.4, onComplete: () => decodifica(el) });
+  else window.scrollTo({ top: 0, behavior: 'auto' });
 }
 function nomeCheSiDecodifica() {
   // ogni nome si decodifica la prima volta che arriva sullo schermo
@@ -134,6 +143,7 @@ function benvenuto() {
         const p = leggiProfilo();
         p.nome = nome;
         salvaProfilo(p); applicaProfilo(p);
+        vaiAlNome();
         traccia('nome_dato');
       } else traccia('nome_saltato');
     }
