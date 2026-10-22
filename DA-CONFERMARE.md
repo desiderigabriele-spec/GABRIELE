@@ -14,9 +14,11 @@
 - [ ] **Numeri reali** per i casi studio (richieste al mese, tempi di caricamento): aggiungili a `fatto` quando li hai.
 - [ ] **Testi in inglese** (`src/data/en.js`, `src/i18n/ui.js`, pagine `/en`): rileggili o falli rileggere da un madrelingua prima di fare pubblicità all'estero.
 - [x] **Logo definitivo** «Eclisse flat» nel sito (`public/brand/`).
+- [ ] **Quattro foto** al posto dei disegni: il prodotto nell'hero di Negozi online, l'annuncio nell'hero di Pubblicità online, la foto del bagno nella demo «Dalla foto al preventivo» e la foto dello studio nel sito della demo «Risponde ai clienti».
 - [ ] **E-commerce lanciati**: se puoi nominarne uno o due (anche tuoi), diventano un terzo caso studio.
 
 ## Tecnica
+- [ ] **Prima di iniziare la pubblicità**: rendere privato il progetto su GitHub (Settings → Danger Zone → Change visibility → Make private). Il sito su Vercel continua a funzionare uguale.
 - [ ] Creare il foglio "Preventivi", incollare `apps-script/Code.gs`, pubblicarlo come app web e impostare `PUBLIC_PREVENTIVO_ENDPOINT` su Vercel. Senza, il preventivo si invia su WhatsApp o per email.
 - [ ] Bot Telegram (`BOT_TOKEN`, `CHAT_ID`) nelle proprietà dello script.
 - [ ] Google Analytics 4 / Meta Pixel: da collegare solo dopo il consenso (gli eventi `preventivo_inizio`, `preventivo_passo`, `preventivo_invio`, `clic_contatto`, `nome_chiesto`, `nome_dato`, `nome_saltato`, `nome_cambiato`, `calcolo_aperto`, `calcolo_passo`, `lingua` sono già pronti in `dataLayer`).

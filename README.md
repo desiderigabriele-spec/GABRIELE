@@ -43,7 +43,7 @@ Stack: Astro (statico) · WebGL scritto a mano per il cielo (nessuna libreria 3D
 
 - Testo vero, contrasto alto, navigazione da tastiera, link "Vai al contenuto".
 - Con "riduci movimento" attivo: niente scroll fluido, niente animazioni, cielo fermo.
-- Il cielo stellato si carica **dopo** il testo, si ferma con la scheda nascosta e con lo sfondo chiaro; senza WebGL il sito funziona uguale.
+- Il cielo stellato si carica **dopo** il testo e si ferma con la scheda nascosta (con lo sfondo chiaro le stelle sono d'inchiostro); senza WebGL il sito funziona uguale.
 - Il CSS comune è un file a parte con il nome che cambia a ogni modifica: si scarica una volta e resta in cache; l'HTML invece si ricontrolla sempre (`vercel.json`).
 - Le animazioni che non si vedono (fuori dallo schermo o nel menu chiuso) stanno in pausa.
 - Statistiche e pubblicità solo dopo il consenso cookie (`window.gdTrack` invia a `dataLayer` solo con consenso).
