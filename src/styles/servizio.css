@@ -10,11 +10,9 @@
 .sv-prezzo strong small { font-size: .5em; color: var(--nebbia); font-weight: 500; }
 .sv-iva { font-size: .82rem; color: var(--nebbia-2); }
 .sv-ill { position: relative; }
-.sv-ill .ill { display: block; width: 100%; max-height: calc(100svh - var(--header-h) - 60px); }
 @media (max-width: 900px) {
   .sv-hero-griglia { grid-template-columns: minmax(0, 1fr); }
   .sv-ill { order: -1; max-width: 440px; margin: 0 auto -10px; width: 100%; }
-  .sv-ill .ill { max-height: 27svh; margin: 0 auto; }
   .sv-hero { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
   .sv-hero .hero-testo { gap: .85rem; }
   .sv-hero .sv-indietro { display: none; }
@@ -85,85 +83,10 @@
 /* ==========================================================================
    Illustrazioni
    ========================================================================== */
-.ill { overflow: visible; }
-.ill .st-b { stop-color: var(--viola); }
-.ill .s1 { fill: rgba(var(--sup2-rgb), .96); stroke: var(--linea-forte); stroke-width: 1.5; }
-.ill .s1.forte { stroke: rgba(var(--brand-rgb), .55); }
-.ill .s2 { fill: rgba(var(--notte-rgb), .65); stroke: var(--linea); stroke-width: 1; }
-.ill .s2.bordo-a { stroke: rgba(var(--rosso-rgb), .55); }
-.ill .b { fill: var(--viola); }
-.ill .bs { fill: rgba(var(--brand-rgb), .2); }
-.ill .a { fill: var(--ambra); }
-.ill .r { fill: var(--rosso); }
 
-.ill .c { fill: var(--ciano); }
-.ill .l { fill: var(--latte); }
-.ill .verde { fill: #22d47e; }
-.ill .notte { fill: #0a0a0a; }
-.ill .n { fill: rgba(var(--latte-rgb), .22); }
-.ill .riga-l { stroke: var(--linea); stroke-width: 1.5; fill: none; }
-.ill .riga-c { stroke: var(--ciano); stroke-width: 2.5; stroke-linecap: round; fill: none; opacity: .7; }
-.ill .bl { fill: none; stroke: var(--viola-chiaro); stroke-width: 3; stroke-linecap: round; }
-.ill .bl.spesso { stroke-width: 6; stroke: var(--viola); }
-.ill .tratto-l { fill: none; stroke: var(--latte); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-.ill .bs.tratto-l { fill: rgba(var(--brand-rgb), .2); }
-.ill .tratto-b { fill: none; stroke: var(--viola-chiaro); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-.ill .spunta { fill: none; stroke: #0a0a0a; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
-.ill .spunta-l { fill: none; stroke: var(--ciano); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
-.ill .linea-b { fill: none; stroke: var(--viola-chiaro); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-.ill .linea-b.spessa { stroke-width: 3.5; stroke: var(--viola); }
-.ill .anello-l { fill: none; stroke: var(--linea-forte); stroke-width: 1.5; }
-.ill .anello-b { fill: rgba(var(--brand-rgb), .14); stroke: rgba(var(--brand-rgb), .6); stroke-width: 1.5; }
-.ill .ill-anello { fill: none; stroke: rgba(var(--brand-rgb), .6); stroke-width: 2; stroke-dasharray: 3 9; }
-.ill .ill-filo { fill: none; stroke: var(--linea-forte); stroke-width: 2; }
-.ill .ill-flusso { fill: none; stroke: var(--viola-chiaro); stroke-width: 2.6; stroke-linecap: round; stroke-dasharray: 3 16; animation: ill-flusso 1.2s linear infinite; }
-.ill .t { font-family: var(--f-testo); font-weight: 600; font-size: 13px; fill: var(--latte); }
-.ill .t.piccolo { font-size: 12px; }
-.ill .t.scura { fill: #1a0605; }
-.ill .tp { font-family: var(--f-testo); font-size: 11px; fill: var(--nebbia); }
-.ill .tp.chiaro { font-size: 12.5px; fill: var(--latte); }
-.ill .tm { font-family: var(--f-mono); font-size: 9.5px; letter-spacing: .08em; fill: var(--nebbia); }
-.ill .tg { font-family: var(--f-titolo); font-weight: 700; letter-spacing: -0.02em; fill: var(--latte); }
-.ill .tg.a { fill: var(--ambra); } .ill .tg.c { fill: var(--ciano); }
 
-/* movimenti lenti: niente distrae dalla lettura */
-.ill .ill-galleggia { animation: ill-galleggia 7s ease-in-out infinite; }
-.ill .ill-galleggia.lento { animation-duration: 9s; animation-delay: -2s; }
-.ill .ill-galleggia.lentissimo { animation-duration: 11s; animation-delay: -5s; }
-@keyframes ill-galleggia { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-@keyframes ill-flusso { to { stroke-dashoffset: -19; } }
-.ill .ill-pulsa { transform-box: fill-box; transform-origin: center; animation: ill-pulsa 2.4s ease-in-out infinite; }
-@keyframes ill-pulsa { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.35); opacity: .75; } }
-.ill .ill-gira { transform-box: fill-box; transform-origin: center; animation: ill-gira 14s linear infinite; }
-@keyframes ill-gira { to { transform: rotate(360deg); } }
-.ill .ill-stelle circle { animation: ill-brilla 3s ease-in-out infinite; }
-.ill .ill-stelle circle:nth-child(2n) { animation-delay: -1.4s; }
-@keyframes ill-brilla { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
-.ill .ill-barra { transform-box: fill-box; transform-origin: bottom; animation: ill-barra 1.4s var(--ease) .4s both; }
-@keyframes ill-barra { from { transform: scaleY(.1); } to { transform: scaleY(1); } }
-.ill .ill-disegna { stroke-dasharray: 420; stroke-dashoffset: 420; animation: ill-disegna 2.2s var(--ease) .5s forwards; }
-@keyframes ill-disegna { to { stroke-dashoffset: 0; } }
 
-/* il ciclo di 6 secondi: il cursore va sul bottone, clic, arriva la notifica */
-.ill .ill-cta { transform-box: fill-box; transform-origin: center; animation: ill-cta 6s ease infinite; }
-@keyframes ill-cta { 0%, 42%, 50%, 100% { transform: scale(1); } 45% { transform: scale(.95); } }
-.ill .ill-onda-clic { fill: none; stroke: var(--latte); stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; animation: ill-onda 6s ease-out infinite; }
-@keyframes ill-onda { 0%, 44% { opacity: 0; transform: scale(.4); } 46% { opacity: .9; } 60%, 100% { opacity: 0; transform: scale(1.8); } }
-.ill .ill-notifica { animation: ill-notifica 6s var(--ease) infinite; }
-@keyframes ill-notifica { 0%, 48% { opacity: 0; transform: translateY(-10px); } 56%, 90% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
-.ill-gestionale .ill-notifica { animation-name: ill-notifica-sotto; }
-@keyframes ill-notifica-sotto { 0%, 40% { opacity: 0; transform: translateY(12px); } 50%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
-.ill .ill-conta-a { animation: ill-conta-a 6s steps(1) infinite; }
-.ill .ill-conta-b { animation: ill-conta-b 6s steps(1) infinite; }
-@keyframes ill-conta-a { 0%, 46% { opacity: 1; } 47%, 100% { opacity: 0; } }
-@keyframes ill-conta-b { 0%, 46% { opacity: 0; } 47%, 100% { opacity: 1; } }
 
-/* fuori dallo schermo l'illustrazione sta in pausa (site.js mette .in-vista quando si vede) */
-html.js .sv-ill:not(.in-vista) .ill * { animation-play-state: paused; }
-html.ridotto .ill * { animation: none !important; }
-html.ridotto .ill .ill-notifica, html.ridotto .ill .ill-conta-b { opacity: 1; }
-html.ridotto .ill .ill-conta-a, html.ridotto .ill .ill-onda-clic { opacity: 0; }
-html.ridotto .ill .ill-disegna { stroke-dashoffset: 0; }
 
 /* ogni sezione in uno schermo (computer) */
 @media (min-width: 901px) {

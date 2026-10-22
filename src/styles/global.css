@@ -782,7 +782,7 @@ html.menu-aperto .guida { opacity: 0; pointer-events: none; }
 @keyframes cometa { from { background-position: 100% 0; } to { background-position: 0 0; opacity: .2; } }
 
 /* angoli dritti ovunque, tranne il telefono disegnato, i siti degli altri (prima/dopo, lo studio della demo) e il giorno del calendario */
-*:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .dp-sito *, .cal-giorno *), *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .dp-sito *, .cal-giorno *)::before, *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .dp-sito *, .cal-giorno *)::after { border-radius: 0 !important; }
+*:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .dp-sito *, .cal-giorno *, .ap-vero, .ap-vero *, .ap .wa-ic), *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .dp-sito *, .cal-giorno *, .ap-vero, .ap-vero *, .ap .wa-ic)::before, *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .dp-sito *, .cal-giorno *, .ap-vero, .ap-vero *, .ap .wa-ic)::after { border-radius: 0 !important; }
 
 
 /* ==========================================================================

@@ -1,0 +1,180 @@
+---
+// Le anteprime nell'hero delle pagine servizio (tranne «siti web», che ha Compila): una schermata vera di quello che
+// il cliente ottiene, in piccolo, con un movimento lento che racconta il risultato (un ordine, una richiesta, un
+// messaggio gestito). Tutto è in unità del contenitore (cqw): l'anteprima si rimpicciolisce intera, come una foto.
+// Le parti «degli altri» (il negozio, Instagram, il gestionale del cliente) hanno il loro stile; le parti dell'AI
+// sono nere con il quadratino rosso. Gli stili sono in styles/anteprime.css.
+import tazza from '../assets/img/prodotto-tazza.webp';
+import palestra from '../assets/img/annuncio-palestra.webp';
+import '../styles/anteprime.css';
+interface Props { id: string; lang?: 'it' | 'en' }
+const { id, lang = 'it' } = Astro.props;
+const it = lang === 'it';
+const T = (a: string, b: string) => (it ? a : b);
+const descr: Record<string, [string, string]> = {
+  ecommerce: ['Anteprima: la pagina prodotto di un negozio online di ceramiche; il carrello si riempie e arriva un nuovo ordine.', 'Preview: the product page of an online ceramics shop; the basket fills up and a new order arrives.'],
+  ads: ['Anteprima: un post sponsorizzato su Instagram di una palestra e i numeri della campagna: richieste e costo per richiesta.', 'Preview: a sponsored Instagram post for a gym and the campaign numbers: enquiries and cost per enquiry.'],
+  software: ['Anteprima: un’automazione che collega WhatsApp, l’intelligenza artificiale, l’agenda e il foglio clienti.', 'Preview: an automation connecting WhatsApp, artificial intelligence, the calendar and the client sheet.'],
+  gestionale: ['Anteprima: il gestionale di un’impresa con incassi, ordini e preventivi; l’AI propone tre solleciti da approvare.', 'Preview: a company’s management software with payments, orders and quotes; AI proposes three reminders to approve.'],
+  cura: ['Anteprima: il report del mese di un sito: velocità, accessibilità, SEO, sicurezza, richieste in crescita e backup.', 'Preview: a website’s monthly report: speed, accessibility, SEO, security, growing enquiries and backups.'],
+};
+const d = descr[id] || descr.ecommerce;
+const anello = (v: number) => `stroke-dasharray:${v} 100`;
+---
+<div class={`ap ap-${id}`} role="img" aria-label={T(d[0], d[1])}>
+<div class="ap-dentro">
+  {id === 'ecommerce' && (
+    <Fragment>
+      <div class="ap-fin ap-vero">
+        <div class="ap-barra"><i></i><i></i><i></i><span>terraceramiche.it/tazza-alba</span></div>
+        <div class="shop-nav">
+          <b>terra<em>.</em></b>
+          <span>{T('Tazze · Piatti · Vasi', 'Mugs · Plates · Vases')}</span>
+          <span class="shop-carrello"><svg viewBox="0 0 24 24"><path d="M3 4h3l2.5 11h10L21 7H7" /><circle cx="10" cy="19" r="1.4" /><circle cx="17" cy="19" r="1.4" /></svg><em class="ap-da">2</em><em class="ap-a">3</em></span>
+        </div>
+        <div class="shop-corpo">
+          <div class="shop-foto"><img src={tazza.src} width="720" height="720" alt="" loading="eager" decoding="async" /><span>{T('Nuovo', 'New')}</span></div>
+          <div class="shop-info">
+            <small>{T('Fatta a mano a Montelupo', 'Handmade in Montelupo')}</small>
+            <h5>{T('Tazza Alba', 'Alba mug')}</h5>
+            <span class="stelle">★★★★★ <small>{T('48 recensioni', '48 reviews')}</small></span>
+            <b class="prezzo">{T('49 €', '€49')}</b>
+            <span class="colori"><i></i><i></i><i></i></span>
+            <span class="shop-btn">{T('Aggiungi al carrello', 'Add to basket')}</span>
+            <span class="shop-paga"><b> Pay</b><b>G Pay</b><small>{T('o in 3 rate', 'or in 3 instalments')}</small></span>
+            <small class="shop-sped">✓ {T('Spedizione gratuita da 60 €', 'Free shipping over €60')}</small>
+          </div>
+        </div>
+      </div>
+      <i class="ap-cursore"></i>
+      <div class="ap-notifica ap-vero">
+        <span class="ap-icona shop-ic">t.</span>
+        <span><b>{T('Nuovo ordine · 64 €', 'New order · €64')}</b><small>{T('N. 1284 · 2 articoli · da spedire', 'No. 1284 · 2 items · to ship')}</small></span>
+        <time>{T('adesso', 'now')}</time>
+      </div>
+    </Fragment>
+  )}
+
+  {id === 'ads' && (
+    <Fragment>
+      <div class="ap-tel ap-vero">
+        <div class="ig-stato"><span>9:41</span><i></i></div>
+        <div class="ig-testa"><span class="ig-avatar">F</span><span><b>forma.milano</b><small>{T('Sponsorizzato', 'Sponsored')}</small></span><i>···</i></div>
+        <img class="ig-foto" src={palestra.src} width="720" height="720" alt="" loading="eager" decoding="async" />
+        <div class="ig-cta"><span>{T('Prenota la prova gratuita', 'Book a free trial')}</span><span>›</span></div>
+        <div class="ig-azioni"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z" /></svg><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2L21 4l-1 4.5A8 8 0 0 1 20 12z" /></svg><svg viewBox="0 0 24 24"><path d="M21 4 3 11l7 2 2 7z" /></svg><svg class="dx" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z" /></svg></div>
+        <small class="ig-like"><b>{T('128 Mi piace', '128 likes')}</b></small>
+        <small class="ig-testo"><b>forma.milano</b> {T('La prima settimana è gratis. Zona Navigli.', 'Your first week is free. Navigli area.')}</small>
+      </div>
+      <div class="ap-pannello ads-gestione">
+        <span class="ap-mono"><i class="ads-attiva"></i>{T('Campagna · Prova gratuita', 'Campaign · Free trial')}</span>
+        <dl class="ads-numeri">
+          <div><dt>{T('Persone raggiunte', 'People reached')}</dt><dd>18.420</dd></div>
+          <div class="forte"><dt>{T('Richieste', 'Enquiries')}</dt><dd>38</dd></div>
+          <div><dt>{T('Costo a richiesta', 'Cost per enquiry')}</dt><dd>{T('9,20 €', '€9.20')}</dd></div>
+          <div><dt>{T('Spesa del mese', 'Spend this month')}</dt><dd>{T('350 €', '€350')}</dd></div>
+        </dl>
+        <svg class="ads-linea" viewBox="0 0 100 30" preserveAspectRatio="none"><path pathLength="100" d="M0 27 L14 24 L28 25 L42 18 L56 16 L70 10 L84 8 L100 3" /></svg>
+        <ul class="ads-canali">
+          <li><span>Instagram</span><i style="--v:.62"></i><b>62%</b></li>
+          <li><span>Google</span><i style="--v:.28"></i><b>28%</b></li>
+          <li><span>TikTok</span><i style="--v:.1"></i><b>10%</b></li>
+        </ul>
+      </div>
+      <div class="ap-notifica ap-vero">
+        <span class="ap-icona ig-ic"></span>
+        <span><b>{T('Nuova richiesta da Instagram', 'New enquiry from Instagram')}</b><small>{T('Laura · prova giovedì alle 18:00', 'Laura · trial on Thursday at 6 pm')}</small></span>
+        <time>{T('adesso', 'now')}</time>
+      </div>
+    </Fragment>
+  )}
+
+  {id === 'software' && (
+    <Fragment>
+      <div class="ap-fin flow">
+        <div class="flow-testa"><span><i class="flow-acceso"></i>{T('Prenotazioni da WhatsApp', 'WhatsApp bookings')}</span><small>{T('attiva · da 214 giorni', 'live · for 214 days')}</small></div>
+        <div class="flow-tela">
+          <svg class="flow-fili" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            {['M27 33 C32 33 31 33 37 33', 'M63 33 C68 33 66 20 72 20', 'M63 33 C68 33 66 50 72 50', 'M50 44 C50 52 50 58 50 66'].map((p, i) => (
+              <Fragment><path class="filo" d={p} /><path class="corre" d={p} pathLength="100" style={`animation-delay:${i * 0.35}s`} /></Fragment>
+            ))}
+          </svg>
+          <div class="nodo n-wa"><i class="ap-icona wa-ic"></i><span><b>WhatsApp</b><small>{T('Nuovo messaggio', 'New message')}</small></span></div>
+          <div class="nodo n-ai"><i class="ap-icona ai-ic"></i><span><b>{T('AI', 'AI')}</b><small>{T('Capisce la richiesta', 'Understands the request')}</small></span></div>
+          <div class="nodo n-cal"><i class="ap-icona cal-ic">31</i><span><b>Google Calendar</b><small>{T('Fissa l’appuntamento', 'Books the slot')}</small></span></div>
+          <div class="nodo n-fogli"><i class="ap-icona fogli-ic"></i><span><b>{T('Google Fogli', 'Google Sheets')}</b><small>{T('Salva la cliente', 'Saves the client')}</small></span></div>
+          <div class="nodo n-avviso"><i class="ap-icona avviso-ic"></i><span><b>{T('Avviso', 'Alert')}</b><small>{T('Alla titolare', 'To the owner')}</small></span></div>
+        </div>
+        <div class="flow-piede">
+          <span><b>47</b> {T('messaggi gestiti oggi', 'messages handled today')}</span>
+          <span><b>0</b> {T('persi', 'lost')}</span>
+        </div>
+      </div>
+      <div class="ap-notifica ap-ia">
+        <span class="ap-icona ok-ic">✓</span>
+        <span><b>{T('Eseguito in 1,2 secondi', 'Done in 1.2 seconds')}</b><small>{T('Giulia F. · sabato 10:00 · pulizia viso', 'Giulia F. · Saturday 10:00 · facial')}</small></span>
+      </div>
+    </Fragment>
+  )}
+
+  {id === 'gestionale' && (
+    <Fragment>
+      <div class="ap-fin gest ap-vero">
+        <aside class="gest-menu">
+          <b>RI</b>
+          {[T('Panoramica', 'Overview'), T('Clienti', 'Clients'), T('Preventivi', 'Quotes'), T('Ordini', 'Orders'), T('Magazzino', 'Stock'), T('Fatture', 'Invoices')].map((v, i) => <span class={i === 0 ? 'on' : ''}><i></i>{v}</span>)}
+        </aside>
+        <div class="gest-main">
+          <div class="gest-testa"><b>{T('Buongiorno, Marco', 'Good morning, Marco')}</b><small>Rossi Impianti · {T('martedì 14 ottobre', 'Tuesday 14 October')}</small></div>
+          <div class="gest-kpi">
+            <div class="rosso"><small>{T('Da incassare', 'To collect')}</small><b>{T('12.400 €', '€12,400')}</b><em>{T('3 fatture scadute', '3 overdue invoices')}</em></div>
+            <div><small>{T('Ordini aperti', 'Open orders')}</small><b>18</b><em>{T('5 da spedire oggi', '5 to ship today')}</em></div>
+            <div><small>{T('Scorte basse', 'Low stock')}</small><b>3</b><em>{T('da riordinare', 'to reorder')}</em></div>
+          </div>
+          <div class="gest-tab">
+            <span class="gest-tab-tit">{T('Preventivi in corso', 'Open quotes')}</span>
+            {[
+              [T('Condominio Verdi', 'Verdi building'), T('8.400 €', '€8,400'), T('Accettato', 'Accepted'), 'ok'],
+              [T('Bar Duomo', 'Duomo café'), T('2.150 €', '€2,150'), T('Inviato', 'Sent'), 'inv'],
+              [T('Studio Neri', 'Neri practice'), T('3.900 €', '€3,900'), T('Da firmare', 'To sign'), 'att'],
+              [T('Villa Corti', 'Corti villa'), T('12.600 €', '€12,600'), T('Bozza', 'Draft'), 'boz'],
+            ].map(([c, v, s, k]) => <div><span>{c}</span><b>{v}</b><em class={k}>{s}</em></div>)}
+          </div>
+        </div>
+      </div>
+      <div class="ap-notifica ap-ia gest-ai">
+        <span class="ap-icona ai-ic"></span>
+        <span><b>{T('Ho preparato 3 solleciti per le fatture scadute.', 'I drafted 3 reminders for the overdue invoices.')}</b><small>{T('Li mando?', 'Shall I send them?')}</small>
+          <span class="gest-bottoni"><em>{T('Approva', 'Approve')}</em><em>{T('Vedi', 'View')}</em></span></span>
+      </div>
+    </Fragment>
+  )}
+
+  {id === 'cura' && (
+    <Fragment>
+      <div class="ap-fin report ap-vero">
+        <div class="rep-testa"><span class="rep-logo">D&amp;C<em></em></span><span><b>{T('Il report di ottobre', 'Your October report')}</b><small>osteriablu.it · {T('dal tuo referente, Gabriele', 'from Gabriele, your contact')}</small></span></div>
+        <div class="rep-punti">
+          {[[98, T('Velocità', 'Speed')], [100, T('Accessibilità', 'Accessibility')], [100, 'SEO'], [100, T('Sicurezza', 'Security')]].map(([v, n], i) => (
+            <div><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" pathLength="100" /><circle class="pieno" cx="18" cy="18" r="15.9" pathLength="100" style={anello(Number(v))} /></svg><b>{i === 3 ? '✓' : v}</b><small>{n}</small></div>
+          ))}
+        </div>
+        <div class="rep-grafico">
+          <span><small>{T('Richieste dal sito', 'Enquiries from the site')}</small><b>+32%</b></span>
+          <div class="rep-barre">{[34, 41, 38, 52, 49, 63, 71].map((h, i) => <i style={`--h:${h}%;--i:${i}`} class={i === 6 ? 'ora' : ''}></i>)}</div>
+        </div>
+        <ul class="rep-lista">
+          <li>{T('Backup ogni notte · l’ultimo alle 03:00', 'Backup every night · latest at 3 am')}</li>
+          <li>{T('6 aggiornamenti installati', '6 updates installed')}</li>
+          <li>{T('Online il 99,98% del tempo', 'Online 99.98% of the time')}</li>
+        </ul>
+      </div>
+      <div class="ap-notifica ap-vero">
+        <span class="ap-icona ok-ic">✓</span>
+        <span><b>{T('Modifica fatta', 'Change done')}</b><small>{T('Orari estivi aggiornati sul sito e su Google', 'Summer hours updated on the site and on Google')}</small></span>
+        <time>{T('2 ore fa', '2 h ago')}</time>
+      </div>
+    </Fragment>
+  )}
+</div>
+</div>
