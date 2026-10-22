@@ -1,33 +1,58 @@
 /* Pagina «Intelligenza artificiale per aziende» */
 .ai-hero .icona-titolo { margin-bottom: -.6rem; }
 
-/* L'esempio animato */
-.demo-ai { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
-@media (max-width: 960px) { .demo-ai { grid-template-columns: minmax(0, 1fr); } }
-.demo-colonna { display: grid; gap: 12px; min-width: 0; }
+/* L'esempio animato: l'email vera, la scheda nera dell'AI, la risposta pronta con «Invia» */
+.demo-ai { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px; align-items: start; }
+@media (max-width: 960px) { .demo-ai { grid-template-columns: minmax(0, 1fr); gap: 22px; } }
+.demo-colonna { position: relative; display: grid; gap: 12px; min-width: 0; }
+/* la freccia tra un passo e l'altro, con il quadratino rosso che la percorre */
+@media (min-width: 961px) {
+  .demo-colonna + .demo-colonna::before { content: ''; position: absolute; left: -28px; top: 5.6rem; width: 22px; height: 1.5px; background: var(--linea-forte); }
+  .demo-colonna + .demo-colonna::after { content: ''; position: absolute; left: -28px; top: calc(5.6rem - 3px); width: 7px; height: 7px; background: var(--rosso); animation: demo-corre 2.4s var(--ease) infinite; }
+  .demo-colonna:nth-child(3)::after { animation-delay: 1.2s; }
+}
+@keyframes demo-corre { 0% { transform: translateX(0); opacity: 0; } 15% { opacity: 1; } 70% { transform: translateX(16px); opacity: 1; } 100% { transform: translateX(16px); opacity: 0; } }
 .demo-etichetta { display: flex; align-items: center; gap: .6rem; font-family: var(--f-mono); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--viola-chiaro); }
-.demo-etichetta b { display: grid; place-items: center; width: 24px; height: 24px; background: rgba(var(--brand-rgb), .18); color: var(--latte); font-weight: 600; letter-spacing: 0; }
-.demo-email { border: 1px solid var(--linea); background: rgba(var(--sup-rgb), .9); padding: 1.1rem 1.2rem; display: grid; gap: .5rem; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.demo-email header { display: flex; justify-content: space-between; gap: 1rem; font-size: .92rem; }
-.demo-email header span { color: var(--nebbia); font-family: var(--f-mono); font-size: .76rem; }
+.demo-etichetta b { display: grid; place-items: center; width: 24px; height: 24px; background: var(--rosso); color: #fff; font-weight: 600; letter-spacing: 0; }
+/* l'email, come nella posta vera */
+.demo-email { border: 1px solid #dadce0; background: #fff; color: #202124; padding: 1rem 1.1rem; display: grid; gap: .5rem; box-shadow: 0 24px 50px -30px rgba(0, 0, 0, .8); }
+.demo-email header { display: flex; align-items: center; gap: .7rem; font-size: .92rem; }
+.de-avatar { flex: none; width: 34px; height: 34px; display: grid; place-items: center; background: linear-gradient(135deg, #f6a5c0, #b06ab3); color: #fff; font-weight: 700; font-size: .9rem; }
+.de-chi { flex: 1; min-width: 0; display: grid; line-height: 1.2; }
+.de-chi small { font-size: .74rem; color: #5f6368; }
+.demo-email header > span:last-child { color: #5f6368; font-family: var(--f-mono); font-size: .74rem; }
 .demo-oggetto { margin: 0; font-weight: 600; font-size: .95rem; }
-.demo-testo { margin: 0; color: var(--nebbia); font-size: .95rem; line-height: 1.55; min-height: 3em; }
-.demo-testo.lettura { background: linear-gradient(90deg, transparent, rgba(var(--dati-rgb), .22), transparent) 0 0 / 40% 100% no-repeat; animation: lettura 1.3s linear; }
+.demo-testo { margin: 0; color: #3c4043; font-size: .93rem; line-height: 1.55; min-height: 3em; }
+.demo-testo.lettura { background: linear-gradient(90deg, transparent, rgba(var(--rosso-rgb), .18), transparent) 0 0 / 40% 100% no-repeat; animation: lettura 1.3s linear; }
 @keyframes lettura { from { background-position: -40% 0; } to { background-position: 140% 0; } }
-.demo-risposta { border-color: rgba(var(--brand-rgb), .45); }
-.demo-risposta .demo-testo { color: var(--latte); min-height: 9em; }
-.demo-campi { margin: 0; display: grid; gap: 8px; }
-.demo-campi div { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: .8rem; align-items: baseline; padding: .65rem .9rem; border: 1px solid var(--linea); background: rgba(var(--sup-rgb), .85); }
-.demo-campi dt { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--nebbia); }
-.demo-campi dd { margin: 0; font-weight: 600; font-size: .95rem; }
-[data-demo-campo] { opacity: .15; transform: translateX(-6px); transition: opacity .45s var(--ease), transform .45s var(--ease), border-color .45s; }
-[data-demo-campo].visto { opacity: 1; transform: none; border-color: rgba(var(--dati-rgb), .4); }
-.demo-nota { margin: 0; display: flex; align-items: center; gap: .5rem; font-size: .85rem; color: rgb(var(--dati-rgb)); }
+.demo-risposta { border-left: 3px solid #1a73e8; }
+.demo-risposta .demo-testo { color: #202124; min-height: 9em; }
+.de-stato { padding: .2rem .5rem; background: #fff1d6; color: #8a5a00 !important; font-family: var(--f-mono); font-size: .66rem !important; letter-spacing: .06em; text-transform: uppercase; }
+.demo-ai.inviata .de-stato { background: #e6f4ea; color: #137333 !important; }
+/* la scheda dell'AI: nera, con il quadratino rosso */
+.demo-ia { display: grid; gap: 8px; padding: 14px; background: #0c0c0c; border: 1px solid #2a2a2a; color: #f2f2f2; box-shadow: 0 24px 50px -30px rgba(0, 0, 0, .8); }
+.demo-ia-tit { display: flex; align-items: center; gap: .55rem; font-family: var(--f-mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: #bdbdbd; margin-bottom: 2px; }
+.demo-ia-tit i { width: 8px; height: 8px; background: var(--rosso); }
+.demo-ai:not(.fatto) .demo-ia-tit i { animation: lampeggia-ai 1s steps(1) infinite; }
+@keyframes lampeggia-ai { 50% { opacity: 0; } }
+.demo-campi { margin: 0; display: grid; gap: 6px; }
+.demo-campi div { display: grid; grid-template-columns: 6.2em minmax(0, 1fr); gap: .8rem; align-items: baseline; padding: .55rem .75rem; border: 1px solid #2c2c2c; background: #141414; }
+.demo-campi dt { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: #8f8f8f; }
+.demo-campi dd { margin: 0; font-weight: 600; font-size: .92rem; color: #f2f2f2; }
+[data-demo-campo] { opacity: .12; transform: translateX(-6px); transition: opacity .45s var(--ease), transform .45s var(--ease), border-color .45s; }
+[data-demo-campo].visto { opacity: 1; transform: none; }
+.demo-campi div.visto { border-color: #5a5a5a; }
+.demo-nota { margin: 0; display: flex; align-items: center; gap: .5rem; font-size: .82rem; color: var(--verde-spunta); }
 .demo-nota::before { content: '✓'; font-weight: 700; }
-.demo-azioni { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; justify-content: space-between; opacity: .2; transition: opacity .5s var(--ease); }
+.demo-azioni { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .6rem .9rem; align-items: center; opacity: .2; transition: opacity .5s var(--ease); }
 .demo-azioni.visto { opacity: 1; }
-.demo-tu { display: inline-flex; align-items: center; gap: .55rem; font-weight: 600; font-size: .95rem; }
-.demo-tu .mascotte { width: 34px; height: 34px; }
+.demo-ai.fatto:not(.inviata) .demo-invia { animation: invia-invito 2s ease-in-out infinite; }
+@keyframes invia-invito { 50% { box-shadow: 0 0 0 6px rgba(var(--verde-rgb), .25); } }
+.demo-ai.inviata .demo-invia { opacity: .45; pointer-events: none; }
+.demo-tu { font-size: .84rem; line-height: 1.4; color: var(--nebbia); }
+.demo-ripeti { grid-column: 1 / -1; justify-self: start; padding: 0; border: 0; background: none; color: var(--nebbia); font: 500 .82rem var(--f-testo); cursor: pointer; }
+.demo-ripeti:hover { color: var(--latte); }
+html.ridotto .demo-colonna::after { animation: none; opacity: 0; }
 .ai-avviso { margin: 1.2rem 0 0; display: block; font-size: .8rem; color: var(--nebbia-2); }
 
 /* Esempi per settore */

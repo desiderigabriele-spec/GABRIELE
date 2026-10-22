@@ -204,26 +204,31 @@ const demo = it ? {
         <div class="demo-colonna">
           <span class="demo-etichetta"><b>1</b>{T('Arriva la richiesta', 'The enquiry arrives')}</span>
           <article class="demo-email">
-            <header><strong>{demo.da}</strong><span>{demo.ora}</span></header>
+            <header><span class="de-avatar" aria-hidden="true">L</span><span class="de-chi"><strong>{demo.da}</strong><small>{T('dal modulo del sito', 'from the website form')}</small></span><span>{demo.ora}</span></header>
             <p class="demo-oggetto">{demo.oggetto}</p>
             <p class="demo-testo" data-demo-testo>{demo.testo}</p>
           </article>
         </div>
         <div class="demo-colonna">
           <span class="demo-etichetta"><b>2</b>{T('L’AI capisce cosa serve', 'AI works out what’s needed')}</span>
-          <dl class="demo-campi">
-            {demo.campi.map(([k, v]) => <div data-demo-campo><dt>{k}</dt><dd>{v}</dd></div>)}
-          </dl>
-          <p class="demo-nota" data-demo-campo>{T('Salvato da solo nella tua lista clienti', 'Saved automatically to your customer list')}</p>
+          <div class="demo-ia">
+            <span class="demo-ia-tit"><i></i>{T('L’AI legge la richiesta', 'AI reads the enquiry')}</span>
+            <dl class="demo-campi">
+              {demo.campi.map(([k, v]) => <div data-demo-campo><dt>{k}</dt><dd>{v}</dd></div>)}
+            </dl>
+            <p class="demo-nota" data-demo-campo>{T('Salvato da solo nella tua lista clienti', 'Saved automatically to your customer list')}</p>
+          </div>
         </div>
         <div class="demo-colonna">
           <span class="demo-etichetta"><b>3</b>{T('Prepara la risposta', 'It drafts the reply')}</span>
           <article class="demo-email demo-risposta">
+            <header><span class="de-chi"><strong>{T('Risposta a Laura', 'Reply to Laura')}</strong><small>{T('pronta da controllare', 'ready to check')}</small></span><span class="de-stato" data-demo-stato data-inviata={T('Inviata · 22:48', 'Sent · 10:48 pm')}>{T('Bozza', 'Draft')}</span></header>
             <p class="demo-testo" data-demo-risposta data-testo={demo.risposta}>{demo.risposta}</p>
           </article>
           <div class="demo-azioni" data-demo-fine>
-            <span class="demo-tu"><Cursore stato="fatto" /> {T('Tu controlli e premi «Invia»', 'You check it and press "Send"')}</span>
-            <button class="btn btn-vetro btn-piccolo" type="button" data-demo-ripeti>{T('Guarda di nuovo', 'Watch again')}</button>
+            <button class="btn btn-azione btn-piccolo demo-invia" type="button" data-demo-invia>{T('Invia', 'Send')} <span class="freccia" aria-hidden="true">→</span></button>
+            <span class="demo-tu">{T('L’AI prepara, tu decidi: senza il tuo ok non parte niente.', 'AI prepares, you decide: nothing goes out without your ok.')}</span>
+            <button class="demo-ripeti" type="button" data-demo-ripeti>↺ {T('Guarda di nuovo', 'Watch again')}</button>
           </div>
         </div>
       </div>
@@ -430,6 +435,11 @@ const demo = it ? {
       dopo(inizio + parole.length * 70 + 300, () => { fine.classList.add('visto'); demo!.classList.add('fatto'); });
     }
     demo.querySelector('[data-demo-ripeti]')!.addEventListener('click', avvia);
+    // «Invia» si può premere davvero: la bozza diventa inviata
+    const stato = demo.querySelector<HTMLElement>('[data-demo-stato]')!;
+    const bozza = stato.textContent || '';
+    demo.querySelector('[data-demo-invia]')!.addEventListener('click', () => { demo!.classList.add('inviata'); stato.textContent = stato.dataset.inviata || ''; });
+    demo.querySelector('[data-demo-ripeti]')!.addEventListener('click', () => { demo!.classList.remove('inviata'); stato.textContent = bozza; });
     // parte quando l'esempio entra nello schermo
     const io = new IntersectionObserver((v) => { if (v.some((x) => x.isIntersecting)) { avvia(); io.disconnect(); } }, { threshold: 0.35 });
     io.observe(demo);
