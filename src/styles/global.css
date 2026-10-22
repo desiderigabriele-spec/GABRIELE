@@ -781,8 +781,8 @@ html.menu-aperto .guida { opacity: 0; pointer-events: none; }
 .parola-iride:hover::after, .parola-iride:focus-visible::after { opacity: 1; animation: cometa .9s ease-out forwards; }
 @keyframes cometa { from { background-position: 100% 0; } to { background-position: 0 0; opacity: .2; } }
 
-/* angoli dritti ovunque, tranne il telefono disegnato e il sito «vecchio» del prima/dopo */
-*:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *), *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *)::before, *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *)::after { border-radius: 0 !important; }
+/* angoli dritti ovunque, tranne il telefono disegnato, i siti degli altri (prima/dopo, lo studio della demo) e il giorno del calendario */
+*:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .dp-sito *, .cal-giorno *), *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .dp-sito *, .cal-giorno *)::before, *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .dp-sito *, .cal-giorno *)::after { border-radius: 0 !important; }
 
 
 /* ==========================================================================

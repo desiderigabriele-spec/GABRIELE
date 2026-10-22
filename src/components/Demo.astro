@@ -1,13 +1,16 @@
 ---
-// Una demo guidata: a sinistra la spiegazione passo per passo, a destra il «palco» con i programmi finti.
-// Il palco cambia a ogni passo: data-da / data-fino = da che passo a che passo si vede un elemento,
-// data-acceso = in quali passi è evidenziato ("2", "3-4", "1,5"). Il motore è in scripts/demo.js.
+// Una demo guidata. In alto le tappe con il loro nome (si riempiono mentre la demo va da sola, come le storie);
+// a sinistra cosa succede, a destra il «palco» con i programmi veri in piccolo. Un quadratino rosso porta
+// l'informazione da un programma all'altro, così si vede da dove arriva e dove va.
+// Nel palco: data-da / data-fino = da che passo a che passo si vede un elemento, data-acceso = in quali passi
+// è evidenziato ("2", "3-4", "1,5"). Il motore è in scripts/demo.js.
 import Icona from './Icona.astro';
 import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
 import { euro, numero as cifre } from '../data/formato.js';
 import { demo } from '../data/demo.js';
 import bagno from '../assets/img/demo-bagno.webp';
+import studio from '../assets/img/demo-studio.webp';
 import '../styles/demo.css';
 
 interface Props { id: 'whatsapp' | 'preventivo' | 'assistente'; lang?: 'it' | 'en'; numero?: number; tutte?: boolean; forma?: string }
@@ -27,9 +30,11 @@ const eur2 = (v: number) => {
   const s = cifre(Math.floor(v), lang) + (cent ? (it ? ',' : '.') + String(cent).padStart(2, '0') : '');
   return it ? `${s} €` : `€${s}`;
 };
+const due = (i: number) => String(i).padStart(2, '0');
 // «[[...]]» = parole che l'AI evidenzia quando legge
 const evid = (testo: string, acceso: string) => testo.split(/\[\[|\]\]/).map((x, i) => ({ x, on: i % 2 === 1, acceso }));
 const totale = id === 'preventivo' ? P.righe.reduce((s: number, r: [string, number]) => s + r[1], 0) : 0;
+const pannelli = d.pannelli as [string, string, string][];
 ---
 <section class="sezione demo-sez" id={`demo-${id}`} data-forma={forma}>
   <div class="wrap">
@@ -42,214 +47,258 @@ const totale = id === 'preventivo' ? P.righe.reduce((s: number, r: [string, numb
       <p class="lead" data-appare>{d.sotto}</p>
     </div>
 
-    <div class={`demo demo-${id}`} data-demo data-passo="1" data-avanti={T('Avanti', 'Next')} data-ricomincia={T('Ricomincia', 'Start again')} data-play={T('Guarda da solo', 'Play')} data-pausa={T('Pausa', 'Pause')} data-appare>
-      <div class="demo-guida">
-        <div class="dg-testa">
-          <span class="mono dg-conta">{T('Passo', 'Step')} <b data-demo-num>1</b>/{n}</span>
-          <span class="dg-punti">
-            {d.passi.map((p, i) => <button type="button" data-demo-punto={i + 1} aria-label={`${T('Passo', 'Step')} ${i + 1}: ${p.titolo}`}></button>)}
-          </span>
-        </div>
-        <div class="dg-riga">
-          <span class="dg-attivita">{T('Esempio', 'Example')}: {d.attivita}</span>
-          <button class="dg-auto" type="button" data-demo-auto aria-pressed="false"><span class="dg-auto-ico" aria-hidden="true"></span><span data-demo-auto-testo>{T('Guarda da solo', 'Play')}</span></button>
-        </div>
-        <div class="dg-barra" aria-hidden="true"><i data-demo-barra></i></div>
-        <ol class="dg-passi" aria-live="polite">
+    <div class={`demo demo-${id}`} data-demo data-passo="1" data-avanti={T('Avanti', 'Next')} data-ricomincia={T('Ricomincia', 'Start again')} data-play={T('Riproduci', 'Play')} data-pausa={T('Pausa', 'Pause')} data-appare>
+      <div class="dm-tappe">
+        <ol>
           {d.passi.map((p, i) => (
-            <li data-demo-passo={i + 1} data-fuoco={p.fuoco.join(' ')} hidden={i > 0}>
-              <h3>{p.titolo}</h3>
-              <p>{p.testo}</p>
-              <p class="dg-dietro"><span class="mono">{T('Dietro le quinte', 'Behind the scenes')}</span>{p.dietro}</p>
-            </li>
+            <li><button type="button" data-demo-punto={i + 1} aria-label={`${T('Passo', 'Step')} ${i + 1}: ${p.titolo}`}><b>{due(i + 1)}</b><span>{p.corto}</span><i aria-hidden="true"></i></button></li>
           ))}
         </ol>
-        <div class="dg-esito" data-demo-esito hidden>
-          <div class="dg-numeri">
-            {d.esito.map(([k, v], i) => <div class={i ? 'dopo' : 'prima'}><span class="mono">{k}</span><strong>{v}</strong></div>)}
-          </div>
-          <p class="dg-strumenti"><span class="mono">{T('Cosa usiamo', 'What we use')}</span>{d.strumenti.join(' · ')}</p>
-          <a class="link-freccia" href={`${preventivo}?s=${d.servizio}:${d.livello}`}>{T('Lo voglio nella mia attività', 'I want this in my business')} · {liv.nome} {T('da', 'from')} {eur(liv.una!)} <span class="freccia" aria-hidden="true">→</span></a>
-        </div>
-        <div class="dg-comandi">
-          <button class="dg-indietro" type="button" data-demo-indietro aria-label={T('Passo precedente', 'Previous step')}>←</button>
-          <button class="btn btn-azione btn-piccolo dg-avanti" type="button" data-demo-avanti><span data-demo-avanti-testo>{T('Avanti', 'Next')}</span> <span class="freccia" aria-hidden="true">→</span></button>
-        </div>
+        <button class="dm-auto" type="button" data-demo-auto aria-pressed="false"><span class="dm-auto-ico" aria-hidden="true"></span><span data-demo-auto-testo>{T('Riproduci', 'Play')}</span></button>
       </div>
 
-      <div class="demo-palco" role="group" aria-label={T('Simulazione', 'Simulation')}>
-        {id === 'whatsapp' && (
-          <div class="dp dp-wa">
-            <div class="dp-pannello dp-tel" data-pannello="tel">
-              <div class="tel">
-                <div class="tel-testa"><span class="tel-avatar">A</span><span class="tel-nome"><strong>{P.tel}</strong><small>{P.telSotto}</small></span></div>
-                <div class="tel-chat">
-                  <span class="tel-giorno">{P.oggi}</span>
-                  <p class="bolla lei" data-da="1" data-attesa>{evid(P.msg1, '2').map((p) => (p.on ? <mark data-acceso={p.acceso}>{p.x}</mark> : p.x))}<time>21:40</time></p>
-                  <p class="bolla noi" data-da="4" data-attesa data-ritardo="200">{P.risposta1}<time>21:40 ✓✓</time></p>
-                  <p class="bolla lei" data-da="4" data-attesa data-ritardo="1700">{P.msg2}<time>21:41</time></p>
-                  <p class="bolla noi" data-da="4" data-attesa data-ritardo="3200">{P.risposta2}<time>21:41 ✓✓</time></p>
-                </div>
-              </div>
+      <div class="dm-corpo">
+        <div class="demo-guida">
+          <span class="dg-attivita">{T('Esempio', 'Example')} · {d.attivita}</span>
+          <ol class="dg-passi" aria-live="polite">
+            {d.passi.map((p, i) => (
+              <li data-demo-passo={i + 1} data-fuoco={p.fuoco.join(' ')} data-sorgente={p.da} data-meta={p.verso} data-prova={p.prova ? '' : undefined} hidden={i > 0}>
+                <span class="dg-num"><b>{due(i + 1)}</b> / {due(n)}</span>
+                <h3>{p.titolo}</h3>
+                <p>{p.testo}</p>
+                <details class="dg-come"><summary>{T('Come funziona, dietro', 'How it works, behind it')}</summary><p>{p.dietro}</p></details>
+              </li>
+            ))}
+          </ol>
+          <div class="dg-esito" data-demo-esito hidden>
+            <div class="dg-numeri">
+              {d.esito.map(([k, v], i) => <div class={i ? 'dopo' : 'prima'}><span class="mono">{k}</span><strong>{v}</strong></div>)}
             </div>
-            <div class="dp-pannello dp-ai app" data-pannello="ai">
-              <span class="app-titolo"><Icona nome="chip" /> {P.aiTitolo}</span>
-              <p class="app-attesa" data-fino="1">{P.aiAttesa}</p>
-              <dl class="campi">
-                {P.campi.map(([k, v]: [string, string], i: number) => <div data-da="2" style={`--i:${i}`}><dt>{k}</dt><dd>{v}</dd></div>)}
-              </dl>
-              <p class="app-ok" data-da="2" style="--i:4">✓ {P.aiCapito}</p>
-            </div>
-            <div class="dp-col">
-              <div class="dp-pannello dp-agenda app" data-pannello="agenda">
-                <span class="app-titolo"><Icona nome="calendario" /> {P.agenda}</span>
-                <ul class="agenda">
-                  {P.orari.map((o: string, i: number) => {
-                    const libero = i === 1 || i === 2;
-                    return (
-                      <li class={libero ? 'libero' : 'pieno'} data-acceso={libero ? '3' : undefined}>
-                        <time>{o}</time>
-                        {i === 1 ? <><span data-fino="3">{P.libero}</span><span class="preso" data-da="4" data-ritardo="3400">{P.prenotato}</span></> : <span>{libero ? P.libero : P.occupato}</span>}
-                      </li>
-                    );
-                  })}
-                </ul>
-                <p class="app-cerca" data-da="3" data-fino="3">{P.cercando}</p>
-              </div>
-              <div class="dp-pannello dp-foglio" data-pannello="foglio">
-                <div class="carta">
-                  <span class="carta-titolo"><i class="foglio-ico"></i>{P.foglio}</span>
-                  <table class="tabella">
-                    <thead><tr>{P.colonne.map((c: string) => <th>{c}</th>)}</tr></thead>
-                    <tbody>
-                      {P.righe.map((r: string[]) => <tr>{r.map((c) => <td>{c}</td>)}</tr>)}
-                      <tr class="nuova" data-da="5">{P.nuova.map((c: string) => <td>{c}</td>)}</tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="notifica" data-da="5" data-ritardo="700">
-                  <span class="notifica-ico">A</span>
-                  <span><strong>{P.notifica}</strong><small>{P.notificaTesto}</small></span>
-                  <time>{P.adesso}</time>
-                </div>
-                <p class="app-ok promemoria" data-da="5" data-ritardo="1400">⏰ {P.promemoria}</p>
-              </div>
-            </div>
+            <a class="link-freccia" href={`${preventivo}?s=${d.servizio}:${d.livello}`}>{T('Lo voglio nella mia attività', 'I want this in my business')} · {liv.nome} {T('da', 'from')} {eur(liv.una!)} <span class="freccia" aria-hidden="true">→</span></a>
           </div>
-        )}
-
-        {id === 'preventivo' && (
-          <div class="dp dp-pv">
-            <div class="dp-pannello dp-rich app" data-pannello="rich">
-              <div class="rich" data-da="1" data-attesa>
-                <header><span class="tel-avatar">M</span><span class="tel-nome"><strong>{P.da}</strong><small>{P.canale}</small></span></header>
-                <p class="rich-oggetto">{P.oggetto}</p>
-                <p class="rich-testo">{evid(P.testo, '2').map((p) => (p.on ? <mark data-acceso={p.acceso}>{p.x}</mark> : p.x))}</p>
-                <figure class="foto">
-                  <img src={bagno.src} width="960" height="570" alt={P.foto} loading="lazy" decoding="async" />
-                  <span class="foto-box box-vasca" data-acceso="2">{P.fotoVasca}</span>
-                  <span class="foto-box box-parete" data-acceso="2">{P.fotoParete}</span>
-                  <figcaption>📎 {P.foto}</figcaption>
-                </figure>
-              </div>
-            </div>
-            <div class="dp-col">
-              <div class="dp-pannello dp-lavori app" data-pannello="lavori">
-                <span class="app-titolo"><Icona nome="chip" /> {P.lavoriTitolo}</span>
-                <p class="app-attesa" data-fino="1">{P.lavoriAttesa}</p>
-                <ul class="lavori">
-                  {P.lavori.map(([l, q]: [string, string], i: number) => <li data-da="2" data-acceso="3" style={`--i:${i}`}><span>{l}</span><b>{q}</b></li>)}
-                </ul>
-              </div>
-              <div class="dp-pannello dp-listino" data-pannello="listino">
-                <div class="carta">
-                  <span class="carta-titolo"><i class="foglio-ico"></i>{P.listino}</span>
-                  <table class="tabella listino">
-                    <tbody>
-                      {P.voci.map(([cod, voce, prezzo, usata]: [string, string, number, boolean]) => (
-                        <tr class={usata ? 'usata' : 'altra'} data-acceso={usata ? '3-4' : undefined}><td>{cod}</td><td>{voce}</td><td>{eur2(prezzo)}</td></tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <div class="dp-pannello dp-bozza" data-pannello="bozza">
-              <div class="carta doc-carta">
-                <p class="app-attesa" data-fino="3">{P.bozzaAttesa}</p>
-                <div class="doc" data-da="4">
-                  <header class="doc-testa">
-                    <span class="doc-logo">EDILNOVA</span>
-                    <span class="doc-stato"><span data-fino="5">{P.bozzaStato}</span><span class="ok" data-da="6">✓ {P.inviatoStato}</span></span>
-                  </header>
-                  <p class="doc-titolo"><strong>{P.bozza}</strong><small>{P.per}</small></p>
-                  <ul class="doc-righe">
-                    {P.righe.map(([v, p]: [string, number], i: number) => <li data-da="4" style={`--i:${i}`}><span>{v}</span><b>{eur2(p)}</b></li>)}
-                  </ul>
-                  <p class="doc-totale"><span>{P.totale}</span><strong data-conta={totale}>{eur2(totale)}</strong></p>
-                  <p class="doc-tempi">{P.tempi}</p>
-                </div>
-              </div>
-              <div class="doc-azioni" data-da="5" data-fino="5">
-                <button class="btn btn-azione btn-piccolo" type="button" data-demo-vai>{P.approva} <span class="freccia">→</span></button>
-                <span class="doc-modifica"><Icona nome="matita" /> {P.modifica}</span>
-              </div>
-              <div class="doc-inviato" data-da="6"><strong>✓ {P.inviato}</strong><small>{P.richiamo}</small></div>
-            </div>
+          <div class="dg-comandi">
+            <button class="dg-indietro" type="button" data-demo-indietro aria-label={T('Passo precedente', 'Previous step')}>←</button>
+            <button class="btn btn-azione btn-piccolo dg-avanti" type="button" data-demo-avanti><span data-demo-avanti-testo>{T('Avanti', 'Next')}</span> <span class="freccia" aria-hidden="true">→</span></button>
           </div>
-        )}
+        </div>
 
-        {id === 'assistente' && (
-          <div class="dp dp-as">
-            <div class="dp-pannello dp-sito" data-pannello="sito">
-              <div class="browser">
-                <div class="browser-barra"><i></i><i></i><i></i><span>{P.indirizzo}</span></div>
-                <div class="browser-corpo">
-                  <div class="sito-finto">
-                    <strong>{P.nome}</strong>
-                    <span class="sf sf-1"></span><span class="sf sf-2"></span><span class="sf sf-3"></span>
-                    <span class="sf-bottone"></span>
-                    <span class="sf-immagine"></span>
+        <div class="demo-palco" role="group" aria-label={T('Simulazione', 'Simulation')}>
+          <ol class="dm-catena" aria-hidden="true">
+            {pannelli.map(([pid, icona, nome]) => <li data-anello={pid}><Icona nome={icona} /><span>{nome}</span></li>)}
+          </ol>
+          <svg class="dm-fili" aria-hidden="true"></svg>
+
+          {id === 'whatsapp' && (
+            <div class="dp dp-wa">
+              <div class="dp-pannello dp-tel" data-pannello="tel">
+                <div class="tel">
+                  <div class="tel-stato"><time>{P.ora}</time><span class="tel-icone"><i class="tel-segnale"></i><i class="tel-batteria"></i></span></div>
+                  <div class="tel-testa">
+                    <span class="tel-indietro" aria-hidden="true">‹</span>
+                    <span class="tel-avatar">G</span>
+                    <span class="tel-nome"><strong>{P.contatto}</strong><small>{P.contattoSotto}</small></span>
+                    <svg class="tel-chiama" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v10H3zM14 10l6-3v10l-6-3" /></svg>
+                    <svg class="tel-chiama" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 6a2 2 0 0 1 2-2z" /></svg>
                   </div>
-                  <div class="chat">
-                    <div class="chat-testa"><span class="chat-avatar"><Icona nome="chat" /></span><span class="tel-nome"><strong>{P.chat}</strong><small><i class="chat-online"></i>{P.chatSotto}</small></span></div>
-                    <div class="chat-corpo">
-                      <p class="bolla bot">{P.saluto}</p>
-                      <p class="bolla io" data-da="1">{P.d1}</p>
-                      <p class="bolla bot" data-da="1" data-attesa data-ritardo="500">{P.r1}<span class="fonte" data-acceso="2">📄 {P.f1}</span></p>
-                      <p class="bolla io" data-da="2">{P.d2}</p>
-                      <p class="bolla bot" data-da="2" data-attesa data-ritardo="500">{P.r2}<span class="fonte" data-acceso="2">📄 {P.f2}</span></p>
-                      <p class="bolla io" data-da="3">{P.d3}</p>
-                      <div class="bolla bot" data-da="3" data-attesa data-ritardo="500">{P.r3}
-                        <span class="slot">{P.slot.map((s: string) => <button type="button" data-demo-scegli={s} data-predefinito={s === P.predefinito ? '' : undefined}>{s}</button>)}</span>
-                      </div>
-                      <p class="bolla io" data-da="4">{P.scelta} <span data-demo-scelta>{P.predefinito}</span></p>
-                      <p class="bolla bot" data-da="4" data-attesa data-ritardo="500">{P.r4a} <span data-demo-scelta>{P.predefinito}</span>{P.r4b}</p>
-                      <p class="bolla io" data-da="5">{P.d5}</p>
-                      <p class="bolla bot" data-da="5" data-attesa data-ritardo="500">{P.r5}<span class="fonte passata">↪ {P.f5}</span></p>
-                    </div>
-                    <div class="chat-scrivi"><span>{P.scrivi}</span><i>↑</i></div>
+                  <div class="tel-chat">
+                    <span class="tel-giorno">{P.oggi}</span>
+                    <p class="bolla lei" data-da="1" data-attesa>{evid(P.msg1, '2').map((p) => (p.on ? <mark data-acceso={p.acceso}>{p.x}</mark> : p.x))}<time>21:40</time></p>
+                    <p class="bolla noi" data-da="4" data-attesa>{P.risposta1}<time>21:40 <span class="spunte">✓✓</span></time></p>
+                    <p class="bolla lei" data-da="4" data-attesa data-ritardo="1500">{P.msg2}<time>21:41</time></p>
+                    <p class="bolla noi" data-da="4" data-attesa data-ritardo="3000">{P.risposta2}<time>21:41 <span class="spunte">✓✓</span></time></p>
                   </div>
+                  <div class="tel-scrivi"><span>☺ {P.scrivi}</span><i aria-hidden="true"></i></div>
                 </div>
               </div>
-            </div>
-            <div class="dp-col">
-              <div class="dp-pannello dp-doc app" data-pannello="doc">
-                <span class="app-titolo"><Icona nome="ricerca" /> {P.docTitolo}</span>
-                <ul class="docs">
-                  {P.docs.map(([nome, acceso]: [string, string]) => <li data-acceso={acceso}><Icona nome="revisioni" /><span>{nome}</span></li>)}
-                </ul>
-              </div>
-              <div class="dp-pannello dp-cruscotto app" data-pannello="cruscotto">
-                <span class="app-titolo"><Icona nome="grafico" /> {P.cruscotto}</span>
-                <p class="app-attesa" data-fino="5">{P.cruscottoAttesa}</p>
-                <dl class="numeri">
-                  {P.numeri.map(([k, v]: [string, string], i: number) => <div data-da="6" style={`--i:${i}`}><dt>{k}</dt><dd>{v}</dd></div>)}
+
+              <div class="dp-pannello dp-ai ia" data-pannello="ai">
+                <span class="ia-titolo"><i></i>{P.aiTitolo}</span>
+                <div class="ia-attesa" data-fino="1"><i></i><i></i><i></i><small>{P.aiAttesa}</small></div>
+                <dl class="ia-campi">
+                  {P.campi.map(([k, v]: [string, string], i: number) => <div data-da="2" style={`--i:${i}`}><dt>{k}</dt><dd>{v}</dd></div>)}
                 </dl>
+                <p class="ia-ok" data-da="2" style="--i:4">✓ {P.aiCapito}</p>
+              </div>
+
+              <div class="dp-col">
+                <div class="dp-pannello dp-agenda cal" data-pannello="agenda">
+                  <div class="cal-testa">
+                    <span class="cal-logo"><i></i>{P.agenda}</span>
+                    <span class="cal-giorno"><small>{P.giorno}</small><b>{P.data}</b></span>
+                  </div>
+                  <ul class="cal-ore">
+                    {P.orari.map(([ora, chi, stato]: [string, string, string], i: number) => (
+                      <li class={stato} data-acceso={stato === 'libero' ? '3' : undefined}>
+                        <time>{ora}</time>
+                        {stato === 'pieno'
+                          ? <span class={`ev ev-${i}`}>{chi}</span>
+                          : i === 1
+                            ? <><span class="cal-libero" data-fino="3">{P.libero}</span><span class="ev ev-nuovo" data-da="4" data-ritardo="3400">{P.prenotato}</span></>
+                            : <span class="cal-libero">{P.libero}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                  <p class="cal-cerca" data-da="3" data-fino="3">{P.cercando}</p>
+                </div>
+                <div class="dp-pannello dp-foglio" data-pannello="foglio">
+                  <div class="sheet">
+                    <div class="sheet-testa"><i class="foglio-ico"></i><b>{P.foglio}</b><small>Google {T('Fogli', 'Sheets')}</small></div>
+                    <table class="sheet-tab">
+                      <thead><tr><th></th>{['A', 'B', 'C', 'D'].map((l) => <th>{l}</th>)}</tr></thead>
+                      <tbody>
+                        <tr class="intesta"><th>1</th>{P.colonne.map((c: string) => <td>{c}</td>)}</tr>
+                        {P.righe.map((r: string[], i: number) => <tr><th>{i + 2}</th>{r.map((c) => <td>{c}</td>)}</tr>)}
+                        <tr class="nuova" data-da="5"><th>{P.righe.length + 2}</th>{P.nuova.map((c: string) => <td>{c}</td>)}</tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="notifica" data-da="5" data-ritardo="700">
+                    <span class="notifica-ico">A</span>
+                    <span><strong>{P.notifica}</strong><small>{P.notificaTesto}</small></span>
+                    <time>{P.adesso}</time>
+                  </div>
+                  <p class="promemoria" data-da="5" data-ritardo="1400">⏰ {P.promemoria}</p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+
+          {id === 'preventivo' && (
+            <div class="dp dp-pv">
+              <div class="dp-pannello dp-rich posta" data-pannello="rich">
+                <div class="posta-testa"><Icona nome="posta" /><b>{P.posta}</b></div>
+                <div class="posta-mail" data-da="1" data-attesa>
+                  <header><span class="tel-avatar">M</span><span class="tel-nome"><strong>{P.da}</strong><small>{P.canale}</small></span></header>
+                  <p class="posta-oggetto">{P.oggetto}</p>
+                  <p class="posta-testo">{evid(P.testo, '2').map((p) => (p.on ? <mark data-acceso={p.acceso}>{p.x}</mark> : p.x))}</p>
+                  <figure class="foto">
+                    <img src={bagno.src} width="960" height="570" alt={P.foto} loading="lazy" decoding="async" />
+                    <span class="foto-box box-vasca" data-acceso="2">{P.fotoVasca}</span>
+                    <span class="foto-box box-parete" data-acceso="2">{P.fotoParete}</span>
+                    <figcaption><b>{P.foto}</b> · {P.fotoPeso}</figcaption>
+                  </figure>
+                </div>
+                <div class="posta-risposta" data-da="6" data-ritardo="300">
+                  <small>{P.risposta}</small>
+                  <p>{P.rispostaTesto}</p>
+                  <span class="posta-pdf"><i>PDF</i>{P.rispostaFile}</span>
+                </div>
+              </div>
+
+              <div class="dp-col">
+                <div class="dp-pannello dp-lavori ia" data-pannello="lavori">
+                  <span class="ia-titolo"><i></i>{P.lavoriTitolo}</span>
+                  <div class="ia-attesa" data-fino="1"><i></i><i></i><i></i><small>{P.lavoriAttesa}</small></div>
+                  <ul class="ia-lavori">
+                    {P.lavori.map(([l, q]: [string, string], i: number) => <li data-da="2" data-acceso="3" style={`--i:${i}`}><span>{l}</span><b>{q}</b></li>)}
+                  </ul>
+                  <p class="ia-ok" data-da="2" style="--i:5">✓ {P.lavoriFatto}</p>
+                </div>
+                <div class="dp-pannello dp-listino" data-pannello="listino">
+                  <div class="sheet">
+                    <div class="sheet-testa"><i class="foglio-ico"></i><b>{P.listino}</b><small>Google {T('Fogli', 'Sheets')}</small></div>
+                    <table class="sheet-tab listino">
+                      <tbody>
+                        {P.voci.map(([cod, voce, prezzo, usata]: [string, string, number, boolean]) => (
+                          <tr class={usata ? 'usata' : 'altra'} data-acceso={usata ? '3-4' : undefined}><th>{cod}</th><td>{voce}</td><td>{eur2(prezzo)}</td></tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dp-pannello dp-bozza" data-pannello="bozza">
+                <div class="doc-app">
+                  <div class="doc-barra">
+                    <span class="doc-file"><i>PDF</i>{P.bozza}</span>
+                    <span class="doc-stato"><span data-da="4" data-fino="5">{P.bozzaStato}</span><span class="ok" data-da="6">✓ {P.inviatoStato}</span></span>
+                  </div>
+                  <div class="doc-foglio">
+                    <div class="doc-vuoto" data-fino="3"><i></i><i></i><i></i><i></i><small>{P.bozzaAttesa}</small></div>
+                    <div class="doc" data-da="4">
+                      <header class="doc-testa"><span class="doc-logo">EDILNOVA</span><small>Via Tortona 18 · Milano</small></header>
+                      <p class="doc-titolo"><strong>{P.bozza}</strong><small>{P.per}</small></p>
+                      <ul class="doc-righe">
+                        {P.righe.map(([v, p]: [string, number], i: number) => <li data-da="4" style={`--i:${i}`}><span>{v}</span><b>{eur2(p)}</b></li>)}
+                      </ul>
+                      <p class="doc-totale"><span>{P.totale}</span><strong data-conta={totale}>{eur2(totale)}</strong></p>
+                      <p class="doc-tempi">{P.tempi}</p>
+                    </div>
+                  </div>
+                  <div class="doc-azioni" data-da="5" data-fino="5">
+                    <span class="doc-modifica"><Icona nome="matita" /> {P.modifica}</span>
+                    <button class="btn btn-azione btn-piccolo" type="button" data-demo-vai>{P.approva} <span class="freccia">→</span></button>
+                  </div>
+                  <div class="doc-inviato" data-da="6"><strong>✓ {P.inviato}</strong><small>{P.richiamo}</small></div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {id === 'assistente' && (
+            <div class="dp dp-as">
+              <div class="dp-pannello dp-sito" data-pannello="sito">
+                <div class="browser">
+                  <div class="browser-barra"><i></i><i></i><i></i><span>🔒 {P.indirizzo}</span></div>
+                  <div class="browser-corpo">
+                    <div class="sito-finto">
+                      <nav class="sf-nav"><b><i class="sf-dente"></i>{P.nome}</b><span>{P.menu.join(' · ')}</span></nav>
+                      <div class="sf-eroe">
+                        <h4>{P.heroTit}</h4>
+                        <p>{P.heroSub}</p>
+                        <span class="sf-bottone">{P.heroBtn}</span>
+                        <span class="sf-stelle">★★★★★ <small>{P.stelle}</small></span>
+                      </div>
+                      <img class="sf-foto" src={studio.src} width="900" height="600" alt="" loading="lazy" decoding="async" />
+                    </div>
+                    <div class="chat">
+                      <div class="chat-testa"><span class="chat-avatar"><Icona nome="chat" /></span><span class="tel-nome"><strong>{P.chat}</strong><small><i class="chat-online"></i>{P.chatSotto}</small></span></div>
+                      <div class="chat-corpo">
+                        <p class="bolla bot">{P.saluto}</p>
+                        <p class="bolla io" data-da="1">{P.d1}</p>
+                        <p class="bolla bot" data-da="1" data-attesa data-ritardo="500">{P.r1}<span class="fonte" data-acceso="2">📄 {P.f1}</span></p>
+                        <p class="bolla io" data-da="2">{P.d2}</p>
+                        <p class="bolla bot" data-da="2" data-attesa data-ritardo="500">{P.r2}<span class="fonte" data-acceso="2">📄 {P.f2}</span></p>
+                        <p class="bolla io" data-da="3">{P.d3}</p>
+                        <div class="bolla bot" data-da="3" data-attesa data-ritardo="500">{P.r3}
+                          <span class="slot">{P.slot.map((s: string) => <button type="button" data-demo-scegli={s} data-predefinito={s === P.predefinito ? '' : undefined}>{s}</button>)}</span>
+                        </div>
+                        <p class="bolla io" data-da="4">{P.scelta} <span data-demo-scelta>{P.predefinito}</span></p>
+                        <p class="bolla bot" data-da="4" data-attesa data-ritardo="500">{P.r4a} <span data-demo-scelta>{P.predefinito}</span>{P.r4b}</p>
+                        <p class="bolla io" data-da="5">{P.d5}</p>
+                        <p class="bolla bot" data-da="5" data-attesa data-ritardo="500">{P.r5}<span class="fonte passata">↪ {P.f5}</span></p>
+                      </div>
+                      <div class="chat-scrivi"><span>{P.scrivi}</span><i>↑</i></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dp-col">
+                <div class="dp-pannello dp-doc ia" data-pannello="doc">
+                  <span class="ia-titolo"><i></i>{P.docTitolo}</span>
+                  <ul class="ia-docs">
+                    {P.docs.map(([tipo, nome, acceso]: [string, string, string]) => (
+                      <li data-acceso={acceso}><i class={`doc-tipo ${tipo}`}>{tipo === 'pdf' ? 'PDF' : tipo === 'cal' ? '31' : tipo === 'regole' ? '!' : '≡'}</i><span>{nome}</span><small>{P.docLetto}</small></li>
+                    ))}
+                  </ul>
+                  <p class="ia-ok ia-agenda" data-da="4" data-ritardo="900">✓ {P.agendaNuovo}</p>
+                </div>
+                <div class="dp-pannello dp-cruscotto ia" data-pannello="cruscotto">
+                  <span class="ia-titolo"><i></i>{P.cruscotto}</span>
+                  <p class="ia-sotto" data-fino="5">{P.cruscottoAttesa}</p>
+                  <p class="ia-sotto" data-da="6">{P.cruscottoSotto}</p>
+                  <dl class="ia-numeri">
+                    {P.numeri.map(([k, v]: [string, string], i: number) => <div data-da="6" style={`--i:${i}`}><dt>{k}</dt><dd>{v}</dd></div>)}
+                  </dl>
+                  <p class="ia-richiama" data-da="6" style="--i:4">☎ {P.richiamare}</p>
+                </div>
+              </div>
+            </div>
+          )}
+          <i class="dm-pacco" aria-hidden="true"></i>
+        </div>
       </div>
     </div>
     <p class="demo-avviso">
