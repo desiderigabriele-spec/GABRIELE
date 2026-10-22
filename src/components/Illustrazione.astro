@@ -1,6 +1,8 @@
 ---
 // Illustrazioni delle pagine servizio (tranne «siti web», che ha Compila), nello stile del logo: pannelli scuri, bianco
 // e il quadratino rosso. Si muovono piano (servizio.css); con «riduci movimento» stanno ferme.
+import tazza from '../assets/img/prodotto-tazza.webp';
+import palestra from '../assets/img/annuncio-palestra.webp';
 interface Props { id: string; lang?: 'it' | 'en' }
 const { id, lang = 'it' } = Astro.props;
 const it = lang === 'it';
@@ -28,12 +30,10 @@ const occhio = (x: number, y: number, r: number) => `
     <Fragment>
       <g class="ill-galleggia">
         <rect class="s1" x="130" y="36" width="250" height="350" rx="22" />
-        <rect class="bs" x="148" y="54" width="214" height="180" rx="16" />
+        <clipPath id={`${g}-foto`}><rect x="148" y="54" width="214" height="180" rx="16" /></clipPath>
+        <image href={tazza.src} x="148" y="54" width="214" height="180" preserveAspectRatio="xMidYMid slice" clip-path={`url(#${g}-foto)`} />
         <rect class="s2" x="162" y="68" width="62" height="22" rx="11" />
         <text class="tm" x="193" y="83" text-anchor="middle">{T('NUOVO', 'NEW')}</text>
-        <path class="l" d="M215 118h80l-7 82a8 8 0 0 1-8 7h-50a8 8 0 0 1-8-7Z" />
-        <path class="bl spesso" d="M235 118v-10a20 20 0 0 1 40 0v10" />
-        <circle class="r ill-pulsa" cx="255" cy="160" r="7" />
         <rect class="l" x="148" y="252" width="160" height="14" rx="7" />
         <rect class="n" x="148" y="274" width="112" height="8" rx="4" />
         <text class="tg" x="148" y="318" font-size="28">{T('49 €', '€49')}</text>
@@ -159,9 +159,8 @@ const occhio = (x: number, y: number, r: number) => `
         <circle class="b" cx="210" cy="70" r="12" />
         <rect class="l" x="228" y="62" width="74" height="8" rx="4" />
         <text class="tm" x="228" y="84">{T('SPONSORIZZATO', 'SPONSORED')}</text>
-        <rect class="bs" x="198" y="96" width="144" height="150" rx="12" />
-        <Fragment set:html={occhio(266, 176, 40)} />
-        <circle class="r ill-pulsa" cx="312" cy="128" r="6" />
+        <clipPath id={`${g}-foto`}><rect x="198" y="96" width="144" height="150" rx="12" /></clipPath>
+        <image href={palestra.src} x="198" y="96" width="144" height="150" preserveAspectRatio="xMidYMid slice" clip-path={`url(#${g}-foto)`} />
         <rect class="n" x="198" y="258" width="132" height="7" rx="3.5" />
         <rect class="n" x="198" y="272" width="98" height="7" rx="3.5" />
         <g class="ill-cta">

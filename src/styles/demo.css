@@ -135,12 +135,12 @@
 .rich-testo { margin: 0; font-size: .8rem; line-height: 1.5; color: var(--nebbia); }
 .rich-testo mark.acceso { color: var(--latte); }
 .foto { position: relative; margin: 0; overflow: hidden; border: 1px solid var(--linea); }
-.foto svg { display: block; width: 100%; height: auto; }
+.foto img { display: block; width: 100%; height: auto; aspect-ratio: 320 / 190; object-fit: cover; }
 .foto figcaption { position: absolute; left: 6px; bottom: 6px; font-size: .66rem; padding: .15rem .45rem; background: rgba(0, 0, 0, .55); color: #fff; }
 .foto-box { position: absolute; display: flex; align-items: flex-start; justify-content: flex-start; padding: 2px 5px; font-family: var(--f-mono); font-size: .6rem; color: transparent; border: 2px solid transparent; transition: border-color .4s, color .4s, background .4s; }
 .foto-box.acceso { border-color: rgb(var(--dati-rgb)); color: #0b141a; background: linear-gradient(rgba(var(--dati-rgb), .95), rgba(var(--dati-rgb), .95)) 0 0 / 100% 1.4em no-repeat; }
-.box-vasca { left: 7%; top: 52%; width: 64%; height: 34%; }
-.box-parete { left: 2%; top: 4%; width: 70%; height: 46%; }
+.box-vasca { left: 29%; top: 25%; width: 65%; height: 64%; }
+.box-parete { left: 48%; top: 2%; width: 50%; height: 21%; }
 .lavori { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
 .lavori li { display: flex; justify-content: space-between; gap: .6rem; padding: .3rem .6rem; font-size: .78rem; border: 1px solid rgba(var(--dati-rgb), .3); background: rgba(var(--dati-rgb), .05); transition: border-color .4s, background .4s; }
 .lavori li.acceso { border-color: rgba(var(--dati-rgb), .8); background: rgba(var(--dati-rgb), .14); }
@@ -191,7 +191,7 @@
 .sf-2 { width: 75%; }
 .sf-3 { width: 60%; }
 .sf-bottone { width: 110px; height: 26px; background: #0f766e; opacity: .85; }
-.sf-immagine { flex: 1; min-height: 60px; border-radius: 10px !important; background: linear-gradient(135deg, #d9ebe6, #b9d8d0); }
+.sf-immagine { flex: 1; min-height: 60px; border-radius: 10px !important; background: #d9ebe6 url("../assets/img/demo-studio.webp") center / cover no-repeat; }
 .chat { display: flex; flex-direction: column; min-height: 0; margin: 10px 10px 10px 0; background: #fff; box-shadow: 0 12px 40px -12px rgba(15, 50, 45, .45); overflow: hidden; color: #1d2b2a; }
 .chat-testa { display: flex; align-items: center; gap: .6rem; padding: .6rem .75rem; background: #0f766e; }
 .chat-avatar { width: 30px; height: 30px; display: grid; place-items: center; background: rgba(255, 255, 255, .18); color: #fff; }
@@ -229,6 +229,7 @@
   .dg-dietro { font-size: .8rem !important; padding: .55rem .7rem; }
   .dg-passi p { font-size: .88rem; }
   .foto { max-height: 120px; }
+  .foto img { height: 120px; }
   .listino .altra { display: none; }
 }
 

@@ -7,6 +7,7 @@ import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
 import { euro, numero as cifre } from '../data/formato.js';
 import { demo } from '../data/demo.js';
+import bagno from '../assets/img/demo-bagno.webp';
 import '../styles/demo.css';
 
 interface Props { id: 'whatsapp' | 'preventivo' | 'assistente'; lang?: 'it' | 'en'; numero?: number; tutte?: boolean; forma?: string }
@@ -145,20 +146,7 @@ const totale = id === 'preventivo' ? P.righe.reduce((s: number, r: [string, numb
                 <p class="rich-oggetto">{P.oggetto}</p>
                 <p class="rich-testo">{evid(P.testo, '2').map((p) => (p.on ? <mark data-acceso={p.acceso}>{p.x}</mark> : p.x))}</p>
                 <figure class="foto">
-                  <svg viewBox="0 0 320 190" role="img" aria-label={P.foto}>
-                    <defs>
-                      <pattern id={`piastrelle-${lang}`} width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="#d9d2c5" /><path d="M20 0H0V20" fill="none" stroke="#bfb6a6" stroke-width="1" /></pattern>
-                      <linearGradient id={`vasca-${lang}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" /><stop offset="1" stop-color="#d7dde3" /></linearGradient>
-                    </defs>
-                    <rect width="320" height="190" fill={`url(#piastrelle-${lang})`} />
-                    <rect y="150" width="320" height="40" fill="#8f8475" />
-                    <rect x="236" y="22" width="56" height="70" rx="3" fill="#a9c6d8" stroke="#f2efe9" stroke-width="5" />
-                    <path d="M120 70h22v8h-14v14h-8z" fill="#9aa3ab" />
-                    <circle cx="146" cy="60" r="7" fill="#b9c1c8" />
-                    <rect x="28" y="104" width="196" height="54" rx="12" fill={`url(#vasca-${lang})`} stroke="#c5ccd3" stroke-width="2" />
-                    <rect x="40" y="108" width="172" height="10" rx="5" fill="#e8edf1" />
-                    <rect x="250" y="112" width="36" height="46" rx="4" fill="#efece6" stroke="#cfc8bb" stroke-width="2" />
-                  </svg>
+                  <img src={bagno.src} width="960" height="570" alt={P.foto} loading="lazy" decoding="async" />
                   <span class="foto-box box-vasca" data-acceso="2">{P.fotoVasca}</span>
                   <span class="foto-box box-parete" data-acceso="2">{P.fotoParete}</span>
                   <figcaption>📎 {P.foto}</figcaption>

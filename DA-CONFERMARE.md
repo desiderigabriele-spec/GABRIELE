@@ -14,7 +14,7 @@
 - [ ] **Numeri reali** per i casi studio (richieste al mese, tempi di caricamento): aggiungili a `fatto` quando li hai.
 - [ ] **Testi in inglese** (`src/data/en.js`, `src/i18n/ui.js`, pagine `/en`): rileggili o falli rileggere da un madrelingua prima di fare pubblicità all'estero.
 - [x] **Logo definitivo** «Eclisse flat» nel sito (`public/brand/`).
-- [ ] **Quattro foto** al posto dei disegni: il prodotto nell'hero di Negozi online, l'annuncio nell'hero di Pubblicità online, la foto del bagno nella demo «Dalla foto al preventivo» e la foto dello studio nel sito della demo «Risponde ai clienti».
+- [x] **Quattro foto** al posto dei disegni (`src/assets/img/`): la tazza nell'hero di Negozi online, la palestra nell'annuncio di Pubblicità online, il bagno nella demo «Dalla foto al preventivo», lo studio dentistico nella demo «Risponde ai clienti».
 - [ ] **E-commerce lanciati**: se puoi nominarne uno o due (anche tuoi), diventano un terzo caso studio.
 
 ## Tecnica
