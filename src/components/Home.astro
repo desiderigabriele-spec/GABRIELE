@@ -247,23 +247,32 @@ const jsonLd = {
         )}</p>
       </div>
       <div class="servizi-griglia" data-griglia-viva>
+        {/* su telefono è un indice: righe con nome e prezzo, toccando una riga si apre (vita.js, indiceServizi) */}
         {servizi.map((s) => (
-          <article class="card servizio">
+          <article class="card servizio" data-servizio>
             <div class="servizio-top">
               <span class="servizio-icona"><Icona nome={s.icona} /></span>
               <h3><a class="servizio-link" href={urlServizio(s.id, lang)}>{s.titolo}</a></h3>
               <span class="mono">{s.numero}</span>
+              <span class="servizio-da-breve" aria-hidden="true">{eur(s.da)}{s.mese && <small>{mese}</small>}</span>
+              <button class="servizio-apri" type="button" aria-expanded="false" aria-controls={`servizio-${s.id}`} hidden>
+                <span class="sr-only">{T(`Dettagli: ${s.titolo}`, `Details: ${s.titolo}`)}</span><span class="servizio-piu" aria-hidden="true"></span>
+              </button>
             </div>
-            <p>{s.semplice}</p>
-            {base[s.id] && (
-              <div class="servizio-include">
-                <span class="servizio-include-titolo">{T('Già incluso in', 'Included in')} {base[s.id].nome}</span>
-                <ul class="lista-check">{base[s.id].include.slice(0, 3).map((x) => <li>{x}</li>)}</ul>
+            <div class="servizio-corpo" id={`servizio-${s.id}`}>
+              <div class="servizio-dentro">
+                <p>{s.semplice}</p>
+                {base[s.id] && (
+                  <div class="servizio-include">
+                    <span class="servizio-include-titolo">{T('Già incluso in', 'Included in')} {base[s.id].nome}</span>
+                    <ul class="lista-check">{base[s.id].include.slice(0, 3).map((x) => <li>{x}</li>)}</ul>
+                  </div>
+                )}
+                <div class="servizio-piede">
+                  <span class="prezzo-da">{T('A partire da', 'Starting from')}<strong>{eur(s.da)}{s.mese && <small> {mese}</small>}</strong></span>
+                  <a class="link-freccia" href={urlServizio(s.id, lang)} tabindex="-1" aria-hidden="true">{T('Scopri', 'Discover')} <span class="freccia">→</span></a>
+                </div>
               </div>
-            )}
-            <div class="servizio-piede">
-              <span class="prezzo-da">{T('A partire da', 'Starting from')}<strong>{eur(s.da)}{s.mese && <small> {mese}</small>}</strong></span>
-              <span class="link-freccia" aria-hidden="true">{T('Scopri', 'Discover')} <span class="freccia">→</span></span>
             </div>
           </article>
         ))}

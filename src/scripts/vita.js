@@ -229,6 +229,23 @@ function pacchettiSlider() {
   addEventListener('resize', segna);
 }
 
+// ---------- I servizi sul telefono: un indice, toccando una riga si apre (le altre si chiudono) ----------
+function indiceServizi() {
+  const schede = [...document.querySelectorAll('[data-servizio]')];
+  if (!schede.length) return;
+  const metti = (aperta) => schede.forEach((s) => {
+    s.classList.toggle('aperta', s === aperta);
+    s.querySelector('.servizio-apri')?.setAttribute('aria-expanded', String(s === aperta));
+  });
+  schede.forEach((s) => {
+    const b = s.querySelector('.servizio-apri');
+    if (!b) return;
+    b.hidden = false;
+    b.addEventListener('click', () => metti(s.classList.contains('aperta') ? null : s));
+  });
+  metti(schede[0]); // la prima arriva aperta: si capisce subito come funziona
+}
+
 // ---------- I tre problemi: la giornata «Oggi» e «Con noi», si scambia da sola finché non tocchi l'interruttore ----------
 function giornata() {
   document.querySelectorAll('[data-giornata]').forEach((box) => {
@@ -328,7 +345,7 @@ function puntoTitoli() {
 
 // ---------- 09 · Il tabellone: i prezzi girano come le palette delle stazioni ----------
 function tabellone() {
-  document.querySelectorAll('.piano-prezzo, .altri-prezzi strong, .prezzo-da strong').forEach((el) => {
+  document.querySelectorAll('.piano-prezzo, .altri-prezzi strong, .prezzo-da strong, .servizio-da-breve').forEach((el) => {
     const cifre = [];
     testi(el, 'small').forEach((n) => {
       if (!/\d/.test(n.textContent)) return;
@@ -611,6 +628,7 @@ export function avviaVita() {
   vicini(); // anche con «riduci movimento»
   salto();
   giornata(); // l'interruttore funziona anche con «riduci movimento»
+  indiceServizi();
   pacchettiSlider();
   filaInfinita(); // si trascina anche con «riduci movimento», ma non scorre da sola
   if (ridotto) return;

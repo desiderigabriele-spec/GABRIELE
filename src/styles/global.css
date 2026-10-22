@@ -378,6 +378,38 @@ html.intro-attiva .intro { display: grid; }
 .link-freccia .freccia { transition: transform .4s var(--ease); color: var(--rosso-testo); }
 @media (max-width: 1020px) { .servizi-griglia { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 599px) { .servizi-griglia { grid-template-columns: 1fr; } }
+/* sul computer la scheda è com'era: i contenitori dell'indice non contano */
+.servizio-corpo, .servizio-dentro { display: contents; }
+.servizio-da-breve, .servizio-apri { display: none; }
+/* sul telefono: un indice. Righe con numero, icona, nome e prezzo; toccando una riga si apre (vita.js) */
+@media (max-width: 599px) {
+  html.js .servizi-griglia { gap: 0; border-top: 1px solid var(--linea-forte); }
+  html.js .servizi-griglia > .servizio { display: block; padding: 0; background: none; border: 0; border-bottom: 1px solid var(--linea-forte); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  html.js .servizio::before, html.js .servizio::after { display: none; }
+  html.js .servizio-link::after { display: none; }
+  html.js .servizio-top { position: relative; grid-template-columns: 22px 38px minmax(0, 1fr) auto 16px; gap: 10px; padding-block: 14px; }
+  html.js .servizio-top .mono { order: -1; font-size: .66rem; color: var(--nebbia-2); }
+  html.js .servizio-top .servizio-icona { width: 38px; height: 38px; }
+  html.js .servizio-top .servizio-icona svg { width: 22px; height: 22px; }
+  html.js .servizio-top h3 { font-size: 1.05rem; line-height: 1.15; }
+  html.js .servizio-da-breve { display: block; font-family: var(--f-titolo); font-weight: 800; font-size: .95rem; letter-spacing: -.03em; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; }
+  html.js .servizio-da-breve small { font-family: var(--f-testo); font-weight: 500; font-size: .7em; color: var(--nebbia); letter-spacing: 0; }
+  html.js .servizio-apri { display: flex; position: absolute; inset: 0; z-index: 2; align-items: center; justify-content: flex-end; background: none; border: 0; padding: 0; cursor: pointer; color: inherit; }
+  html.js .servizio-apri:focus-visible { outline: 2px solid var(--rosso-testo); outline-offset: 2px; }
+  .servizio-piu { position: relative; width: 14px; height: 14px; }
+  .servizio-piu::before, .servizio-piu::after { content: ''; position: absolute; left: 0; top: 6px; width: 14px; height: 2px; background: var(--latte); transition: transform .35s var(--ease); }
+  .servizio-piu::after { transform: rotate(90deg); }
+  .servizio.aperta .servizio-piu::after { transform: rotate(0); }
+  html.js .servizio.aperta .servizio-icona { background: var(--rosso); }
+  html.js .servizio.aperta .servizio-icona .punto { fill: var(--latte); }
+  html.js .servizio-corpo { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s cubic-bezier(.16, 1, .3, 1); }
+  html.js .servizio.aperta .servizio-corpo { grid-template-rows: 1fr; }
+  html.js .servizio-dentro { display: grid; gap: 12px; min-height: 0; overflow: hidden; padding-left: 70px; }
+  html.js .servizio-dentro > p { margin: 0; font-size: .88rem; }
+  html.js .servizio-include { border-top: 0; padding-top: 0; }
+  html.js .servizio-piede { border-top: 0; padding-top: 0; margin-bottom: 18px; justify-content: flex-start; }
+  html.js .servizio-piede .prezzo-da { display: none; }
+}
 
 /* ---------- Calcolatore tempo risparmiato ---------- */
 /* Software con AI: l'assaggio «Stanotte, mentre dormivi» */
