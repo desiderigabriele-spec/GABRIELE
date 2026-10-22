@@ -3,7 +3,7 @@
 // in rettangoli che disegnano il sito di un'osteria pezzo per pezzo ([data-bz]),
 // poi la bozza prende vita in 3D: sei tasselli si girano e compongono la foto del piatto, e davanti galleggiano
 // il voto, il messaggio WhatsApp e il grafico. Logica in vita.js (bozza), stili in vita.css.
-// La foto è public/img/bozza-piatto.webp (3:2).
+// La foto è src/assets/img/bozza-piatto.webp (3:2).
 interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
 const T = (a: string, b: string) => (lang === 'it' ? a : b);

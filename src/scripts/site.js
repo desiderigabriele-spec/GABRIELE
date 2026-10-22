@@ -1,7 +1,6 @@
 // Comportamenti comuni a tutte le pagine: scroll fluido, animazioni d'ingresso,
 // card che si inclinano, header, menu, tema chiaro/scuro e cielo stellato.
 import { avviaIntro } from './intro.js';
-import { avviaLuce } from './luce.js';
 import Lenis from 'lenis';
 import { anima, quandoArriva } from './moto.js';
 import { avviaPersonalizza } from './benvenuto.js';
@@ -12,8 +11,6 @@ import { leggiProfilo, lang } from './profilo.js';
 
 // l'avvio per primo: parte subito, mentre il resto si prepara
 avviaIntro();
-// lo sfondo della versione chiara: la luce del mattino al posto delle stelle
-avviaLuce();
 
 const html = document.documentElement;
 // il salto tra le stelle: chi arriva da un'altra pagina vede le stelle rallentare (va letto subito, poi la classe sparisce)
@@ -268,25 +265,15 @@ if (finePointer && !ridotto) {
 
 // ---------- Cookie: il consenso si dà nel benvenuto in basso (benvenuto.js) ----------
 
-// ---------- Cielo stellato: si carica dopo il testo; con lo sfondo chiaro aspetta che si torni allo scuro ----------
+// ---------- Cielo stellato: si carica dopo il testo (con lo sfondo chiaro è d'inchiostro) ----------
 const canvas = document.querySelector('[data-scena]');
 // il nome del visitatore (benvenuto e bottone NO/ME) e Focus, l'assistente
 avviaPersonalizza();
 avviaAssistente();
-// il modulo (piccolo) si scarica comunque, così passando allo scuro le stelle ci sono subito
 function caricaScena() {
   if (!canvas) return;
-  import('./scena.js').then((m) => {
-    let partita = false;
-    const parti = () => {
-      if (partita || html.dataset.tema === 'chiaro') return;
-      partita = true;
-      window.removeEventListener('gd-tema', parti);
-      m.avviaScena(canvas, { arrivo: arrivoSalto }); // se WebGL non c'è il sito resta completo, solo senza stelle
-    };
-    window.addEventListener('gd-tema', parti);
-    parti();
-  }).catch(() => {});
+  // se WebGL non c'è il sito resta completo, solo senza stelle
+  import('./scena.js').then((m) => m.avviaScena(canvas, { arrivo: arrivoSalto })).catch(() => {});
 }
 
 function avvio() {

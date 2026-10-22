@@ -2,7 +2,7 @@
 
 **Stato:** prima versione completa (anteprima, alcuni dati da confermare) · aggiornato il 22 ottobre 2026
 
-Sito che porta il visitatore **dal primo sguardo al «sì»**: cinque capitoli (Attenzione, Interesse, Fiducia, Desiderio, Azione) accompagnati da un cielo stellato: a ogni capitolo si viaggia più veloci tra le stelle (con lo sfondo chiaro, la luce del mattino), più un **preventivo automatico** dove il cliente compone il progetto e vede il prezzo in tempo reale.
+Sito che porta il visitatore **dal primo sguardo al «sì»**: cinque capitoli (Attenzione, Interesse, Fiducia, Desiderio, Azione) accompagnati da un cielo stellato: a ogni capitolo si viaggia più veloci tra le stelle (con lo sfondo chiaro, stelle d'inchiostro sulla carta), più un **preventivo automatico** dove il cliente compone il progetto e vede il prezzo in tempo reale.
 
 ## Avviare il sito
 
@@ -27,7 +27,7 @@ Stack: Astro (statico) · WebGL scritto a mano per il cielo (nessuna libreria 3D
 | Pagine dei servizi (testi, illustrazioni) | `src/components/PaginaServizio.astro` · `src/data/pagine-servizi.js` · `src/components/Illustrazione.astro` · `src/styles/servizio.css` (pagine `/servizi/...`, `/en/services/...`) |
 | Pagina «AI per aziende» (spiegata semplice) | `src/components/PaginaAI.astro` (pagine `/intelligenza-artificiale`, `/en/ai`) · `src/styles/ai.css` |
 | Preventivo automatico | `src/components/Preventivo.astro` (pagine `/preventivo`, `/en/quote`) · `src/scripts/preventivo.js` · `src/styles/preventivo.css` |
-| Cielo stellato e «viaggio» | `src/scripts/scena.js` (velocità per capitolo: attributo `data-forma` 0-4 sulle sezioni) · sfondo chiaro `src/scripts/luce.js` |
+| Cielo stellato e «viaggio» | `src/scripts/scena.js` (velocità per capitolo: attributo `data-forma` 0-4 sulle sezioni) · con lo sfondo chiaro le stelle sono d'inchiostro |
 | Colori (nero e rosso, sfondo chiaro o scuro), tipografia, componenti | `src/styles/global.css` · effetti `src/styles/vita.css` · Focus `src/styles/assistente.css` |
 | Invio preventivi su Google Fogli + Telegram | `apps-script/Code.gs` + variabile `PUBLIC_PREVENTIVO_ENDPOINT` (vedi `.env.example`) |
 

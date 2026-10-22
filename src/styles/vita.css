@@ -65,7 +65,7 @@ html.vita-on .bz-pioggia { display: block; }
 .bz-foto i { background: linear-gradient(135deg, #efe6d6, #c9b89c); backface-visibility: hidden; }
 .bz-foto i:nth-child(2n) { background: linear-gradient(135deg, #e6dccb, #bfae91); }
 /* con la foto: ogni tassello mostra il suo pezzo, e insieme fanno l'immagine */
-.bz-foto.con-foto i { background: #c9b89c url("/img/bozza-piatto.webp") calc(var(--c) * 50%) calc(var(--r) * 100%) / 300% 200% no-repeat; }
+.bz-foto.con-foto i { background: #c9b89c url("../assets/img/bozza-piatto.webp") calc(var(--c) * 50%) calc(var(--r) * 100%) / 300% 200% no-repeat; }
 /* i sei tasselli si girano uno dopo l'altro e compongono la foto */
 .bozza.viva .bz-foto i { animation: bz-gira .8s cubic-bezier(.2, .8, .2, 1) both calc(.3s + var(--k) * .12s); }
 @keyframes bz-gira { from { transform: rotateY(-180deg); } }
@@ -130,13 +130,13 @@ html.vita-on .punto-titolo.arrivato { transform: none; }
 .flap.gira { font-variant-numeric: tabular-nums; background: #1c1c1c; color: #ffffff !important; box-shadow: inset 0 -1px 0 #0a0a0a, inset 0 1px 0 #0a0a0a; }
 /* niente cifre tabellari a riposo: in Inter Tight allargano anche il punto delle migliaia */
 
-/* 11 · il salto tra le stelle: cambiando pagina il sito si dissolve mentre le stelle diventano scie (scena.js, luce.js);
-   la pagina nuova appare mentre le stelle rallentano. Il cielo (.scena, .luce) resta sempre visibile. */
-html.salto-via body > :not(.scena):not(.luce) { opacity: 0; filter: blur(3px); transition: opacity .42s cubic-bezier(.6, 0, .3, 1), filter .42s; }
+/* 11 · il salto tra le stelle: cambiando pagina il sito si dissolve mentre le stelle diventano scie (scena.js);
+   la pagina nuova appare mentre le stelle rallentano. Il cielo (.scena) resta sempre visibile. */
+html.salto-via body > :not(.scena) { opacity: 0; filter: blur(3px); transition: opacity .42s cubic-bezier(.6, 0, .3, 1), filter .42s; }
 html.salto-via main { transform: scale(1.04); transition: transform .42s cubic-bezier(.6, 0, .3, 1); }
-html.salto-arrivo body > :not(.scena):not(.luce) { opacity: 0; animation: salto-sicuro .3s 2.5s forwards; }
+html.salto-arrivo body > :not(.scena) { opacity: 0; animation: salto-sicuro .3s 2.5s forwards; }
 html.salto-arrivo main { transform: scale(.97); }
-html.salto-entra body > :not(.scena):not(.luce) { transition: opacity .55s cubic-bezier(.2, .8, .2, 1); }
+html.salto-entra body > :not(.scena) { transition: opacity .55s cubic-bezier(.2, .8, .2, 1); }
 html.salto-entra main { transition: transform .6s cubic-bezier(.2, .8, .2, 1); }
 /* se qualcosa va storto, la pagina compare comunque */
 @keyframes salto-sicuro { to { opacity: 1; } }
@@ -200,7 +200,7 @@ html.ridotto .intruso .in-griglia span:not(.r) { opacity: .4; }
 .cs-titolo { position: absolute; left: 12px; top: 46px; font-family: var(--f-titolo); font-weight: 800; letter-spacing: -0.05em; font-size: 1.45rem; line-height: .95; }
 .cs-testo { position: absolute; left: 12px; top: 108px; font-size: .7rem; color: #555; }
 .cs-bottone { position: absolute; left: 12px; top: 130px; padding: 8px 12px; background: var(--rosso); color: #fff; font-size: .7rem; font-weight: 600; }
-.cs-foto { position: absolute; right: 12px; top: 46px; width: 38%; height: 104px; background: #d6d4cf url("/img/bozza-piatto.webp") center / cover no-repeat; }
+.cs-foto { position: absolute; right: 12px; top: 46px; width: 38%; height: 104px; background: #d6d4cf url("../assets/img/bozza-piatto.webp") center / cover no-repeat; }
 .cs-chat { position: absolute; left: 12px; right: 12px; top: 186px; padding: 8px 10px; background: #fff; border: 1px solid #ddd; font-size: .68rem; line-height: 1.4; }
 .cs-online { position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; font-family: var(--f-mono); font-size: .62rem; }
 .cs-online i { width: 8px; height: 8px; background: var(--rosso); }
@@ -261,7 +261,7 @@ html.ridotto .intruso .in-griglia span:not(.r) { opacity: .4; }
 .v-menu span { padding: 1cqw 2.2cqw; font-size: 1.35cqw; color: #2c4f7c; border-right: 1px solid #c2c2c2; font-weight: bold; }
 .v-menu span:first-child { background: #fff; }
 .v-corpo { display: grid; grid-template-columns: 40% 1fr; gap: 3cqw; padding: 3cqw 4cqw; align-items: start; }
-.v-foto { position: relative; aspect-ratio: 4 / 3; border: .5cqw solid #fff; box-shadow: 0 .3cqw .8cqw rgba(0,0,0,.25); background: #cfd8e0 url("/img/pd-prima.webp") center / cover no-repeat; }
+.v-foto { position: relative; aspect-ratio: 4 / 3; border: .5cqw solid #fff; box-shadow: 0 .3cqw .8cqw rgba(0,0,0,.25); background: #cfd8e0 url("../assets/img/pd-prima.webp") center / cover no-repeat; }
 .v-foto span { position: absolute; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.45); color: #fff; font-size: 1.15cqw; padding: .4cqw .8cqw; }
 .v-testo b { display: block; margin: 0 0 1.2cqw; font: bold 2.6cqw Georgia, serif; color: #1f5596; }
 .v-testo p { margin: 0 0 1.2cqw; font-size: 1.32cqw; line-height: 1.55; text-align: justify; color: #555; }
@@ -308,7 +308,7 @@ html.js .prima-dopo:not(.vicino) .v-foto, html.js .prima-dopo:not(.vicino) .r-fo
 .r-arco { position: absolute; right: 6.5cqw; top: 9.5cqw; width: 33cqw; height: 50cqw; z-index: 1; }
 .r-arco::before { content: ""; position: absolute; inset: -1.3cqw -1.3cqw 0; border: 1px solid rgba(242,180,109,.35); border-bottom: 0; border-radius: 18cqw 18cqw 0 0; pointer-events: none; }
 .r-foto { position: absolute; inset: 0; border-radius: 16.5cqw 16.5cqw 0 0; overflow: hidden; box-shadow: 0 3cqw 6cqw -2cqw rgba(0,0,0,.7); }
-.r-foto::before { content: ""; position: absolute; inset: 0; background: url("/img/pd-dopo.webp") 50% 40% / cover no-repeat; transform-origin: 60% 40%; animation: r-respira 16s ease-in-out infinite alternate; }
+.r-foto::before { content: ""; position: absolute; inset: 0; background: url("../assets/img/pd-dopo.webp") 50% 40% / cover no-repeat; transform-origin: 60% 40%; animation: r-respira 16s ease-in-out infinite alternate; }
 .r-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(22,19,15,.55)); }
 @keyframes r-respira { to { transform: scale(1.07); } }
 .r-punto { position: absolute; left: var(--x); top: var(--y); width: 2.2cqw; height: 2.2cqw; margin: -1.1cqw 0 0 -1.1cqw; border-radius: 50%; background: rgba(22,19,15,.35); z-index: 2; }

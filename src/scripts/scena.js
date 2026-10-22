@@ -4,12 +4,14 @@
 // (fermi su «Guarda», scie su «Scrivici»), e scorrendo si accelera.
 // Il salto tra le pagine: partendo le stelle accelerano fino alle scie; arrivando rallentano.
 // WebGL puro, senza librerie: due disegni di punti (le stelle e la stella cadente).
-// Con lo sfondo chiaro il cielo si ferma: c'è la luce del mattino (luce.js).
+// Con lo sfondo chiaro è lo stesso cielo stampato sulla carta: stelle d'inchiostro, qualcuna rossa.
 
 const rnd = (a = -1, b = 1) => a + Math.random() * (b - a);
 // i colori arrivano allo shader in luce lineare (come li passava three.js): #C8C8C8 → 0,578
 const lineare = (c) => (c < 0.04045 ? c * 0.0773993808 : Math.pow(c * 0.9478672986 + 0.0521327014, 2.4));
 const GRIGIO = lineare(200 / 255);
+// l'inchiostro della versione chiara e il rosso del logo (qui niente luce lineare: si stende sopra la carta)
+const INCHIOSTRO = [0.1, 0.1, 0.1], ROSSO = [227 / 255, 6 / 255, 19 / 255];
 
 const TESTA = 'precision highp float;\nprecision highp int;\nuniform mat4 projectionMatrix, modelViewMatrix;\n';
 const TESTA_FRAG = '#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n';
@@ -58,8 +60,8 @@ void main(){
 }`;
 
 const STELLE_FS = TESTA_FRAG + /* glsl */ `
-uniform vec3 uColore;
-uniform float uOpacita;
+uniform vec3 uColore, uRosso;
+uniform float uOpacita, uChiaro;
 varying float vLuce, vTinta, vStira;
 varying vec2 vDir;
 void main(){
@@ -72,6 +74,13 @@ void main(){
   if (d > 0.5) discard;
   float a = pow(smoothstep(0.5, 0.0, d), 1.8) * (vStira > 1.05 ? smoothstep(0.5, 0.15, abs(lungo)) : 1.0);
   vec3 c = uColore;
+  if (uChiaro > 0.5) {
+    // sulla carta: l'inchiostro si stende (la luce della stella diventa quanto è scura), qualcuna rossa
+    if (vTinta > 0.965) c = uRosso;
+    float k = min(1.0, a * vLuce * 0.7) * uOpacita;
+    gl_FragColor = vec4(c * k, k);
+    return;
+  }
   if (vTinta < 0.2) c = mix(c, vec3(1.0), 0.55);                   // qualche stella più bianca
   gl_FragColor = vec4(c * vLuce, a * uOpacita);
 }`;
@@ -91,11 +100,14 @@ void main(){
 
 const CADENTE_FS = TESTA_FRAG + /* glsl */ `
 uniform vec3 uColore;
+uniform float uChiaro;
 varying float vA;
 void main(){
   float d = length(gl_PointCoord - 0.5);
   if (d > 0.5) discard;
-  gl_FragColor = vec4(mix(uColore, vec3(1.0), 0.6), smoothstep(0.5, 0.0, d) * vA);
+  float a = smoothstep(0.5, 0.0, d) * vA;
+  if (uChiaro > 0.5) { a *= 0.6; gl_FragColor = vec4(uColore * a, a); return; }  // un tratto di penna
+  gl_FragColor = vec4(mix(uColore, vec3(1.0), 0.6), a);
 }`;
 
 // un programma con i suoi attributi (nell'ordine dato: il primo prende il posto 0) e le sue uniform
@@ -144,8 +156,8 @@ export function avviaScena(canvas, { arrivo = false } = {}) {
   const cad = { inizio: [0, 0, 0], dir: [-1, -0.4, 0], prog: -1 };
 
   const stelle = programma(gl, STELLE_VS, STELLE_FS, ['position', 'aSeme'],
-    ['projectionMatrix', 'modelViewMatrix', 'uTime', 'uScroll', 'uPR', 'uAspect', 'uWarp', 'uViaggio', 'uPercorso', 'uScia', 'uParallasse', 'uColore', 'uOpacita']);
-  const cadente = programma(gl, CADENTE_VS, CADENTE_FS, ['aT'], ['projectionMatrix', 'modelViewMatrix', 'uInizio', 'uDir', 'uProg', 'uPR', 'uColore']);
+    ['projectionMatrix', 'modelViewMatrix', 'uTime', 'uScroll', 'uPR', 'uAspect', 'uWarp', 'uViaggio', 'uPercorso', 'uScia', 'uParallasse', 'uColore', 'uRosso', 'uOpacita', 'uChiaro']);
+  const cadente = programma(gl, CADENTE_VS, CADENTE_FS, ['aT'], ['projectionMatrix', 'modelViewMatrix', 'uInizio', 'uDir', 'uProg', 'uPR', 'uColore', 'uChiaro']);
   if (!stelle || !cadente) return null;
   const buffer = (dati) => { const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, dati, gl.STATIC_DRAW); return b; };
   const bPos = buffer(sp), bSeme = buffer(seme), bT = buffer(scT);
@@ -166,8 +178,15 @@ export function avviaScena(canvas, { arrivo = false } = {}) {
   gl.disable(gl.DEPTH_TEST);
   gl.enable(gl.BLEND);
   gl.blendEquation(gl.FUNC_ADD);
-  gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE, gl.ONE, gl.ONE); // luce che si somma
   gl.clearColor(0, 0, 0, 0);
+  // di notte la luce delle stelle si somma; sulla carta l'inchiostro si stende sopra
+  let chiaro = false;
+  function tema() {
+    chiaro = html.dataset.tema === 'chiaro';
+    if (chiaro) gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    else gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE, gl.ONE, gl.ONE);
+  }
+  tema();
 
   // ---------- Dimensioni ----------
   let W = 0, H = 0, aspetto = 1;
@@ -215,16 +234,16 @@ export function avviaScena(canvas, { arrivo = false } = {}) {
   let ultimoScroll = window.scrollY, vel = 0;
   let warp = 0, viaggio = 0, percorso = 0, scia = 0;
 
-  // ---------- Ciclo: si ferma con la scheda nascosta e con lo sfondo chiaro ----------
+  // ---------- Ciclo: si ferma con la scheda nascosta ----------
   const t0 = performance.now();
   let prima = t0, id = 0, frame = 0;
-  const serve = () => !document.hidden && html.dataset.tema !== 'chiaro';
+  const serve = () => !document.hidden;
   function riprendi() {
     cancelAnimationFrame(id); id = 0;
     if (serve()) { prima = performance.now(); loop(); } else gl.clear(gl.COLOR_BUFFER_BIT);
   }
   document.addEventListener('visibilitychange', riprendi);
-  window.addEventListener('gd-tema', riprendi);
+  window.addEventListener('gd-tema', () => { tema(); riprendi(); });
 
   function loop() {
     id = requestAnimationFrame(loop);
@@ -271,7 +290,8 @@ export function avviaScena(canvas, { arrivo = false } = {}) {
     gl.uniform1f(U.uTime, t); gl.uniform1f(U.uScroll, (sy / H) * 0.6); gl.uniform1f(U.uPR, pr); gl.uniform1f(U.uAspect, aspetto);
     gl.uniform1f(U.uWarp, warp); gl.uniform1f(U.uViaggio, viaggio); gl.uniform1f(U.uPercorso, percorso); gl.uniform1f(U.uScia, scia);
     gl.uniform2f(U.uParallasse, mx < 5 ? -mx * 0.25 : 0, my < 5 ? -my * 0.15 : 0);
-    gl.uniform3f(U.uColore, GRIGIO, GRIGIO, GRIGIO); gl.uniform1f(U.uOpacita, 0.9);
+    if (chiaro) gl.uniform3f(U.uColore, ...INCHIOSTRO); else gl.uniform3f(U.uColore, GRIGIO, GRIGIO, GRIGIO);
+    gl.uniform3f(U.uRosso, ...ROSSO); gl.uniform1f(U.uOpacita, 0.9); gl.uniform1f(U.uChiaro, chiaro ? 1 : 0);
     gl.bindBuffer(gl.ARRAY_BUFFER, bPos); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
     gl.bindBuffer(gl.ARRAY_BUFFER, bSeme); gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1, 4, gl.FLOAT, false, 0, 0);
     gl.drawArrays(gl.POINTS, 0, S);
@@ -282,7 +302,8 @@ export function avviaScena(canvas, { arrivo = false } = {}) {
       gl.useProgram(cadente.p);
       gl.uniformMatrix4fv(U.projectionMatrix, false, proiezione); gl.uniformMatrix4fv(U.modelViewMatrix, false, vista);
       gl.uniform3f(U.uInizio, ...cad.inizio); gl.uniform3f(U.uDir, ...cad.dir); gl.uniform1f(U.uProg, cad.prog); gl.uniform1f(U.uPR, pr);
-      gl.uniform3f(U.uColore, GRIGIO, GRIGIO, GRIGIO);
+      if (chiaro) gl.uniform3f(U.uColore, ...INCHIOSTRO); else gl.uniform3f(U.uColore, GRIGIO, GRIGIO, GRIGIO);
+      gl.uniform1f(U.uChiaro, chiaro ? 1 : 0);
       gl.bindBuffer(gl.ARRAY_BUFFER, bT); gl.vertexAttribPointer(0, 1, gl.FLOAT, false, 0, 0);
       gl.drawArrays(gl.POINTS, 0, SC);
     }
