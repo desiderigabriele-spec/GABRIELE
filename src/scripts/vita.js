@@ -619,7 +619,7 @@ function righeCheSiScrivono() {
 function vicini() {
   document.querySelectorAll('[data-prima-dopo]').forEach((b) => {
     if (!('IntersectionObserver' in window)) { b.classList.add('vicino'); return; }
-    const io = new IntersectionObserver((v) => { if (v.some((x) => x.isIntersecting)) { io.disconnect(); b.classList.add('vicino'); } }, { rootMargin: '150% 0px' });
+    const io = new IntersectionObserver((v) => { if (v.some((x) => x.isIntersecting)) { io.disconnect(); b.classList.add('vicino'); } }, { rootMargin: '75% 0px' });
     io.observe(b);
   });
 }

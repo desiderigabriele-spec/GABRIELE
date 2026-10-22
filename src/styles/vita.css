@@ -276,7 +276,7 @@ html.ridotto .intruso .in-griglia span:not(.r) { opacity: .4; }
 .pd-dopo .pd-etichetta { background: var(--r-txt); color: var(--r-bg); }
 .r-nav { position: absolute; left: 0; right: 0; top: 0; display: flex; align-items: center; gap: 3cqw; padding: 2.2cqw 4cqw; z-index: 3; }
 /* finché il confronto è lontano dallo schermo, i caratteri e le foto del sito «dopo» non si scaricano:
-   così non rallentano l'apertura della home. vita.js mette .vicino quando manca una schermata e mezza */
+   così non rallentano l'apertura della home. vita.js mette .vicino quando manca poco meno di una schermata */
 html.js .prima-dopo:not(.vicino) .pd-dopo { --r-tit: Georgia, serif; --r-txtf: Arial, sans-serif; --r-mono: ui-monospace, monospace; }
 html.js .prima-dopo:not(.vicino) .v-foto, html.js .prima-dopo:not(.vicino) .r-foto::before { background-image: none; }
 .r-logo { font: italic 500 2.7cqw/1 var(--r-tit); letter-spacing: -.01em; display: flex; align-items: baseline; gap: 1cqw; }
