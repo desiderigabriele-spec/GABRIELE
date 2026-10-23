@@ -224,8 +224,8 @@ const passoDi = (n: number) => T(`Passo ${n} di 4`, `Step ${n} of 4`);
               <div class="pv-campo pv-largo"><label for="pv-msg">{T('Vuoi dirci qualcosa?', 'Anything to add?')} <span class="facolt">{T('(facoltativo)', '(optional)')}</span></label><textarea id="pv-msg" name="messaggio" rows="3" placeholder={T('es. Vorrei più richieste per i miei lavori a Milano', 'e.g. I would like more enquiries for my work in Milan')}></textarea></div>
               <input class="pv-trappola" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
               {it
-                ? <label class="pv-privacy pv-largo"><input type="checkbox" name="privacy" required /> Ho letto l'<a href="/privacy" target="_blank">informativa privacy</a> e acconsento a essere ricontattato per questa richiesta.</label>
-                : <label class="pv-privacy pv-largo"><input type="checkbox" name="privacy" required /> I have read the <a href="/en/privacy" target="_blank">privacy notice</a> and agree to be contacted about this request.</label>}
+                ? <label class="pv-privacy pv-largo"><input type="checkbox" name="privacy" required /><span>Ho letto l'<a href="/privacy" target="_blank">informativa privacy</a> e acconsento a essere ricontattato per questa richiesta.</span></label>
+                : <label class="pv-privacy pv-largo"><input type="checkbox" name="privacy" required /><span>I have read the <a href="/en/privacy" target="_blank">privacy notice</a> and agree to be contacted about this request.</span></label>}
             </div>
             <p class="pv-errore" data-errore="4" hidden>{T(
               'Ci mancano nome e cognome, un modo per risponderti (email o telefono) e il consenso privacy.',
