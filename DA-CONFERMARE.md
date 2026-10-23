@@ -6,7 +6,8 @@
 - [ ] **Partita IVA** da mostrare nel footer (`contatti.piva` in `src/data/sito.js`).
 - [ ] **Dominio**: oggi `gabrieledesideri.it` in `astro.config.mjs`, `robots.txt` e dati strutturati. Con il nome «Desideri&Code» i domini `studiodesideri.it` e `.com` sono già presi: liberi `studio-desideri.it`, `studio-desideri.com`, `studiodesiderimilano.it`, `studiodesideri.ch`. Tieni gabrieledesideri.it come reindirizzamento.
 - [ ] **Nome «Desideri&Code»**: controllare che il marchio sia libero (UIBM, EUIPO) e che Instagram e LinkedIn siano liberi. In fattura: «Desideri&Code di Gabriele Desideri».
-- [ ] **Foto tua** per la sezione "Chi sono" (oggi c'è solo il testo con il percorso).
+- [ ] **Foto tua** per la pagina «Chi siamo» (`/chi-siamo`): oggi nel riquadro 4:5 ci sono le iniziali «GD». Basta una foto verticale, luce naturale, sfondo semplice.
+- [ ] **Chi siamo**: rileggi la strada (`src/components/PaginaChiSiamo.astro`). Ci sono i ruoli (agente di commercio, team leader, co-fondatore di una startup, consulente immobiliare) senza i nomi delle aziende: dimmi se va bene così o se vuoi toglierne qualcuno.
 
 ## Contenuti
 - [ ] **Recensioni** di Luigi Montini e Lorenzo Baldassarri per «Parlano di noi»: incolla le loro parole in `recensione` (in `lavori`, `src/data/sito.js`, e la traduzione in `src/data/en.js`). Finché non arrivano la scheda mostra la sfida del progetto. Non inventarle: le recensioni false sono vietate.
@@ -21,6 +22,7 @@
 - [ ] **Prima di iniziare la pubblicità**: rendere privato il progetto su GitHub (Settings → Danger Zone → Change visibility → Make private). Il sito su Vercel continua a funzionare uguale.
 - [ ] Creare il foglio "Preventivi", incollare `apps-script/Code.gs`, pubblicarlo come app web e impostare `PUBLIC_PREVENTIVO_ENDPOINT` su Vercel. Senza, il preventivo si invia su WhatsApp o per email.
 - [ ] Bot Telegram (`BOT_TOKEN`, `CHAT_ID`) nelle proprietà dello script.
+- [ ] **Candidature** (pagina «Chi siamo» → «Lavora con noi»): usano lo stesso `apps-script/Code.gs`. Dopo aver incollato la versione nuova fai **Distribuisci → Gestisci distribuzioni → Modifica → Nuova versione** e accetta il permesso per Google Drive: le candidature vanno nel foglio "Candidature" e i CV in PDF nella cartella Drive "Candidature", con l'avviso su Telegram. Senza endpoint il modulo apre un'email già scritta (il CV si allega a mano). Quando chiudi una posizione, toglila da `posizioni` nella pagina e dalla riga «Stiamo cercando» in `src/components/Home.astro`.
 - [ ] Google Analytics 4 / Meta Pixel: da collegare solo dopo il consenso (gli eventi `preventivo_inizio`, `preventivo_passo`, `preventivo_invio`, `clic_contatto`, `nome_chiesto`, `nome_dato`, `nome_saltato`, `nome_cambiato`, `calcolo_aperto`, `calcolo_passo`, `lingua` sono già pronti in `dataLayer`).
 - [ ] **Privacy**: le pagine `/privacy` e `/en/privacy` sono bozze da far controllare.
 - [ ] **Svizzera**: far controllare a un consulente svizzero l'impostazione «stessi prezzi per tutti + incontri e SEO svizzera come extra» (art. 3a LCSl) e al commercialista le diciture delle fatture verso la Svizzera. Aggiornare ogni tanto il cambio in `src/data/listino.js` (`cambio.CHF`).

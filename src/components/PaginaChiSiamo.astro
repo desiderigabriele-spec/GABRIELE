@@ -1,0 +1,188 @@
+---
+// La pagina «Chi siamo» (/chi-siamo e /en/about): il titolare davanti, la squadra dietro (senza nomi), la strada
+// tra online e di persona, come lavoriamo, le certificazioni e «Lavora con noi» con la candidatura.
+// La candidatura va allo stesso script dei preventivi (apps-script/Code.gs, tipo «candidatura», CV salvato su Drive);
+// senza script si apre un'email già scritta e il CV si allega lì (scripts/candidatura.js).
+import Base from '../layouts/Base.astro';
+import { dati } from '../i18n/dati.js';
+import { url } from '../i18n/ui.js';
+import '../styles/chisiamo.css';
+
+interface Props { lang?: 'it' | 'en' }
+const { lang = 'it' } = Astro.props;
+const it = lang === 'it';
+const T = (a: string, b: string) => (it ? a : b);
+const { contatti } = dati(lang);
+const preventivo = url('preventivo', lang);
+const conScript = !!import.meta.env.PUBLIC_PREVENTIVO_ENDPOINT;
+
+// la strada: online (bianco) e di persona (rosso), sempre insieme
+const anni = it ? [
+  ['Da sempre', 'Nato sui computer', 'Il digitale è la mia lingua di casa: da lì non ho mai smesso di costruire, provare e misurare.', [['Computer e codice', 0]]],
+  ['Sempre, in parallelo', 'Social, siti ed e-commerce', 'Il filo che non si è mai interrotto, e dal 2022 il mio lavoro da libero professionista tra Milano e Firenze: pagine social e piani editoriali, campagne su Meta, Google, LinkedIn e TikTok, siti ed e-commerce seguiti dall’inizio alla gestione di ogni giorno, con SEO e funnel di vendita.', [['Social media', 0], ['Pubblicità online', 0], ['Siti ed e-commerce', 0], ['Dati e report', 0]]],
+  ['2021 — 22', 'Vendita diretta e una squadra da guidare', 'Agente di commercio, porta a porta e su appuntamento. Poi team leader: ho selezionato e formato nuovi venditori.', [['Vendita B2C', 1], ['Formazione venditori', 1]]],
+  ['2023 — 24', 'Co-fondatore di una startup', 'Business plan, strategia di crescita e marketing, lavorando in squadra sul primo prototipo.', [['Strategia', 0], ['Fare impresa', 1]]],
+  ['2025 — oggi', 'Sul territorio, al telefono', 'Consulente immobiliare a Milano: ricerca sul territorio, telefonate a freddo, appuntamenti e trattative. Ogni giorno vedo cosa convince una persona, e cosa la fa andare via.', [['Telemarketing', 1], ['Trattative', 1]]],
+  ['Oggi', 'Desideri&Code', 'Le due strade nello stesso studio: le ho provate tutte, online e di persona. Quello che funziona dal vivo lo mettiamo nei siti; quello che misuriamo online lo proviamo davanti alle persone.', []],
+] : [
+  ['Always', 'Born on computers', 'Digital is my mother tongue: I’ve never stopped building, testing and measuring.', [['Computers and code', 0]]],
+  ['Always, alongside', 'Social media, websites and e-commerce', 'The thread that never broke, and since 2022 my work as a freelancer between Milan and Florence: social pages and editorial plans, campaigns on Meta, Google, LinkedIn and TikTok, websites and online stores looked after from the start to day-to-day running, with SEO and sales funnels.', [['Social media', 0], ['Online ads', 0], ['Websites and e-commerce', 0], ['Data and reports', 0]]],
+  ['2021 — 22', 'Direct sales and a team to lead', 'Sales agent, door to door and by appointment. Then team leader: I recruited and trained new salespeople.', [['B2C sales', 1], ['Sales training', 1]]],
+  ['2023 — 24', 'Co-founder of a startup', 'Business plan, growth strategy and marketing, working as a team on the first prototype.', [['Strategy', 0], ['Building a business', 1]]],
+  ['2025 — today', 'In the field, on the phone', 'Real estate consultant in Milan: canvassing the area, cold calls, viewings and negotiations. Every day I see what convinces a person, and what makes them walk away.', [['Cold calling', 1], ['Negotiation', 1]]],
+  ['Today', 'Desideri&Code', 'Both paths in one studio: I’ve tried it all, online and in person. What works face to face goes into the websites; what we measure online gets tested in front of people.', []],
+];
+const posizioni = it ? [
+  ['smm', 'Social media manager', 'Contenuti e crescita dei profili · Milano o da remoto', ['Piani editoriali, contenuti e community per i profili dei clienti', 'Instagram, Facebook e TikTok; LinkedIn è un plus', 'Leggi i numeri e sai cosa cambiare il mese dopo']],
+  ['ads', 'Ads manager', 'Campagne a pagamento · Milano o da remoto', ['Campagne Meta e Google Ads, da impostare e far crescere', 'Pixel, conversioni e report che un cliente capisce', 'TikTok Ads e test creativi sono un plus']],
+  ['spontanea', T('Candidatura spontanea', 'Open application'), T('Non c’è il tuo ruolo? Scrivici lo stesso', 'Not your role? Write to us anyway'), [T('Sviluppatori, grafici, fotografi, videomaker, copywriter: raccontaci cosa sai fare.', 'Developers, designers, photographers, videomakers, copywriters: tell us what you do.')]],
+] : [
+  ['smm', 'Social media manager', 'Content and profile growth · Milan or remote', ['Editorial plans, content and community for clients’ profiles', 'Instagram, Facebook and TikTok; LinkedIn is a plus', 'You read the numbers and know what to change next month']],
+  ['ads', 'Ads manager', 'Paid campaigns · Milan or remote', ['Meta and Google Ads campaigns, set up and scaled', 'Pixels, conversions and reports a client can understand', 'TikTok Ads and creative testing are a plus']],
+  ['spontanea', 'Open application', 'Not your role? Write to us anyway', ['Developers, designers, photographers, videomakers, copywriters: tell us what you do.']],
+];
+---
+<Base
+  lang={lang}
+  path={url('chi', lang)}
+  alt={url('chi', it ? 'en' : 'it')}
+  title={T('Chi siamo · Desideri&Code', 'About us · Desideri&Code')}
+  description={T(
+    'Desideri&Code è uno studio a Milano guidato da Gabriele Desideri: siti, e-commerce, social e pubblicità, con l’esperienza della vendita di persona. Chi siamo, come lavoriamo e chi stiamo cercando.',
+    'Desideri&Code is a Milan studio led by Gabriele Desideri: websites, e-commerce, social media and ads, with hands-on sales experience. Who we are, how we work and who we’re hiring.',
+  )}
+>
+  <section class="hero cs-hero" data-forma="0">
+    <div class="wrap cs-hero-griglia">
+      <div class="hero-testo">
+        <span class="capitolo" data-appare>{T('Chi siamo', 'About us')}</span>
+        <h1 data-righe>
+          <span class="riga"><span>{T('Testato online.', 'Tested online.')}</span></span>
+          <span class="riga"><span><span class="em">{T('Provato di persona', 'Proven in person')}</span><span class="quadratino" aria-hidden="true"></span></span></span>
+        </h1>
+        <p class="lead" data-appare="0.2">{T(
+          'Desideri&Code è uno studio a Milano. Lo guido io, Gabriele Desideri: parlo con ogni cliente, decido la strategia e seguo il progetto fino all’ultimo ritocco. Con me lavora una squadra di collaboratori, ognuno sulla parte che sa fare meglio.',
+          'Desideri&Code is a studio in Milan. I run it, Gabriele Desideri: I talk to every client, set the strategy and follow the project to the last tweak. I work with a team of collaborators, each on the part they do best.',
+        )}</p>
+        <div class="hero-azioni" data-appare="0.3">
+          <a class="btn btn-azione btn-grande" href={preventivo} data-azione>{T('Raccontami il tuo progetto', 'Tell me about your project')} <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="btn btn-vetro btn-grande" href="#lavora">{T('Lavora con noi', 'Work with us')}</a>
+        </div>
+      </div>
+      <div class="cs-ritratto" data-appare="0.2" aria-hidden="true"><span>GD</span></div>
+    </div>
+  </section>
+
+  <section class="sezione" id="strada" data-forma="1">
+    <div class="wrap">
+      <div class="testa-sezione testa-riga">
+        <span class="capitolo" data-appare>{T('La strada', 'The path')}</span>
+        <h2 data-righe><span class="riga"><span>{T('Due strade,', 'Two paths,')}</span></span><span class="riga"><span><span class="em">{T('sempre insieme.', 'always together.')}</span></span></span></h2>
+        <p class="lead cs-legenda" data-appare><span><i></i>{T('Online', 'Online')}</span><span><i class="dal-vivo"></i>{T('Di persona', 'In person')}</span></p>
+      </div>
+      <ol class="cs-anni" data-sequenza>
+        {anni.map(([quando, titolo, testo, tag]: any) => (
+          <li>
+            <b>{quando}</b>
+            <div>
+              <h3>{titolo}</h3>
+              <p>{testo}</p>
+              {tag.length > 0 && <ul>{tag.map(([n, v]: [string, number]) => <li class={v ? 'dal-vivo' : ''}>{n}</li>)}</ul>}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="sezione" id="studio" data-forma="2">
+    <div class="wrap">
+      <div class="testa-sezione testa-riga">
+        <span class="capitolo" data-appare>{T('Come è fatto lo studio', 'How the studio works')}</span>
+        <h2 data-righe><span class="riga"><span>{T('Parli con me.', 'You talk to me.')}</span></span><span class="riga"><span><span class="em">{T('Lavora una squadra.', 'A team does the work.')}</span></span></span></h2>
+      </div>
+      <div class="cs-studio" data-sequenza>
+        <div class="card cs-ruolo titolare">
+          <span class="mono">{T('Il titolare · Gabriele Desideri', 'The owner · Gabriele Desideri')}</span>
+          <ul class="lista-check">{(it ? ['Ti ascolta e capisce cosa vendi', 'Decide strategia, testi e progetto', 'Ti segue dall’inizio alla fine', 'Firma il prezzo con te, prima di iniziare'] : ['Listens and understands what you sell', 'Sets strategy, copy and design', 'Follows you from start to finish', 'Signs the price with you before we start']).map((x) => <li>{x}</li>)}</ul>
+        </div>
+        <div class="card cs-ruolo">
+          <span class="mono">{T('I collaboratori', 'The collaborators')}</span>
+          <ul class="lista-check">{(it ? ['Sviluppo di siti, negozi e automazioni', 'Grafica e immagini', 'Foto e video', 'Testi e traduzioni'] : ['Building websites, stores and automations', 'Design and imagery', 'Photo and video', 'Copy and translation']).map((x) => <li>{x}</li>)}</ul>
+          <p>{T('Persone scelte una per una, che lavorano con il nostro metodo e i nostri controlli.', 'People chosen one by one, working with our method and our checks.')}</p>
+        </div>
+      </div>
+      <div class="referente cs-referente" data-appare>
+        <div class="referente-testo">
+          <span class="capitolo">{T('Come lavoriamo', 'How we work')}</span>
+          <h3>{it ? <>Chi ti ascolta è chi <span class="em em-firma">segue</span> il tuo sito.</> : <>The person who listens is the one who <span class="em em-firma">runs</span> your site.</>}</h3>
+          <p>{it
+            ? <>Niente commerciali che spariscono dopo la firma, niente ticket, niente «le passo un collega». <strong>Dalla prima chiamata all’ultimo ritocco parli con me</strong>, che so tutto del tuo progetto.</>
+            : <>No salespeople who vanish after you sign, no tickets, no “let me pass you to a colleague”. <strong>From the first call to the last tweak you talk to me</strong>, and I know everything about your project.</>}</p>
+        </div>
+        <ol class="referente-passi" data-sequenza>
+          {(it ? [
+            ['01 · Ascolto', 'Una chiamata di 20 minuti', 'Mi racconti cosa vendi e a chi. Gratis, senza impegno.'],
+            ['02 · Progetto', 'Lo vedi prima che esista', 'Ti mostro il sito disegnato; lo ritocchiamo finché ti convince.'],
+            ['03 · Online', 'In 3-5 settimane', 'Con il prezzo firmato all’inizio. Sito, codice e account sono tuoi.'],
+          ] : [
+            ['01 · Listen', 'A 20-minute call', 'You tell me what you sell and to whom. Free, no commitment.'],
+            ['02 · Design', 'You see it before it exists', 'I show you the designed site; we tweak it until you’re convinced.'],
+            ['03 · Live', 'In 3-5 weeks', 'With the price signed at the start. Site, code and accounts are yours.'],
+          ]).map(([n, t, d]) => <li><small>{n}</small><b>{t}</b><span>{d}</span></li>)}
+        </ol>
+      </div>
+      <div class="certificati cs-certificati" data-appare>
+        <span class="mono">{T('Certificazioni', 'Certifications')}</span>
+        <ul>
+          {(it
+            ? [['Social Media Manager', 'ISO 9001 · MIUR · Google'], ['AI per il Digital Marketing', 'Corso certificato'], ['Impresa e Startup', 'Ikigai Hub'], ['Creazione d’impresa', 'Confesercenti']]
+            : [['Social Media Manager', 'ISO 9001 · MIUR · Google'], ['AI for Digital Marketing', 'Certified course'], ['Business and Startups', 'Ikigai Hub'], ['Starting a business', 'Confesercenti']]
+          ).map(([nome, chi]) => <li><i aria-hidden="true"></i><b>{nome}</b><span>{chi}</span></li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sezione" id="lavora" data-forma="3">
+    <div class="wrap cs-lavora">
+      <div class="testa-sezione">
+        <span class="capitolo" data-appare><i class="cs-attivo" aria-hidden="true"></i>{T('Lavora con noi', 'Work with us')}</span>
+        <h2 data-righe><span class="riga"><span>{T('Stiamo cercando', 'We’re hiring')}<span class="quadratino" aria-hidden="true"></span></span></span></h2>
+        <p class="lead" data-appare>{T('Cerchiamo persone brave e affidabili, da remoto o a Milano. Collaborazione a progetto o continuativa.', 'We’re looking for skilled, reliable people, remote or in Milan. Project-based or ongoing collaboration.')}</p>
+      </div>
+      <div class="cs-posizioni" data-sequenza>
+        {posizioni.map(([id, nome, sotto, punti]: any, i: number) => (
+          <details class="cs-posizione" open={i === 0}>
+            <summary><strong>{nome}</strong><small>{sotto}</small><span class="cs-piu" aria-hidden="true"></span></summary>
+            <ul>{punti.map((p: string) => <li>{p}</li>)}</ul>
+            <a class="link-freccia" href="#candidatura" data-ruolo={id}>{T('Candidati per questo ruolo', 'Apply for this role')} <span class="freccia" aria-hidden="true">→</span></a>
+          </details>
+        ))}
+      </div>
+
+      <form class="cs-form" id="candidatura" data-candidatura data-email={contatti.email} data-lang={lang} novalidate>
+        <h3>{T('La tua candidatura', 'Your application')}</h3>
+        <label>{T('Nome e cognome', 'Full name')}<input name="nome" type="text" autocomplete="name" required placeholder={T('Es. Marta Rossi', 'E.g. Marta Rossi')} /></label>
+        <label>Email<input name="email" type="email" autocomplete="email" required placeholder="nome@email.it" /></label>
+        <label>{T('Per quale ruolo', 'Which role')}
+          <select name="ruolo">{posizioni.map(([id, nome]: any) => <option value={id}>{nome}</option>)}</select>
+        </label>
+        <label>{T('Portfolio, profilo o LinkedIn', 'Portfolio, profile or LinkedIn')}<input name="link" type="url" inputmode="url" placeholder="https://" /></label>
+        {conScript
+          ? <label class="largo cs-file">{T('Il tuo CV (PDF, fino a 5 MB)', 'Your CV (PDF, up to 5 MB)')}<input name="cv" type="file" accept="application/pdf" /></label>
+          : <p class="largo cs-nota">{T('Il CV lo alleghi all’email che si apre quando premi «Invia».', 'You attach your CV to the email that opens when you press “Send”.')}</p>}
+        <label class="largo">{T('Due righe su di te (facoltativo)', 'A couple of lines about you (optional)')}<textarea name="messaggio" rows="4" placeholder={T('Cosa sai fare meglio e un lavoro di cui vai fiero', 'What you do best and a piece of work you’re proud of')}></textarea></label>
+        <label class="largo pv-privacy"><input type="checkbox" name="privacy" required /><span>{it ? <>Ho letto l'<a href="/privacy" target="_blank">informativa privacy</a> e acconsento al trattamento dei miei dati per questa candidatura.</> : <>I have read the <a href="/en/privacy" target="_blank">privacy notice</a> and agree to my data being processed for this application.</>}</span></label>
+        <input class="sr-only" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <p class="largo cs-errore" data-errore hidden></p>
+        <div class="largo"><button class="btn btn-azione btn-grande" type="submit" data-invia>{conScript ? T('Invia la candidatura', 'Send application') : T('Invia per email', 'Send by email')} <span class="freccia" aria-hidden="true">→</span></button></div>
+        <p class="largo cs-fatto" data-fatto hidden></p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import '../scripts/candidatura.js';
+</script>

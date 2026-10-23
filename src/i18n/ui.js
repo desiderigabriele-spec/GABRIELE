@@ -6,6 +6,7 @@ const PERCORSI = {
   privacy: { it: '/privacy', en: '/en/privacy' },
   ai: { it: '/intelligenza-artificiale', en: '/en/ai' },
   demo: { it: '/demo', en: '/en/demo' },
+  chi: { it: '/chi-siamo', en: '/en/about' },
 };
 export const url = (pagina, lang = 'it') => (PERCORSI[pagina] || PERCORSI.home)[lang];
 
@@ -23,13 +24,13 @@ export const urlServizio = (id, lang = 'it') => (lang === 'en' ? `/en/services/$
 export const ui = {
   it: {
     locale: 'it_IT', vaiContenuto: 'Vai al contenuto', menu: 'Menu',
-    nav: [['servizi', 'Servizi'], ['@ai', 'AI per aziende'], ['metodo', 'Metodo'], ['lavori', 'Clienti'], ['chi-sono', 'Lo studio'], ['prezzi', 'Prezzi']],
+    nav: [['servizi', 'Servizi'], ['@ai', 'AI per aziende'], ['metodo', 'Metodo'], ['lavori', 'Clienti'], ['chi-sono', 'Chi siamo'], ['prezzi', 'Prezzi']],
     megaTitolo: 'Sei servizi, un solo studio', megaAi: 'L’AI per aziende, spiegata semplice', megaAiTesto: 'Cosa può fare nella tua attività, con un esempio dal vivo.', megaVai: 'Scopri come funziona', da: 'da', mese: '/mese', menuServizi: 'I servizi',
     navEtichetta: 'Principale', home: 'Desideri&Code, home', ruolo: 'Siti web · AI · Pubblicità',
     ctaPreventivo: 'Calcola il preventivo', whatsapp: 'Scrivici su WhatsApp',
     footerClaim: 'Desideri di nome, risultati di fatto.',
     footerServizi: 'Servizi', footerParliamone: 'Parliamone',
-    footerAi: 'AI per aziende, spiegata semplice', footerDemo: 'Demo dal vivo', footerPreventivo: 'Preventivo automatico',
+    footerAi: 'AI per aziende, spiegata semplice', footerDemo: 'Demo dal vivo', footerChi: 'Chi siamo · Lavora con noi', footerPreventivo: 'Preventivo automatico',
     privacy: 'Privacy e cookie', preferenzeCookie: 'Preferenze cookie',
     dettagli: 'Dettagli',
     chiudi: 'Chiudi',
@@ -43,13 +44,13 @@ export const ui = {
   },
   en: {
     locale: 'en_GB', vaiContenuto: 'Skip to content', menu: 'Menu',
-    nav: [['servizi', 'Services'], ['@ai', 'AI for business'], ['metodo', 'Method'], ['lavori', 'Clients'], ['chi-sono', 'The studio'], ['prezzi', 'Pricing']],
+    nav: [['servizi', 'Services'], ['@ai', 'AI for business'], ['metodo', 'Method'], ['lavori', 'Clients'], ['chi-sono', 'About us'], ['prezzi', 'Pricing']],
     megaTitolo: 'Six services, one studio', megaAi: 'AI for business, in plain words', megaAiTesto: 'What it can do for your business, with a live example.', megaVai: 'See how it works', da: 'from', mese: '/month', menuServizi: 'Services',
     navEtichetta: 'Main', home: 'Desideri&Code, home', ruolo: 'Websites · AI · Advertising',
     ctaPreventivo: 'Get a quote', whatsapp: 'Message us on WhatsApp',
     footerClaim: 'Desideri by name, results by design.',
     footerServizi: 'Services', footerParliamone: "Let's talk",
-    footerAi: 'AI for business, in plain words', footerDemo: 'Live demos', footerPreventivo: 'Instant quote',
+    footerAi: 'AI for business, in plain words', footerDemo: 'Live demos', footerChi: 'About us · Careers', footerPreventivo: 'Instant quote',
     privacy: 'Privacy and cookies', preferenzeCookie: 'Cookie preferences',
     dettagli: 'Details',
     chiudi: 'Close',

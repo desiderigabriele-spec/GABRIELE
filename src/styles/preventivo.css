@@ -133,16 +133,6 @@
 .pv-canale label span { display: inline-block; padding: .6rem 1rem; border: 1px solid var(--linea-forte); font-size: .92rem; color: var(--nebbia); transition: border-color .25s, background .25s, color .25s; }
 .pv-canale input:checked + span { border-color: var(--rosso); background: rgba(var(--azione-rgb),.1); color: var(--latte); }
 .pv-canale input:focus-visible + span { outline: 2px solid var(--rosso-testo); outline-offset: 2px; }
-/* il consenso: una casella quadrata come le spunte del sito, il testo in un solo blocco accanto */
-.pv-privacy { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: .8rem; align-items: start; padding: .9rem 1rem; border: 1px solid var(--linea); font-size: .9rem; line-height: 1.5; color: var(--nebbia); cursor: pointer; transition: border-color .25s; }
-.pv-privacy:hover { border-color: var(--linea-forte); }
-.pv-privacy:has(input:checked) { border-color: rgba(var(--verde-rgb), .55); color: var(--latte); }
-.pv-privacy input { appearance: none; -webkit-appearance: none; margin: .1em 0 0; width: 22px; height: 22px; border: 1.5px solid var(--linea-forte); background: transparent; cursor: pointer; transition: background .2s, border-color .2s; }
-.pv-privacy input:checked { border-color: var(--verde-spunta); background: var(--verde-spunta) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='3.6' stroke-linecap='square'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 14px no-repeat; }
-.pv-privacy input:focus-visible { outline: 2px solid var(--rosso); outline-offset: 2px; }
-.pv-privacy.errore { border-color: var(--fuoco); color: var(--fuoco); }
-.pv-privacy.errore input { border-color: var(--fuoco); }
-.pv-privacy a { color: var(--latte); text-decoration: underline; text-underline-offset: 3px; }
 .pv-trappola { position: absolute; left: -9999px; }
 .pv-errore { margin-top: 1rem; padding: .85rem 1rem; background: rgba(var(--azione-rgb),.1); border: 1px solid rgba(var(--azione-rgb),.35); color: #ff7a82; font-size: .92rem; }
 .pv-errore a { color: var(--ambra); }

@@ -1,5 +1,8 @@
 /**
  * Richieste dal preventivo automatico del sito  →  Google Fogli + Telegram (+ email di riserva).
+ * Anche le candidature della pagina «Chi siamo» (tipo: 'candidatura') arrivano qui: foglio "Candidature",
+ * CV in PDF in una cartella Drive "Candidature", avviso su Telegram. Dopo aver incollato questa versione
+ * serve una NUOVA distribuzione (e l'autorizzazione a Drive, che Google chiede la prima volta).
  * Va incollato in Estensioni → Apps Script di un foglio Google chiamato "Preventivi".
  * Poi: Distribuisci → Nuova distribuzione → App web (Esegui come: me · Accesso: chiunque)
  * e copia l'URL in PUBLIC_PREVENTIVO_ENDPOINT (variabile d'ambiente su Vercel).
@@ -16,6 +19,7 @@ function doPost(e) {
   try {
     var d = JSON.parse(e.postData.contents);
     if (d.botcheck) return out_({ success: true }); // bot: finto ok
+    if (d.tipo === 'candidatura') return candidatura_(d);
     var r = {
       nome: cut_(d.nome, 80), azienda: cut_(d.azienda, 100), settore: cut_(d.settore, 100), email: cut_(d.email, 120),
       tel: cut_(d.telefono, 30), canale: cut_(d.canale, 20), servizi: cut_(d.servizi, 400), tempi: cut_(d.tempi, 40),
@@ -110,12 +114,87 @@ function mail_(r, errore) {
     r.progetto + (errore ? '\n\nErrore foglio: ' + errore : ''));
 }
 
+// ---------- candidature (pagina «Chi siamo») ----------
+var COLONNE_CAND = ['Data e ora', 'Nome', 'Email', 'Ruolo', 'Link', 'Messaggio', 'CV', 'Pagina', 'Stato', 'Note'];
+
+function candidatura_(d) {
+  var r = { nome: cut_(d.nome, 80), email: cut_(d.email, 120), ruolo: cut_(d.ruolo, 80), link: cut_(d.link, 300),
+    msg: cut_(d.messaggio, 2000), pagina: cut_(d.pagina, 200) };
+  if (!r.nome || r.email.indexOf('@') < 1) return out_({ success: false, error: 'dati' });
+  if (!rateOk_()) return out_({ success: false, error: 'limite' });
+
+  var cv = '', errore = '';
+  // il sito accetta solo PDF fino a 5 MB: qui si ricontrolla (in base64 5 MB sono circa 7 milioni di caratteri)
+  if (d.cv && String(d.cv).length < 7200000) {
+    try {
+      var nomeFile = (r.nome + ' - ' + r.ruolo + ' - ' + cut_(d.cvNome, 80)).replace(/[\\/:*?"<>|]/g, ' ');
+      var file = cartella_('Candidature').createFile(Utilities.newBlob(Utilities.base64Decode(d.cv), 'application/pdf', nomeFile));
+      cv = file.getUrl();
+    } catch (err) { errore = 'CV non salvato: ' + err; }
+  }
+
+  var salvata = true;
+  try {
+    foglio_('Candidature', COLONNE_CAND).appendRow([new Date(), r.nome, r.email, r.ruolo, r.link, r.msg, cv, r.pagina, 'Da leggere', '']);
+  } catch (err) { salvata = false; errore += (errore ? ' · ' : '') + 'Non salvata nel foglio: ' + err; }
+
+  var t = ['✦ <b>Nuova candidatura dal sito</b>', '', '👤 <b>' + esc_(r.nome) + '</b> · ' + esc_(r.ruolo), '✉️ ' + esc_(r.email)];
+  if (r.link) t.push('🔗 ' + esc_(r.link));
+  if (cv) t.push('📄 <a href="' + cv + '">CV su Drive</a>');
+  if (r.msg) t.push('', esc_(r.msg));
+  if (errore) t.push('', '⚠️ ' + esc_(errore));
+  var tg = invia_(t.join('\n'));
+  if (!tg || !salvata) {
+    var to = PropertiesService.getScriptProperties().getProperty('EMAIL');
+    if (to) MailApp.sendEmail(to, 'Candidatura dal sito: ' + r.ruolo + ' · ' + r.nome,
+      [r.nome, r.email, r.ruolo, r.link, cv, '', r.msg, errore].filter(String).join('\n'));
+  }
+  return out_({ success: salvata || tg, saved: salvata, telegram: tg });
+}
+
+function foglio_(nome, colonne) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet(), sh = ss.getSheetByName(nome) || ss.insertSheet(nome);
+  if (sh.getLastRow() === 0) {
+    sh.appendRow(colonne);
+    sh.getRange(1, 1, 1, colonne.length).setFontWeight('bold').setBackground('#07070C').setFontColor('#FFB547');
+    sh.setFrozenRows(1);
+    sh.getRange('A:A').setNumberFormat('dd/MM/yyyy HH:mm');
+  }
+  return sh;
+}
+
+function cartella_(nome) {
+  var it = DriveApp.getFoldersByName(nome);
+  return it.hasNext() ? it.next() : DriveApp.createFolder(nome);
+}
+
+function invia_(testo) {
+  var p = PropertiesService.getScriptProperties(), token = p.getProperty('BOT_TOKEN'), chat = p.getProperty('CHAT_ID');
+  if (!token || !chat) return false;
+  try {
+    var res = UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+      method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+      payload: JSON.stringify({ chat_id: chat, text: testo, parse_mode: 'HTML', disable_web_page_preview: true })
+    });
+    return res.getResponseCode() === 200;
+  } catch (e) { return false; }
+}
+
 // Prova completa (foglio + Telegram) senza passare dal sito: scegli la funzione e premi Esegui.
 function provaCompleta() {
   var r = doPost({ postData: { contents: JSON.stringify({
     nome: 'Prova Completa', azienda: 'Test srl', settore: 'Azienda / PMI', email: 'prova@example.com', telefono: '333 0000000',
     canale: 'WhatsApp', servizi: 'Sito web (Presenza), Software con AI (AI su un processo)', tempi: 'Normale',
     una: 7380, mese: 249, messaggio: 'Prova automatica', progetto: 'Prova', pagina: 'test'
+  }) } });
+  Logger.log(r.getContent());
+}
+
+// Prova di una candidatura (foglio "Candidature" + Telegram, senza CV)
+function provaCandidatura() {
+  var r = doPost({ postData: { contents: JSON.stringify({
+    tipo: 'candidatura', nome: 'Prova Candidatura', email: 'prova@example.com', ruolo: 'Social media manager',
+    link: 'https://instagram.com/prova', messaggio: 'Prova automatica', pagina: 'test'
   }) } });
   Logger.log(r.getContent());
 }

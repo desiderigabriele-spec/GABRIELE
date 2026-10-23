@@ -7,6 +7,7 @@ import Intruso from './Intruso.astro';
 import Bozza from './Bozza.astro';
 import LogoGigante from './LogoGigante.astro';
 import MicroIcona from './MicroIcona.astro';
+import '../styles/chisiamo.css';
 import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -548,76 +549,34 @@ const jsonLd = {
     </div>
   </section>
 
-  <!-- LO STUDIO: la storia in quattro tempi, dalla vendita per strada a oggi -->
+  <!-- CHI SIAMO, in breve: il titolare, la squadra e chi stiamo cercando. Il resto è nella pagina /chi-siamo -->
   <section class="sezione" id="chi-sono" data-forma="2">
-    <div class="wrap chi storia">
+    <div class="wrap chi cs-home">
       <div class="chi-testo">
-        <span class="capitolo" data-appare>{T('Lo studio', 'The studio')}</span>
-        {it ? (
-          <h2 data-righe>
-            <span class="riga"><span>Prima di disegnare siti,</span></span>
-            <span class="riga"><span>ho imparato a vendere<span class="quadratino" aria-hidden="true"></span></span></span>
-          </h2>
-        ) : (
-          <h2 data-righe>
-            <span class="riga"><span>Before designing websites,</span></span>
-            <span class="riga"><span>I learned to sell<span class="quadratino" aria-hidden="true"></span></span></span>
-          </h2>
-        )}
+        <span class="capitolo" data-appare>{T('Chi siamo', 'About us')}</span>
+        <h2 data-righe>
+          <span class="riga"><span>{T('Testato online.', 'Tested online.')}</span></span>
+          <span class="riga"><span><span class="em">{T('Provato di persona', 'Proven in person')}</span><span class="quadratino" aria-hidden="true"></span></span></span>
+        </h2>
         <p data-appare>{it
-          ? <>Sono <strong>Gabriele Desideri</strong>. Ho iniziato vendendo a freddo, porta a porta e al telefono, per capire una cosa sola: <strong>perché una persona dice sì.</strong></>
-          : <>I'm <strong>Gabriele Desideri</strong>. I started out cold selling, door to door and on the phone, to understand one thing: <strong>why a person says yes.</strong></>}</p>
-        <div class="storia-obiettivo" data-appare>
-          <small>{T('Il nostro obiettivo', 'Our goal')}</small>
-          <b>{T('Che il tuo prossimo cliente scelga te, e sappia dire perché.', 'That your next client chooses you, and can say why.')}</b>
-        </div>
-        <div class="storia-firma" data-appare>
-          <span class="storia-nome">Gabriele Desideri<small>{T('Il tuo referente, dall’inizio alla fine', 'Your one contact, start to finish')}</small></span>
+          ? <>Sono <strong>Gabriele Desideri</strong>, il titolare. Sono nato sui computer e da sempre faccio social, siti ed e-commerce. Intanto ho venduto porta a porta, al telefono e sul territorio: le ho provate tutte, per capire di persona perché una persona dice sì. <strong>Oggi seguo io ogni cliente</strong>, con una squadra di collaboratori fidati.</>
+          : <>I'm <strong>Gabriele Desideri</strong>, the owner. I grew up on computers and I've always done social media, websites and e-commerce. Along the way I sold door to door, on the phone and out in the field: I tried it all, to understand first-hand why a person says yes. <strong>Today I look after every client myself</strong>, with a team of trusted collaborators.</>}</p>
+        <div class="hero-azioni" data-appare>
           <a class="btn btn-azione" href={preventivo} data-azione>{T('Raccontami la tua', 'Tell me yours')} <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="link-freccia" href={url('chi', lang)}>{T('Chi siamo', 'About us')} <span class="freccia" aria-hidden="true">→</span></a>
         </div>
-        <div class="certificati" data-appare>
-          <span class="mono">{T('Certificazioni', 'Certifications')}</span>
-          <ul>
-            {(it
-              ? [['Social Media Manager', 'ISO 9001 · MIUR · Google'], ['AI per il Digital Marketing', 'Corso certificato'], ['Impresa e Startup', 'Ikigai Hub'], ['Creazione d’impresa', 'Confesercenti']]
-              : [['Social Media Manager', 'ISO 9001 · MIUR · Google'], ['AI for Digital Marketing', 'Certified course'], ['Business and Startups', 'Ikigai Hub'], ['Starting a business', 'Confesercenti']]
-            ).map(([nome, chi]) => <li><i aria-hidden="true"></i><b>{nome}</b><span>{chi}</span></li>)}
-          </ul>
-        </div>
+        <p class="cs-cercando" data-appare><b><i class="cs-attivo" aria-hidden="true"></i>{T('Stiamo cercando', 'We’re hiring')}</b><span>{T('social media manager · ads manager', 'social media manager · ads manager')}</span><a class="link-freccia" href={`${url('chi', lang)}#lavora`}>{T('Candidati', 'Apply')} <span class="freccia" aria-hidden="true">→</span></a></p>
       </div>
-      <ol class="storia-tempi" data-sequenza>
-        {(it ? [
-          ['La strada', 'Porta a porta, al telefono, per strada: ho imparato cosa fa scegliere una persona e cosa la fa scappare. Confusione, fretta e poca fiducia la fanno andare via.'],
-          ['La scoperta', 'Le persone non comprano un prodotto. <em>Comprano come si sentono quando lo scelgono</em>: chiarezza, fiducia, un po’ di desiderio.'],
-          ['Il metodo', 'Ho unito psicologia della scelta, design e codice per costruire siti che fanno provare proprio quella sensazione, dal primo sguardo al «sì».'],
-          ['Oggi', 'Desideri&Code è uno studio a Milano. <em>Parli sempre con me</em>, dal primo messaggio all’ultimo ritocco, e il prezzo lo firmi prima di iniziare.'],
-        ] : [
-          ['The street', 'Door to door, on the phone, on the street: I learned what makes people choose and what makes them walk away. Confusion, pressure and too little trust send them off.'],
-          ['The discovery', 'People don’t buy a product. <em>They buy how they feel when they choose it</em>: clarity, trust, a little desire.'],
-          ['The method', 'I brought together the psychology of choice, design and code to build websites that create exactly that feeling, from first glance to “yes”.'],
-          ['Today', 'Desideri&Code is a studio in Milan. <em>You always talk to me</em>, from the first message to the last tweak, and you sign the price before we start.'],
-        ]).map(([titolo, testo], k) => <li><b aria-hidden="true">{String(k + 1).padStart(2, '0')}</b><div><h3>{titolo}</h3><p set:html={testo} /></div></li>)}
-      </ol>
-      <!-- un solo referente: chi ti ascolta è chi disegna il sito -->
-      <div class="referente" data-appare>
-        <div class="referente-testo">
-          <span class="capitolo">{T('Come lavoriamo', 'How we work')}</span>
-          <h3>{it ? <>Chi ti ascolta è chi <span class="em em-firma">disegna</span> il tuo sito.</> : <>The person who listens is the one who <span class="em em-firma">designs</span> your site.</>}</h3>
-          <p>{it
-            ? <>Niente commerciali che spariscono dopo la firma, niente ticket, niente «le passo un collega». <strong>Dalla prima chiamata all’ultimo ritocco parli con la stessa persona</strong>, che sa tutto del tuo progetto.</>
-            : <>No salespeople who vanish after you sign, no tickets, no “let me pass you to a colleague”. <strong>From the first call to the last tweak you talk to the same person</strong>, who knows everything about your project.</>}</p>
+      <div class="cs-squadra" data-appare="0.15">
+        <div class="cs-titolare">
+          <span class="cs-volto" aria-hidden="true">GD</span>
+          <span><b>Gabriele Desideri</b><small>{T('Titolare · segue ogni cliente, dalla prima chiamata all’ultimo ritocco', 'Owner · looks after every client, from the first call to the last tweak')}</small></span>
         </div>
-        <ol class="referente-passi" data-sequenza>
-          {(it ? [
-            ['01 · Ascolto', 'Una chiamata di 20 minuti', 'Mi racconti cosa vendi e a chi. Gratis, senza impegno.'],
-            ['02 · Progetto', 'Lo vedi prima che esista', 'Ti mostro il sito disegnato; lo ritocchiamo finché ti convince.'],
-            ['03 · Online', 'In 3-5 settimane', 'Con il prezzo firmato all’inizio. Sito, codice e account sono tuoi.'],
-          ] : [
-            ['01 · Listen', 'A 20-minute call', 'You tell me what you sell and to whom. Free, no commitment.'],
-            ['02 · Design', 'You see it before it exists', 'I show you the designed site; we tweak it until you’re convinced.'],
-            ['03 · Live', 'In 3-5 weeks', 'With the price signed at the start. Site, code and accounts are yours.'],
-          ]).map(([n, t, d]) => <li><small>{n}</small><b>{t}</b><span>{d}</span></li>)}
-        </ol>
+        <div class="cs-rete">
+          <span class="cs-sagome" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <p>{T('Dietro, una squadra di collaboratori: ognuno lavora sulla parte che sa fare meglio.', 'Behind the scenes, a team of collaborators: each one works on the part they do best.')}</p>
+          <ul class="cs-ruoli">{(it ? ['Sviluppo', 'Grafica', 'Foto e video', 'Testi'] : ['Development', 'Design', 'Photo and video', 'Copy']).map((r) => <li>{r}</li>)}</ul>
+        </div>
       </div>
     </div>
   </section>

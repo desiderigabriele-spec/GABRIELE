@@ -30,6 +30,7 @@ Stack: Astro (statico) · WebGL scritto a mano per il cielo (nessuna libreria 3D
 | Cielo stellato e «viaggio» | `src/scripts/scena.js` (velocità per capitolo: attributo `data-forma` 0-4 sulle sezioni) · con lo sfondo chiaro le stelle sono d'inchiostro |
 | Colori (nero e rosso, sfondo chiaro o scuro), tipografia, componenti | `src/styles/global.css` · effetti `src/styles/vita.css` · Focus `src/styles/assistente.css` |
 | Invio preventivi su Google Fogli + Telegram | `apps-script/Code.gs` + variabile `PUBLIC_PREVENTIVO_ENDPOINT` (vedi `.env.example`) |
+| Pagina «Chi siamo» e candidature | `src/components/PaginaChiSiamo.astro` (pagine `/chi-siamo`, `/en/about`) · `src/styles/chisiamo.css` · `src/scripts/candidatura.js` (invio con lo stesso `apps-script/Code.gs`, oppure email) |
 
 ## Documenti
 
