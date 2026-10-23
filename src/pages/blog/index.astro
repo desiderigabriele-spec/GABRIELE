@@ -1,0 +1,42 @@
+---
+// L'elenco degli articoli (/blog). Per ora solo in italiano.
+import Base from '../../layouts/Base.astro';
+import { articoli, minuti, giorno } from '../../data/blog.js';
+import '../../styles/blog.css';
+
+const lista = await articoli();
+---
+<Base
+  title="Blog · Desideri&Code"
+  description="Prezzi, siti, negozi online, pubblicità e AI spiegati semplice: le risposte alle domande che ci fanno i clienti, con numeri veri."
+  path="/blog"
+  alt={null}
+  scena={false}
+  noindex={lista.length === 0}
+>
+  <section class="pagina blog">
+    <div class="wrap">
+      <div class="testa-sezione">
+        <span class="capitolo">Blog</span>
+        <h1 class="blog-titolo">Le domande dei clienti,<br /><span class="em">con risposte vere.</span></h1>
+        <p class="lead">Quanto costa, quanto ci vuole, cosa conviene. Lo scriviamo come lo diremmo a voce, con i numeri che vediamo ogni giorno.</p>
+      </div>
+      {lista.length === 0
+        ? <p class="blog-vuoto">I primi articoli arrivano a breve.</p>
+        : (
+          <ol class="blog-lista">
+            {lista.map((a) => (
+              <li>
+                <a class="blog-scheda" href={`/blog/${a.id}`}>
+                  <span class="blog-meta"><b>{a.data.categoria}</b><span>{giorno(a.data.data)} · {minuti(a.body)} min</span>{a.data.bozza && <em>Bozza</em>}</span>
+                  <strong>{a.data.titolo}</strong>
+                  <span class="blog-desc">{a.data.descrizione}</span>
+                  <span class="blog-leggi">Leggi <span class="freccia" aria-hidden="true">→</span></span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        )}
+    </div>
+  </section>
+</Base>

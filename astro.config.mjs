@@ -1,5 +1,9 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import fs from 'node:fs';
+
+// l'elenco del blog va nella mappa per Google solo quando c'è almeno un articolo pubblicato (bozza: false)
+const blogPubblicato = fs.readdirSync('./src/content/blog').some((f) => f.endsWith('.md') && /^bozza:\s*false\s*$/m.test(fs.readFileSync(`./src/content/blog/${f}`, 'utf8')));
 
 // Telefoni con iOS vecchio (es. iPhone 7 su iOS 15): prima di ogni misura in svh
 // (altezza dello schermo) scriviamo la stessa misura in vh, che capiscono tutti.
@@ -19,7 +23,7 @@ export default defineConfig({
   site: 'https://www.gabrieledesideri.it',
   trailingSlash: 'never',
   // la mappa del sito per Google (senza la pagina 404)
-  integrations: [sitemap({ filter: (pagina) => !/\/404\/?$/.test(pagina) })],
+  integrations: [sitemap({ filter: (pagina) => !/\/404\/?$/.test(pagina) && (blogPubblicato || !/\/blog\/?$/.test(pagina)) })],
   // un link si inizia a scaricare appena lo tocchi o lo clicchi: col salto tra le stelle (440 ms) la pagina dopo è già pronta
   prefetch: { prefetchAll: true, defaultStrategy: 'tap' },
   // CSS: il blocco comune a tutte le pagine è un file a parte, con il nome che cambia a ogni modifica,

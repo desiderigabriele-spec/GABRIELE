@@ -16,6 +16,7 @@
 - [ ] **Testi in inglese** (`src/data/en.js`, `src/i18n/ui.js`, pagine `/en`): rileggili o falli rileggere da un madrelingua prima di fare pubblicità all'estero.
 - [x] **Logo definitivo** «Eclisse flat» nel sito (`public/brand/`).
 - [x] **Quattro foto** al posto dei disegni (`src/assets/img/`): la tazza nell'hero di Negozi online, la palestra nell'annuncio di Pubblicità online, il bagno nella demo «Dalla foto al preventivo», lo studio dentistico nella demo «Risponde ai clienti».
+- [ ] **Blog**: leggi le prime due bozze (`src/content/blog/`) e dimmi se vanno: quando ne approvi una, il blog compare nel footer e su Google. Il piano dei prossimi 8 articoli è in `docs/blog-piano.md`.
 - [ ] **E-commerce lanciati**: se puoi nominarne uno o due (anche tuoi), diventano un terzo caso studio.
 
 ## Tecnica

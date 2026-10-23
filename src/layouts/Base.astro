@@ -14,6 +14,7 @@ import Cursore from '../components/Cursore.astro';
 import Icona from '../components/Icona.astro';
 import Assistente from '../components/Assistente.astro';
 import { euro } from '../data/formato.js';
+import { articoli } from '../data/blog.js';
 
 interface Props {
   title: string;
@@ -50,6 +51,8 @@ const suServizio = current.startsWith(lang === 'en' ? '/en/services/' : '/serviz
 const prezzoDa = (s: { da: number; mese?: boolean }) => `${t.da} ${euro(s.da, lang)}${s.mese ? t.mese : ''}`;
 const hrefIt = lang === 'it' ? path : alt;
 const hrefEn = lang === 'en' ? path : alt;
+// il blog (per ora solo in italiano) entra nel footer quando c'è almeno un articolo pubblicato
+const conBlog = lang === 'it' && (await articoli()).length > 0;
 ---
 <!doctype html>
 <html lang={lang}>
@@ -258,6 +261,7 @@ const hrefEn = lang === 'en' ? path : alt;
               <li><a href={url('ai', lang)}>{t.footerAi}</a></li>
               <li><a href={url('demo', lang)}>{t.footerDemo}</a></li>
               <li><a href={url('chi', lang)}>{t.footerChi}</a></li>
+              {conBlog && <li><a href="/blog">Blog</a></li>}
               <li><a href={preventivo}>{t.footerPreventivo}</a></li>
             </ul>
           </div>

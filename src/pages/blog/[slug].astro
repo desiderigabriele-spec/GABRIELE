@@ -1,0 +1,70 @@
+---
+// Un articolo del blog (/blog/<nome-del-file>): titolo, chi lo scrive, il testo e in fondo il servizio collegato e il preventivo.
+import Base from '../../layouts/Base.astro';
+import { render } from 'astro:content';
+import { articoli, minuti, giorno } from '../../data/blog.js';
+import { dati } from '../../i18n/dati.js';
+import { url, urlServizio } from '../../i18n/ui.js';
+import '../../styles/blog.css';
+
+export async function getStaticPaths() {
+  const lista = await articoli();
+  return lista.map((a) => ({ params: { slug: a.id }, props: { a, altri: lista.filter((b) => b.id !== a.id).slice(0, 3) } }));
+}
+
+const { a, altri } = Astro.props;
+const { Content } = await render(a);
+const d = a.data;
+const { servizi, contatti } = dati('it');
+const servizio = d.servizio ? servizi.find((s: any) => s.id === d.servizio) : null;
+const path = `/blog/${a.id}`;
+const sito = Astro.site!.toString().replace(/\/$/, '');
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: d.titolo,
+  description: d.descrizione,
+  datePublished: d.data.toISOString(),
+  dateModified: (d.aggiornato ?? d.data).toISOString(),
+  inLanguage: 'it-IT',
+  mainEntityOfPage: sito + path,
+  author: { '@type': 'Person', name: contatti.nome, jobTitle: 'Fondatore e direttore creativo', url: sito + url('chi', 'it') },
+  publisher: { '@type': 'Organization', name: contatti.studio, url: sito },
+};
+---
+<Base title={`${d.titolo} · Desideri&Code`} description={d.descrizione} path={path} alt={null} scena={false} jsonLd={jsonLd} noindex={d.bozza}>
+  <article class="pagina articolo">
+    <div class="wrap">
+      <header class="articolo-testa">
+        <a class="link-freccia articolo-indietro" href="/blog"><span class="freccia" aria-hidden="true">←</span> Blog</a>
+        <span class="capitolo">{d.categoria}</span>
+        <h1>{d.titolo}</h1>
+        <p class="lead">{d.descrizione}</p>
+        <div class="articolo-firma">
+          <span class="articolo-volto" aria-hidden="true">GD</span>
+          <span><b>{contatti.nome}</b><small>Fondatore e direttore creativo · {giorno(d.data)} · {minuti(a.body)} min di lettura</small></span>
+        </div>
+      </header>
+      <div class="prosa articolo-testo">
+        <Content />
+      </div>
+      <aside class="articolo-fine">
+        <div>
+          <span class="mono">Il prossimo passo</span>
+          <h2>Vuoi sapere quanto costa il tuo?</h2>
+          <p>Scegli cosa ti serve e vedi subito il prezzo. Senza impegno e senza telefonate a sorpresa.</p>
+        </div>
+        <div class="articolo-azioni">
+          <a class="btn btn-azione btn-grande" href={url('preventivo', 'it')} data-azione>Calcola il preventivo <span class="freccia" aria-hidden="true">→</span></a>
+          {servizio && <a class="link-freccia" href={urlServizio(servizio.id, 'it')}>{servizio.titolo} <span class="freccia" aria-hidden="true">→</span></a>}
+        </div>
+      </aside>
+      {altri.length > 0 && (
+        <nav class="articolo-altri" aria-label="Altri articoli">
+          <span class="mono">Altri articoli</span>
+          <ul>{altri.map((b) => <li><a href={`/blog/${b.id}`}><small>{b.data.categoria}</small>{b.data.titolo}</a></li>)}</ul>
+        </nav>
+      )}
+    </div>
+  </article>
+</Base>

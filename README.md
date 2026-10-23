@@ -31,6 +31,7 @@ Stack: Astro (statico) · WebGL scritto a mano per il cielo (nessuna libreria 3D
 | Colori (nero e rosso, sfondo chiaro o scuro), tipografia, componenti | `src/styles/global.css` · effetti `src/styles/vita.css` · Focus `src/styles/assistente.css` |
 | Invio preventivi su Google Fogli + Telegram | `apps-script/Code.gs` + variabile `PUBLIC_PREVENTIVO_ENDPOINT` (vedi `.env.example`) |
 | Pagina «Chi siamo» e candidature | `src/components/PaginaChiSiamo.astro` (pagine `/chi-siamo`, `/en/about`) · `src/styles/chisiamo.css` · `src/scripts/candidatura.js` (invio con lo stesso `apps-script/Code.gs`, oppure email) |
+| Blog | Articoli in `src/content/blog/*.md` (`src/content.config.ts`), pagine `src/pages/blog/` · `src/styles/blog.css`. Un articolo nuovo è una bozza (`bozza: true`) e va online con `bozza: false`; le bozze si vedono in locale con `MOSTRA_BOZZE=1`. Piano e regole: `docs/blog-piano.md` |
 
 ## Documenti
 
