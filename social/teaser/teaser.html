@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Desideri&amp;Code · teaser 1, il logo</title>
+<!-- Teaser 1 prima del lancio: nel buio un cursore rosso scrive il logo D&C. riga per riga e si ferma dove sta
+     il quadratino del logo; sotto, «Qualcosa sta arrivando». 8 secondi, finisce al buio (si può mettere in loop).
+     Ogni fotogramma si disegna con disegna(t), t in secondi: render.mjs lo apre a 1080×1920 (Reels, TikTok, Storie)
+     o 1080×1350 (post) e passa i fotogrammi a ffmpeg. ?t=4 mostra un fotogramma fermo, ?play fa partire l'animazione. -->
+<style>
+  @font-face { font-family: 'Tight'; src: url('../../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
+  @font-face { font-family: 'Mono'; src: url('../../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2') format('woff2'); font-weight: 100 800; }
+  :root { --notte: #0a0a0a; --latte: #ffffff; --nebbia: #a3a3a3; --rosso: #e30613; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: var(--notte); }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; }
+  #logo { position: fixed; left: 50%; transform-origin: 50% 50%; }
+  #logo svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  #testo { position: fixed; left: 0; right: 0; text-align: center; font-family: 'Mono'; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--latte); white-space: pre; }
+  #testo i { display: inline-block; width: .62em; height: .9em; margin-left: .2em; vertical-align: -.1em; background: var(--rosso); }
+  #piede { position: fixed; left: 0; right: 0; text-align: center; font-family: 'Mono'; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--nebbia); }
+  #velo { position: fixed; inset: 0; background: var(--notte); pointer-events: none; }
+</style>
+</head>
+<body>
+<canvas id="cielo"></canvas>
+<div id="logo"><svg viewBox="68 140 264 306" aria-hidden="true">
+  <defs>
+    <clipPath id="taglio"><rect id="r1" x="70" y="100" width="0" height="195"/><rect id="r2" x="70" y="295" width="0" height="165"/></clipPath>
+  </defs>
+  <path id="lettere" fill="#fff" clip-path="url(#taglio)" d=""/>
+  <rect id="quadro" x="227.9" y="391.1" width="49.8" height="49.8" fill="#e30613"/>
+</svg></div>
+<p id="testo"></p>
+<p id="piede">@desidericode</p>
+<div id="velo"></div>
+<script>
+  const W = innerWidth, H = innerHeight, VERT = H / W > 1.5, U = W / 1080;
+  const DURATA = 8;
+  window.DURATA = DURATA;
+  const fra = (t, a, b) => Math.min(1, Math.max(0, (t - a) / (b - a)));
+  const eOut = (x) => 1 - Math.pow(1 - x, 3);
+  const eIo = (x) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+
+  // le stelle, ferme come sul sito, con un respiro lento
+  const cv = document.getElementById('cielo'); cv.width = W; cv.height = H; const g = cv.getContext('2d');
+  let seme = 7; const rnd = () => ((seme = (seme * 16807) % 2147483647) / 2147483647);
+  const stelle = Array.from({ length: VERT ? 240 : 180 }, () => ({ x: rnd() * W, y: rnd() * H, r: (.6 + rnd() * 1.1) * U * 1.6, a: .1 + rnd() * .3, f: rnd() * 6.28 }));
+  function cielo(t) {
+    g.clearRect(0, 0, W, H); g.fillStyle = '#fff';
+    const entra = eOut(fra(t, 0, 1.4));
+    for (const s of stelle) { g.globalAlpha = s.a * entra * (.75 + .25 * Math.sin(t * 1.6 + s.f)); g.beginPath(); g.arc(s.x, s.y - t * 4 * U, s.r, 0, 6.283); g.fill(); }
+    g.globalAlpha = 1;
+  }
+
+  // misure: il logo al centro, un po' sopra la metà
+  // L = larghezza delle lettere; il riquadro del disegno è stretto attorno a D&C. così sta al centro
+  const L = (VERT ? 500 : 440) * U, HL = L * 306 / 264, cy = H * (VERT ? .43 : .41);
+  const logo = document.getElementById('logo');
+  Object.assign(logo.style, { width: L + 'px', height: HL + 'px', top: cy - HL / 2 + 'px', marginLeft: -L / 2 + 'px' });
+  const testo = document.getElementById('testo'), piede = document.getElementById('piede'), velo = document.getElementById('velo');
+  testo.style.fontSize = 40 * U + 'px'; testo.style.top = cy + HL / 2 + 90 * U + 'px';
+  piede.style.fontSize = 28 * U + 'px'; piede.style.bottom = (VERT ? 220 : 110) * U + 'px';
+  const r1 = document.getElementById('r1'), r2 = document.getElementById('r2'), quadro = document.getElementById('quadro');
+  const FRASE = 'Qualcosa sta arrivando';
+
+  window.disegna = (t) => {
+    cielo(t);
+    // 0-1,4 s: solo il quadratino, che lampeggia all'inizio della prima riga come un cursore
+    // 1,4-2,2 s: scrive la prima riga (D&) e il cursore la segue · 2,3-3 s: va a capo e scrive la C,
+    // fermandosi proprio dove sta il quadratino del logo
+    const p1 = eIo(fra(t, 1.4, 2.2)), p2 = eIo(fra(t, 2.3, 3));
+    r1.setAttribute('width', 380 * p1); r2.setAttribute('width', 380 * p2);
+    let x, y;
+    // il cursore sta sempre appena davanti alle lettere che compaiono
+    if (t < 2.25) { x = Math.min(318, 72 + 380 * p1); y = 234.3; }
+    else { x = Math.min(227.9, 72 + 380 * p2); y = 391.1; }
+    quadro.setAttribute('x', x); quadro.setAttribute('y', y);
+    // lampeggia finché aspetta, poi resta acceso
+    const acceso = t < 1.4 ? (Math.floor(t / .4) % 2 === 0 ? 1 : 0) : 1;
+    quadro.setAttribute('opacity', t < .3 ? 0 : acceso);
+    // il logo respira appena dopo l'arrivo
+    const s = 1 + .03 * eOut(fra(t, 3, 7.6));
+    logo.style.transform = `scale(${s})`;
+    // 4-5,6 s: la frase si scrive lettera per lettera, con il cursore rosso che lampeggia
+    const n = Math.round(FRASE.length * fra(t, 4, 5.6));
+    const cursore = t >= 4 && (t < 5.6 || Math.floor(t / .4) % 2 === 0);
+    testo.innerHTML = FRASE.slice(0, n) + (cursore ? '<i></i>' : '');
+    piede.style.opacity = eOut(fra(t, 5.8, 6.4));
+    // fine al buio, così il video si ripete senza stacco
+    velo.style.opacity = Math.max(1 - fra(t, 0, .3), fra(t, 7.5, 8));
+  };
+
+  window.pronto = (async () => {
+    const svg = await fetch('../../src/assets/logo-icona.svg').then((r) => r.text()).catch(() => '');
+    const d = (svg.match(/<path[^>]*\sd="([^"]+)"/) || [])[1] || '';
+    document.getElementById('lettere').setAttribute('d', d);
+    await document.fonts.ready;
+    return true;
+  })();
+  const q = new URLSearchParams(location.search);
+  window.pronto.then(() => {
+    if (q.has('play')) { const t0 = performance.now(); const giro = () => { window.disegna(((performance.now() - t0) / 1000) % DURATA); requestAnimationFrame(giro); }; giro(); }
+    else window.disegna(Number(q.get('t') || 4.5));
+  });
+</script>
+</body>
+</html>
