@@ -8,6 +8,7 @@ import Bozza from './Bozza.astro';
 import LogoGigante from './LogoGigante.astro';
 import MicroIcona from './MicroIcona.astro';
 import '../styles/chisiamo.css';
+import { metodoStudio } from '../data/metodo.js';
 import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -549,33 +550,31 @@ const jsonLd = {
     </div>
   </section>
 
-  <!-- CHI SIAMO, in breve: il titolare, la squadra e chi stiamo cercando. Il resto è nella pagina /chi-siamo -->
+  <!-- CHI SIAMO, in breve: prima il metodo, poi chi dirige e chi stiamo cercando. Il resto è nella pagina /chi-siamo -->
   <section class="sezione" id="chi-sono" data-forma="2">
     <div class="wrap chi cs-home">
       <div class="chi-testo">
         <span class="capitolo" data-appare>{T('Chi siamo', 'About us')}</span>
         <h2 data-righe>
-          <span class="riga"><span>{T('Testato online.', 'Tested online.')}</span></span>
-          <span class="riga"><span><span class="em">{T('Provato di persona', 'Proven in person')}</span><span class="quadratino" aria-hidden="true"></span></span></span>
+          <span class="riga"><span>{T('Prima studiamo.', 'First we study.')}</span></span>
+          <span class="riga"><span><span class="em">{T('Poi costruiamo', 'Then we build')}</span><span class="quadratino" aria-hidden="true"></span></span></span>
         </h2>
         <p data-appare>{it
-          ? <>Sono <strong>Gabriele Desideri</strong>, il titolare. Sono nato sui computer e da sempre faccio social, siti ed e-commerce. Intanto ho venduto porta a porta, al telefono e sul territorio: le ho provate tutte, per capire di persona perché una persona dice sì. <strong>Oggi seguo io ogni cliente</strong>, con una squadra di collaboratori fidati.</>
-          : <>I'm <strong>Gabriele Desideri</strong>, the owner. I grew up on computers and I've always done social media, websites and e-commerce. Along the way I sold door to door, on the phone and out in the field: I tried it all, to understand first-hand why a person says yes. <strong>Today I look after every client myself</strong>, with a team of trusted collaborators.</>}</p>
+          ? <>Ogni progetto parte da una ricerca sul tuo mercato e sui tuoi concorrenti. Poi usiamo la psicologia della vendita per guidare chi visita verso una scelta. <strong>Niente è lasciato al caso.</strong></>
+          : <>Every project starts with research into your market and your competitors. Then we use the psychology of selling to guide visitors towards a choice. <strong>Nothing is left to chance.</strong></>}</p>
         <div class="hero-azioni" data-appare>
           <a class="btn btn-azione" href={preventivo} data-azione>{T('Raccontami la tua', 'Tell me yours')} <span class="freccia" aria-hidden="true">→</span></a>
-          <a class="link-freccia" href={url('chi', lang)}>{T('Chi siamo', 'About us')} <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="link-freccia" href={url('chi', lang)}>{T('Come lavoriamo', 'How we work')} <span class="freccia" aria-hidden="true">→</span></a>
         </div>
-        <p class="cs-cercando" data-appare><b><i class="cs-attivo" aria-hidden="true"></i>{T('Stiamo cercando', 'We’re hiring')}</b><span>{T('social media manager · ads manager', 'social media manager · ads manager')}</span><a class="link-freccia" href={`${url('chi', lang)}#lavora`}>{T('Candidati', 'Apply')} <span class="freccia" aria-hidden="true">→</span></a></p>
+        <p class="cs-cercando" data-appare><b><i class="cs-attivo" aria-hidden="true"></i>{T('Stiamo cercando', 'We’re hiring')}</b><span>{T('social media manager · ads manager · segreteria clienti', 'social media manager · ads manager · client coordinator')}</span><a class="link-freccia" href={`${url('chi', lang)}#lavora`}>{T('Candidati', 'Apply')} <span class="freccia" aria-hidden="true">→</span></a></p>
       </div>
-      <div class="cs-squadra" data-appare="0.15">
-        <div class="cs-titolare">
+      <div class="cs-scheda" data-appare="0.15">
+        <ol class="cs-metodo">
+          {metodoStudio[lang].map((m, i) => <li><i>{String(i + 1).padStart(2, '0')}</i><span><b>{m.titolo}</b><small>{m.breve}</small></span></li>)}
+        </ol>
+        <div class="cs-firma">
           <span class="cs-volto" aria-hidden="true">GD</span>
-          <span><b>Gabriele Desideri</b><small>{T('Titolare · segue ogni cliente, dalla prima chiamata all’ultimo ritocco', 'Owner · looks after every client, from the first call to the last tweak')}</small></span>
-        </div>
-        <div class="cs-rete">
-          <span class="cs-sagome" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-          <p>{T('Dietro, una squadra di collaboratori: ognuno lavora sulla parte che sa fare meglio.', 'Behind the scenes, a team of collaborators: each one works on the part they do best.')}</p>
-          <ul class="cs-ruoli">{(it ? ['Sviluppo', 'Grafica', 'Foto e video', 'Testi'] : ['Development', 'Design', 'Photo and video', 'Copy']).map((r) => <li>{r}</li>)}</ul>
+          <span><b>{T('Diretto da Gabriele Desideri', 'Led by Gabriele Desideri')}</b><small>{T('Fondatore e direttore creativo', 'Founder and creative director')}</small></span>
         </div>
       </div>
     </div>
