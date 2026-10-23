@@ -1,14 +1,13 @@
 ---
-// Una demo guidata. In alto le tappe con il loro nome (si riempiono mentre la demo va da sola, come le storie);
-// a sinistra cosa succede, a destra il «palco» con i programmi veri in piccolo. Un quadratino rosso porta
-// l'informazione da un programma all'altro, così si vede da dove arriva e dove va.
-// Nel palco: data-da / data-fino = da che passo a che passo si vede un elemento, data-acceso = in quali passi
-// è evidenziato ("2", "3-4", "1,5"). Il motore è in scripts/demo.js.
-import Icona from './Icona.astro';
+// Una demo come un video in motion graphics. Un «mondo» con i programmi in fila; una telecamera li inquadra uno alla
+// volta e il quadratino rosso porta l'informazione dall'uno all'altro. Tutto dipende dal tempo: data-in / data-out
+// = da che secondo a che secondo si vede un pezzo, data-acc / data-accout = quando è acceso, data-conta = un numero
+// che sale tra data-ca e data-cb. Scene, telecamera e quadratino sono in data/demo.js (tempi); il motore è scripts/demo.js.
+// Si comanda come le storie: tocco a destra avanti, a sinistra indietro, tenendo premuto si ferma.
 import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
 import { euro, numero as cifre } from '../data/formato.js';
-import { demo } from '../data/demo.js';
+import { demo, tempi } from '../data/demo.js';
 import bagno from '../assets/img/demo-bagno.webp';
 import studio from '../assets/img/demo-studio.webp';
 import '../styles/demo.css';
@@ -17,24 +16,24 @@ interface Props { id: 'whatsapp' | 'preventivo' | 'assistente'; lang?: 'it' | 'e
 const { id, lang = 'it', numero, tutte = false, forma = '2' } = Astro.props;
 const it = lang === 'it';
 const T = (a: string, b: string) => (it ? a : b);
-const d = demo[lang][id];
+const d: any = demo[lang][id];
 const P: any = d.palco;
-const n = d.passi.length;
+const V: any = d.video;
+const tm: any = tempi[id];
 const { categorie } = dati(lang);
 const liv = categorie.find((c) => c.id === d.servizio)!.livelli.find((l) => l.id === d.livello)!;
 const preventivo = url('preventivo', lang);
-const eur = (v: number) => euro(v, lang);
 // come euro(), ma con i centesimi quando ci sono (617,50 €)
 const eur2 = (v: number) => {
   const cent = Math.round((v % 1) * 100);
   const s = cifre(Math.floor(v), lang) + (cent ? (it ? ',' : '.') + String(cent).padStart(2, '0') : '');
   return it ? `${s} €` : `€${s}`;
 };
-const due = (i: number) => String(i).padStart(2, '0');
-// «[[...]]» = parole che l'AI evidenzia quando legge
-const evid = (testo: string, acceso: string) => testo.split(/\[\[|\]\]/).map((x, i) => ({ x, on: i % 2 === 1, acceso }));
+// «[[...]]» = le parole che l'AI evidenzia leggendo: si accendono da `acc` a `fine`
+const evid = (testo: string) => testo.split(/\[\[|\]\]/).map((x, i) => ({ x, on: i % 2 === 1 }));
+const config = { ...tm, scene: tm.scene.map((a: number, i: number) => ({ a, k: V.scene[i]?.[0] || '', f: V.scene[i]?.[1] || '' })) };
 const totale = id === 'preventivo' ? P.righe.reduce((s: number, r: [string, number]) => s + r[1], 0) : 0;
-const pannelli = d.pannelli as [string, string, string][];
+const descr = `${d.titolo.join(' ')} ${V.scene.map((s: string[]) => s[1]).join(' ')}`;
 ---
 <section class="sezione demo-sez" id={`demo-${id}`} data-forma={forma}>
   <div class="wrap">
@@ -47,260 +46,239 @@ const pannelli = d.pannelli as [string, string, string][];
       <p class="lead" data-appare>{d.sotto}</p>
     </div>
 
-    <div class={`demo demo-${id}`} data-demo data-passo="1" data-avanti={T('Avanti', 'Next')} data-ricomincia={T('Ricomincia', 'Start again')} data-play={T('Riproduci', 'Play')} data-pausa={T('Pausa', 'Pause')} data-appare>
-      <div class="dm-tappe">
-        <ol>
-          {d.passi.map((p, i) => (
-            <li><button type="button" data-demo-punto={i + 1} aria-label={`${T('Passo', 'Step')} ${i + 1}: ${p.titolo}`}><b>{due(i + 1)}</b><span>{p.corto}</span><i aria-hidden="true"></i></button></li>
-          ))}
-        </ol>
-        <button class="dm-auto" type="button" data-demo-auto aria-pressed="false"><span class="dm-auto-ico" aria-hidden="true"></span><span data-demo-auto-testo>{T('Riproduci', 'Play')}</span></button>
+    <div class={`vd vd-${id}`} data-demo tabindex="0" role="region" aria-label={`${T('Demo video', 'Video demo')}: ${descr}`} data-pausa={T('Pausa', 'Pause')} data-play={T('Riproduci', 'Play')} data-ricomincia={T('Ricomincia', 'Start again')}>
+      <script type="application/json" data-config set:html={JSON.stringify(config)} />
+      <div class="vd-mondo" data-mondo aria-hidden="true">
+        <svg class="vd-fili" width="1" height="1">
+          {Object.entries(tm.fili).map(([k, p]) => <path id={`${id}-${lang}-${k}`} data-filo={k} d={p as string} />)}
+        </svg>
+
+        {id === 'whatsapp' && (
+          <Fragment>
+            <div class="vd-obj vd-tel" style="left:0;top:0;width:360px;height:680px">
+              <span class="vd-isola"></span>
+              <div class="vd-stato"><span>{P.ora}</span><span class="vd-icone"><span class="vd-segnale"><i></i><i></i><i></i><i></i></span><span class="vd-batteria"><i></i></span></span></div>
+              <div class="wa-testa">
+                <span class="wa-indietro">‹</span><span class="wa-avatar">G</span>
+                <span class="wa-chi"><b>{P.contatto}</b><small>{P.online}</small></span>
+                <svg viewBox="0 0 24 24"><path d="M3 7h11v10H3zM14 10l6-3v10l-6-3" /></svg>
+                <svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 6a2 2 0 0 1 2-2z" /></svg>
+              </div>
+              <div class="wa-chat">
+                <span class="wa-giorno">{P.oggi}</span>
+                <div class="wa-bolla lei scrive" data-in="3.4" data-out="4.4"><i></i><i></i><i></i></div>
+                <p class="wa-bolla lei" data-in="4.4">{evid(P.msg1).map((p) => (p.on ? <mark data-acc="8.6" data-accout="20.5">{p.x}</mark> : p.x))}<time>21:40</time></p>
+                <div class="wa-bolla noi scrive" data-in="21.5" data-out="22.3"><i></i><i></i><i></i></div>
+                <p class="wa-bolla noi" data-in="22.3"><span class="wa-auto">{P.auto}</span>{P.risposta1}<time>21:40 <em>✓✓</em></time></p>
+                <div class="wa-bolla lei scrive" data-in="23.3" data-out="24.1"><i></i><i></i><i></i></div>
+                <p class="wa-bolla lei" data-in="24.1">{P.msg2}<time>21:41</time></p>
+                <div class="wa-bolla noi scrive" data-in="24.7" data-out="25.5"><i></i><i></i><i></i></div>
+                <p class="wa-bolla noi" data-in="25.5">{P.risposta2}<time>21:41 <em>✓✓</em></time></p>
+              </div>
+              <div class="wa-scrivi"><span>{P.scrivi}</span><i></i></div>
+              <div class="vd-home"></div>
+            </div>
+
+            <div class="vd-obj vd-ia" style="left:460px;top:110px;width:380px;height:460px">
+              <span class="ia-tit"><i></i>{P.aiTitolo}</span>
+              <div class="ia-vuoto" data-in="0" data-out="9.3"><i></i><i></i><i></i></div>
+              <p class="ia-msg" data-in="9.3">«{evid(P.msg1).map((p, i) => (p.on ? <mark data-acc={String(9.8 + i * 0.25)}>{p.x}</mark> : p.x))}»</p>
+              <span class="ia-scan" data-in="9.4" data-out="11.8"></span>
+              <dl class="ia-campi">
+                {P.campi.map(([k, v]: [string, string], i: number) => <div data-in={String(9.9 + i * 0.33)}><dt>{k}</dt><dd>{v}</dd></div>)}
+              </dl>
+              <p class="ia-ok" data-in="12">✓ {P.aiCapito}</p>
+            </div>
+
+            <div class="vd-obj vd-cal" style="left:940px;top:0;width:380px;height:420px">
+              <div class="cal-testa"><span class="cal-logo"><i></i>Calendar</span><span class="cal-giorno"><small>{P.giorno}</small><b>{P.data}</b></span></div>
+              <ul class="cal-ore">
+                {P.orari.map(([ora, chi, tipo]: [string, string, string], i: number) => (
+                  tipo === 'libero'
+                    ? <li data-acc="17.3" data-accout="28.6"><time>{ora}</time><span class="cal-libero" data-in="0" data-out={i === 1 ? '28.6' : undefined}>{P.libero}</span>{i === 1 && <span class="cal-ev rosso" data-in="28.6">{P.prenotato}</span>}</li>
+                    : <li><time>{ora}</time><span class={`cal-ev ${tipo}`}>{chi}</span></li>
+                ))}
+                <span class="cal-scan" data-in="15.9" data-out="17.3"></span>
+              </ul>
+              <p class="cal-piede" data-in="15.9" data-out="17.3">{P.cerca}</p>
+              <p class="cal-piede" data-in="17.3" data-out="28.6">{P.trovati}</p>
+              <p class="cal-piede" data-in="29.2">{P.fissato}</p>
+            </div>
+
+            <div class="vd-obj vd-fogli" style="left:940px;top:480px;width:380px;height:230px">
+              <div class="fogli-testa"><i></i><b>{P.foglio}</b><small>{P.fogliApp}</small></div>
+              <table>
+                <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr></thead>
+                <tbody>
+                  <tr class="intesta"><th>1</th>{P.colonne.map((c: string) => <td>{c}</td>)}</tr>
+                  {P.righe.map((r: string[], i: number) => <tr><th>{i + 2}</th>{r.map((c) => <td>{c}</td>)}</tr>)}
+                  <tr class="nuova" data-in="31.1"><th>4</th>{P.nuova.map((c: string) => <td>{c}</td>)}</tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="vd-obj vd-notifica" style="left:940px;top:736px;width:380px" data-in="32.1"><span class="nt-ic">A</span><span><b>{P.notifica}</b><small>{P.notificaTesto}</small></span><time>{P.adesso}</time></div>
+            <p class="vd-obj vd-nota" style="left:940px;top:840px;width:380px" data-in="32.8">{P.promemoria}</p>
+          </Fragment>
+        )}
+
+        {id === 'preventivo' && (
+          <Fragment>
+            <div class="vd-obj vd-posta" style="left:0;top:0;width:380px;height:680px">
+              <div class="posta-testa"><svg viewBox="0 0 24 24"><path d="M3 6h18v12H3zM3 7l9 6 9-6" /></svg><b>{P.posta}</b></div>
+              <div class="posta-mail" data-in="3.3">
+                <header><span class="posta-avatar">M</span><span class="posta-chi"><b>{P.da}</b><small>{P.canale}</small></span></header>
+                <p class="posta-oggetto">{P.oggetto}</p>
+                <p class="posta-testo">{evid(P.testo).map((p) => (p.on ? <mark data-acc="8.7" data-accout="21">{p.x}</mark> : p.x))}</p>
+                <figure class="posta-foto" data-in="0" data-out="34.9">
+                  <img src={bagno.src} width="960" height="570" alt="" loading="lazy" decoding="async" />
+                  <span class="foto-box box-vasca" data-acc="9.6" data-accout="21">{P.fotoVasca}</span>
+                  <span class="foto-box box-parete" data-acc="10.2" data-accout="21">{P.fotoParete}</span>
+                  <figcaption><b>{P.foto}</b> · {P.fotoPeso}</figcaption>
+                </figure>
+              </div>
+              <div class="posta-risposta" data-in="35.1">
+                <small>{P.risposta}</small>
+                <p>{P.rispostaTesto}</p>
+                <span class="posta-pdf"><i>PDF</i>{P.rispostaFile}</span>
+              </div>
+              <p class="posta-richiamo" data-in="36.2">{P.richiamo}</p>
+            </div>
+
+            <div class="vd-obj vd-ia" style="left:480px;top:70px;width:380px;height:520px">
+              <span class="ia-tit"><i></i>{P.aiTitolo}</span>
+              <div class="ia-vuoto" data-in="0" data-out="9.4"><i></i><i></i><i></i></div>
+              <span class="ia-scan" data-in="9.4" data-out="11.6"></span>
+              <ul class="ia-lavori">
+                {P.lavori.map(([l, q]: [string, string], i: number) => <li data-in={String(9.7 + i * 0.4)} data-acc="16" data-accout="21"><span>{l}</span><b>{q}</b></li>)}
+              </ul>
+              <p class="ia-ok" data-in="12">✓ {P.aiFatto}</p>
+            </div>
+
+            <div class="vd-obj vd-fogli vd-listino" style="left:960px;top:0;width:380px;height:430px" data-acc="16.3" data-accout="28">
+              <div class="fogli-testa"><i></i><b>{P.listino}</b><small>{P.fogliApp}</small></div>
+              <table>
+                <tbody>
+                  {P.voci.map(([cod, voce, prezzo, usata]: [string, string, number, boolean], i: number) => (
+                    <tr class={usata ? 'usata' : 'altra'} data-acc={usata ? String(16.4 + i * 0.25) : undefined}><th>{cod}</th><td>{voce}</td><td>{eur2(prezzo)}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="vd-obj vd-pdf" style="left:1440px;top:-20px;width:400px;height:660px">
+              <div class="pdf-barra">
+                <span class="pdf-file"><i>PDF</i>{P.bozza}</span>
+                <span class="pdf-stato" data-in="22" data-out="31.2">{P.statoBozza}</span>
+                <span class="pdf-stato ok" data-in="31.2">{P.statoInviato}</span>
+              </div>
+              <div class="pdf-foglio">
+                <div class="pdf-vuoto" data-in="0" data-out="22.2"><i></i><i></i><i></i><i></i></div>
+                <div class="pdf-doc" data-in="22.2">
+                  <header><b>EDILNOVA</b><small>{P.indirizzo}</small></header>
+                  <p class="pdf-tit"><strong>{P.bozza}</strong><small>{P.per}</small></p>
+                  <ul>{P.righe.map(([v, p]: [string, number], i: number) => <li data-in={String(22.6 + i * 0.3)}><span>{v}</span><b>{eur2(p)}</b></li>)}</ul>
+                  <p class="pdf-tot"><span>{P.totale}</span><strong data-conta={totale} data-ca="24.2" data-cb="25.4">{eur2(totale)}</strong></p>
+                  <p class="pdf-tempi" data-in="25.4">{P.tempi}</p>
+                </div>
+              </div>
+              <div class="pdf-azioni" data-in="28.2" data-out="31.2">
+                <span>✎ {P.modifica}</span>
+                <span class="pdf-btn">{P.approva} →<i class="vd-dito" data-in="30.2" data-out="31.2"></i></span>
+              </div>
+              <div class="pdf-inviato" data-in="31.3">✓ {it ? `Inviato a ${P.da.split(' ')[0]} · 18:16` : `Sent to ${P.da.split(' ')[0]} · 6:16 pm`}</div>
+            </div>
+          </Fragment>
+        )}
+
+        {id === 'assistente' && (
+          <Fragment>
+            <div class="vd-obj vd-browser" style="left:0;top:0;width:760px;height:560px">
+              <div class="br-barra"><i></i><i></i><i></i><span>🔒 {P.indirizzo}</span></div>
+              <div class="br-corpo">
+                <div class="sito">
+                  <nav><b><i></i>{P.nome}</b><span>{P.menu.join(' · ')}</span></nav>
+                  <div class="sito-eroe">
+                    <h4>{P.heroTit}</h4>
+                    <p>{P.heroSub}</p>
+                    <span class="sito-btn">{P.heroBtn}</span>
+                    <span class="sito-stelle">★★★★★ <small>{P.stelle}</small></span>
+                  </div>
+                  <img src={studio.src} width="900" height="600" alt="" loading="lazy" decoding="async" />
+                </div>
+                <div class="chat">
+                  <div class="chat-testa"><span class="chat-avatar">✦</span><span class="chat-chi"><b>{P.chat}</b><small><i></i>{P.chatSotto}</small></span></div>
+                  <div class="chat-corpo">
+                    <p class="cb bot">{P.saluto}</p>
+                    <p class="cb io" data-in="4.4">{P.d1}</p>
+                    <div class="cb bot scrive" data-in="15.4" data-out="16.2"><i></i><i></i><i></i></div>
+                    <p class="cb bot" data-in="16.2">{P.r1}<span class="fonte" data-acc="16.9" data-accout="21">📄 {P.f1}</span></p>
+                    <p class="cb io" data-in="21.8">{P.d3}</p>
+                    <div class="cb bot scrive" data-in="22.5" data-out="23.3"><i></i><i></i><i></i></div>
+                    <div class="cb bot" data-in="23.3">{P.r3}<span class="slot">{P.slot.map((s: string) => <span data-acc={s === '11:00' ? '25.4' : undefined}>{s}{s === '11:00' && <i class="vd-dito" data-in="25.1" data-out="25.9"></i>}</span>)}</span></div>
+                    <p class="cb io" data-in="25.8">{P.scelta}</p>
+                    <div class="cb bot scrive" data-in="27" data-out="27.8"><i></i><i></i><i></i></div>
+                    <p class="cb bot" data-in="27.8">{P.r4}</p>
+                    <p class="cb io" data-in="29.6">{P.d5}</p>
+                    <div class="cb bot scrive" data-in="30.9" data-out="31.7"><i></i><i></i><i></i></div>
+                    <p class="cb bot" data-in="31.7">{P.r5}<span class="fonte passata">↪ {P.f5}</span></p>
+                  </div>
+                  <div class="chat-scrivi"><span>{P.scrivi}</span><i>↑</i></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="vd-obj vd-ia vd-doc" style="left:860px;top:20px;width:380px;height:400px">
+              <span class="ia-tit"><i></i>{P.docTitolo}</span>
+              <ul class="ia-docs">
+                {P.docs.map(([tipo, nome]: [string, string], i: number) => {
+                  const [a, b] = [['9.9', '14.5'], ['', ''], ['26.9', '29.5'], ['30.9', '36']][i];
+                  return <li data-acc={a || undefined} data-accout={b || undefined}><i class={`doc-tipo ${tipo}`}>{tipo === 'pdf' ? 'PDF' : tipo === 'cal' ? '31' : tipo === 'regole' ? '!' : '≡'}</i><span>{nome}</span><small>{P.docLetto}</small></li>;
+                })}
+              </ul>
+              <p class="ia-ok" data-in="27.1">{P.agendaNuovo}</p>
+            </div>
+
+            <div class="vd-obj vd-ia vd-riep" style="left:860px;top:490px;width:380px;height:360px">
+              <span class="ia-tit"><i></i>{P.riepilogo}</span>
+              <p class="ia-sotto">{P.riepilogoSotto}</p>
+              <dl class="ia-numeri">
+                {P.numeri.map(([k, v]: [string, string], i: number) => <div data-in={String(36.9 + i * 0.3)}><dt>{k}</dt><dd>{v}</dd></div>)}
+              </dl>
+              <p class="ia-richiama" data-in="38.3">{P.richiamare}</p>
+            </div>
+          </Fragment>
+        )}
+
+        <i class="vd-pacco" data-pacco></i>
       </div>
 
-      <div class="dm-corpo">
-        <div class="demo-guida">
-          <span class="dg-attivita">{T('Esempio', 'Example')} · {d.attivita}</span>
-          <ol class="dg-passi" aria-live="polite">
-            {d.passi.map((p, i) => (
-              <li data-demo-passo={i + 1} data-fuoco={p.fuoco.join(' ')} data-sorgente={p.da} data-meta={p.verso} data-prova={p.prova ? '' : undefined} hidden={i > 0}>
-                <span class="dg-num"><b>{due(i + 1)}</b> / {due(n)}</span>
-                <h3>{p.titolo}</h3>
-                <p>{p.testo}</p>
-                <details class="dg-come"><summary>{T('Come funziona, dietro', 'How it works, behind it')}</summary><p>{p.dietro}</p></details>
-              </li>
-            ))}
-          </ol>
-          <div class="dg-esito" data-demo-esito hidden>
-            <div class="dg-numeri">
-              {d.esito.map(([k, v], i) => <div class={i ? 'dopo' : 'prima'}><span class="mono">{k}</span><strong>{v}</strong></div>)}
-            </div>
-            <a class="link-freccia" href={`${preventivo}?s=${d.servizio}:${d.livello}`}>{T('Lo voglio nella mia attività', 'I want this in my business')} · {liv.nome} {T('da', 'from')} {eur(liv.una!)} <span class="freccia" aria-hidden="true">→</span></a>
-          </div>
-          <div class="dg-comandi">
-            <button class="dg-indietro" type="button" data-demo-indietro aria-label={T('Passo precedente', 'Previous step')}>←</button>
-            <button class="btn btn-azione btn-piccolo dg-avanti" type="button" data-demo-avanti><span data-demo-avanti-testo>{T('Avanti', 'Next')}</span> <span class="freccia" aria-hidden="true">→</span></button>
-          </div>
+      <div class="vd-barre" data-barre aria-hidden="true">{config.scene.map(() => <i><b></b></i>)}</div>
+      <span class="vd-etichetta" aria-hidden="true"><i></i>{d.attivita}</span>
+      <div class="vd-didascalia" data-didascalia aria-hidden="true"><span class="kick" data-kick></span><p class="frase" data-frase></p></div>
+
+      <div class="vd-copertina" data-copertina aria-hidden="true">
+        <span class="vd-orologio"><i></i>{V.copertina[0]}</span>
+        <p class="vd-grande">{V.copertina[1]}<br /><span>{V.copertina[2]}</span></p>
+      </div>
+      <div class="vd-chiusura" data-chiusura>
+        <span class="mono">{T('Il risultato', 'The result')}</span>
+        <p class="vd-grande">{V.chiusura}<span class="quadratino" aria-hidden="true"></span></p>
+        <div class="vd-confronto">
+          {d.esito.map(([k, v]: [string, string], i: number) => <div class={i ? 'dopo' : 'prima'}><small>{k}</small><b>{v}</b></div>)}
         </div>
-
-        <div class="demo-palco" role="group" aria-label={T('Simulazione', 'Simulation')}>
-          <ol class="dm-catena" aria-hidden="true">
-            {pannelli.map(([pid, icona, nome]) => <li data-anello={pid}><Icona nome={icona} /><span>{nome}</span></li>)}
-          </ol>
-          <svg class="dm-fili" aria-hidden="true"></svg>
-
-          {id === 'whatsapp' && (
-            <div class="dp dp-wa">
-              <div class="dp-pannello dp-tel" data-pannello="tel">
-                <div class="tel">
-                  <div class="tel-stato"><time>{P.ora}</time><span class="tel-icone"><i class="tel-segnale"></i><i class="tel-batteria"></i></span></div>
-                  <div class="tel-testa">
-                    <span class="tel-indietro" aria-hidden="true">‹</span>
-                    <span class="tel-avatar">G</span>
-                    <span class="tel-nome"><strong>{P.contatto}</strong><small>{P.contattoSotto}</small></span>
-                    <svg class="tel-chiama" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v10H3zM14 10l6-3v10l-6-3" /></svg>
-                    <svg class="tel-chiama" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 6a2 2 0 0 1 2-2z" /></svg>
-                  </div>
-                  <div class="tel-chat">
-                    <span class="tel-giorno">{P.oggi}</span>
-                    <p class="bolla lei" data-da="1" data-attesa>{evid(P.msg1, '2').map((p) => (p.on ? <mark data-acceso={p.acceso}>{p.x}</mark> : p.x))}<time>21:40</time></p>
-                    <p class="bolla noi" data-da="4" data-attesa>{P.risposta1}<time>21:40 <span class="spunte">✓✓</span></time></p>
-                    <p class="bolla lei" data-da="4" data-attesa data-ritardo="1500">{P.msg2}<time>21:41</time></p>
-                    <p class="bolla noi" data-da="4" data-attesa data-ritardo="3000">{P.risposta2}<time>21:41 <span class="spunte">✓✓</span></time></p>
-                  </div>
-                  <div class="tel-scrivi"><span>☺ {P.scrivi}</span><i aria-hidden="true"></i></div>
-                </div>
-              </div>
-
-              <div class="dp-pannello dp-ai ia" data-pannello="ai">
-                <span class="ia-titolo"><i></i>{P.aiTitolo}</span>
-                <div class="ia-attesa" data-fino="1"><i></i><i></i><i></i><small>{P.aiAttesa}</small></div>
-                <dl class="ia-campi">
-                  {P.campi.map(([k, v]: [string, string], i: number) => <div data-da="2" style={`--i:${i}`}><dt>{k}</dt><dd>{v}</dd></div>)}
-                </dl>
-                <p class="ia-ok" data-da="2" style="--i:4">✓ {P.aiCapito}</p>
-              </div>
-
-              <div class="dp-col">
-                <div class="dp-pannello dp-agenda cal" data-pannello="agenda">
-                  <div class="cal-testa">
-                    <span class="cal-logo"><i></i>{P.agenda}</span>
-                    <span class="cal-giorno"><small>{P.giorno}</small><b>{P.data}</b></span>
-                  </div>
-                  <ul class="cal-ore">
-                    {P.orari.map(([ora, chi, stato]: [string, string, string], i: number) => (
-                      <li class={stato} data-acceso={stato === 'libero' ? '3' : undefined}>
-                        <time>{ora}</time>
-                        {stato === 'pieno'
-                          ? <span class={`ev ev-${i}`}>{chi}</span>
-                          : i === 1
-                            ? <><span class="cal-libero" data-fino="3">{P.libero}</span><span class="ev ev-nuovo" data-da="4" data-ritardo="3400">{P.prenotato}</span></>
-                            : <span class="cal-libero">{P.libero}</span>}
-                      </li>
-                    ))}
-                  </ul>
-                  <p class="cal-cerca" data-da="3" data-fino="3">{P.cercando}</p>
-                </div>
-                <div class="dp-pannello dp-foglio" data-pannello="foglio">
-                  <div class="sheet">
-                    <div class="sheet-testa"><i class="foglio-ico"></i><b>{P.foglio}</b><small>Google {T('Fogli', 'Sheets')}</small></div>
-                    <table class="sheet-tab">
-                      <thead><tr><th></th>{['A', 'B', 'C', 'D'].map((l) => <th>{l}</th>)}</tr></thead>
-                      <tbody>
-                        <tr class="intesta"><th>1</th>{P.colonne.map((c: string) => <td>{c}</td>)}</tr>
-                        {P.righe.map((r: string[], i: number) => <tr><th>{i + 2}</th>{r.map((c) => <td>{c}</td>)}</tr>)}
-                        <tr class="nuova" data-da="5"><th>{P.righe.length + 2}</th>{P.nuova.map((c: string) => <td>{c}</td>)}</tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="notifica" data-da="5" data-ritardo="700">
-                    <span class="notifica-ico">A</span>
-                    <span><strong>{P.notifica}</strong><small>{P.notificaTesto}</small></span>
-                    <time>{P.adesso}</time>
-                  </div>
-                  <p class="promemoria" data-da="5" data-ritardo="1400">⏰ {P.promemoria}</p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {id === 'preventivo' && (
-            <div class="dp dp-pv">
-              <div class="dp-pannello dp-rich posta" data-pannello="rich">
-                <div class="posta-testa"><Icona nome="posta" /><b>{P.posta}</b></div>
-                <div class="posta-mail" data-da="1" data-attesa>
-                  <header><span class="tel-avatar">M</span><span class="tel-nome"><strong>{P.da}</strong><small>{P.canale}</small></span></header>
-                  <p class="posta-oggetto">{P.oggetto}</p>
-                  <p class="posta-testo">{evid(P.testo, '2').map((p) => (p.on ? <mark data-acceso={p.acceso}>{p.x}</mark> : p.x))}</p>
-                  <figure class="foto">
-                    <img src={bagno.src} width="960" height="570" alt={P.foto} loading="lazy" decoding="async" />
-                    <span class="foto-box box-vasca" data-acceso="2">{P.fotoVasca}</span>
-                    <span class="foto-box box-parete" data-acceso="2">{P.fotoParete}</span>
-                    <figcaption><b>{P.foto}</b> · {P.fotoPeso}</figcaption>
-                  </figure>
-                </div>
-                <div class="posta-risposta" data-da="6" data-ritardo="300">
-                  <small>{P.risposta}</small>
-                  <p>{P.rispostaTesto}</p>
-                  <span class="posta-pdf"><i>PDF</i>{P.rispostaFile}</span>
-                </div>
-              </div>
-
-              <div class="dp-col">
-                <div class="dp-pannello dp-lavori ia" data-pannello="lavori">
-                  <span class="ia-titolo"><i></i>{P.lavoriTitolo}</span>
-                  <div class="ia-attesa" data-fino="1"><i></i><i></i><i></i><small>{P.lavoriAttesa}</small></div>
-                  <ul class="ia-lavori">
-                    {P.lavori.map(([l, q]: [string, string], i: number) => <li data-da="2" data-acceso="3" style={`--i:${i}`}><span>{l}</span><b>{q}</b></li>)}
-                  </ul>
-                  <p class="ia-ok" data-da="2" style="--i:5">✓ {P.lavoriFatto}</p>
-                </div>
-                <div class="dp-pannello dp-listino" data-pannello="listino">
-                  <div class="sheet">
-                    <div class="sheet-testa"><i class="foglio-ico"></i><b>{P.listino}</b><small>Google {T('Fogli', 'Sheets')}</small></div>
-                    <table class="sheet-tab listino">
-                      <tbody>
-                        {P.voci.map(([cod, voce, prezzo, usata]: [string, string, number, boolean]) => (
-                          <tr class={usata ? 'usata' : 'altra'} data-acceso={usata ? '3-4' : undefined}><th>{cod}</th><td>{voce}</td><td>{eur2(prezzo)}</td></tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              <div class="dp-pannello dp-bozza" data-pannello="bozza">
-                <div class="doc-app">
-                  <div class="doc-barra">
-                    <span class="doc-file"><i>PDF</i>{P.bozza}</span>
-                    <span class="doc-stato"><span data-da="4" data-fino="5">{P.bozzaStato}</span><span class="ok" data-da="6">✓ {P.inviatoStato}</span></span>
-                  </div>
-                  <div class="doc-foglio">
-                    <div class="doc-vuoto" data-fino="3"><i></i><i></i><i></i><i></i><small>{P.bozzaAttesa}</small></div>
-                    <div class="doc" data-da="4">
-                      <header class="doc-testa"><span class="doc-logo">EDILNOVA</span><small>Via Tortona 18 · Milano</small></header>
-                      <p class="doc-titolo"><strong>{P.bozza}</strong><small>{P.per}</small></p>
-                      <ul class="doc-righe">
-                        {P.righe.map(([v, p]: [string, number], i: number) => <li data-da="4" style={`--i:${i}`}><span>{v}</span><b>{eur2(p)}</b></li>)}
-                      </ul>
-                      <p class="doc-totale"><span>{P.totale}</span><strong data-conta={totale}>{eur2(totale)}</strong></p>
-                      <p class="doc-tempi">{P.tempi}</p>
-                    </div>
-                  </div>
-                  <div class="doc-azioni" data-da="5" data-fino="5">
-                    <span class="doc-modifica"><Icona nome="matita" /> {P.modifica}</span>
-                    <button class="btn btn-azione btn-piccolo" type="button" data-demo-vai>{P.approva} <span class="freccia">→</span></button>
-                  </div>
-                  <div class="doc-inviato" data-da="6"><strong>✓ {P.inviato}</strong><small>{P.richiamo}</small></div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {id === 'assistente' && (
-            <div class="dp dp-as">
-              <div class="dp-pannello dp-sito" data-pannello="sito">
-                <div class="browser">
-                  <div class="browser-barra"><i></i><i></i><i></i><span>🔒 {P.indirizzo}</span></div>
-                  <div class="browser-corpo">
-                    <div class="sito-finto">
-                      <nav class="sf-nav"><b><i class="sf-dente"></i>{P.nome}</b><span>{P.menu.join(' · ')}</span></nav>
-                      <div class="sf-eroe">
-                        <h4>{P.heroTit}</h4>
-                        <p>{P.heroSub}</p>
-                        <span class="sf-bottone">{P.heroBtn}</span>
-                        <span class="sf-stelle">★★★★★ <small>{P.stelle}</small></span>
-                      </div>
-                      <img class="sf-foto" src={studio.src} width="900" height="600" alt="" loading="lazy" decoding="async" />
-                    </div>
-                    <div class="chat">
-                      <div class="chat-testa"><span class="chat-avatar"><Icona nome="chat" /></span><span class="tel-nome"><strong>{P.chat}</strong><small><i class="chat-online"></i>{P.chatSotto}</small></span></div>
-                      <div class="chat-corpo">
-                        <p class="bolla bot">{P.saluto}</p>
-                        <p class="bolla io" data-da="1">{P.d1}</p>
-                        <p class="bolla bot" data-da="1" data-attesa data-ritardo="500">{P.r1}<span class="fonte" data-acceso="2">📄 {P.f1}</span></p>
-                        <p class="bolla io" data-da="2">{P.d2}</p>
-                        <p class="bolla bot" data-da="2" data-attesa data-ritardo="500">{P.r2}<span class="fonte" data-acceso="2">📄 {P.f2}</span></p>
-                        <p class="bolla io" data-da="3">{P.d3}</p>
-                        <div class="bolla bot" data-da="3" data-attesa data-ritardo="500">{P.r3}
-                          <span class="slot">{P.slot.map((s: string) => <button type="button" data-demo-scegli={s} data-predefinito={s === P.predefinito ? '' : undefined}>{s}</button>)}</span>
-                        </div>
-                        <p class="bolla io" data-da="4">{P.scelta} <span data-demo-scelta>{P.predefinito}</span></p>
-                        <p class="bolla bot" data-da="4" data-attesa data-ritardo="500">{P.r4a} <span data-demo-scelta>{P.predefinito}</span>{P.r4b}</p>
-                        <p class="bolla io" data-da="5">{P.d5}</p>
-                        <p class="bolla bot" data-da="5" data-attesa data-ritardo="500">{P.r5}<span class="fonte passata">↪ {P.f5}</span></p>
-                      </div>
-                      <div class="chat-scrivi"><span>{P.scrivi}</span><i>↑</i></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="dp-col">
-                <div class="dp-pannello dp-doc ia" data-pannello="doc">
-                  <span class="ia-titolo"><i></i>{P.docTitolo}</span>
-                  <ul class="ia-docs">
-                    {P.docs.map(([tipo, nome, acceso]: [string, string, string]) => (
-                      <li data-acceso={acceso}><i class={`doc-tipo ${tipo}`}>{tipo === 'pdf' ? 'PDF' : tipo === 'cal' ? '31' : tipo === 'regole' ? '!' : '≡'}</i><span>{nome}</span><small>{P.docLetto}</small></li>
-                    ))}
-                  </ul>
-                  <p class="ia-ok ia-agenda" data-da="4" data-ritardo="900">✓ {P.agendaNuovo}</p>
-                </div>
-                <div class="dp-pannello dp-cruscotto ia" data-pannello="cruscotto">
-                  <span class="ia-titolo"><i></i>{P.cruscotto}</span>
-                  <p class="ia-sotto" data-fino="5">{P.cruscottoAttesa}</p>
-                  <p class="ia-sotto" data-da="6">{P.cruscottoSotto}</p>
-                  <dl class="ia-numeri">
-                    {P.numeri.map(([k, v]: [string, string], i: number) => <div data-da="6" style={`--i:${i}`}><dt>{k}</dt><dd>{v}</dd></div>)}
-                  </dl>
-                  <p class="ia-richiama" data-da="6" style="--i:4">☎ {P.richiamare}</p>
-                </div>
-              </div>
-            </div>
-          )}
-          <i class="dm-pacco" aria-hidden="true"></i>
+        <div class="vd-azioni">
+          <a class="btn btn-azione" href={`${preventivo}?s=${d.servizio}:${d.livello}`}>{T('Lo voglio nella mia attività', 'I want this in my business')} · {T('da', 'from')} {euro(liv.una!, lang)} <span class="freccia" aria-hidden="true">→</span></a>
+          <button class="vd-rivedi" type="button" data-rivedi>↺ {T('Rivedi', 'Watch again')}</button>
         </div>
       </div>
+      <span class="vd-fermo" aria-hidden="true"></span>
     </div>
+
+    <div class="vd-comandi">
+      <button type="button" data-demo-pausa aria-controls={`demo-${id}`}>▶ {T('Riproduci', 'Play')}</button>
+      <span>{T('Tocca a destra: avanti · a sinistra: indietro · tieni premuto: fermo', 'Tap right: next · left: back · hold: pause')}</span>
+    </div>
+    <ol class="sr-only">{V.scene.map((s: string[]) => <li>{s[1]}</li>)}</ol>
     <p class="demo-avviso">
       {T('Esempio dimostrativo: attività, persone e prezzi sono inventati. Lo stesso si costruisce con i tuoi programmi, i tuoi prezzi e le tue regole.', 'Demonstration example: businesses, people and prices are made up. The same is built with your programs, your prices and your rules.')}
       {tutte && <a class="link-freccia" href={url('demo', lang)}>{T('Guarda tutte le demo', 'See all the demos')} <span class="freccia" aria-hidden="true">→</span></a>}

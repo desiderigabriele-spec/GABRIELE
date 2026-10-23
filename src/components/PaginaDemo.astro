@@ -8,7 +8,7 @@ import Cursori from './Cursori.astro';
 import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
-import { demo, ORDINE_DEMO } from '../data/demo.js';
+import { demo, tempi, ORDINE_DEMO } from '../data/demo.js';
 
 interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
@@ -39,8 +39,8 @@ const waTesto = T('Ciao! Ho visto le demo di Desideri&Code e vorrei capire cosa 
           <span class="riga"><span>{T('guardalo lavorare', 'watch it work')}<span class="quadratino" aria-hidden="true"></span></span></span>
         </h1>
         <p class="lead" data-appare="0.2">{T(
-          'Tre esempi completi di quello che costruiamo con l’intelligenza artificiale. Partono da soli, un passo alla volta, e a ogni passo vedi cosa succede: puoi fermarli quando vuoi e andare avanti tu.',
-          'Three complete examples of what we build with artificial intelligence. They play on their own, one step at a time, and at every step you see what happens: pause them whenever you like and go at your own pace.',
+          'Tre esempi completi di quello che costruiamo con l’intelligenza artificiale, come brevi video: partono da soli e puoi fermarli, andare avanti o tornare indietro quando vuoi.',
+          'Three complete examples of what we build with artificial intelligence, as short videos: they play on their own and you can pause, skip ahead or go back whenever you like.',
         )}</p>
       </div>
       <div class="demo-terminale" data-appare="0.3"><Terminale lang={lang} /></div>
@@ -55,7 +55,7 @@ const waTesto = T('Ciao! Ho visto le demo di Desideri&Code e vorrei capire cosa 
                 <span class="demo-voce-testo">
                   <span class="mono">Demo {i + 1} · {d.etichetta}</span>
                   <strong>{d.breve}</strong>
-                  <small>{d.passi.length} {T('passi · 2 minuti', 'steps · 2 minutes')}</small>
+                  <small>{T('Video', 'Video')} · {tempi[id].fine} {T('secondi', 'seconds')}</small>
                 </span>
                 <span class="freccia" aria-hidden="true">↓</span>
               </a>
