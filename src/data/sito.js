@@ -110,7 +110,9 @@ export const metodo = [
   },
 ];
 
-// Casi studio. Le recensioni arriveranno dai clienti: finché non ci sono, non si inventano.
+// Casi studio, mostrati in home come recensioni («Parlano di noi»). Le recensioni arriveranno dai clienti:
+// finché non ci sono, non si inventano e al loro posto c'è la sfida. Per aggiungerne una: incolla le parole
+// del cliente in `recensione` e, se ti ha dato un voto (per esempio su Google), mettilo in `voto` da 1 a 5.
 export const lavori = [
   {
     id: 'lorenzo',
@@ -128,6 +130,7 @@ export const lavori = [
       'Guida interattiva e chat che porta a WhatsApp',
     ],
     recensione: null,
+    voto: null,
   },
   {
     id: 'montini',
@@ -145,6 +148,7 @@ export const lavori = [
       'SEO locale sulle zone servite',
     ],
     recensione: null,
+    voto: null,
   },
 ];
 

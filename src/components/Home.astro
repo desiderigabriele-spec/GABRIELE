@@ -8,6 +8,7 @@ import Bozza from './Bozza.astro';
 import LogoGigante from './LogoGigante.astro';
 import MicroIcona from './MicroIcona.astro';
 import '../styles/chisiamo.css';
+import '../styles/recensioni.css';
 import { metodoStudio } from '../data/metodo.js';
 import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
@@ -18,6 +19,7 @@ const { lang = 'it' } = Astro.props;
 const it = lang === 'it';
 const T = (a: string, b: string) => (it ? a : b);
 const { servizi, metodo, lavori, faq, contatti, categorie } = dati(lang);
+const iniziali = (nome: string) => nome.replace(/^Dott\.\s*/, '').split(' ').map((p) => p[0]).slice(0, 2).join('');
 const eur = (n: number) => euro(n, lang);
 const preventivo = url('preventivo', lang);
 const mese = T('/mese', '/month');
@@ -504,7 +506,9 @@ const jsonLd = {
     </div>
   </section>
 
-  <!-- PARLANO DI NOI: i clienti e i loro siti, da guardare dal vivo -->
+  <!-- PARLANO DI NOI: le recensioni dei clienti in una fila che scorre da sola (vita.js, data-fila).
+       Cliccandone una si apre il progetto: il sito, cosa abbiamo fatto e il link per guardarlo dal vivo.
+       Finché un cliente non ha scritto la sua recensione, al suo posto c'è la sfida del progetto (data/sito.js, lavori) -->
   <section class="sezione" id="lavori" data-forma="2">
     <div class="wrap">
       <div class="testa-sezione testa-riga">
@@ -514,40 +518,64 @@ const jsonLd = {
           <span class="riga"><span><span class="em">{T('siti veri.', 'real websites.')}</span></span></span>
         </h2>
         <p class="lead" data-appare>{T(
-          'Sono online e lavorano ogni giorno per loro. Aprili e guardali dal vivo, dal computer o dal telefono.',
-          'They are live and working for them every day. Open them and see for yourself, on a computer or a phone.',
+          'Sono online e lavorano ogni giorno per loro. Tocca una scheda per vedere il progetto e aprire il sito dal vivo.',
+          'They are live and working for them every day. Tap a card to see the project and open the live site.',
         )}</p>
       </div>
-      <div class="clienti" data-sequenza>
-        {lavori.map((l) => {
-          const dominio = new URL(l.url).hostname.replace(/^www\./, '');
-          const iniziali = l.cliente.replace(/^Dott\.\s*/, '').split(' ').map((p) => p[0]).slice(0, 2).join('');
-          return (
-            <article class="card cliente">
-              <a class="cliente-anteprima" href={l.url} target="_blank" rel="noopener" aria-label={T(`Apri il sito di ${l.cliente}`, `Open ${l.cliente}'s website`)}>
-                <span class="browser" aria-hidden="true"><i></i><i></i><i></i><span>{dominio}</span></span>
-                <img src={l.img} alt={T(`La home del sito di ${l.cliente}`, `The home page of ${l.cliente}'s website`)} width="1440" height="900" loading="lazy" decoding="async" />
-                <span class="cliente-guarda" aria-hidden="true">{T('Guarda il sito', 'View the site')} ↗</span>
-              </a>
-              <div class="cliente-corpo">
-                {l.recensione
-                  ? <blockquote class="cliente-citazione">«{l.recensione}»</blockquote>
-                  : <p class="cliente-sfida"><span class="mono">{T('La sfida', 'The challenge')}</span>{l.sfida}</p>}
-                <div class="cliente-firma">
-                  {l.logo
-                    ? <img class="cliente-logo" src={l.logo} alt="" width="42" height="42" loading="lazy" decoding="async" />
-                    : <span class="cliente-iniziali" aria-hidden="true">{iniziali}</span>}
-                  <span><strong>{l.cliente}</strong><small>{l.settore}</small></span>
-                  <span class="pacchetto-tag">{l.pacchetto}</span>
-                </div>
-                <ul class="cliente-fatto">{l.fatto.map((f) => <li>{f}</li>)}</ul>
-                <a class="link-freccia" href={l.url} target="_blank" rel="noopener">{T('Visita', 'Visit')} {dominio} <span class="freccia" aria-hidden="true">↗</span></a>
-              </div>
-            </article>
-          );
-        })}
-      </div>
+      <ul class="recensioni" role="list" data-fila data-recensioni data-appare>
+        {lavori.map((l) => (
+          <li>
+            <button class="recensione" type="button" data-recensione={l.id} aria-haspopup="dialog">
+              <span class="rc-testa">
+                {l.voto
+                  ? <span class="rc-stelle" role="img" aria-label={T(`${l.voto} stelle su 5`, `${l.voto} out of 5 stars`)}>{[1, 2, 3, 4, 5].map((n) => <i class={n <= l.voto ? 'piena' : ''}></i>)}</span>
+                  : <span class="mono">{T('La sfida', 'The challenge')}</span>}
+                <span class="rc-virgolette" aria-hidden="true">“</span>
+              </span>
+              <span class={l.recensione ? 'rc-testo' : 'rc-testo rc-sfida'}>{l.recensione ? `«${l.recensione}»` : l.sfida}</span>
+              <span class="rc-firma">
+                {l.logo
+                  ? <img src={l.logo} alt="" width="42" height="42" loading="lazy" decoding="async" />
+                  : <span class="cliente-iniziali" aria-hidden="true">{iniziali(l.cliente)}</span>}
+                <span><strong>{l.cliente}</strong><small>{l.settore}</small></span>
+              </span>
+              <span class="rc-piede"><span class="pacchetto-tag">{l.pacchetto}</span><span class="rc-apri">{T('Vedi il progetto', 'See the project')} <span class="freccia" aria-hidden="true">→</span></span></span>
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
+    {lavori.map((l) => {
+      const dominio = new URL(l.url).hostname.replace(/^www\./, '');
+      return (
+        <dialog class="rc-dialogo" data-recensione-dialogo={l.id} aria-label={l.cliente} data-lenis-prevent>
+          <div class="rc-box">
+            <button class="cl-chiudi rc-chiudi" type="button" data-rc-chiudi aria-label={T('Chiudi', 'Close')}>×</button>
+            <a class="cliente-anteprima" href={l.url} target="_blank" rel="noopener" aria-label={T(`Apri il sito di ${l.cliente}`, `Open ${l.cliente}'s website`)}>
+              <span class="browser" aria-hidden="true"><i></i><i></i><i></i><span>{dominio}</span></span>
+              <img src={l.img} alt={T(`La home del sito di ${l.cliente}`, `The home page of ${l.cliente}'s website`)} width="1440" height="900" loading="lazy" decoding="async" />
+              <span class="cliente-guarda" aria-hidden="true">{T('Guarda il sito', 'View the site')} ↗</span>
+            </a>
+            <div class="rc-corpo">
+              {l.voto && <span class="rc-stelle" role="img" aria-label={T(`${l.voto} stelle su 5`, `${l.voto} out of 5 stars`)}>{[1, 2, 3, 4, 5].map((n) => <i class={n <= l.voto ? 'piena' : ''}></i>)}</span>}
+              {l.recensione
+                ? <blockquote class="cliente-citazione">«{l.recensione}»</blockquote>
+                : <p class="cliente-sfida"><span class="mono">{T('La sfida', 'The challenge')}</span>{l.sfida}</p>}
+              <div class="cliente-firma">
+                {l.logo
+                  ? <img class="cliente-logo" src={l.logo} alt="" width="42" height="42" loading="lazy" decoding="async" />
+                  : <span class="cliente-iniziali" aria-hidden="true">{iniziali(l.cliente)}</span>}
+                <span><strong>{l.cliente}</strong><small>{l.settore}</small></span>
+                <span class="pacchetto-tag">{l.pacchetto}</span>
+              </div>
+              <span class="mono rc-fatto-titolo">{T('Cosa abbiamo fatto', 'What we did')}</span>
+              <ul class="cliente-fatto">{l.fatto.map((f) => <li>{f}</li>)}</ul>
+              <a class="btn btn-azione" href={l.url} target="_blank" rel="noopener">{T('Visita', 'Visit')} {dominio} <span class="freccia" aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </dialog>
+      );
+    })}
   </section>
 
   <!-- CHI SIAMO, in breve: prima il metodo, poi chi dirige e chi stiamo cercando. Il resto è nella pagina /chi-siamo -->
@@ -772,5 +800,27 @@ const jsonLd = {
     box.addEventListener('change', aggiorna);
     aggiorna();
     if (location.hash === '#calcola') apri();
+  }
+
+  // Parlano di noi: una scheda (anche una delle copie della fila infinita) apre il suo progetto.
+  // Un trascinamento della fila non vale come clic (vita.js lo segna con preventDefault).
+  const fila = document.querySelector('[data-recensioni]');
+  if (fila) {
+    let ultima: HTMLElement | null = null;
+    fila.addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLElement>('[data-recensione]');
+      if (!b || e.defaultPrevented) return;
+      const d = document.querySelector<HTMLDialogElement>(`[data-recensione-dialogo="${b.dataset.recensione}"]`);
+      if (!d) return;
+      ultima = b;
+      d.showModal();
+      (window as any).gdLenis?.stop();
+      (window as any).gdTrack?.('recensione_aperta', { cliente: b.dataset.recensione });
+    });
+    document.querySelectorAll<HTMLDialogElement>('[data-recensione-dialogo]').forEach((d) => {
+      d.addEventListener('close', () => { (window as any).gdLenis?.start(); ultima?.focus({ preventScroll: true }); });
+      d.addEventListener('click', (e) => { if (e.target === d) d.close(); }); // clic sullo sfondo
+      d.querySelector('[data-rc-chiudi]')?.addEventListener('click', () => d.close());
+    });
   }
 </script>

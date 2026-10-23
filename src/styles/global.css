@@ -543,8 +543,6 @@ html.vita-on .metodo-passi .passo-num { display: none; }
 }
 
 /* ---------- Parlano di noi: i clienti e i loro siti ---------- */
-.clienti { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-.cliente { display: grid; grid-template-rows: auto 1fr; padding: 0; }
 .cliente-anteprima { position: relative; display: block; aspect-ratio: 16 / 5; overflow: hidden; border-bottom: 1px solid var(--linea); background: var(--superficie); }
 .cliente-anteprima img { width: 100%; height: 100%; object-fit: cover; object-position: top; padding-top: 28px; transform: scale(1.03); transition: transform 1.2s var(--ease); }
 .cliente-anteprima:hover img { transform: scale(1); }
@@ -572,8 +570,7 @@ html.vita-on .metodo-passi .passo-num { display: none; }
 .cliente-fatto { list-style: none; margin: 0; padding: .8rem 0 0; border-top: 1px solid var(--linea); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .35rem 1rem; }
 .cliente-fatto li { position: relative; padding-left: 1rem; font-size: .82rem; line-height: 1.35; color: var(--nebbia); }
 .cliente-fatto li::before { content: ''; position: absolute; left: 0; top: .5em; width: 5px; height: 5px; background: var(--ciano); }
-.cliente .link-freccia { position: relative; z-index: 2; }
-@media (max-width: 900px) { .clienti { grid-template-columns: minmax(0, 1fr); } .cliente-firma .pacchetto-tag { display: none; } }
+@media (max-width: 600px) { .cliente-firma .pacchetto-tag { display: none; } }
 .pacchetto-tag { justify-self: start; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; padding: .45rem .8rem; border: 1px solid rgba(var(--brand-rgb),.45); color: var(--viola-chiaro); }
 .lista-check { list-style: none; padding: 0; margin: 0; display: grid; gap: .55rem; }
 .lista-check li { display: grid; grid-template-columns: 22px 1fr; gap: .6rem; color: var(--nebbia); }

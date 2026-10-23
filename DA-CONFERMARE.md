@@ -10,7 +10,7 @@
 - [ ] **Chi siamo**: lo studio si racconta per metodo (`src/data/metodo.js`) e competenze, senza dire quante persone ci sono. Quando arrivano collaboratori veri si può aggiungere la squadra. Rileggi la strada (`src/components/PaginaChiSiamo.astro`, dentro la tendina «La mia strada»). Ci sono i ruoli (agente di commercio, team leader, co-fondatore di una startup, consulente immobiliare) senza i nomi delle aziende: dimmi se va bene così o se vuoi toglierne qualcuno.
 
 ## Contenuti
-- [ ] **Recensioni** di Luigi Montini e Lorenzo Baldassarri per «Parlano di noi»: incolla le loro parole in `recensione` (in `lavori`, `src/data/sito.js`, e la traduzione in `src/data/en.js`). Finché non arrivano la scheda mostra la sfida del progetto. Non inventarle: le recensioni false sono vietate.
+- [ ] **Recensioni** di Luigi Montini e Lorenzo Baldassarri per «Parlano di noi» (schede che scorrono in home): incolla le loro parole in `recensione` e, se ti danno un voto (per esempio quello lasciato su Google), mettilo in `voto` da 1 a 5 (in `lavori`, `src/data/sito.js`; la traduzione inglese, se serve, in `src/data/en.js`). Finché non arrivano la scheda mostra la sfida del progetto e niente stelle. Non inventarle: le recensioni false sono vietate. Per un cliente nuovo basta aggiungere un blocco a `lavori` con screenshot e logo in `public/img/`.
 - [ ] **Consenso dei clienti** a mostrare nome, screenshot e link del loro sito.
 - [ ] **Numeri reali** per i casi studio (richieste al mese, tempi di caricamento): aggiungili a `fatto` quando li hai.
 - [ ] **Testi in inglese** (`src/data/en.js`, `src/i18n/ui.js`, pagine `/en`): rileggili o falli rileggere da un madrelingua prima di fare pubblicità all'estero.

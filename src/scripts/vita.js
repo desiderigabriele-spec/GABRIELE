@@ -373,28 +373,42 @@ function tabellone() {
 }
 
 // ---------- Le file di servizi ([data-fila]): scorrono da destra a sinistra all'infinito ----------
-// La seconda copia delle etichette serve solo al giro senza fine (nascosta ai lettori di schermo e al tasto Tab).
-// Toccandola, trascinandola o con la rotella si ferma; riparte da sola dopo qualche secondo.
+// Le copie servono solo al giro senza fine (nascoste ai lettori di schermo e al tasto Tab). Le usano le etichette
+// dei servizi, gli altri prezzi e le recensioni. Toccandola, trascinandola o con la rotella si ferma; riparte da sola
+// dopo qualche secondo. Sotto il mouse sta ferma.
 function filaInfinita() {
   document.querySelectorAll('[data-fila]').forEach(fila1);
 }
 function fila1(fila) {
   if (fila.children.length < 2) return;
-  [...fila.children].forEach((li) => {
+  const originali = [...fila.children];
+  const copia = () => originali.forEach((li) => {
     const c = li.cloneNode(true);
     c.setAttribute('aria-hidden', 'true');
-    c.querySelectorAll('a').forEach((a) => { a.tabIndex = -1; });
+    c.querySelectorAll('a, button').forEach((a) => { a.tabIndex = -1; });
     fila.appendChild(c);
   });
+  // la lunghezza di un giro: dove comincia la prima copia
+  const meta = () => fila.children[originali.length].offsetLeft - fila.children[0].offsetLeft;
+  // con poche schede una copia non basta a riempire lo schermo: se ne aggiungono finché il giro non torna liscio
+  const riempi = () => {
+    let n = fila.children.length / originali.length;
+    while (n < 12 && meta() * (n - 1) < fila.clientWidth + 1) { copia(); n++; }
+  };
+  copia();
   fila.classList.add('infinita');
-  const meta = () => fila.scrollWidth / 2;
-  let x = 0, fermo = false, riparti = 0;
+  riempi();
+  window.addEventListener('resize', riempi, { passive: true });
+  let x = 0, fermo = false, riparti = 0, sopra = false;
   const ferma = () => {
     fermo = true;
     clearTimeout(riparti);
     riparti = setTimeout(() => { fermo = false; x = fila.scrollLeft; }, 3500);
   };
   ['touchstart', 'wheel', 'focusin'].forEach((ev) => fila.addEventListener(ev, ferma, { passive: true }));
+  // sotto il mouse si ferma, così si legge
+  fila.addEventListener('mouseenter', () => { sopra = true; });
+  fila.addEventListener('mouseleave', () => { sopra = false; x = fila.scrollLeft; });
   // il giro: arrivati a metà si torna all'inizio, che è identico
   fila.addEventListener('scroll', () => {
     if (fila.scrollLeft >= meta()) { fila.scrollLeft -= meta(); x = fila.scrollLeft; }
@@ -421,7 +435,7 @@ function fila1(fila) {
   mentreVisibile(fila, (t) => {
     const dt = t0 ? Math.min(48, t - t0) : 16;
     t0 = t;
-    if (fermo || giu) return;
+    if (fermo || giu || sopra) return;
     x += dt * 0.034;
     if (x >= meta()) x -= meta();
     fila.scrollLeft = x;
