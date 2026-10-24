@@ -298,8 +298,8 @@ const ss = { get: (k) => { try { return sessionStorage.getItem(k); } catch (_) {
 const ls = { get: (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} } };
 
 const RITORNO = {
-  it: { bentornato: 'Rieccoti', progetto: 'Il tuo preventivo è ancora qui: lo riprendiamo?', semplice: 'Ti calcolo il prezzo in 2 minuti?' },
-  en: { bentornato: 'Welcome back', progetto: 'Your quote is still here: shall we pick it up?', semplice: 'Shall I work out your price in 2 minutes?' },
+  it: { bentornato: 'Rieccoti', semplice: 'Ti preparo la richiesta di preventivo?' },
+  en: { bentornato: 'Welcome back', semplice: 'Shall I prepare your quote request?' },
 };
 (function bentornato() {
   if (ss.get('gd-sessione') || /^\/(preventivo|en\/quote)/.test(location.pathname)) return; // una volta per visita, non nel preventivo
@@ -308,14 +308,8 @@ const RITORNO = {
   ls.set('gd-ultima', String(Date.now()));
   if (!ultima || Date.now() - ultima < 30 * 60 * 1000) return; // prima visita, o appena uscito
   // non c'è più un riquadro: lo dice Focus, l'occhio, nella sua nuvoletta (assistente.js)
-  let progetto = null;
-  try { progetto = JSON.parse(ls.get('gd-preventivo') || 'null'); } catch (_) {}
   const t = RITORNO[lang], nome = leggiProfilo().nome;
-  const haProgetto = !!(progetto && (progetto.servizio || Object.keys(progetto.cat || {}).length));
-  window.gdRitorno = {
-    testo: `${nome ? `${t.bentornato}, ${nome}!` : `${t.bentornato}!`} ${haProgetto ? t.progetto : t.semplice}`,
-    preventivo: haProgetto,
-  };
+  window.gdRitorno = { testo: `${nome ? `${t.bentornato}, ${nome}!` : `${t.bentornato}!`} ${t.semplice}`, preventivo: false };
   window.gdTrack('bentornato');
 })();
 

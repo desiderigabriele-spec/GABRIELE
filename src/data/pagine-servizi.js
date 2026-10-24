@@ -1,4 +1,4 @@
-// Le pagine dei sei servizi, in parole semplici. Prezzi e pacchetti arrivano da listino.js.
+// Le pagine dei sei servizi, in parole semplici. Le voci dei pacchetti arrivano da listino.js (sul sito senza prezzi).
 // ottieni / come: [icona, titolo, testo] · esempi: [chi, cosa cambia] · faq: [domanda, risposta]
 // Gli esempi sono situazioni tipo, non clienti: i clienti veri sono nella home («Parlano di noi»).
 export const pagineServizi = {
@@ -6,7 +6,7 @@ export const pagineServizi = {
     sito: {
       titolo: ['Un sito che ti porta', 'richieste, non solo visite.'],
       sotto: 'Ti trovano su Google, capiscono in pochi secondi cosa fai e ti scrivono. Le richieste ti arrivano sul telefono, già ordinate.',
-      meta: 'Siti web su misura a Milano, in Italia e in Svizzera: veloci, chiari e pensati per farti arrivare richieste. Da 1.500 €.',
+      meta: 'Siti web su misura a Milano, in Italia e in Svizzera: veloci, chiari e pensati per farti arrivare richieste.',
       ottieni: [
         ['ricerca', 'Ti trovano su Google', 'Pagine e testi scritti con le parole che usano i tuoi clienti quando cercano.'],
         ['lampo', 'Si apre in un attimo', 'Un sito lento perde metà delle persone. Il tuo si apre in un secondo, anche dal telefono.'],
@@ -33,13 +33,13 @@ export const pagineServizi = {
         ['Quanto tempo serve?', 'Una pagina singola è pronta in 7-10 giorni, un sito completo in 3-5 settimane, un sito con il 3D in 6-8 settimane.'],
         ['Devo scrivere io i testi?', 'No. Ti facciamo qualche domanda e i testi li scriviamo noi, pensati per convincere e per farti trovare. Tu li leggi e li approvi.'],
         ['Posso cambiarlo da solo?', 'Sì: ti lasciamo un modo semplice per cambiare testi e foto. Se preferisci, con la Cura+ le modifiche le facciamo noi.'],
-        ['Cosa pago dopo?', 'Il sito lo paghi una volta. Poi restano dominio e hosting: con la Cura, da 59 € al mese, sono compresi insieme a backup, sicurezza e aggiornamenti.'],
+        ['Cosa pago dopo?', 'Il sito lo paghi una volta. Poi restano dominio e hosting: con la Cura sono compresi insieme a backup, sicurezza e aggiornamenti. Nel preventivo trovi tutto scritto, anche gli anni dopo.'],
       ],
     },
     ecommerce: {
       titolo: ['Il tuo negozio,', 'aperto anche di notte.'],
       sotto: 'Un negozio online bello, veloce e facile da usare. I clienti trovano il prodotto, pagano in due tocchi e a te arriva l’ordine.',
-      meta: 'Negozi online su Shopify pensati per vendere: schede prodotto, pagamenti, spedizioni ed email automatiche. Da 3.900 €.',
+      meta: 'Negozi online su Shopify pensati per vendere: schede prodotto, pagamenti, spedizioni ed email automatiche.',
       ottieni: [
         ['borsa', 'Schede che fanno comprare', 'Foto, testi e dettagli che rispondono ai dubbi prima ancora che il cliente li abbia.'],
         ['carrello', 'Pagamento in due tocchi', 'Carta, Apple Pay, Google Pay, PayPal e rate: meno passaggi, più ordini.'],
@@ -72,7 +72,7 @@ export const pagineServizi = {
     software: {
       titolo: ['Il lavoro ripetitivo', 'si fa da solo.'],
       sotto: 'Messaggi, preventivi, email, appuntamenti: colleghiamo i programmi che usi già e mettiamo l’intelligenza artificiale in mezzo. Risponde, smista e prepara al posto tuo, e tu approvi con un clic.',
-      meta: 'Automazioni e intelligenza artificiale per aziende e professionisti: programmi collegati, assistenti AI e preventivi automatici. Da 1.200 €.',
+      meta: 'Automazioni e intelligenza artificiale per aziende e professionisti: programmi collegati, assistenti AI e preventivi automatici.',
       ottieni: [
         ['nodi', 'Basta copia e incolla', 'I dati di un cliente si scrivono una volta sola e arrivano dovunque servono: agenda, fogli, gestionale.'],
         ['chat', 'Un assistente che risponde', 'Conosce la tua attività, risponde ai clienti sul sito e su WhatsApp e fissa gli appuntamenti.'],
@@ -106,7 +106,7 @@ export const pagineServizi = {
     gestionale: {
       titolo: ['Il gestionale', 'fatto come lavori tu.'],
       sotto: 'Clienti, preventivi, ordini, magazzino e scadenze in un posto solo, al posto di fogli Excel e programmi che non si parlano. Lo costruiamo su misura e, quando vuoi, ci mettiamo dentro l’intelligenza artificiale.',
-      meta: 'Gestionale su misura per aziende e professionisti: clienti, preventivi, ordini, magazzino e scadenze, con l’AI integrata se vuoi. Da 4.900 €.',
+      meta: 'Gestionale su misura per aziende e professionisti: clienti, preventivi, ordini, magazzino e scadenze, con l’AI integrata se vuoi.',
       ottieni: [
         ['gestionale', 'Tutto in un posto solo', 'Clienti, preventivi, ordini, magazzino e scadenze nella stessa schermata, collegati tra loro.'],
         ['utenti', 'Ognuno vede il suo', 'Titolare, ufficio e magazzino entrano con il proprio accesso e vedono solo quello che serve.'],
@@ -134,13 +134,13 @@ export const pagineServizi = {
         ['Posso portare dentro i miei dati?', 'Sì. Importiamo clienti, articoli e storico da Excel o dal programma che usi oggi.'],
         ['Si collega alla fatturazione elettronica?', 'Sì, per esempio a Fatture in Cloud o al programma del tuo commercialista, e anche al sito o al negozio online.'],
         ['Posso aggiungere l’AI dopo?', 'Sì. Puoi partire senza e aggiungere una funzione AI alla volta, quando vedi dove ti serve.'],
-        ['Quanto costa al mese?', 'Il canone, da 79 € al mese, è l’assistenza: hosting, backup, aggiornamenti e sistemazioni. Nessun costo per utente.'],
+        ['Quanto costa al mese?', 'Il canone mensile è l’assistenza: hosting, backup, aggiornamenti e sistemazioni. Nessun costo per utente. Lo trovi scritto nel preventivo, prima di iniziare.'],
       ],
     },
     ads: {
       titolo: ['Pubblicità che porta', 'clienti, non «mi piace».'],
       sotto: 'Annunci su Instagram, Facebook, Google e TikTok mostrati alle persone giuste. Ogni mese sai quanto hai speso e quanto ti è costato ogni contatto.',
-      meta: 'Pubblicità online su Meta, Google e TikTok con creatività, test e report chiari. Gestione da 590 € al mese.',
+      meta: 'Pubblicità online su Meta, Google e TikTok con creatività, test e report chiari.',
       ottieni: [
         ['bersaglio', 'Le persone giuste', 'Gli annunci li vede chi può davvero comprare: zona, età, interessi, cosa sta cercando.'],
         ['matita', 'Annunci che fermano il pollice', 'Immagini, video e testi fatti per farsi notare in mezzo a mille post.'],
@@ -173,7 +173,7 @@ export const pagineServizi = {
     cura: {
       titolo: ['Il sito sempre in forma,', 'senza pensarci tu.'],
       sotto: 'Aggiornamenti, sicurezza, backup e piccole modifiche: ci pensiamo noi, ogni mese. E con la Crescita il sito porta qualche richiesta in più ogni mese.',
-      meta: 'Manutenzione e crescita del sito: hosting veloce, backup, sicurezza, modifiche e report mensile. Da 59 € al mese.',
+      meta: 'Manutenzione e crescita del sito: hosting veloce, backup, sicurezza, modifiche e report mensile.',
       ottieni: [
         ['scudo', 'Sicurezza', 'Controlli continui e protezione da attacchi e spam.'],
         ['revisioni', 'Backup ogni giorno', 'Se qualcosa va storto, il sito torna com’era in pochi minuti.'],
@@ -209,7 +209,7 @@ export const pagineServizi = {
     sito: {
       titolo: ['A website that brings', 'enquiries, not just visits.'],
       sotto: 'People find you on Google, understand what you do in seconds and get in touch. Enquiries reach your phone, already organised.',
-      meta: 'Custom websites from Milan for Italy and Switzerland: fast, clear and built to bring you enquiries. From €1,500.',
+      meta: 'Custom websites from Milan for Italy and Switzerland: fast, clear and built to bring you enquiries.',
       ottieni: [
         ['ricerca', 'Found on Google', 'Pages and copy written with the words your clients use when they search.'],
         ['lampo', 'Opens in a flash', 'A slow site loses half its visitors. Yours opens in a second, on phones too.'],
@@ -236,13 +236,13 @@ export const pagineServizi = {
         ['How long does it take?', 'A single page is ready in 7-10 days, a full website in 3-5 weeks, a website with 3D in 6-8 weeks.'],
         ['Do I have to write the copy?', 'No. We ask you a few questions and write the copy ourselves, made to convince and to be found. You read it and approve it.'],
         ['Can I change it myself?', 'Yes: you get a simple way to change text and photos. If you prefer, with Care+ we make the changes for you.'],
-        ['What do I pay afterwards?', 'You pay for the site once. Then there are domain and hosting: with Care, from €59 a month, they are included together with backups, security and updates.'],
+        ['What do I pay afterwards?', 'You pay for the site once. Then there are domain and hosting: with Care they are included together with backups, security and updates. The quote spells it all out, including the following years.'],
       ],
     },
     ecommerce: {
       titolo: ['Your shop,', 'open all night too.'],
       sotto: 'A beautiful, fast online store that is easy to use. Customers find the product, pay in two taps and you get the order.',
-      meta: 'Shopify online stores built to sell: product pages, payments, shipping and automatic emails. From €3,900.',
+      meta: 'Shopify online stores built to sell: product pages, payments, shipping and automatic emails.',
       ottieni: [
         ['borsa', 'Product pages that sell', 'Photos, copy and details that answer doubts before the customer even has them.'],
         ['carrello', 'Two-tap checkout', 'Card, Apple Pay, Google Pay, PayPal and instalments: fewer steps, more orders.'],
@@ -275,7 +275,7 @@ export const pagineServizi = {
     software: {
       titolo: ['Repetitive work', 'that does itself.'],
       sotto: 'Messages, quotes, emails, appointments: we connect the programs you already use and put artificial intelligence in the middle. It replies, sorts and drafts for you, and you approve with one click.',
-      meta: 'Automation and artificial intelligence for companies and professionals: connected programs, AI assistants and automatic quotes. From €1,200.',
+      meta: 'Automation and artificial intelligence for companies and professionals: connected programs, AI assistants and quotes drafted automatically.',
       ottieni: [
         ['nodi', 'No more copy and paste', 'A client’s details are written once and reach everywhere they are needed: calendar, sheets, management software.'],
         ['chat', 'An assistant that answers', 'It knows your business, replies to clients on your site and on WhatsApp and books appointments.'],
@@ -309,7 +309,7 @@ export const pagineServizi = {
     gestionale: {
       titolo: ['Management software', 'built the way you work.'],
       sotto: 'Clients, quotes, orders, stock and deadlines in one place, instead of spreadsheets and programs that don’t talk to each other. We build it to measure and, whenever you want, we put artificial intelligence inside.',
-      meta: 'Custom management software for companies and professionals: clients, quotes, orders, stock and deadlines, with AI built in if you want. From €4,900.',
+      meta: 'Custom management software for companies and professionals: clients, quotes, orders, stock and deadlines, with AI built in if you want.',
       ottieni: [
         ['gestionale', 'Everything in one place', 'Clients, quotes, orders, stock and deadlines on the same screen, connected to each other.'],
         ['utenti', 'Everyone sees their part', 'Owner, office and warehouse log in with their own access and see only what they need.'],
@@ -337,13 +337,13 @@ export const pagineServizi = {
         ['Can I bring in my data?', 'Yes. We import clients, products and history from Excel or the program you use today.'],
         ['Does it connect to e-invoicing?', 'Yes, for example to Fatture in Cloud or your accountant’s software, and to your website or online store too.'],
         ['Can I add AI later?', 'Yes. You can start without it and add one AI feature at a time, once you see where it helps.'],
-        ['What does it cost per month?', 'The fee, from €79 a month, is the support: hosting, backups, updates and fixes. No per-user costs.'],
+        ['What does it cost per month?', 'The monthly fee is the support: hosting, backups, updates and fixes. No per-user costs. It is written in the quote, before we start.'],
       ],
     },
     ads: {
       titolo: ['Advertising that brings', 'clients, not “likes”.'],
       sotto: 'Ads on Instagram, Facebook, Google and TikTok shown to the right people. Every month you know what you spent and what each enquiry cost you.',
-      meta: 'Online advertising on Meta, Google and TikTok with creative, testing and clear reports. Management from €590 a month.',
+      meta: 'Online advertising on Meta, Google and TikTok with creative, testing and clear reports.',
       ottieni: [
         ['bersaglio', 'The right people', 'Ads are seen by people who can actually buy: area, age, interests, what they are looking for.'],
         ['matita', 'Ads that stop the scroll', 'Images, videos and copy made to stand out among a thousand posts.'],
@@ -376,7 +376,7 @@ export const pagineServizi = {
     cura: {
       titolo: ['Your site always in shape,', 'without you thinking about it.'],
       sotto: 'Updates, security, backups and small changes: we take care of them every month. And with Growth, the site brings a few more enquiries each month.',
-      meta: 'Website care and growth: fast hosting, backups, security, changes and a monthly report. From €59 a month.',
+      meta: 'Website care and growth: fast hosting, backups, security, changes and a monthly report.',
       ottieni: [
         ['scudo', 'Security', 'Constant checks and protection from attacks and spam.'],
         ['revisioni', 'Daily backups', 'If something goes wrong, the site is back as it was in minutes.'],

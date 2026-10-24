@@ -54,15 +54,11 @@ Un preventivo serio ti dice per iscritto:
 
 Diffida di due cose: il prezzo molto più basso degli altri senza spiegazione, e il preventivo di una riga sola («sito web: 1.000 €»).
 
-## Quanto costa da noi
+## Come facciamo il preventivo noi
 
-I nostri prezzi sono pubblici, così non devi chiedere per saperli:
+Da noi non trovi un listino, e non è per nascondere qualcosa. Ogni attività è diversa: due siti con lo stesso numero di pagine possono richiedere lavori molto diversi.
 
-- **Impulso, 1.500 €**: una pagina sola pensata per un obiettivo, per esempio farti arrivare richieste per un servizio.
-- **Presenza, 2.900 €**: il sito completo della tua attività, 5-7 pagine disegnate su misura, con i testi e la SEO locale. È quello che sceglie la maggior parte dei clienti.
-- **Signature, da 7.500 €**: un sito che non si dimentica, con identità visiva, animazioni e 3D.
-
-Dopo il lancio la cura parte da 59 € al mese, con hosting, backup e aggiornamenti. Il sito resta sempre tuo.
+Per questo prima ci sentiamo, venti minuti e gratis: capiamo cosa fai, chi sono i tuoi clienti e cosa deve fare il sito. Poi ti mandiamo un **preventivo scritto**, voce per voce, con i tempi e con le spese degli anni dopo. Il sito, una volta pagato, è tuo.
 
 ## In breve
 
@@ -70,4 +66,4 @@ Dopo il lancio la cura parte da 59 € al mese, con hosting, backup e aggiorname
 - Guarda anche le spese degli anni dopo, non solo il prezzo di partenza.
 - Pretendi un preventivo scritto e dettagliato, e un sito che sia tuo.
 
-Se vuoi sapere quanto costerebbe il tuo, con il nostro preventivo automatico lo vedi in due minuti.
+Se vuoi sapere quanto costerebbe il tuo, raccontaci cosa ti serve: ti chiamiamo e ti mandiamo un preventivo scritto, su misura.

@@ -4,9 +4,8 @@
 // = da che secondo a che secondo si vede un pezzo, data-acc / data-accout = quando è acceso, data-conta = un numero
 // che sale tra data-ca e data-cb. Scene, telecamera e quadratino sono in data/demo.js (tempi); il motore è scripts/demo.js.
 // Si comanda come le storie: tocco a destra avanti, a sinistra indietro, tenendo premuto si ferma.
-import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
-import { euro, numero as cifre } from '../data/formato.js';
+import { numero as cifre } from '../data/formato.js';
 import { demo, tempi } from '../data/demo.js';
 import bagno from '../assets/img/demo-bagno.webp';
 import studio from '../assets/img/demo-studio.webp';
@@ -20,8 +19,6 @@ const d: any = demo[lang][id];
 const P: any = d.palco;
 const V: any = d.video;
 const tm: any = tempi[id];
-const { categorie } = dati(lang);
-const liv = categorie.find((c) => c.id === d.servizio)!.livelli.find((l) => l.id === d.livello)!;
 const preventivo = url('preventivo', lang);
 // come euro(), ma con i centesimi quando ci sono (617,50 €)
 const eur2 = (v: number) => {
@@ -267,7 +264,7 @@ const descr = `${d.titolo.join(' ')} ${V.scene.map((s: string[]) => s[1]).join('
           {d.esito.map(([k, v]: [string, string], i: number) => <div class={i ? 'dopo' : 'prima'}><small>{k}</small><b>{v}</b></div>)}
         </div>
         <div class="vd-azioni">
-          <a class="btn btn-azione" href={`${preventivo}?s=${d.servizio}:${d.livello}`}>{T('Lo voglio nella mia attività', 'I want this in my business')} · {T('da', 'from')} {euro(liv.una!, lang)} <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="btn btn-azione" href={`${preventivo}?s=${d.servizio}:${d.livello}`}>{T('Lo voglio nella mia attività', 'I want this in my business')} <span class="freccia" aria-hidden="true">→</span></a>
           <button class="vd-rivedi" type="button" data-rivedi>↺ {T('Rivedi', 'Watch again')}</button>
         </div>
       </div>

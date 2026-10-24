@@ -20,13 +20,13 @@ Su questo canale ti facciamo vedere, con esempi veri, come una piccola azienda p
 • assistenti che rispondono ai clienti anche di notte
 • gestionali fatti come lavori tu
 
-Video brevi, spiegati semplice, con prezzi chiari.
+Video brevi, spiegati semplice, con esempi concreti.
 
 Prima studiamo, poi costruiamo.
 Diretto da Gabriele Desideri, fondatore e direttore creativo.
 
 📍 Milano · Italia e Svizzera
-👉 Preventivo in 2 minuti: link qui sotto
+👉 Richiedi un preventivo: link qui sotto
 
 ## Come usarlo
 Soprattutto Shorts: gli stessi video verticali di TikTok e Reels, con un titolo che contiene le parole che la gente cerca

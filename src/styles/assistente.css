@@ -42,10 +42,6 @@
 .fm-scrive i { width: 6px; height: 6px; background: #888; animation: fm-punto 1s infinite; }
 .fm-scrive i:nth-child(2) { animation-delay: .15s; } .fm-scrive i:nth-child(3) { animation-delay: .3s; }
 @keyframes fm-punto { 0%, 60%, 100% { opacity: .25; } 30% { opacity: 1; } }
-.fm-prezzi { display: grid; margin: 8px 0; border-top: 1px solid #2a2a2a; }
-.fm-riga { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid #2a2a2a; color: var(--latte); text-decoration: none; font-size: .86rem; }
-.fm-riga b { white-space: nowrap; }
-.fm-riga:hover span { text-decoration: underline; }
 .fm-wa { display: block; margin-top: 8px; padding: 8px 10px; background: #0b2b1d; border-left: 3px solid #25d366; font-size: .84rem; color: #d9fbe8; }
 .fp-scelte { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 10px; }
 .fp-scelte button, .fp-scelte a { border: 1px solid var(--linea-forte); background: none; color: var(--latte); padding: 8px 11px; font: inherit; font-size: .84rem; cursor: pointer; text-align: left; text-decoration: none; }

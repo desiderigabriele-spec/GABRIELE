@@ -20,13 +20,13 @@ Stack: Astro (statico) · WebGL scritto a mano per il cielo (nessuna libreria 3D
 | Cosa | File |
 |---|---|
 | Contatti, servizi, metodo, lavori, domande frequenti | `src/data/sito.js` |
-| **Prezzi del preventivo automatico** (livelli, extra, sconti, voucher) | `src/data/listino.js` |
+| **Listino interno** (pacchetti, voci incluse, extra: sul sito solo nomi e voci, mai i prezzi) | `src/data/listino.js` |
 | Home (italiano e inglese) | `src/components/Home.astro` · pagine `src/pages/index.astro`, `src/pages/en/index.astro` |
 | Testi in inglese | interfaccia `src/i18n/ui.js` · dati (servizi, listino, FAQ) `src/data/en.js` |
 | Il nome del visitatore: benvenuto e bottone NO/ME nell'header | `src/scripts/benvenuto.js` · `src/scripts/profilo.js` |
 | Pagine dei servizi (testi, anteprime) | `src/components/PaginaServizio.astro` · `src/data/pagine-servizi.js` · `src/components/Anteprima.astro` · `src/styles/anteprime.css` · `src/styles/servizio.css` (pagine `/servizi/...`, `/en/services/...`) |
 | Pagina «AI per aziende» (spiegata semplice) | `src/components/PaginaAI.astro` (pagine `/intelligenza-artificiale`, `/en/ai`) · `src/styles/ai.css` |
-| Preventivo automatico | `src/components/Preventivo.astro` (pagine `/preventivo`, `/en/quote`) · `src/scripts/preventivo.js` · `src/styles/preventivo.css` |
+| Richiesta di preventivo (nome, cognome, email, telefono, servizi, progetto: il preventivo vero si manda scritto dopo la chiamata) | `src/components/Preventivo.astro` (pagine `/preventivo`, `/en/quote`) · `src/scripts/preventivo.js` · `src/styles/preventivo.css` |
 | Cielo stellato e «viaggio» | `src/scripts/scena.js` (velocità per capitolo: attributo `data-forma` 0-4 sulle sezioni) · con lo sfondo chiaro le stelle sono d'inchiostro |
 | Colori (nero e rosso, sfondo chiaro o scuro), tipografia, componenti | `src/styles/global.css` · effetti `src/styles/vita.css` · Focus `src/styles/assistente.css` |
 | Invio preventivi su Google Fogli + Telegram | `apps-script/Code.gs` + variabile `PUBLIC_PREVENTIVO_ENDPOINT` (vedi `.env.example`) |

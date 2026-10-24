@@ -54,7 +54,7 @@ export const enCategorie = {
       copilota: { nome: 'Company copilot', spiega: 'An assistant for your team that knows price lists, procedures and spec sheets and answers in chat.' },
       formazione: { nome: 'AI training (half day)', spiega: 'We teach your team to use Claude and ChatGPT in their everyday work.' },
     },
-    nota: 'The software and your data are yours. The monthly fee is the support: hosting, monitoring, updates and fixes. AI usage above €30/month is billed separately, at cost.',
+    nota: 'The software and your data are yours. The fee is the support: hosting, monitoring, updates and fixes. AI usage is billed separately, at cost.',
   },
   gestionale: {
     nome: 'Custom software',
@@ -70,7 +70,7 @@ export const enCategorie = {
       migrazione: { nome: 'Move from your old software', spiega: 'We bring in clients, products and history from the program you use today.' },
       app: { nome: 'Phone app', spiega: 'The system as an installable app, also for people working out of the office: sites, deliveries, visits.' },
     },
-    nota: 'The software and the data are yours. The monthly fee is the support: hosting, backups, updates and fixes. AI usage above €30/month is billed separately, at cost.',
+    nota: 'The software and the data are yours. The fee is the support: hosting, backups, updates and fixes. AI usage is billed separately, at cost.',
   },
   ads: {
     nome: 'Online advertising',
@@ -78,7 +78,7 @@ export const enCategorie = {
     livelli: {
       start: { nome: 'Start', spiega: 'One channel (for example Instagram and Facebook, or Google), with a budget of up to €2,000 a month.', include: ['1 channel: Meta (Instagram and Facebook) or Google', 'Account, Pixel and analytics set-up', 'The right audience and first creatives', 'Ongoing optimisation', 'Clear monthly report'] },
       growth: { nome: 'Growth', spiega: 'Two channels working together, with a budget between €2,000 and €6,000 a month.', include: ['2 channels working together', 'Full set-up, with server-side tracking', 'Constant creative testing', 'Weekly optimisation', 'Monthly report and call'] },
-      scale: { nome: 'Scale', spiega: 'More channels and a full funnel for anyone investing over €6,000 a month (12% of budget, minimum €1,490).', include: ['Several channels together', 'Full funnel, including people who already visited you', 'Dedicated campaign pages', 'Ongoing optimisation', 'Monthly report and call', 'Top priority'] },
+      scale: { nome: 'Scale', spiega: 'More channels and a full funnel for anyone investing over €6,000 a month.', include: ['Several channels together', 'Full funnel, including people who already visited you', 'Dedicated campaign pages', 'Ongoing optimisation', 'Monthly report and call', 'Top priority'] },
     },
     extra: {
       canale: { nome: 'Extra channel (TikTok, LinkedIn…)', spiega: 'Another platform where your ads appear.' },

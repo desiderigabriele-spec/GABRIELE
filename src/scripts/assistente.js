@@ -1,6 +1,6 @@
 // Focus, l'assistente: il tondino in basso a destra. Spunta dopo qualche secondo, l'occhio si apre e guarda
-// il bottone del preventivo; una nuvoletta, una volta per visita. Aperto, è una chat a bottoni: prezzi veri,
-// preventivo già compilato, WhatsApp con il riassunto. Le domande scritte vanno a Gabriele su WhatsApp.
+// il bottone del preventivo; una nuvoletta, una volta per visita. Aperto, è una chat a bottoni: come funziona il preventivo,
+// la richiesta già compilata, WhatsApp con il riassunto. Le domande scritte vanno a Gabriele su WhatsApp.
 import { creaOcchio } from './focus-occhio.js';
 import { leggiProfilo } from './profilo.js';
 
@@ -87,9 +87,9 @@ export function avviaAssistente() {
     [T.cosaAi, ai],
     [T.persona, whatsapp],
   ];
+  // niente listino: si spiega come funziona il preventivo e si porta alla richiesta
   function prezzi() {
-    const righe = D.servizi.map((s) => `<a class="fm-riga" href="${s.url}"><span>${pulisci(s.titolo)}</span><b>${pulisci(s.da)}</b></a>`).join('');
-    rispondi(`${T.prezzi}<span class="fm-prezzi">${righe}</span>${T.prezziDopo}`, [[T.calcolaMio, preventivo, 'forte'], [T.scrivoWa, whatsapp, 'wa']]);
+    rispondi(T.prezzi, [[T.calcolaMio, preventivo, 'forte'], [T.scrivoWa, whatsapp, 'wa']]);
   }
   function preventivo() {
     rispondi(T.diCosa, D.servizi.map((s) => [s.titolo, () => servizio(s.id)]));
@@ -102,7 +102,7 @@ export function avviaAssistente() {
     scelto.quando = q;
     const s = D.servizi.find((x) => x.id === scelto.servizio);
     aggiornaLink();
-    rispondi(T.riepilogo.replace('{n}', pulisci(T.nomi[s.id] || s.titolo)).replace('{s}', pulisci(s.titolo)).replace('{p}', pulisci(s.da)), [[T.apriPreventivo, urlPv(), 'forte'], [T.mandaWa, urlWa(), 'wa']]);
+    rispondi(T.riepilogo.replace('{n}', pulisci(T.nomi[s.id] || s.titolo)).replace('{s}', pulisci(s.titolo)), [[T.apriPreventivo, urlPv(), 'forte'], [T.mandaWa, urlWa(), 'wa']]);
     traccia('focus_preventivo', { servizio: scelto.servizio });
   }
   function ai() {

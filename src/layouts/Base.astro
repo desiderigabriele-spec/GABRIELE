@@ -13,7 +13,6 @@ import inter from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff
 import Cursore from '../components/Cursore.astro';
 import Icona from '../components/Icona.astro';
 import Assistente from '../components/Assistente.astro';
-import { euro } from '../data/formato.js';
 import { articoli } from '../data/blog.js';
 
 interface Props {
@@ -48,7 +47,6 @@ const isCurrent = (href: string) => (current === href ? 'page' : undefined);
 const voci = t.nav.map(([id, testo]) => ({ id, href: id.startsWith('@') ? url(id.slice(1), lang) : `${home}#${id}`, testo }));
 // la voce attiva: la pagina AI, una pagina servizio («Servizi») o, in home, la sezione in vista (site.js)
 const suServizio = current.startsWith(lang === 'en' ? '/en/services/' : '/servizi/');
-const prezzoDa = (s: { da: number; mese?: boolean }) => `${t.da} ${euro(s.da, lang)}${s.mese ? t.mese : ''}`;
 const hrefIt = lang === 'it' ? path : alt;
 const hrefEn = lang === 'en' ? path : alt;
 // il blog (per ora solo in italiano) entra nel footer quando c'è almeno un articolo pubblicato
@@ -166,7 +164,7 @@ const conBlog = lang === 'it' && (await articoli()).length > 0;
                     <a class="mega-voce" href={urlServizio(s.id, lang)} aria-current={isCurrent(urlServizio(s.id, lang))}>
                       <span class="servizio-icona"><Icona nome={s.icona} /></span>
                       <span class="mega-testo"><strong>{s.titolo}</strong><small>{s.semplice}</small></span>
-                      <span class="mega-prezzo">{prezzoDa(s)}</span>
+                      <span class="mega-prezzo" aria-hidden="true">→</span>
                     </a>
                   ))}
                 </div>
@@ -228,7 +226,7 @@ const conBlog = lang === 'it' && (await articoli()).length > 0;
         <span class="mono">{t.menuServizi}</span>
         <div>
           {servizi.map((s) => (
-            <a href={urlServizio(s.id, lang)}><span class="servizio-icona"><Icona nome={s.icona} /></span><span>{s.titolo}<small>{prezzoDa(s)}</small></span></a>
+            <a href={urlServizio(s.id, lang)}><span class="servizio-icona"><Icona nome={s.icona} /></span><span>{s.titolo}</span></a>
           ))}
         </div>
       </div>

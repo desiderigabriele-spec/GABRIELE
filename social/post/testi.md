@@ -3,7 +3,7 @@
 Immagini in `png/` (1080×1350, da caricare come carosello in ordine). Per rifarle: `node social/post/crea.mjs`.
 
 **Ordine:** pubblica il post 3, poi il 2, poi l'1. Poi fissali in alto in questo ordine: prima il 3, poi il 2, per ultimo l'1.
-Così nel profilo si leggono da sinistra: Chi siamo, Demo AI, Prezzi.
+Così nel profilo si leggono da sinistra: Chi siamo, Demo AI, Il preventivo.
 
 ---
 
@@ -17,7 +17,7 @@ Creiamo automazioni AI e gestionali su misura per le aziende. E poi siti, negozi
 Il nostro metodo è semplice: prima studiamo, poi costruiamo.
 Ricerca di mercato, analisi dei concorrenti, psicologia della vendita. Niente a caso.
 
-👉 Quanto costa il tuo progetto? Preventivo in 2 minuti, link in bio.
+👉 Raccontaci il tuo progetto: richiedi un preventivo, link in bio.
 
 #desidericode #milano #automazioniai #gestionale #sitiweb #ecommerce #webagency #marketingdigitale #intelligenzaartificiale #pmi
 
@@ -38,27 +38,25 @@ Nessuno ha toccato niente.
 Funziona con WhatsApp, email, agenda e il tuo gestionale. Te la creiamo su misura, ed è tua.
 
 💬 Quale lavoro ripetitivo vorresti toglierti? Scrivicelo nei commenti.
-👉 Automazioni AI da 1.200 €. Link in bio.
+👉 Te la creiamo su misura. Richiedi un preventivo, link in bio.
 
 #automazioniai #intelligenzaartificiale #whatsappbusiness #centroestetico #pmi #digitalizzazione #milano #desidericode #ai #produttività
 
 ---
 
-## Post 3 · Prezzi chiari (3 slide: post-3-1 … post-3-3)
+## Post 3 · Il preventivo, fatto bene (3 slide: post-3-1 … post-3-3)
 
-Quanto costa? Lo sai prima 🟥
+Prima ti ascoltiamo. Poi il prezzo 🟥
 
-Da noi i prezzi sono scritti sul sito. Niente «dipende», niente sorprese a fine lavoro.
+Ogni azienda è diversa, per questo da noi non trovi listini.
+Funziona così:
 
-• Automazioni AI da 1.200 €
-• Gestionale su misura da 4.900 €
-• Sito web da 1.500 €
-• Negozio online da 3.900 €
-• Pubblicità da 590 €/mese
-• Cura del sito da 59 €/mese
+1️⃣ ci racconti cosa ti serve
+2️⃣ ti chiamiamo per conoscerci, 20 minuti, gratis
+3️⃣ ricevi il preventivo scritto, voce per voce, con i tempi
 
-Prezzi IVA esclusa. Il sito e il software restano tuoi.
+Il sito e il software, una volta pagati, restano tuoi.
 
-👉 Scegli cosa ti serve e vedi subito il prezzo, in 2 minuti. Link in bio.
+👉 Richiedi un preventivo, link in bio.
 
-#prezzichiari #sitiweb #automazioniai #gestionale #ecommerce #webdesign #milano #desidericode #piccoleimprese #preventivo
+#preventivo #sitiweb #automazioniai #gestionale #ecommerce #webdesign #milano #desidericode #piccoleimprese #consulenza

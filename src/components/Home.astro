@@ -23,27 +23,9 @@ const { servizi, metodo, lavori, faq, contatti, categorie } = dati(lang);
 const iniziali = (nome: string) => nome.replace(/^Dott\.\s*/, '').split(' ').map((p) => p[0]).slice(0, 2).join('');
 const eur = (n: number) => euro(n, lang);
 const preventivo = url('preventivo', lang);
-const mese = T('/mese', '/month');
 
-const sito = categorie.find((c) => c.id === 'sito')!;
-// per ogni servizio, il pacchetto da cui parte il prezzo «a partire da» (il primo livello è sempre il più economico)
+// per ogni servizio, cosa comprende il primo pacchetto (le voci, senza prezzi)
 const base = Object.fromEntries(categorie.map((c) => [c.id, c.livelli[0]]).filter(([, l]) => l?.include?.length));
-const piani = ['signature', 'presenza', 'impulso'].map((id) => sito.livelli.find((l) => l.id === id)!);
-const perChi: Record<string, string> = it ? {
-  signature: 'Per professionisti e brand che vogliono essere ricordati.',
-  presenza: 'Per attività e professionisti che vogliono richieste ogni settimana.',
-  impulso: 'Per partire subito o lanciare una promozione.',
-} : {
-  signature: 'For professionals and brands who want to be remembered.',
-  presenza: 'For businesses and professionals who want enquiries every week.',
-  impulso: 'To get started fast or launch a promotion.',
-};
-// gli altri servizi dal più caro al più economico: il primo prezzo fa da àncora e quelli dopo sembrano leggeri
-const altri = ['ecommerce', 'software', 'gestionale', 'ads', 'cura'].map((id) => {
-  const c = categorie.find((x) => x.id === id)!;
-  const l = c.livelli[0];
-  return { id, nome: c.nome, valore: l.una ?? l.mese!, prezzo: l.una ? eur(l.una) : eur(l.mese!) + mese };
-}).sort((a, b) => b.valore - a.valore);
 // 12 · tipografia cinetica: tre righe giganti al posto del nastro
 const cinetica = it
   ? [['Siti web', 'Negozi online', 'Automazioni e AI', 'Gestionali'], ['Attenzione', 'Interesse', 'Fiducia', 'Desiderio', 'Azione'], ['Neuromarketing', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Copy che vende']]
@@ -160,11 +142,11 @@ const jsonLd = {
           </p>
         )}
         <div class="hero-azioni" data-appare="0.4">
-          <a class="btn btn-azione btn-grande" href={preventivo} data-azione>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
+          <a class="btn btn-azione btn-grande" href={preventivo} data-azione>{T('Richiedi un preventivo', 'Request a quote')} <span class="freccia" aria-hidden="true">→</span></a>
           <a class="btn btn-vetro btn-grande" href="#metodo">{T('Guarda come funziona', 'See how it works')}</a>
         </div>
         <ul class="rassicura" data-appare="0.55">
-          <li><MicroIcona nome="tempo" />{T('Preventivo in 2 minuti', 'Quote in 2 minutes')}</li>
+          <li><MicroIcona nome="tempo" />{T('Preventivo scritto, su misura', 'Written, tailored quote')}</li>
           <li><MicroIcona nome="risposta" />{T('Risposta entro 24 ore', 'Reply within 24 hours')}</li>
           <li><MicroIcona nome="luogo" />{contatti.zona}</li>
         </ul>
@@ -252,14 +234,13 @@ const jsonLd = {
         )}</p>
       </div>
       <div class="servizi-griglia" data-griglia-viva>
-        {/* su telefono è un indice: righe con nome e prezzo, toccando una riga si apre (vita.js, indiceServizi) */}
+        {/* su telefono è un indice: righe con il nome, toccando una riga si apre (vita.js, indiceServizi) */}
         {servizi.map((s) => (
           <article class="card servizio" data-servizio>
             <div class="servizio-top">
               <span class="servizio-icona"><Icona nome={s.icona} /></span>
               <h3><a class="servizio-link" href={urlServizio(s.id, lang)}>{s.titolo}</a></h3>
               <span class="mono">{s.numero}</span>
-              <span class="servizio-da-breve" aria-hidden="true">{eur(s.da)}{s.mese && <small>{mese}</small>}</span>
               <button class="servizio-apri" type="button" aria-expanded="false" aria-controls={`servizio-${s.id}`} hidden>
                 <span class="sr-only">{T(`Dettagli: ${s.titolo}`, `Details: ${s.titolo}`)}</span><span class="servizio-piu" aria-hidden="true"></span>
               </button>
@@ -269,12 +250,11 @@ const jsonLd = {
                 <p>{s.semplice}</p>
                 {base[s.id] && (
                   <div class="servizio-include">
-                    <span class="servizio-include-titolo">{T('Già incluso in', 'Included in')} {base[s.id].nome}</span>
+                    <span class="servizio-include-titolo">{T('Cosa comprende', 'What it includes')}</span>
                     <ul class="lista-check">{base[s.id].include.slice(0, 3).map((x) => <li>{x}</li>)}</ul>
                   </div>
                 )}
                 <div class="servizio-piede">
-                  <span class="prezzo-da">{T('A partire da', 'Starting from')}<strong>{eur(s.da)}{s.mese && <small> {mese}</small>}</strong></span>
                   <a class="link-freccia" href={urlServizio(s.id, lang)} tabindex="-1" aria-hidden="true">{T('Scopri', 'Discover')} <span class="freccia">→</span></a>
                 </div>
               </div>
@@ -609,45 +589,35 @@ const jsonLd = {
     </div>
   </section>
 
-  <!-- 04 · DESIDERIO: PREZZI -->
+  <!-- 04 · DESIDERIO: IL PREVENTIVO. Niente listino: prima ci parliamo, poi arriva un preventivo scritto, su misura -->
   <section class="sezione" id="prezzi" data-forma="3">
     <div class="wrap">
       <div class="testa-sezione testa-riga">
-        <span class="capitolo" data-appare>{T('04 · Calcola', '04 · Work it out')}</span>
-        {it ? (
-          <h2 data-righe>
-            <span class="riga"><span>Prezzi chiari.</span></span>
-            <span class="riga"><span><span class="em">Prima</span> di iniziare.</span></span>
-          </h2>
-        ) : (
-          <h2 data-righe>
-            <span class="riga"><span>Clear prices.</span></span>
-            <span class="riga"><span><span class="em">Before</span> we start.</span></span>
-          </h2>
-        )}
+        <span class="capitolo" data-appare>{T('04 · Il preventivo', '04 · The quote')}</span>
+        <h2 data-righe>
+          <span class="riga"><span>{T('Prima ti ascoltiamo.', 'First we listen.')}</span></span>
+          <span class="riga"><span><span class="em">{T('Poi', 'Then')}</span> {T('il preventivo.', 'the quote.')}</span></span>
+        </h2>
         <p class="lead" data-appare>{T(
-          "Niente «dipende», niente sorprese. Per un sito si parte da uno di questi tre: scegli quello che ti somiglia e lo trovi già pronto nel preventivo, dove aggiungi solo quello che ti serve.",
-          'No "it depends", no surprises. Start from one of these three: it comes pre-selected in the quote, where you add only what you need.',
+          'Ogni azienda è diversa, per questo non trovi listini. Ci racconti cosa ti serve, ci sentiamo e ti mandiamo un preventivo scritto, voce per voce, fatto sul tuo caso.',
+          'Every business is different, so you won’t find a price list. You tell us what you need, we talk, and we send you a written quote, line by line, built around your case.',
         )}</p>
       </div>
-      <!-- sul telefono i tre pacchetti stanno uno di fianco all'altro e si fanno scorrere (vita.js, pacchettiSlider) -->
-      <div class="prezzi" data-sequenza data-pacchetti>
-        {piani.map((p) => (
-          <article class={`card piano${p.top ? ' top' : ''}`}>
-            {p.top && <span class="piano-badge">{T('Il più scelto', 'Most popular')}</span>}
-            <span class="piano-nome">{p.nome}</span>
-            <p class="piano-per">{perChi[p.id]}</p>
-            <span class="piano-prezzo">{p.id === 'signature' ? T('da ', 'from ') : ''}{eur(p.una!)}<small>{T('una tantum · IVA esclusa', 'one-off · excl. VAT')}</small></span>
-            <ul class="lista-check">{p.include.map((i) => <li>{i}</li>)}</ul>
-            <a class={`btn ${p.top ? 'btn-azione' : 'btn-vetro'}`} href={`${preventivo}?s=sito:${p.id}`} data-azione={p.top ? '' : undefined}>{T('Scegli', 'Choose')} {p.nome} <span class="freccia" aria-hidden="true">→</span></a>
-          </article>
-        ))}
+      <ol class="pv-tappe" data-sequenza>
+        {(it ? [
+          ['Ci racconti cosa ti serve', 'Due minuti: nome, contatti e due righe sul tuo lavoro.'],
+          ['Ti chiamiamo per conoscerci', 'Venti minuti, gratis e senza impegno. Capiamo il tuo lavoro e i tuoi obiettivi.'],
+          ['Ricevi il preventivo scritto', 'Fatto su misura, voce per voce, con i tempi. Decidi con calma.'],
+        ] : [
+          ['Tell us what you need', 'Two minutes: name, contact details and a couple of lines about your work.'],
+          ['We call you to get to know you', 'Twenty minutes, free and with no commitment. We learn about your work and your goals.'],
+          ['You get the written quote', 'Tailored, line by line, with timings. Take your time to decide.'],
+        ]).map(([t, d], i) => <li><span class="mono">0{i + 1}</span><b>{t}</b><p>{d}</p></li>)}
+      </ol>
+      <div class="hero-azioni pv-tappe-azioni" data-appare>
+        <a class="btn btn-azione btn-grande" href={preventivo} data-azione>{T('Richiedi un preventivo', 'Request a quote')} <span class="freccia" aria-hidden="true">→</span></a>
+        <a class="link-freccia" href={`https://wa.me/${contatti.whatsapp}`} target="_blank" rel="noopener">{T('Oppure scrivici su WhatsApp', 'Or message us on WhatsApp')} <span class="freccia" aria-hidden="true">↗</span></a>
       </div>
-      <div class="prezzi-guida" aria-hidden="true"><span class="segmenti"><i></i><i class="on"></i><i></i></span><span class="conta" data-pacchetti-conta>2 / 3</span></div>
-      <!-- gli altri servizi: in piccolo, una fila da far scorrere -->
-      <ul class="altri-prezzi" role="list" data-appare data-fila>
-        {altri.map((a) => <li><a href={urlServizio(a.id, lang)}>{a.nome} <strong>{T('da', 'from')} {a.prezzo}</strong></a></li>)}
-      </ul>
     </div>
   </section>
 
@@ -713,11 +683,11 @@ const jsonLd = {
         <span class="riga"><span>{T('ti sta già cercando', 'is already looking for you')}<span class="quadratino" aria-hidden="true"></span></span></span>
       </h2>
       <p class="lead" data-appare>{T(
-        'Componi il tuo progetto in 2 minuti: scegli quello che ti serve, vedi subito il prezzo e mandaci la richiesta. Ti rispondiamo entro 24 ore.',
-        "Build your project in 2 minutes: choose what you need, see the price straight away and send us the request. We'll reply within 24 hours.",
+        'Raccontaci cosa ti serve: ti chiamiamo per conoscerci e ti mandiamo un preventivo scritto, fatto sul tuo caso. Ti rispondiamo entro 24 ore.',
+        "Tell us what you need: we call you to get to know you and send you a written quote built around your case. We'll reply within 24 hours.",
       )}</p>
       <div class="hero-azioni" data-appare style="justify-content:center">
-        <a class="btn btn-azione btn-grande" href={preventivo} data-azione>{T('Componi il tuo progetto', 'Build your project')} <span class="freccia" aria-hidden="true">→</span></a>
+        <a class="btn btn-azione btn-grande" href={preventivo} data-azione>{T('Richiedi un preventivo', 'Request a quote')} <span class="freccia" aria-hidden="true">→</span></a>
         <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
       </div>
       <ul class="rassicura centro" data-appare>

@@ -42,15 +42,9 @@ Spesso la scelta migliore sta in mezzo: un **sito vetrina con un catalogo**. Si 
 
 ## Quanto costa ognuno
 
-Questi sono i nostri prezzi, IVA esclusa:
+Un negozio online costa di più di un sito vetrina: ci sono il catalogo, i pagamenti, le spedizioni e le email automatiche da impostare. Su Shopify ci sono anche costi che paghi direttamente a loro: l'abbonamento mensile, eventuali app e le commissioni sui pagamenti.
 
-| Cosa | Da noi | Per chi è |
-|---|---|---|
-| Sito vetrina (Presenza) | 2.900 € | Servizi, professionisti, attività locali |
-| Negozio online Shopify (Start) | 3.900 € | Fino a 50 prodotti, per partire a vendere |
-| Negozio su misura (Growth) | 7.900 € | Fino a 300 prodotti, per far crescere le vendite |
-
-Per un negozio Shopify ci sono anche costi che paghi direttamente a loro: l'abbonamento mensile, eventuali app e le commissioni sui pagamenti.
+Il prezzo vero dipende da quanti prodotti hai, da quanto deve essere su misura e da cosa va collegato (gestionale, magazzino, fatture). Per questo il preventivo lo facciamo dopo averti ascoltato, scritto e voce per voce.
 
 ## Due esempi
 

@@ -20,6 +20,7 @@
 - [ ] **E-commerce lanciati**: se puoi nominarne uno o due (anche tuoi), diventano un terzo caso studio.
 
 ## Tecnica
+- [ ] **Niente prezzi sul sito**: la pagina /preventivo ora è una richiesta (nome, cognome, email, telefono, servizi, progetto). Dopo aver incollato la versione nuova di `apps-script/Code.gs` fai **Distribuisci → Gestisci distribuzioni → Nuova versione**: su Telegram arriva «Nuova richiesta di preventivo» senza importi. I prezzi restano solo in `src/data/listino.js`, per uso interno.
 - [ ] **Prima di iniziare la pubblicità**: rendere privato il progetto su GitHub (Settings → Danger Zone → Change visibility → Make private). Il sito su Vercel continua a funzionare uguale.
 - [ ] Creare il foglio "Preventivi", incollare `apps-script/Code.gs`, pubblicarlo come app web e impostare `PUBLIC_PREVENTIVO_ENDPOINT` su Vercel. Senza, il preventivo si invia su WhatsApp o per email.
 - [ ] Bot Telegram (`BOT_TOKEN`, `CHAT_ID`) nelle proprietà dello script.
@@ -36,4 +37,4 @@
 - [ ] **Voucher Lombardia**: verificare che lo sportello 2026 sia ancora aperto prima di citarlo nelle campagne.
 
 ## Focus, l'AI vera nella chat
-Oggi Focus risponde con i bottoni (prezzi, preventivo, WhatsApp) e passa le domande scritte a WhatsApp. Per farlo rispondere con l'AI (Claude) serve: una chiave API messa nelle impostazioni di Vercel, un tetto di spesa mensile e una riga nell'informativa privacy. Da decidere con Gabriele.
+Oggi Focus risponde con i bottoni (come funziona il preventivo, richiesta, WhatsApp) e passa le domande scritte a WhatsApp. Per farlo rispondere con l'AI (Claude) serve: una chiave API messa nelle impostazioni di Vercel, un tetto di spesa mensile e una riga nell'informativa privacy. Da decidere con Gabriele.

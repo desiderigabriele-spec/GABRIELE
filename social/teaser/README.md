@@ -24,7 +24,7 @@ Un assaggio al giorno, sempre più vicino a cosa facciamo, senza dirlo tutto. Il
 | 5 | «21:40. Il centro estetico è chiuso. Arriva un messaggio…» e si ferma lì | Reel + TikTok |
 | 6 | Dietro le quinte: la scrivania, gli appunti, lo studio (girato col telefono) | Storie + Reel |
 | 7 | Conto alla rovescia · 3 | Storia + post |
-| 8 | Conto alla rovescia · 2 · «Prezzi chiari. Tutti. Scritti.» | Storia + post |
+| 8 | Conto alla rovescia · 2 · «Prima ti ascoltiamo. Poi il preventivo.» | Storia + post |
 | 9 | Conto alla rovescia · 1 · Gabriele in video: «Domani vi racconto tutto» | Reel + TikTok + LinkedIn |
 | 10 | Lancio: sito online, i 3 post fissati, la diagnosi AI gratuita | Tutto |
 

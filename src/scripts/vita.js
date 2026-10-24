@@ -201,33 +201,6 @@ function decodifica() {
 }
 
 
-// ---------- I pacchetti sul telefono: si scorrono di lato, si apre sul più scelto ----------
-function pacchettiSlider() {
-  const box = document.querySelector('[data-pacchetti]');
-  if (!box) return;
-  const carte = [...box.children], seg = [...document.querySelectorAll('.prezzi-guida .segmenti i')], conta = document.querySelector('[data-pacchetti-conta]');
-  const telefono = () => matchMedia('(max-width: 820px)').matches;
-  const segna = () => {
-    const c = box.scrollLeft + box.clientWidth / 2;
-    let i = 0, d = Infinity;
-    carte.forEach((el, k) => { const m = Math.abs(el.offsetLeft + el.offsetWidth / 2 - c); if (m < d) { d = m; i = k; } });
-    carte.forEach((el, k) => el.classList.toggle('on', k === i));
-    seg.forEach((s, k) => s.classList.toggle('on', k === i));
-    if (conta) conta.textContent = `${i + 1} / ${carte.length}`;
-  };
-  let inCoda = false;
-  box.addEventListener('scroll', () => { if (!inCoda) { inCoda = true; requestAnimationFrame(() => { inCoda = false; segna(); }); } }, { passive: true });
-  const parti = () => {
-    if (!telefono()) return;
-    const top = carte.findIndex((c) => c.classList.contains('top'));
-    const c = carte[top < 0 ? 0 : top];
-    box.scrollLeft = c.offsetLeft - (box.clientWidth - c.offsetWidth) / 2;
-    segna();
-    box.classList.add('pronto');
-  };
-  requestAnimationFrame(parti);
-  addEventListener('resize', segna);
-}
 
 // ---------- I servizi sul telefono: un indice, toccando una riga si apre (le altre si chiudono) ----------
 function indiceServizi() {
@@ -343,34 +316,6 @@ function puntoTitoli() {
   });
 }
 
-// ---------- 09 · Il tabellone: i prezzi girano come le palette delle stazioni ----------
-function tabellone() {
-  document.querySelectorAll('.piano-prezzo, .altri-prezzi strong, .prezzo-da strong, .servizio-da-breve').forEach((el) => {
-    const cifre = [];
-    testi(el, 'small').forEach((n) => {
-      if (!/\d/.test(n.textContent)) return;
-      const frag = document.createDocumentFragment();
-      for (const ch of n.textContent) {
-        if (/\d/.test(ch)) { const s = document.createElement('span'); s.className = 'flap'; s.textContent = ch; s.dataset.vero = ch; frag.appendChild(s); cifre.push(s); }
-        else frag.appendChild(document.createTextNode(ch));
-      }
-      n.replaceWith(frag);
-    });
-    if (!cifre.length) return;
-    quandoVisibile(el, () => {
-      let tick = 0;
-      cifre.forEach((s) => s.classList.add('gira'));
-      const id = setInterval(() => {
-        tick++;
-        cifre.forEach((s, k) => {
-          if (tick >= 5 + k * 2) { s.textContent = s.dataset.vero; s.classList.remove('gira'); }
-          else s.textContent = String((Number(s.dataset.vero) + tick + k) % 10);
-        });
-        if (tick > 5 + cifre.length * 2) clearInterval(id);
-      }, 70);
-    }, 0.7);
-  });
-}
 
 // ---------- Le file di servizi ([data-fila]): scorrono da destra a sinistra all'infinito ----------
 // Le copie servono solo al giro senza fine (nascoste ai lettori di schermo e al tasto Tab). Le usano le etichette
@@ -486,7 +431,7 @@ function cinetica() {
   });
 }
 
-// ---------- 16 · Le schede dei servizi: salgono e le spunte si spuntano una alla volta (il prezzo gira col tabellone) ----------
+// ---------- 16 · Le schede dei servizi: salgono e le spunte si spuntano una alla volta ----------
 function grigliaViva() {
   document.querySelectorAll('[data-griglia-viva]').forEach((g) => {
     const schede = [...g.children];
@@ -643,7 +588,6 @@ export function avviaVita() {
   salto();
   giornata(); // l'interruttore funziona anche con «riduci movimento»
   indiceServizi();
-  pacchettiSlider();
   filaInfinita(); // si trascina anche con «riduci movimento», ma non scorre da sola
   if (ridotto) return;
   html.classList.add('vita-on');
@@ -654,7 +598,6 @@ export function avviaVita() {
   puntoTitoli();
   notifiche();
   metodoNumeri();
-  tabellone();
   cinetica();
   grigliaViva();
   intruso();

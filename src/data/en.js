@@ -126,7 +126,7 @@ export const en = {
     },
     {
       d: 'Do you only work in Milan?',
-      r: 'The studio is in Milan, but we work with clients all over Italy, in Switzerland (Ticino included) and abroad. Video calls are always included and meetings in Milan city are free. Outside Milan an in-person meeting costs €190 within 100 km (for example Como, Bergamo or Lugano) and €490 beyond. Prices are the same for everyone: if you\'re in Switzerland you can also see them in Swiss francs in the quote.',
+      r: 'The studio is in Milan, but we work with clients all over Italy, in Switzerland (Ticino included) and abroad. Video calls are always included and meetings in Milan city are free. Outside Milan we can come to you: we include it in the quote. If you\'re in Switzerland you can also receive the quote in Swiss francs.',
     },
   ],
 

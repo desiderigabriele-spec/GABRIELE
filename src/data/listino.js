@@ -1,4 +1,5 @@
-// Listino del preventivo automatico. Prezzi IVA esclusa, allineati a docs/01-ricerca-mercato-prezzi.md.
+// Il listino interno: pacchetti, voci incluse ed extra. Sul sito si mostrano solo nomi e voci, mai i prezzi:
+// il preventivo si manda scritto dopo aver parlato con il cliente. Prezzi IVA esclusa, allineati a docs/01-ricerca-mercato-prezzi.md.
 // "una" = una tantum, "mese" = canone mensile. Gli extra con "max" si aggiungono con + / −.
 
 export const categorie = [
@@ -55,7 +56,7 @@ export const categorie = [
       { id: 'copilota', nome: 'Copilota aziendale', una: 3900, mese: 199, spiega: 'Un assistente per il tuo team che conosce listini, procedure e schede tecniche e risponde in chat.' },
       { id: 'formazione', nome: 'Formazione AI (mezza giornata)', una: 650, max: 6, spiega: 'Insegniamo al tuo team a usare Claude e ChatGPT nel lavoro di ogni giorno.' },
     ],
-    nota: 'Il software e i tuoi dati sono tuoi. Il canone è l\'assistenza: hosting, controlli, aggiornamenti e sistemazioni. Il consumo dell\'AI oltre i 30 €/mese si paga a parte, al costo reale.',
+    nota: 'Il software e i tuoi dati sono tuoi. Il canone è l\'assistenza: hosting, controlli, aggiornamenti e sistemazioni. Il consumo dell\'AI si paga a parte, al costo reale.',
   },
   {
     id: 'gestionale',
@@ -72,7 +73,7 @@ export const categorie = [
       { id: 'migrazione', nome: 'Passaggio dal vecchio gestionale', una: 900, spiega: 'Portiamo dentro clienti, articoli e storico dal programma che usi oggi.' },
       { id: 'app', nome: 'App sul telefono', una: 1200, spiega: 'Il gestionale come app da installare, anche per chi lavora fuori: cantieri, consegne, visite.' },
     ],
-    nota: 'Il gestionale e i dati sono tuoi. Il canone è l\'assistenza: hosting, backup, aggiornamenti e sistemazioni. Il consumo dell\'AI oltre i 30 €/mese si paga a parte, al costo reale.',
+    nota: 'Il gestionale e i dati sono tuoi. Il canone è l\'assistenza: hosting, backup, aggiornamenti e sistemazioni. Il consumo dell\'AI si paga a parte, al costo reale.',
   },
   {
     id: 'ads',
@@ -81,7 +82,7 @@ export const categorie = [
     livelli: [
       { id: 'start', nome: 'Start', una: 490, mese: 590, spiega: 'Un canale (per esempio Instagram e Facebook, oppure Google), con budget fino a 2.000 € al mese.', include: ['1 canale: Meta (Instagram e Facebook) oppure Google', 'Impostazione di account, Pixel e statistiche', 'Il pubblico giusto e le prime creatività', 'Ottimizzazione continua', 'Report chiaro ogni mese'] },
       { id: 'growth', nome: 'Growth', una: 790, mese: 990, top: true, spiega: 'Due canali che lavorano insieme, con budget tra 2.000 e 6.000 € al mese.', include: ['2 canali che lavorano insieme', 'Impostazione completa, con tracciamento lato server', 'Prove continue sulle creatività', 'Ottimizzazione ogni settimana', 'Report e chiamata ogni mese'] },
-      { id: 'scale', nome: 'Scale', una: 790, mese: 1490, spiega: 'Più canali e un percorso completo per chi investe oltre 6.000 € al mese (12% del budget, minimo 1.490 €).', include: ['Più canali insieme', 'Percorso completo, con chi ti ha già visitato', 'Pagine dedicate alle campagne', 'Ottimizzazione continua', 'Report e chiamata ogni mese', 'Priorità assoluta'] },
+      { id: 'scale', nome: 'Scale', una: 790, mese: 1490, spiega: 'Più canali e un percorso completo per chi investe oltre 6.000 € al mese.', include: ['Più canali insieme', 'Percorso completo, con chi ti ha già visitato', 'Pagine dedicate alle campagne', 'Ottimizzazione continua', 'Report e chiamata ogni mese', 'Priorità assoluta'] },
     ],
     extra: [
       { id: 'canale', nome: 'Canale in più (TikTok, LinkedIn…)', mese: 290, max: 3, spiega: 'Un\'altra piattaforma dove far comparire i tuoi annunci.' },

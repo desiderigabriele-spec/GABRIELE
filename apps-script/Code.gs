@@ -1,5 +1,5 @@
 /**
- * Richieste dal preventivo automatico del sito  →  Google Fogli + Telegram (+ email di riserva).
+ * Richieste di preventivo dal sito (nome, contatti, servizi, progetto)  →  Google Fogli + Telegram (+ email di riserva).
  * Anche le candidature della pagina «Chi siamo» (tipo: 'candidatura') arrivano qui: foglio "Candidature",
  * CV in PDF in una cartella Drive "Candidature", avviso su Telegram. Dopo aver incollato questa versione
  * serve una NUOVA distribuzione (e l'autorizzazione a Drive, che Google chiede la prima volta).
@@ -83,15 +83,16 @@ function telegram_(r, avviso) {
   var p = PropertiesService.getScriptProperties(), token = p.getProperty('BOT_TOKEN'), chat = p.getProperty('CHAT_ID');
   if (!token || !chat) return false;
   var t = [
-    '✦ <b>Nuovo preventivo dal sito</b>', '',
+    '✦ <b>Nuova richiesta di preventivo</b>', '',
     '👤 <b>' + esc_(r.nome) + '</b>' + (r.azienda ? ' · ' + esc_(r.azienda) : ''),
     r.settore ? '🏷️ ' + esc_(r.settore) : '',
     '📞 ' + esc_(r.tel) + ' · preferisce: <b>' + esc_(r.canale || '-') + '</b>',
     '✉️ ' + esc_(r.email), '',
     '🧩 ' + esc_(r.servizi),
-    '⏱️ ' + esc_(r.tempi),
-    '💶 <b>' + eur_(r.una) + '</b> una tantum' + (r.mese ? ' + <b>' + eur_(r.mese) + '</b>/mese' : '')
+    '⏱️ ' + esc_(r.tempi)
   ];
+  // il sito non calcola più i prezzi: gli importi compaiono solo se arrivano (vecchie richieste)
+  if (r.una || r.mese) t.push('💶 <b>' + eur_(r.una) + '</b> una tantum' + (r.mese ? ' + <b>' + eur_(r.mese) + '</b>/mese' : ''));
   if (r.sito) t.push('🌐 ' + esc_(r.sito));
   if (r.msg) t.push('', '🎯 ' + esc_(r.msg));
   if (avviso) t.push('', esc_(avviso));
@@ -110,7 +111,7 @@ function telegram_(r, avviso) {
 function mail_(r, errore) {
   var to = PropertiesService.getScriptProperties().getProperty('EMAIL');
   if (!to) return;
-  MailApp.sendEmail(to, 'Preventivo dal sito: ' + r.nome + (r.azienda ? ' (' + r.azienda + ')' : ''),
+  MailApp.sendEmail(to, 'Richiesta di preventivo dal sito: ' + r.nome + (r.azienda ? ' (' + r.azienda + ')' : ''),
     r.progetto + (errore ? '\n\nErrore foglio: ' + errore : ''));
 }
 
@@ -184,8 +185,8 @@ function invia_(testo) {
 function provaCompleta() {
   var r = doPost({ postData: { contents: JSON.stringify({
     nome: 'Prova Completa', azienda: 'Test srl', settore: 'Azienda / PMI', email: 'prova@example.com', telefono: '333 0000000',
-    canale: 'WhatsApp', servizi: 'Sito web (Presenza), Software con AI (AI su un processo)', tempi: 'Normale',
-    una: 7380, mese: 249, messaggio: 'Prova automatica', progetto: 'Prova', pagina: 'test'
+    canale: 'WhatsApp', servizi: 'Automazioni e AI, Siti web', tempi: 'Il prima possibile',
+    messaggio: 'Prova automatica', progetto: 'Prova', pagina: 'test'
   }) } });
   Logger.log(r.getContent());
 }

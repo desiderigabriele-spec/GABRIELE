@@ -5,10 +5,6 @@
 .sv-hero .hero-testo { gap: clamp(.8rem, 2.2svh, 1.5rem); }
 .sv-indietro { justify-self: start; display: inline-flex; gap: .5rem; align-items: center; font-size: .88rem; color: var(--nebbia); text-decoration: none; }
 .sv-indietro:hover { color: var(--latte); }
-.sv-prezzo { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 1rem; margin: 0; }
-.sv-prezzo strong { font-family: var(--f-titolo); font-size: clamp(1.8rem, 3vw, 2.4rem); letter-spacing: -0.03em; color: var(--latte); }
-.sv-prezzo strong small { font-size: .5em; color: var(--nebbia); font-weight: 500; }
-.sv-iva { font-size: .82rem; color: var(--nebbia-2); }
 .sv-ill { position: relative; }
 @media (max-width: 900px) {
   .sv-hero-griglia { grid-template-columns: minmax(0, 1fr); }
@@ -17,7 +13,6 @@
   .sv-hero .hero-testo { gap: .85rem; }
   .sv-hero .sv-indietro { display: none; }
   .sv-hero .lead { font-size: 1rem; }
-  .sv-prezzo strong { font-size: 1.7rem; }
   .sv-hero .hero-azioni .btn-vetro { display: none; }
   .sv-hero .hero-azioni .btn { --pad: 1.05rem 1.6rem; }
 }
@@ -60,8 +55,6 @@
 @media (max-width: 900px) { .sv-esempi { grid-template-columns: minmax(0, 1fr); } }
 
 /* pacchetti */
-.sv-piano-prezzo { font-size: clamp(1.8rem, min(2.8vw, 5svh), 2.6rem) !important; }
-.sv-piano-prezzo small { color: var(--nebbia); }
 .sv-finale .finale-testo { max-width: 1180px; }
 .sv-finale h2, .sv-finale .lead { max-width: 900px; }
 .sv-extra { margin-top: clamp(16px, 2.6svh, 28px); display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; }

@@ -66,6 +66,7 @@ h2 { font-size: 96px; }
 .spunte li::before { content: ''; width: 44px; height: 44px; background: var(--verde) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.2 4.2L19 7' fill='none' stroke='%2304130d' stroke-width='3'/%3E%3C/svg%3E") center / 30px no-repeat; }
 .firma { display: grid; grid-template-columns: 150px 1fr; gap: 34px; align-items: center; padding: 34px; border: 1px solid var(--linea2); background: rgba(20,20,20,.92); }
 .volto { position: relative; width: 150px; height: 150px; display: grid; place-items: center; background: var(--latte); color: var(--notte); font-family: 'Inter Tight'; font-weight: 800; font-size: 56px; letter-spacing: -.05em; }
+img.volto { object-fit: cover; }
 .volto::after { content: ''; position: absolute; right: 14px; bottom: 14px; width: 16px; height: 16px; background: var(--rosso); }
 .firma b { display: block; font-family: 'Inter Tight'; font-weight: 800; font-size: 50px; letter-spacing: -.035em; }
 .firma small { display: block; margin-top: 10px; font-family: 'JetBrains Mono'; font-size: 24px; letter-spacing: .14em; text-transform: uppercase; color: var(--rosso-t); }
@@ -112,13 +113,6 @@ h2 { font-size: 96px; }
 .nota { display: flex; align-items: center; gap: 18px; font-size: 32px; color: var(--chiaro); padding: 24px 30px; border: 1px dashed var(--linea2); }
 .nota::before { content: ''; flex: none; width: 16px; height: 16px; background: var(--verde); }
 
-/* i prezzi */
-.prezzi { list-style: none; padding: 0; border-top: 2px solid var(--latte); }
-.prezzi li { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--linea); }
-.prezzi b { font-family: 'Inter Tight'; font-weight: 700; font-size: 44px; letter-spacing: -.03em; }
-.prezzi b small { display: block; font-family: 'Inter'; font-weight: 400; font-size: 26px; letter-spacing: 0; color: var(--nebbia); margin-top: 4px; }
-.prezzi span { font-family: 'Inter Tight'; font-weight: 800; font-size: 50px; letter-spacing: -.04em; white-space: nowrap; }
-.prezzi span small { font-family: 'JetBrains Mono'; font-weight: 500; font-size: 22px; letter-spacing: .1em; text-transform: uppercase; color: var(--nebbia); margin-right: 10px; }
 .piccolo { font-family: 'JetBrains Mono'; font-size: 22px; letter-spacing: .12em; text-transform: uppercase; color: var(--nebbia2); }
 .passi { list-style: none; padding: 0; display: grid; gap: 0; }
 .passi li { display: grid; grid-template-columns: 120px 1fr; gap: 26px; padding: 34px 0; border-top: 2px solid var(--latte); }
@@ -178,13 +172,13 @@ h2 { font-size: 96px; }
   <div class="testa"><span class="marchio">{{LOGO}}Desideri&amp;Code<i></i></span><span class="conta">04 / 04</span></div>
   <div class="corpo">
     <span class="cap">Chi dirige</span>
-    <div class="firma"><span class="volto">GD</span><span><b>Gabriele Desideri</b><small>Fondatore e direttore creativo</small></span></div>
+    <div class="firma"><img class="volto" src="../../src/assets/img/gabriele-volto.webp" alt=""><span><b>Gabriele Desideri</b><small>Fondatore e direttore creativo</small></span></div>
     <ul class="spunte">
       <li>Dà le idee e le linee guida di ogni progetto</li>
       <li>Decide la strategia con te, prima di iniziare</li>
       <li>Approva ogni lavoro prima che arrivi a te</li>
     </ul>
-    <span class="btn">Preventivo in 2 minuti →</span>
+    <span class="btn">Richiedi un preventivo →</span>
   </div>
   <div class="piede"><span>@desidericode</span><b>Link in bio <span>↗</span></b></div>
 </section>
@@ -250,18 +244,18 @@ h2 { font-size: 96px; }
       <li>Promemoria il giorno prima, da solo</li>
     </ul>
     <p class="lead">Lo creiamo su misura per te, con <b>WhatsApp, email, agenda e il tuo gestionale</b>. E resta tuo.</p>
-    <span class="btn">Automazioni AI da 1.200 € →</span>
+    <span class="btn">Te la creiamo su misura →</span>
   </div>
   <div class="piede"><span>@desidericode</span><b>Link in bio <span>↗</span></b></div>
 </section>
 
-<!-- ============ POST 3 · PREZZI CHIARI ============ -->
+<!-- ============ POST 3 · IL PREVENTIVO, FATTO BENE ============ -->
 <section class="slide" id="3-1">
   <div class="testa"><span class="marchio">{{LOGO}}Desideri&amp;Code<i></i></span><span class="conta">01 / 03</span></div>
   <div class="corpo">
-    <span class="cap">Prezzi</span>
-    <h1>Quanto<br>costa?<br><span class="g">Lo sai prima</span><span class="q"></span></h1>
-    <p class="lead">I nostri prezzi sono scritti sul sito. <b>Niente «dipende», niente sorprese</b> a fine lavoro.</p>
+    <span class="cap">Il preventivo</span>
+    <h1>Prima ti<br>ascoltiamo.<br><span class="g">Poi il prezzo</span><span class="q"></span></h1>
+    <p class="lead">Ogni azienda è diversa. Per questo <b>niente listini</b>: il preventivo lo facciamo sul tuo caso, dopo averti conosciuto.</p>
   </div>
   <div class="piede"><span>Milano</span><b>Scorri <span>→</span></b></div>
 </section>
@@ -269,16 +263,13 @@ h2 { font-size: 96px; }
 <section class="slide" id="3-2">
   <div class="testa"><span class="marchio">{{LOGO}}Desideri&amp;Code<i></i></span><span class="conta">02 / 03</span></div>
   <div class="corpo">
-    <span class="cap">Il listino</span>
-    <ul class="prezzi">
-      <li><b>Automazioni AI<small>Il lavoro ripetitivo lo fa da solo</small></b><span><small>da</small>1.200 €</span></li>
-      <li><b>Gestionale su misura<small>Fatto come lavori tu</small></b><span><small>da</small>4.900 €</span></li>
-      <li><b>Sito web<small>Disegnato su misura, con i testi</small></b><span><small>da</small>1.500 €</span></li>
-      <li><b>Negozio online<small>Pronto a vendere</small></b><span><small>da</small>3.900 €</span></li>
-      <li><b>Pubblicità<small>Meta e Google</small></b><span><small>da</small>590 €/mese</span></li>
-      <li><b>Cura del sito<small>Hosting, backup, aggiornamenti</small></b><span><small>da</small>59 €/mese</span></li>
-    </ul>
-    <p class="piccolo">Prezzi IVA esclusa · il sito e il software restano tuoi</p>
+    <span class="cap">Come funziona</span>
+    <h2>Tre passi,<br><span class="g">nessuna fretta</span><span class="q"></span></h2>
+    <ol class="passi">
+      <li><i>1</i><span><b>Ci racconti cosa ti serve</b><small>Nome, contatti e due righe sul tuo lavoro</small></span></li>
+      <li><i>2</i><span><b>Ti chiamiamo per conoscerci</b><small>Venti minuti, gratis e senza impegno</small></span></li>
+      <li><i>3</i><span><b>Ricevi il preventivo scritto</b><small>Su misura, voce per voce, con i tempi</small></span></li>
+    </ol>
   </div>
   <div class="piede"><span>@desidericode</span><b>Scorri <span>→</span></b></div>
 </section>
@@ -286,14 +277,15 @@ h2 { font-size: 96px; }
 <section class="slide" id="3-3">
   <div class="testa"><span class="marchio">{{LOGO}}Desideri&amp;Code<i></i></span><span class="conta">03 / 03</span></div>
   <div class="corpo">
-    <span class="cap">Il tuo preventivo</span>
-    <h2>Pronto in<br><span class="g">2 minuti</span><span class="q"></span></h2>
-    <ol class="passi">
-      <li><i>1</i><span><b>Scegli cosa ti serve</b><small>Sito, AI, gestionale, pubblicità</small></span></li>
-      <li><i>2</i><span><b>Vedi subito il prezzo</b><small>Senza lasciare il numero</small></span></li>
-      <li><i>3</i><span><b>Se ti convince, ci scrivi</b><small>Ti rispondiamo noi, di persona</small></span></li>
-    </ol>
-    <span class="btn">Calcola il tuo · link in bio →</span>
+    <span class="cap">Nel preventivo</span>
+    <h2>Tutto scritto,<br><span class="g">prima di iniziare</span><span class="q"></span></h2>
+    <ul class="spunte">
+      <li>Ogni voce spiegata, senza sigle</li>
+      <li>Tempi e data di consegna</li>
+      <li>Le spese degli anni dopo</li>
+      <li>Il sito e il software restano tuoi</li>
+    </ul>
+    <span class="btn">Richiedi un preventivo · link in bio →</span>
   </div>
   <div class="piede"><span>@desidericode</span><b>Link in bio <span>↗</span></b></div>
 </section>

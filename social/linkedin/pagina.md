@@ -32,7 +32,7 @@ Cosa facciamo
 • Consulenza: capire cosa ti serve davvero, prima di spendere.
 
 Come lavoriamo
-Parli sempre con chi dirige il progetto, dalla prima chiamata alla consegna. I prezzi sono chiari e scritti prima di iniziare. Il software e il sito restano tuoi.
+Parli sempre con chi dirige il progetto, dalla prima chiamata alla consegna. Il preventivo è scritto, voce per voce, prima di iniziare. Il software e il sito restano tuoi.
 
 Lo studio è diretto da Gabriele Desideri, fondatore e direttore creativo.
 Lavoriamo con aziende di Milano, di tutta Italia e della Svizzera.

@@ -3,7 +3,7 @@
 Ogni articolo nasce come bozza (`bozza: true` in `src/content/blog/<nome>.md`) e va online solo dopo l'ok di Gabriele
 (si mette `bozza: false`). Regole per chi scrive:
 
-- Rispondere a una domanda vera dei clienti, con numeri presi da `src/data/listino.js` e `docs/01-ricerca-mercato-prezzi.md`.
+- Rispondere a una domanda vera dei clienti. I numeri di mercato vengono da `docs/01-ricerca-mercato-prezzi.md`; **mai i nostri prezzi**: il preventivo si fa dopo averci parlato.
 - Italiano semplice, frasi corte, come si direbbe a voce. Lo studio parla al plurale («noi»), l'autore è Gabriele.
 - Niente promesse che non si possono mantenere, niente recensioni o casi inventati, niente fonti non verificate.
 - Non dire mai come costruiamo i siti (strumenti, AI). Si può parlare dei servizi AI che vendiamo ai clienti.

@@ -7,16 +7,14 @@ import Terminale from './Terminale.astro';
 import Cursori from './Cursori.astro';
 import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
-import { euro } from '../data/formato.js';
 import { demo, tempi, ORDINE_DEMO } from '../data/demo.js';
 
 interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
 const it = lang === 'it';
 const T = (a: string, b: string) => (it ? a : b);
-const { categorie, contatti } = dati(lang);
+const { contatti } = dati(lang);
 const preventivo = url('preventivo', lang);
-const diagnosi = categorie.find((c) => c.id === 'software')!.extra.find((e) => e.id === 'diagnosi')!;
 const waTesto = T('Ciao! Ho visto le demo di Desideri&Code e vorrei capire cosa si può fare nella mia attività.', 'Hi! I saw the Desideri&Code demos and I’d like to know what could work in my business.');
 ---
 <Base
@@ -76,12 +74,12 @@ const waTesto = T('Ciao! Ho visto le demo di Desideri&Code e vorrei capire cosa 
         <span class="riga"><span>{T('la facciamo con te', 'we build with you')}<span class="quadratino" aria-hidden="true"></span></span></span>
       </h2>
       <p class="lead" data-appare>{T(
-        `Nella Diagnosi AI (${euro(diagnosi.una!, lang)}, scalati se poi fai il progetto) guardiamo insieme il lavoro che ti ruba più tempo e ti mostriamo come funzionerebbe da te, con i tuoi programmi.`,
-        `In the AI Diagnosis (${euro(diagnosi.una!, lang)}, deducted if you go ahead with the project) we look together at the job that eats most of your time and show you how it would work for you, with your programs.`,
+        `Nella Diagnosi AI guardiamo insieme il lavoro che ti ruba più tempo e ti mostriamo come funzionerebbe da te, con i tuoi programmi.`,
+        `In the AI Diagnosis we look together at the job that eats most of your time and show you how it would work for you, with your programs.`,
       )}</p>
       <div class="demo-cursori" data-appare><Cursori lang={lang} /></div>
       <div class="hero-azioni" data-appare style="justify-content:center">
-        <a class="btn btn-azione btn-grande" href={`${preventivo}?s=software`} data-azione>{T('Calcola il tuo preventivo', 'Get your quote')} <span class="freccia" aria-hidden="true">→</span></a>
+        <a class="btn btn-azione btn-grande" href={`${preventivo}?s=software`} data-azione>{T('Richiedi un preventivo', 'Request a quote')} <span class="freccia" aria-hidden="true">→</span></a>
         <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
       </div>
     </div>
