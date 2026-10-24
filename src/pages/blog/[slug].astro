@@ -6,6 +6,7 @@ import { articoli, minuti, giorno } from '../../data/blog.js';
 import { dati } from '../../i18n/dati.js';
 import { url, urlServizio } from '../../i18n/ui.js';
 import '../../styles/blog.css';
+import volto from '../../assets/img/gabriele-volto.webp';
 
 export async function getStaticPaths() {
   const lista = await articoli();
@@ -41,7 +42,7 @@ const jsonLd = {
         <h1>{d.titolo}</h1>
         <p class="lead">{d.descrizione}</p>
         <div class="articolo-firma">
-          <span class="articolo-volto" aria-hidden="true">GD</span>
+          <img class="articolo-volto" src={volto.src} width="240" height="240" alt="" loading="lazy" decoding="async" />
           <span><b>{contatti.nome}</b><small>Fondatore e direttore creativo · {giorno(d.data)} · {minuti(a.body)} min di lettura</small></span>
         </div>
       </header>

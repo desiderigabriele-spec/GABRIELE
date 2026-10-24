@@ -10,6 +10,7 @@ import MicroIcona from './MicroIcona.astro';
 import '../styles/chisiamo.css';
 import '../styles/recensioni.css';
 import { metodoStudio } from '../data/metodo.js';
+import volto from '../assets/img/gabriele-volto.webp';
 import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -601,7 +602,7 @@ const jsonLd = {
           {metodoStudio[lang].map((m, i) => <li><i>{String(i + 1).padStart(2, '0')}</i><span><b>{m.titolo}</b><small>{m.breve}</small></span></li>)}
         </ol>
         <div class="cs-firma">
-          <span class="cs-volto" aria-hidden="true">GD</span>
+          <img class="cs-volto" src={volto.src} width="240" height="240" alt="" loading="lazy" decoding="async" />
           <span><b>{T('Diretto da Gabriele Desideri', 'Led by Gabriele Desideri')}</b><small>{T('Fondatore e direttore creativo', 'Founder and creative director')}</small></span>
         </div>
       </div>

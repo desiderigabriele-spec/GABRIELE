@@ -6,7 +6,7 @@
 - [ ] **Partita IVA** da mostrare nel footer (`contatti.piva` in `src/data/sito.js`).
 - [ ] **Dominio**: oggi `gabrieledesideri.it` in `astro.config.mjs`, `robots.txt` e dati strutturati. Con il nome «Desideri&Code» i domini `studiodesideri.it` e `.com` sono già presi: liberi `studio-desideri.it`, `studio-desideri.com`, `studiodesiderimilano.it`, `studiodesideri.ch`. Tieni gabrieledesideri.it come reindirizzamento.
 - [ ] **Nome «Desideri&Code»**: controllare che il marchio sia libero (UIBM, EUIPO) e che Instagram e LinkedIn siano liberi. In fattura: «Desideri&Code di Gabriele Desideri».
-- [ ] **Foto tua** per la pagina «Chi siamo» (`/chi-siamo`, blocco «Chi dirige»): oggi nel riquadro 4:5 ci sono le iniziali «GD». Basta una foto verticale, luce naturale, sfondo semplice.
+- [x] **Foto tua**: in bianco e nero nella pagina «Chi siamo», nella firma in home e negli articoli (`src/assets/img/gabriele-bn.webp`, `gabriele-volto.webp`). Versioni per i social in `social/foto/`.
 - [ ] **Chi siamo**: lo studio si racconta per metodo (`src/data/metodo.js`) e competenze, senza dire quante persone ci sono. Quando arrivano collaboratori veri si può aggiungere la squadra. Rileggi la strada (`src/components/PaginaChiSiamo.astro`, dentro la tendina «La mia strada»). Ci sono i ruoli (agente di commercio, team leader, co-fondatore di una startup, consulente immobiliare) senza i nomi delle aziende: dimmi se va bene così o se vuoi toglierne qualcuno.
 
 ## Contenuti

@@ -7,6 +7,7 @@ import Base from '../layouts/Base.astro';
 import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
 import { metodoStudio } from '../data/metodo.js';
+import foto from '../assets/img/gabriele-bn.webp';
 import '../styles/chisiamo.css';
 
 interface Props { lang?: 'it' | 'en' }
@@ -84,7 +85,7 @@ const posizioni = it ? [
 
   <section class="sezione" id="chi-dirige" data-forma="1">
     <div class="wrap cs-dirige">
-      <div class="cs-ritratto" data-appare aria-hidden="true"><span>GD</span></div>
+      <div class="cs-ritratto" data-appare><img src={foto.src} width="960" height="1200" alt={T('Gabriele Desideri, fondatore di Desideri&Code', 'Gabriele Desideri, founder of Desideri&Code')} loading="lazy" decoding="async" /></div>
       <div class="cs-dirige-testo">
         <span class="capitolo" data-appare>{T('Chi dirige', 'Who leads')}</span>
         <h2 data-righe><span class="riga"><span>Gabriele Desideri<span class="quadratino" aria-hidden="true"></span></span></span></h2>
