@@ -8,7 +8,7 @@
 | Immagine del profilo | `social/profilo/profilo-nero.png` |
 | Copertina | `social/facebook/copertina-facebook.png` (1640×624; su telefono Facebook taglia i lati, il testo sta al centro) |
 | Bottone | «Invia messaggio WhatsApp»; quando il sito è attivo, «Scopri di più» con il link alla richiesta di preventivo |
-| Contatti | email desiderigabriele@gmail.com · WhatsApp e telefono +39 338 342 4098 · sito solo quando è attivo (desidericode.it) |
+| Contatti | email desiderigabriele@gmail.com · WhatsApp e telefono +39 338 342 4098 · sito https://desidericode.it quando è attivo |
 | Zona servita | Milano, Italia e Svizzera |
 | Orari | «Sempre aperto» no: meglio lun-ven 9-19, così chi scrive sa quando aspettarsi risposta |
 | Fascia di prezzo | non impostarla: niente prezzi, si parla prima e poi arriva il preventivo scritto |

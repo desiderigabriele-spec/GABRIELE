@@ -20,7 +20,7 @@ svhDiRiserva.postcss = true;
 const BROWSER = ['safari14', 'ios14', 'chrome90', 'firefox90', 'edge90'];
 
 export default defineConfig({
-  site: 'https://www.gabrieledesideri.it',
+  site: 'https://desidericode.it',
   trailingSlash: 'never',
   // la mappa del sito per Google (senza la pagina 404)
   integrations: [sitemap({ filter: (pagina) => !/\/404\/?$/.test(pagina) && (blogPubblicato || !/\/blog\/?$/.test(pagina)) })],

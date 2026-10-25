@@ -5,7 +5,7 @@
 |---|---|
 | Nome | Desideri&Code |
 | URL pubblico | linkedin.com/company/desidericode |
-| Sito web | https://desidericode.it (quando è attivo; fino ad allora lascialo vuoto) |
+| Sito web | https://desidericode.it (mettilo quando il sito è online) |
 | Settore | Servizi IT e consulenza IT |
 | Dimensioni | 0-1 dipendenti (2-10 quando avrai collaboratori) |
 | Tipo di organizzazione | Ditta individuale |
