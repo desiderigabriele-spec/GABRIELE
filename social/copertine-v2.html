@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<!-- Copertine con le rappresentazioni dei servizi, nello stile del sito (cielo, griglia, D&C. fantasma, etichette mono,
+     icone col punto rosso). ?v=a (scrivania: sito, telefono, gestionale) · ?v=b (il flusso dell'automazione) · ?v=c (logo e codice).
+     ?f=whatsapp (1920×1080) · facebook (1640×624) · youtube (2560×1440) · linkedin (2256×382). -->
+<style>
+@font-face { font-family: 'Tight'; src: url('../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
+@font-face { font-family: 'Mono'; src: url('../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2') format('woff2'); font-weight: 100 800; }
+:root { --notte: #0a0a0a; --sup: #121212; --sup2: #181818; --linea: rgba(255,255,255,.09); --linea-forte: rgba(255,255,255,.18); --nebbia: #a3a3a3; --spento: #6b6b6b; --rosso: #e30613; --verde: #10b981; }
+* { margin: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; }
+body { background: var(--notte); color: #fff; overflow: hidden; position: relative; font-family: 'Tight'; }
+canvas#cielo { position: absolute; inset: 0; width: 100%; height: 100%; }
+.griglia { position: absolute; inset: 0; background: linear-gradient(90deg, transparent calc(25% - 1px), rgba(255,255,255,.035) 25%, transparent calc(25% + 1px), transparent calc(50% - 1px), rgba(255,255,255,.035) 50%, transparent calc(50% + 1px), transparent calc(75% - 1px), rgba(255,255,255,.035) 75%, transparent calc(75% + 1px)); }
+.tela { position: absolute; left: 50%; top: 50%; width: 1600px; height: 760px; transform-origin: 50% 50%; }
+.mono { font-family: 'Mono'; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; }
+.etichetta { display: flex; align-items: center; gap: 14px; font-size: 20px; color: var(--nebbia); }
+.etichetta::before { content: ''; width: 14px; height: 14px; background: var(--rosso); }
+.motto { font-weight: 800; letter-spacing: -.055em; line-height: .92; white-space: nowrap; }
+.motto span { color: #8a8a8a; }
+.motto i { display: inline-block; width: .19em; height: .19em; background: var(--rosso); margin-left: .04em; }
+.fantasma { position: absolute; font-weight: 800; letter-spacing: -.06em; line-height: .8; color: transparent; -webkit-text-stroke: 2px rgba(255,255,255,.07); white-space: nowrap; pointer-events: none; }
+.ico { width: 56px; height: 56px; flex: none; display: grid; place-items: center; border: 1.5px solid var(--rosso); }
+.ico svg { width: 36px; height: 36px; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ico svg .riempi { fill: rgba(255,255,255,.08); }
+.ico svg .punto { fill: var(--rosso); stroke: none; }
+.finestra { background: var(--sup); border: 1px solid var(--linea-forte); box-shadow: 0 40px 80px rgba(0,0,0,.55); }
+.barra { height: 34px; display: flex; align-items: center; gap: 8px; padding: 0 14px; border-bottom: 1px solid var(--linea); }
+.barra b { width: 10px; height: 10px; border-radius: 50%; background: #3a3a3a; }
+.barra b:nth-child(1) { background: var(--verde); } .barra b:nth-child(2) { background: #fff; } .barra b:nth-child(3) { background: var(--rosso); }
+.barra span { margin-left: 12px; font-family: 'Mono'; font-size: 12px; color: var(--spento); letter-spacing: .06em; }
+.spunta { width: 20px; height: 20px; flex: none; background: var(--verde); display: grid; place-items: center; }
+.spunta::after { content: ''; width: 9px; height: 5px; border-left: 2.5px solid #06140e; border-bottom: 2.5px solid #06140e; transform: translateY(-1px) rotate(-45deg); }
+.servizi-riga { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 19px; color: var(--nebbia); }
+.servizi-riga b { color: #fff; font-weight: 500; }
+.servizi-riga span + span::before { content: '·'; margin-right: 22px; color: #555; }
+.variante { display: none; position: absolute; inset: 0; }
+body.a .va, body.b .vb, body.c .vc { display: block; }
+
+/* ===== A · scrivania: sito, telefono con l'automazione, gestionale ===== */
+.va .testo { position: absolute; left: 40px; top: 170px; display: grid; gap: 34px; }
+.va .motto { font-size: 116px; }
+.va .servizi-riga { max-width: 640px; gap: 10px 30px; }
+.va .servizi-riga span + span::before { content: none; }
+.va .sito { position: absolute; left: 840px; top: 70px; width: 660px; height: 430px; }
+.va .sito .corpo { padding: 34px 36px; display: grid; gap: 16px; }
+.riga-g { height: 14px; background: rgba(255,255,255,.12); }
+.va .sito h4 { font-size: 46px; font-weight: 800; letter-spacing: -.05em; line-height: .95; }
+.va .sito h4 em { font-style: normal; color: #8a8a8a; }
+.btn-v { display: inline-flex; align-items: center; gap: 10px; background: var(--verde); color: #04120c; font-weight: 600; font-size: 17px; padding: 13px 20px; width: max-content; }
+.va .sito .schede { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
+.va .sito .schede div { border: 1px solid var(--linea); height: 74px; padding: 12px; display: grid; gap: 8px; align-content: start; }
+.va .sito .schede i { width: 18px; height: 18px; border: 1.5px solid var(--rosso); }
+.va .gest { position: absolute; left: 740px; top: 430px; width: 520px; height: 300px; }
+.va .gest .corpo { display: grid; grid-template-columns: 120px 1fr; height: calc(100% - 34px); }
+.va .gest .lato { border-right: 1px solid var(--linea); padding: 18px 16px; display: grid; gap: 14px; align-content: start; }
+.va .gest .lato div { height: 10px; background: rgba(255,255,255,.1); }
+.va .gest .lato div:first-child { background: var(--rosso); width: 60%; }
+.va .gest .dati { padding: 18px 20px; display: grid; gap: 14px; align-content: start; }
+.va .gest .kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.va .gest .kpi div { border: 1px solid var(--linea); padding: 10px 12px; }
+.va .gest .kpi small { display: block; font-family: 'Mono'; font-size: 10px; letter-spacing: .14em; color: var(--spento); text-transform: uppercase; }
+.va .gest .kpi b { font-size: 24px; letter-spacing: -.03em; }
+.va .gest .barre { display: flex; align-items: end; gap: 10px; height: 92px; border-bottom: 1px solid var(--linea); }
+.va .gest .barre i { flex: 1; background: rgba(255,255,255,.14); }
+.va .gest .barre i:last-child { background: var(--rosso); }
+.va .tel { position: absolute; left: 1290px; top: 250px; width: 280px; height: 500px; border-radius: 36px; background: #0d0d0d; border: 1.5px solid var(--linea-forte); box-shadow: 0 40px 80px rgba(0,0,0,.6); padding: 52px 16px 16px; display: grid; gap: 12px; align-content: start; }
+.va .tel::before { content: ''; position: absolute; top: 16px; left: 50%; width: 80px; height: 20px; margin-left: -40px; background: #000; border-radius: 12px; }
+.notifica { background: var(--sup2); border: 1px solid var(--linea); border-radius: 14px; padding: 12px 14px; display: grid; gap: 5px; }
+.notifica small { font-family: 'Mono'; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--spento); display: flex; justify-content: space-between; }
+.notifica p { font-size: 14.5px; line-height: 1.3; color: #e8e8e8; }
+.notifica.ok { border-color: rgba(16,185,129,.45); }
+.notifica.ok p { display: flex; gap: 8px; align-items: center; }
+.notifica .ai { color: #fff; } .notifica .ai::before { content: ''; display: inline-block; width: 8px; height: 8px; background: var(--rosso); margin-right: 7px; }
+
+/* ===== B · il flusso: dal messaggio alla fattura, da solo ===== */
+.vb .testo { position: absolute; left: 0; right: 0; top: 40px; display: grid; justify-items: center; gap: 28px; text-align: center; }
+.vb .motto { font-size: 128px; }
+.vb .flusso { position: absolute; left: 0; right: 0; top: 410px; display: flex; justify-content: space-between; align-items: start; }
+.vb .filo { position: absolute; left: 110px; right: 110px; top: 84px; height: 2px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.28) 0 10px, transparent 10px 22px); }
+.vb .filo::after { content: ''; position: absolute; left: 0; top: 0; width: 58%; height: 2px; background: var(--rosso); }
+.vb .filo b { position: absolute; top: -7px; left: 58%; width: 16px; height: 16px; margin-left: -8px; background: var(--rosso); box-shadow: 0 0 24px rgba(227,6,19,.8); }
+.vb .passo { position: relative; width: 240px; display: grid; justify-items: center; gap: 16px; text-align: center; }
+.vb .passo .ico { width: 168px; height: 168px; background: var(--notte); border-color: var(--linea-forte); }
+.vb .passo .ico svg { width: 84px; height: 84px; stroke-width: 2.2; }
+.vb .passo.attivo .ico { border-color: var(--rosso); }
+.vb .passo .num { font-size: 15px; color: var(--spento); }
+.vb .passo h5 { font-size: 27px; font-weight: 700; letter-spacing: -.03em; }
+.vb .passo p { font-size: 17px; color: var(--nebbia); line-height: 1.3; }
+.vb .passo .fatto { position: absolute; top: 148px; right: 44px; }
+
+/* ===== C · logo e codice ===== */
+.vc .testo { position: absolute; left: 40px; top: 120px; display: grid; gap: 34px; }
+.vc .motto { font-size: 124px; }
+.vc .codice { position: absolute; left: 930px; top: 90px; width: 640px; height: 370px; padding: 0; }
+.vc .codice pre { margin: 0; padding: 22px 24px; font-family: 'Mono'; font-size: 15.5px; line-height: 1.75; color: #7c7c7c; white-space: pre; overflow: hidden; }
+.vc .codice .k { color: #fff; } .vc .codice .r { color: var(--rosso); } .vc .codice .s { color: #b9b9b9; } .vc .codice .v { color: var(--verde); }
+.vc .codice .cur { display: inline-block; width: 9px; height: 18px; background: var(--rosso); vertical-align: -3px; }
+.vc .elenco { position: absolute; left: 40px; bottom: 40px; display: flex; gap: 46px; }
+.vc .elenco div { display: grid; gap: 10px; }
+.vc .elenco div { min-width: 150px; }
+.vc .elenco .n { font-family: 'Tight'; font-size: 64px; font-weight: 800; letter-spacing: -.05em; line-height: .9; color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,.35); }
+.vc .elenco div:first-child .n { color: var(--rosso); -webkit-text-stroke: 0; }
+.vc .elenco span { font-size: 15px; color: var(--nebbia); }
+.vc .elenco div:first-child span { color: #fff; }
+.vc .esito { position: absolute; left: 1030px; top: 520px; width: 540px; display: grid; gap: 12px; }
+.vc .esito .notifica { border-radius: 0; background: var(--sup); }
+</style></head>
+<body>
+<canvas id="cielo"></canvas>
+<div class="griglia"></div>
+<div class="tela" id="tela">
+
+  <section class="variante va">
+    <p class="fantasma" style="font-size:760px; left:560px; top:-40px">D&amp;C</p>
+    <div class="testo">
+      <p class="etichetta mono">Desideri&amp;Code · Milano</p>
+      <p class="motto">I tuoi desideri,<br><span>in codice</span><i></i></p>
+      <p class="servizi-riga mono"><span><b>Automazioni AI</b></span><span>Gestionali</span><span>Siti</span><span>E-commerce</span><span>Ads</span></p>
+    </div>
+    <div class="finestra sito">
+      <div class="barra"><b></b><b></b><b></b><span>iltuosito.it</span></div>
+      <div class="corpo">
+        <p class="etichetta mono" style="font-size:12px">01 · Benvenuti</p>
+        <h4>Il tuo lavoro,<br><em>trovato su Google</em></h4>
+        <div class="riga-g" style="width:78%"></div><div class="riga-g" style="width:56%"></div>
+        <span class="btn-v">Prenota ora →</span>
+        <div class="schede"><div><i></i><div class="riga-g" style="width:80%;height:9px"></div></div><div><i></i><div class="riga-g" style="width:64%;height:9px"></div></div><div><i></i><div class="riga-g" style="width:72%;height:9px"></div></div></div>
+      </div>
+    </div>
+    <div class="finestra gest">
+      <div class="barra"><b></b><b></b><b></b><span>gestionale · ordini</span></div>
+      <div class="corpo">
+        <div class="lato"><div></div><div></div><div></div><div></div><div></div></div>
+        <div class="dati">
+          <div class="kpi"><div><small>Preventivi</small><b>24</b></div><div><small>Accettati</small><b>17</b></div><div><small>Da fare</small><b>3</b></div></div>
+          <div class="barre"><i style="height:38%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:66%"></i><i style="height:58%"></i><i style="height:82%"></i><i style="height:100%"></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="tel">
+      <div class="notifica"><small><span>WhatsApp</span><span>09:12</span></small><p>«Posso venire giovedì alle 18?»</p></div>
+      <div class="notifica"><small><span class="ai">Assistente AI</span><span>09:12</span></small><p>Giovedì 18:00 è libero. Ti segno?</p></div>
+      <div class="notifica ok"><small><span>Agenda</span><span>09:13</span></small><p><span class="spunta"></span>Giovedì 18:00 · Laura B.</p></div>
+      <div class="notifica ok"><small><span>Promemoria</span><span>mer</span></small><p><span class="spunta"></span>Inviato il giorno prima</p></div>
+    </div>
+  </section>
+
+  <section class="variante vb">
+    <div class="testo">
+      <p class="etichetta mono">Desideri&amp;Code · Automazioni AI e gestionali su misura</p>
+      <p class="motto">I tuoi desideri, <span>in codice</span><i></i></p>
+    </div>
+    <div class="flusso">
+      <div class="filo"><b></b></div>
+      <div class="passo attivo"><span class="ico"><svg viewBox="0 0 48 48"><path class="riempi" d="M9 8h30a4 4 0 0 1 4 4v17a4 4 0 0 1-4 4H21l-9 8v-8H9a4 4 0 0 1-4-4V12a4 4 0 0 1 4-4Z"/><path d="M14 17h20M14 24h12"/><circle class="punto" cx="40" cy="8" r="3"/></svg></span><span class="spunta fatto"></span><span class="num mono">01</span><h5>Arriva un messaggio</h5><p>WhatsApp, email<br>o modulo del sito</p></div>
+      <div class="passo attivo"><span class="ico"><svg viewBox="0 0 48 48"><rect class="riempi" x="12" y="12" width="24" height="24" rx="5"/><path d="M18 6v6M24 6v6M30 6v6M18 36v6M24 36v6M30 36v6M6 18h6M6 24h6M6 30h6M36 18h6M36 24h6M36 30h6"/><circle cx="24" cy="24" r="6"/><circle class="punto" cx="25.4" cy="22.6" r="2.6"/></svg></span><span class="spunta fatto"></span><span class="num mono">02</span><h5>L'AI capisce</h5><p>e risponde subito,<br>anche di notte</p></div>
+      <div class="passo attivo"><span class="ico"><svg viewBox="0 0 48 48"><rect class="riempi" x="6" y="9" width="36" height="32" rx="4"/><path d="M6 18h36M15 5v8M33 5v8M13 26h4M22 26h4M13 33h4"/><circle class="punto" cx="31.5" cy="32" r="3.4"/></svg></span><span class="spunta fatto"></span><span class="num mono">03</span><h5>Segna in agenda</h5><p>appuntamento<br>e promemoria</p></div>
+      <div class="passo"><span class="ico"><svg viewBox="0 0 48 48"><path class="riempi" d="M12 5h17l9 9v26a3 3 0 0 1-3 3H12a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3Z"/><path d="M29 5v9h9"/><path d="M15 23h14M15 29h10M15 35h6"/><circle class="punto" cx="31.5" cy="35" r="3"/></svg></span><span class="num mono">04</span><h5>Prepara il preventivo</h5><p>nel tuo gestionale,<br>pronto da firmare</p></div>
+      <div class="passo"><span class="ico"><svg viewBox="0 0 48 48"><rect class="riempi" x="5" y="8" width="38" height="32" rx="4"/><path d="M15 8v32M15 17h28M21 24h16M21 30h16M21 35h9M9 15h2M9 21h2M9 27h2"/><circle class="punto" cx="38" cy="12.6" r="2.4"/></svg></span><span class="num mono">05</span><h5>Tu decidi</h5><p>e ti dedichi<br>al tuo lavoro</p></div>
+    </div>
+  </section>
+
+  <section class="variante vc">
+    <p class="fantasma" style="font-size:900px; left:620px; top:-120px">D&amp;C.</p>
+    <div class="testo">
+      <p class="etichetta mono">00 · Desideri&amp;Code</p>
+      <p class="motto">I tuoi desideri,<br><span>in codice</span><i></i></p>
+    </div>
+    <div class="finestra codice">
+      <div class="barra"><b></b><b></b><b></b><span>il-tuo-desiderio.js</span></div>
+<pre><span class="r">// «Vorrei che le prenotazioni si segnassero da sole»</span>
+<span class="k">quando</span>(<span class="s">'nuovo messaggio WhatsApp'</span>, <span class="k">async</span> (msg) =&gt; {
+  <span class="k">const</span> richiesta = <span class="k">await</span> assistente.<span class="k">capisci</span>(msg);
+  <span class="k">if</span> (agenda.<span class="k">libero</span>(richiesta.giorno)) {
+    agenda.<span class="k">segna</span>(richiesta);
+    cliente.<span class="k">rispondi</span>(<span class="s">'Fatto, ti aspettiamo!'</span>);
+    gestionale.<span class="k">preparaPreventivo</span>(richiesta);
+  }
+}); <span class="v">// ✓ fatto, ogni giorno</span> <span class="cur"></span></pre>
+    </div>
+    <div class="esito">
+      <div class="notifica ok"><small><span>Agenda</span><span>adesso</span></small><p><span class="spunta"></span>Giovedì 18:00 · Laura B. segnata da sola</p></div>
+      <div class="notifica ok"><small><span>Gestionale</span><span>adesso</span></small><p><span class="spunta"></span>Preventivo n. 24 pronto da controllare</p></div>
+    </div>
+    <div class="elenco mono">
+      <div><b class="n">01</b><span>Automazioni AI</span></div>
+      <div><b class="n">02</b><span>Gestionali</span></div>
+      <div><b class="n">03</b><span>Siti</span></div>
+      <div><b class="n">04</b><span>E-commerce</span></div>
+      <div><b class="n">05</b><span>Ads</span></div>
+    </div>
+  </section>
+
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  document.body.className = q.get('v') || 'a';
+  const W = innerWidth, H = innerHeight;
+  // la tela 1600×760 si adatta al formato: su LinkedIn (molto bassa) e Facebook resta nella zona che si vede sempre
+  const zona = { whatsapp: [1760, 900], facebook: [1100, 560], youtube: [1546, 423 * 1.6], linkedin: [1500, 330] }[q.get('f') || 'whatsapp'] || [W * .9, H * .85];
+  const s = Math.min(zona[0] / 1600, zona[1] / 760);
+  const t = document.getElementById('tela');
+  t.style.transform = `translate(-50%, -50%) scale(${s})`;
+  // cielo con le stelle, come sul sito
+  const cv = document.getElementById('cielo'); cv.width = W; cv.height = H; const g = cv.getContext('2d');
+  let seme = 11; const rnd = () => ((seme = (seme * 16807) % 2147483647) / 2147483647);
+  g.fillStyle = '#fff';
+  for (let i = 0; i < W * H / 9000; i++) { g.globalAlpha = .08 + rnd() * .35; g.beginPath(); g.arc(rnd() * W, rnd() * H, .6 + rnd() * 1.3, 0, 6.283); g.fill(); }
+</script>
+</body></html>
