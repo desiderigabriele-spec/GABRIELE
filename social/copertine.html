@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="it"><head><meta charset="utf-8">
-<!-- Copertine per YouTube (2560×1440) e Facebook (1640×624), nello stile del sito.
-     ?f=youtube o ?f=facebook. Tutto il testo sta nella zona che ogni social mostra sempre (al centro). -->
+<!-- Copertine per YouTube (2560×1440), Facebook (1640×624) e WhatsApp Business (1920×1080), nello stile del sito.
+     ?f=youtube, ?f=facebook o ?f=whatsapp. Tutto il testo sta nella zona che ogni social mostra sempre (al centro). -->
 <style>
 @font-face { font-family: 'Tight'; src: url('../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
 @font-face { font-family: 'Mono'; src: url('../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2') format('woff2'); font-weight: 100 800; }
@@ -29,6 +29,12 @@ body::before { content: ''; position: absolute; inset: 0; background-image:
 .facebook .zona { width: 1040px; height: 400px; }
 .facebook .motto { font-size: 88px; }
 .facebook .servizi { font-size: 21px; gap: 14px; }
+/* WhatsApp Business: la foto profilo copre il centro in basso, quindi tutto sta in alto, centrato */
+.whatsapp { place-items: start center; }
+.whatsapp .zona { flex-direction: column; justify-content: center; gap: 56px; margin-top: 230px; text-align: center; }
+.whatsapp .motto { font-size: 150px; }
+.whatsapp .servizi { display: flex; gap: 0 20px; font-size: 26px; letter-spacing: .12em; }
+.whatsapp .servizi span + span::before { content: '·'; margin-right: 20px; color: #5a5a5a; }
 </style></head>
 <body>
   <div class="zona">

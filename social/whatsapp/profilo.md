@@ -5,6 +5,7 @@
 | Campo | Cosa mettere |
 |---|---|
 | Foto | `social/profilo/profilo-nero.png` (WhatsApp la taglia a cerchio: il logo ci sta) |
+| Copertina | `social/whatsapp/copertina-whatsapp.png` (1920×1080; il testo sta in alto perché la foto profilo copre il centro in basso) |
 | Nome | Desideri&Code |
 | Categoria | Servizi informatici (seconda: Consulenza aziendale) |
 | Info | I tuoi desideri, in codice 🟥 |
