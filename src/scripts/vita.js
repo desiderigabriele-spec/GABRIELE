@@ -504,7 +504,7 @@ function primaDopo() {
   });
 }
 
-// ---------- 05 · Il sito si compila e 07 · il terminale: righe che si scrivono da sole ----------
+// ---------- 07 · Il terminale: righe che si scrivono da sole ----------
 function righeCheSiScrivono() {
   document.querySelectorAll('[data-scrittura]').forEach((box) => {
     const righe = [...box.querySelectorAll('[data-riga]')];

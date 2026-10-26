@@ -5,7 +5,6 @@ import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
 import Anteprima from './Anteprima.astro';
 import MicroIcona from './MicroIcona.astro';
-import Compila from './Compila.astro';
 import TuoSoftware from './TuoSoftware.astro';
 import Demo from './Demo.astro';
 import { dati } from '../i18n/dati.js';
@@ -75,7 +74,7 @@ const jsonLd = {
           <li><MicroIcona nome="gratis" />{T('Prezzo firmato prima di iniziare', 'Price signed before we start')}</li>
         </ul>
       </div>
-      <div class="sv-ill" data-appare="0.15">{id === 'sito' ? <Compila lang={lang} /> : <Anteprima id={id} lang={lang} />}</div>
+      <div class="sv-ill" data-appare="0.15"><Anteprima id={id} lang={lang} /></div>
     </div>
   </section>
 

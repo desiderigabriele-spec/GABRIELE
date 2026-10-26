@@ -1,20 +1,24 @@
 ---
-// Le anteprime nell'hero delle pagine servizio (tranne «siti web», che ha Compila): una schermata vera di quello che
+// Le anteprime dei servizi (hero delle pagine servizio e sezione servizi della home): una schermata vera di quello che
 // il cliente ottiene, in piccolo, con un movimento lento che racconta il risultato (un ordine, una richiesta, un
 // messaggio gestito). Tutto è in unità del contenitore (cqw): l'anteprima si rimpicciolisce intera, come una foto.
 // Le parti «degli altri» (il negozio, Instagram, il gestionale del cliente) hanno il loro stile; le parti dell'AI
 // sono nere con il quadratino rosso. Gli stili sono in styles/anteprime.css.
 import tazza from '../assets/img/prodotto-tazza.webp';
 import palestra from '../assets/img/annuncio-palestra.webp';
+import piatto from '../assets/img/bozza-piatto.webp';
 import '../styles/anteprime.css';
-interface Props { id: string; lang?: 'it' | 'en' }
-const { id, lang = 'it' } = Astro.props;
+// lazy: in home le anteprime sono sei, le foto si scaricano solo quando servono
+interface Props { id: string; lang?: 'it' | 'en'; lazy?: boolean }
+const { id, lang = 'it', lazy = false } = Astro.props;
+const carica = lazy ? 'lazy' : 'eager';
 const it = lang === 'it';
 const T = (a: string, b: string) => (it ? a : b);
 const descr: Record<string, [string, string]> = {
+  sito: ['Anteprima: il sito di un’osteria, sul computer e sul telefono; un cliente prenota un tavolo e la prenotazione arriva al ristorante.', 'Preview: a restaurant website on desktop and phone; a guest books a table and the booking reaches the restaurant.'],
   ecommerce: ['Anteprima: la pagina prodotto di un negozio online di ceramiche; il carrello si riempie e arriva un nuovo ordine.', 'Preview: the product page of an online ceramics shop; the basket fills up and a new order arrives.'],
   ads: ['Anteprima: un post sponsorizzato su Instagram di una palestra e i numeri della campagna: richieste e costo per richiesta.', 'Preview: a sponsored Instagram post for a gym and the campaign numbers: enquiries and cost per enquiry.'],
-  software: ['Anteprima: un’automazione che collega WhatsApp, l’intelligenza artificiale, l’agenda e il foglio clienti.', 'Preview: an automation connecting WhatsApp, artificial intelligence, the calendar and the client sheet.'],
+  software: ['Anteprima: di notte una paziente scrive su WhatsApp a uno studio dentistico; l’assistente AI risponde, propone gli orari liberi e segna l’appuntamento in agenda.', 'Preview: at night a patient messages a dental practice on WhatsApp; the AI assistant replies, offers free slots and books the appointment in the calendar.'],
   gestionale: ['Anteprima: il gestionale di un’impresa con incassi, ordini e preventivi; l’AI propone tre solleciti da approvare.', 'Preview: a company’s management software with payments, orders and quotes; AI proposes three reminders to approve.'],
   cura: ['Anteprima: il report del mese di un sito: velocità, accessibilità, SEO, sicurezza, richieste in crescita e backup.', 'Preview: a website’s monthly report: speed, accessibility, SEO, security, growing enquiries and backups.'],
 };
@@ -33,7 +37,7 @@ const anello = (v: number) => `stroke-dasharray:${v} 100`;
           <span class="shop-carrello"><svg viewBox="0 0 24 24"><path d="M3 4h3l2.5 11h10L21 7H7" /><circle cx="10" cy="19" r="1.4" /><circle cx="17" cy="19" r="1.4" /></svg><em class="ap-da">2</em><em class="ap-a">3</em></span>
         </div>
         <div class="shop-corpo">
-          <div class="shop-foto"><img src={tazza.src} width="720" height="720" alt="" loading="eager" decoding="async" /><span>{T('Nuovo', 'New')}</span></div>
+          <div class="shop-foto"><img src={tazza.src} width="720" height="720" alt="" loading={carica} decoding="async" /><span>{T('Nuovo', 'New')}</span></div>
           <div class="shop-info">
             <small>{T('Fatta a mano a Montelupo', 'Handmade in Montelupo')}</small>
             <h5>{T('Tazza Alba', 'Alba mug')}</h5>
@@ -60,7 +64,7 @@ const anello = (v: number) => `stroke-dasharray:${v} 100`;
       <div class="ap-tel ap-vero">
         <div class="ig-stato"><span>9:41</span><i></i></div>
         <div class="ig-testa"><span class="ig-avatar">F</span><span><b>forma.milano</b><small>{T('Sponsorizzato', 'Sponsored')}</small></span><i>···</i></div>
-        <img class="ig-foto" src={palestra.src} width="720" height="720" alt="" loading="eager" decoding="async" />
+        <img class="ig-foto" src={palestra.src} width="720" height="720" alt="" loading={carica} decoding="async" />
         <div class="ig-cta"><span>{T('Prenota la prova gratuita', 'Book a free trial')}</span><span>›</span></div>
         <div class="ig-azioni"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z" /></svg><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2L21 4l-1 4.5A8 8 0 0 1 20 12z" /></svg><svg viewBox="0 0 24 24"><path d="M21 4 3 11l7 2 2 7z" /></svg><svg class="dx" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z" /></svg></div>
         <small class="ig-like"><b>{T('128 Mi piace', '128 likes')}</b></small>
@@ -89,30 +93,83 @@ const anello = (v: number) => `stroke-dasharray:${v} 100`;
     </Fragment>
   )}
 
+  {id === 'sito' && (
+    <Fragment>
+      <div class="ap-fin sito-fin ap-vero">
+        <div class="ap-barra"><i></i><i></i><i></i><span>osterianavigli.it</span></div>
+        <div class="sito-vista"><div class="sito-pagina">
+          <div class="sito-nav"><b>Osteria <em>Navigli</em></b><span>{T('Menù', 'Menu')}</span><span>{T('La storia', 'Our story')}</span><span>{T('Dove siamo', 'Find us')}</span><span class="sito-nav-btn">{T('Prenota', 'Book')}</span></div>
+          <div class="sito-hero">
+            <div class="sito-hero-testo">
+              <small>{T('Cucina milanese dal 1972', 'Milanese cooking since 1972')}</small>
+              <h5>{T('Il tuo tavolo', 'Your table')}<br />{T('è pronto.', 'is ready.')}</h5>
+              <p>{T('Risotto, ossobuco e cotoletta come una volta, a due passi dalla Darsena.', 'Risotto, ossobuco and cotoletta like they used to be, by the Darsena.')}</p>
+              <div class="sito-azioni"><span class="sito-bott">{T('Prenota un tavolo', 'Book a table')}<i class="sito-cur c1"></i></span><span class="sito-bott2">{T('Vedi il menù', 'See the menu')}</span></div>
+              <span class="sito-google"><b>G</b> 4,8 <em>★★★★★</em> <small>{T('312 recensioni', '312 reviews')}</small></span>
+            </div>
+            <div class="sito-foto"><img src={piatto.src} width="600" height="400" alt="" loading={carica} decoding="async" /><span>{T('Il piatto del giorno', 'Today’s dish')}</span></div>
+          </div>
+          <div class="sito-menu">
+            <small>{T('Il menù della settimana', 'This week’s menu')}</small>
+            <div>{[[T('Risotto giallo', 'Saffron risotto'), T('con midollo', 'with bone marrow')], [T('Ossobuco', 'Ossobuco'), T('con gremolada', 'with gremolata')], [T('Cotoletta', 'Cotoletta'), T('alla milanese', 'Milanese style')]].map(([n, d]) => <span><b>{n}</b><small>{d}</small></span>)}</div>
+          </div>
+          <div class="sito-prenota">
+            <b>{T('Prenota il tuo tavolo', 'Book your table')}</b>
+            <div class="sito-campi">
+              <span><small>{T('Giorno', 'Day')}</small><em class="sc1">{T('Venerdì 24', 'Friday 24')}</em></span>
+              <span><small>{T('Ora', 'Time')}</small><em class="sc2">20:30</em></span>
+              <span><small>{T('Persone', 'Guests')}</small><em class="sc3">4</em></span>
+            </div>
+            <span class="sito-conferma"><span class="sito-conf-a">{T('Conferma la prenotazione', 'Confirm booking')}</span><span class="sito-conf-b">✓ {T('Prenotato', 'Booked')}</span><i class="sito-cur c2"></i></span>
+          </div>
+        </div></div>
+      </div>
+      <div class="ap-tel sito-tel ap-vero">
+        <div class="ig-stato"><span>9:41</span><i></i></div>
+        <div class="sito-tel-nav"><b>Osteria <em>Navigli</em></b><i></i></div>
+        <div class="sito-tel-foto"><img src={piatto.src} width="600" height="400" alt="" loading={carica} decoding="async" /></div>
+        <div class="sito-tel-testo"><small>{T('Cucina milanese dal 1972', 'Milanese cooking since 1972')}</small><b>{T('Il tuo tavolo è pronto.', 'Your table is ready.')}</b><span class="sito-google"><b>G</b> 4,8 <em>★★★★★</em></span></div>
+        <div class="sito-tel-azioni"><span>{T('Prenota un tavolo', 'Book a table')}</span></div>
+        <div class="sito-tel-lista">{[T('Risotto giallo', 'Saffron risotto'), T('Ossobuco', 'Ossobuco'), T('Cotoletta', 'Cotoletta')].map((n) => <span><b>{n}</b><i></i></span>)}</div>
+        <div class="sito-tel-barra"><span>{T('Chiama', 'Call')}</span><span class="wa">WhatsApp</span></div>
+      </div>
+      <div class="ap-notifica ap-vero sito-notifica">
+        <span class="ap-icona ok-ic">✓</span>
+        <span><b>{T('Nuova prenotazione dal sito', 'New booking from the website')}</b><small>{T('Tavolo per 4 · venerdì 24 · 20:30', 'Table for 4 · Friday 24 · 8:30 pm')}</small></span>
+        <time>{T('adesso', 'now')}</time>
+      </div>
+    </Fragment>
+  )}
+
   {id === 'software' && (
     <Fragment>
-      <div class="ap-fin flow">
-        <div class="flow-testa"><span><i class="flow-acceso"></i>{T('Prenotazioni da WhatsApp', 'WhatsApp bookings')}</span><small>{T('attiva · da 214 giorni', 'live · for 214 days')}</small></div>
-        <div class="flow-tela">
-          <svg class="flow-fili" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            {['M27 33 C32 33 31 33 37 33', 'M63 33 C68 33 66 20 72 20', 'M63 33 C68 33 66 50 72 50', 'M50 44 C50 52 50 58 50 66'].map((p, i) => (
-              <Fragment><path class="filo" d={p} /><path class="corre" d={p} pathLength="100" style={`animation-delay:${i * 0.35}s`} /></Fragment>
-            ))}
-          </svg>
-          <div class="nodo n-wa"><i class="ap-icona wa-ic"></i><span><b>WhatsApp</b><small>{T('Nuovo messaggio', 'New message')}</small></span></div>
-          <div class="nodo n-ai"><i class="ap-icona ai-ic"></i><span><b>{T('AI', 'AI')}</b><small>{T('Capisce la richiesta', 'Understands the request')}</small></span></div>
-          <div class="nodo n-cal"><i class="ap-icona cal-ic">31</i><span><b>Google Calendar</b><small>{T('Fissa l’appuntamento', 'Books the slot')}</small></span></div>
-          <div class="nodo n-fogli"><i class="ap-icona fogli-ic"></i><span><b>{T('Google Fogli', 'Google Sheets')}</b><small>{T('Salva la cliente', 'Saves the client')}</small></span></div>
-          <div class="nodo n-avviso"><i class="ap-icona avviso-ic"></i><span><b>{T('Avviso', 'Alert')}</b><small>{T('Alla titolare', 'To the owner')}</small></span></div>
+      <div class="ap-tel wap-tel ap-vero">
+        <div class="wap-testa"><span class="wap-indietro">‹</span><span class="wap-av">S</span><span><b>{T('Studio Dentistico Sorriso', 'Smile Dental Practice')}</b><small>online</small></span></div>
+        <div class="wap-chat">
+          <span class="wap-giorno">{T('Oggi', 'Today')}</span>
+          <p class="wap-b wap-in wap-t1">{T('Buonasera! Avete posto sabato mattina per una pulizia dei denti?', 'Good evening! Any free slot on Saturday morning for a teeth cleaning?')}<time>23:47</time></p>
+          <p class="wap-scrive">{T('sta scrivendo…', 'typing…')}</p>
+          <p class="wap-b wap-out wap-t2">{T('Ciao Giulia! Sabato ho libero alle 10:00 o alle 11:30. Quale preferisci?', 'Hi Giulia! On Saturday I have 10:00 or 11:30 free. Which one suits you?')}<time>23:47</time></p>
+          <div class="wap-scelte wap-t2"><span class="wap-sc">10:00<i class="wap-dito"></i></span><span>11:30</span></div>
+          <p class="wap-b wap-out wap-t3">{T('Perfetto, ti ho segnata sabato alle 10:00 ✓ Venerdì ti mando un promemoria.', 'Done, you’re booked for Saturday at 10:00 ✓ I’ll send you a reminder on Friday.')}<time>23:48</time></p>
         </div>
-        <div class="flow-piede">
-          <span><b>47</b> {T('messaggi gestiti oggi', 'messages handled today')}</span>
-          <span><b>0</b> {T('persi', 'lost')}</span>
+        <div class="wap-scrivi"><span>{T('Messaggio', 'Message')}</span><i></i></div>
+      </div>
+      <div class="ap-pannello wap-ai ap-ia">
+        <span class="ap-mono"><i class="wap-ai-q"></i>{T('Assistente AI', 'AI assistant')}</span>
+        <b>{T('Risponde al posto tuo,', 'Replies for you,')}<br />{T('anche alle 23:47.', 'even at 11:47 pm.')}</b>
+      </div>
+      <div class="ap-fin wap-cal ap-vero">
+        <div class="wap-cal-testa"><span class="wap-cal-ic">31</span><span><b>{T('Sabato 18 ottobre', 'Saturday 18 October')}</b><small>{T('Agenda dello studio', 'Practice calendar')}</small></span></div>
+        <div class="wap-cal-ore">
+          {['9:00', '10:00', '11:00', '12:00'].map((h) => <span><small>{h}</small><i></i></span>)}
+          <div class="wap-ev wap-ev1"><b>Marco R.</b><small>{T('Controllo', 'Check-up')}</small></div>
+          <div class="wap-ev wap-ev2"><b>Giulia F.</b><small>{T('Pulizia dei denti · fissato dall’AI', 'Teeth cleaning · booked by AI')}</small></div>
         </div>
       </div>
-      <div class="ap-notifica ap-ia">
-        <span class="ap-icona ok-ic">✓</span>
-        <span><b>{T('Eseguito in 1,2 secondi', 'Done in 1.2 seconds')}</b><small>{T('Giulia F. · sabato 10:00 · pulizia viso', 'Giulia F. · Saturday 10:00 · facial')}</small></span>
+      <div class="ap-notifica ap-ia wap-notte">
+        <span class="ap-icona luna-ic"></span>
+        <span><b>{T('Mentre dormivi', 'While you slept')}</b><small>{T('3 appuntamenti fissati · 5 domande risposte', '3 appointments booked · 5 questions answered')}</small></span>
       </div>
     </Fragment>
   )}

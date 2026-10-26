@@ -167,26 +167,11 @@ html.salto-entra main { transition: transform .6s cubic-bezier(.2, .8, .2, 1); }
 .intruso-box.visto .in-nota, html.ridotto .in-nota, html:not(.vita-on) .in-nota { opacity: 1; }
 html.ridotto .intruso .in-griglia span:not(.r) { opacity: .4; }
 
-/* 05 · il sito si compila  ·  07 · il terminale  (righe che si scrivono da sole) */
+/* 07 · il terminale (righe che si scrivono da sole) */
 [data-riga].scrivo::after { content: ''; display: inline-block; width: .55em; height: 1em; margin-left: 2px; vertical-align: -2px; background: var(--rosso); }
-.compila { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; width: 100%; max-width: 560px; }
-.compila-codice, .terminale { border: 1px solid var(--linea); background: #0d0d0d; padding: 14px; display: grid; align-content: start; gap: 7px; font-family: var(--f-mono); font-size: .74rem; line-height: 1.4; min-height: 300px; }
-.compila-codice .mono { font-size: .62rem; color: var(--nebbia-2); }
-.compila-codice [data-riga] { color: var(--latte); white-space: pre-wrap; min-height: 1.4em; word-break: break-word; }
-.compila-codice [data-riga].r { color: var(--rosso-testo); }
-.compila-codice [data-riga].g { color: var(--nebbia); }
-.compila-sito { position: relative; background: #f4f4f2; color: #0a0a0a; min-height: 300px; overflow: hidden; border: 1px solid var(--linea); }
-[data-pezzo], [data-fine] { opacity: 0; transform: translateY(10px); transition: opacity .45s var(--ease), transform .45s var(--ease); }
-[data-pezzo].acceso, [data-fine].acceso { opacity: 1; transform: none; }
-.cs-barra { height: 30px; border-bottom: 1px solid #ddd; display: flex; align-items: center; gap: 6px; padding: 0 10px; font-family: var(--f-titolo); font-weight: 800; font-size: .78rem; letter-spacing: -0.03em; }
-.cs-barra i { width: 12px; height: 12px; background: #0a0a0a; }
-.cs-titolo { position: absolute; left: 12px; top: 46px; font-family: var(--f-titolo); font-weight: 800; letter-spacing: -0.05em; font-size: 1.45rem; line-height: .95; }
-.cs-testo { position: absolute; left: 12px; top: 108px; font-size: .7rem; color: #555; }
-.cs-bottone { position: absolute; left: 12px; top: 130px; padding: 8px 12px; background: var(--rosso); color: #fff; font-size: .7rem; font-weight: 600; }
-.cs-foto { position: absolute; right: 12px; top: 46px; width: 38%; height: 104px; background: #d6d4cf url("../assets/img/bozza-piatto.webp") center / cover no-repeat; }
-.cs-chat { position: absolute; left: 12px; right: 12px; top: 186px; padding: 8px 10px; background: #fff; border: 1px solid #ddd; font-size: .68rem; line-height: 1.4; }
-.cs-online { position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; font-family: var(--f-mono); font-size: .62rem; }
-.cs-online i { width: 8px; height: 8px; background: var(--rosso); }
+.terminale { border: 1px solid var(--linea); background: #0d0d0d; padding: 14px; display: grid; align-content: start; gap: 7px; font-family: var(--f-mono); font-size: .74rem; line-height: 1.4; min-height: 300px; }
+[data-fine] { opacity: 0; transform: translateY(10px); transition: opacity .45s var(--ease), transform .45s var(--ease); }
+[data-fine].acceso { opacity: 1; transform: none; }
 .terminale { min-height: 0; padding: 0; gap: 0; width: 100%; max-width: 560px; }
 .terminale-barra { display: flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px; border-bottom: 1px solid var(--linea); color: var(--nebbia-2); font-size: .62rem; letter-spacing: .1em; }
 .terminale-barra i { width: 9px; height: 9px; background: #333; } .terminale-barra i:first-child { background: var(--rosso); }

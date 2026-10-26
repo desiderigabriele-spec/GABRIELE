@@ -68,7 +68,7 @@ html[data-tema='chiaro'] {
   color-scheme: light;
 }
 /* i dispositivi disegnati (telefoni, schermi, codice, finte app) restano scuri anche nella versione chiara */
-:is(.bozza, .sv-st, .st-fold, .pd-dopo, .compila-codice, .terminale, .intruso, .cursori, .focus-bolla, .fp-occhio, .intro-bolla) {
+:is(.bozza, .st-fold, .pd-dopo, .terminale, .intruso, .cursori, .focus-bolla, .fp-occhio, .intro-bolla) {
   --latte: #ffffff; --latte-rgb: 255, 255, 255; --nebbia: #a3a3a3; --nebbia-2: #8a8a8a; --notte: #0a0a0a; --notte-rgb: 10, 10, 10;
   --linea: rgba(255, 255, 255, .12); --linea-forte: rgba(255, 255, 255, .24); --rosso-testo: #ff2d3a;
   color: var(--latte);
@@ -713,7 +713,7 @@ html.menu-aperto .guida { opacity: 0; pointer-events: none; }
 @keyframes cometa { from { background-position: 100% 0; } to { background-position: 0 0; opacity: .2; } }
 
 /* angoli dritti ovunque, tranne il telefono disegnato, i siti degli altri (prima/dopo, lo studio della demo) e il giorno del calendario */
-*:not(.tel, .tel *, .sv-st *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic), *:not(.tel, .tel *, .sv-st *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic)::before, *:not(.tel, .tel *, .sv-st *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic)::after { border-radius: 0 !important; }
+*:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic), *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic)::before, *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic)::after { border-radius: 0 !important; }
 
 
 /* ==========================================================================

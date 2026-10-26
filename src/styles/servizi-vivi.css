@@ -1,6 +1,6 @@
-/* I servizi in home, con il film di ognuno (Home.astro + scripts/servizi-vivi.js).
+/* I servizi in home (Home.astro + scripts/servizi-vivi.js), con le anteprime animate delle pagine servizio.
    Computer: l'indice a sinistra, l'anteprima a destra. Telefono: i nomi in alto e le schede da scorrere.
-   Il palco del film è uno schermo: resta scuro anche nella versione chiara (global.css). */
+   Lo sfondo delle anteprime è uno schermo: resta scuro anche nella versione chiara. */
 
 .sv-pc { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.2fr); gap: clamp(24px, 3vw, 44px); align-items: start; }
 .sv-tel { display: none; }
@@ -41,8 +41,6 @@ html:not(.js) .sv-chips, html:not(.js) .sv-sotto, html:not(.js) .sv-linea { disp
 .sv-fila { display: grid; grid-auto-flow: column; grid-auto-columns: 84%; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; margin: 0 calc(-1 * var(--gutter, 20px)); padding: 0 var(--gutter, 20px) 2px; scroll-padding: 0 var(--gutter, 20px); }
 .sv-fila::-webkit-scrollbar { display: none; }
 .sv-scheda { scroll-snap-align: start; border: 1px solid var(--linea-forte); background: rgba(var(--sup-rgb), .9); display: grid; align-content: start; }
-.sv-scheda .sv-st { border-bottom: 1px solid var(--linea); }
-html:not(.js) .sv-scheda .sv-st { display: none; }
 .sv-corpo { padding: 13px 14px 15px; display: grid; gap: 6px; }
 .sv-riga1 { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
 .sv-riga1 h3 { margin: 0; font-size: 1.12rem; letter-spacing: -.03em; }
@@ -61,82 +59,9 @@ html:not(.js) .sv-scheda .sv-st { display: none; }
 .sv-linea { --i: 0; height: 2px; background: var(--linea); margin-top: 12px; position: relative; }
 .sv-linea b { position: absolute; top: 0; bottom: 0; left: calc(var(--i) * 100% / var(--n)); width: calc(100% / var(--n)); background: var(--rosso); transition: left .3s var(--ease); }
 
-/* ---------- il palco: 32 × 20 em, il carattere segue la larghezza (servizi-vivi.js) ---------- */
-.sv-st { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; font-size: 10px; background: radial-gradient(120% 90% at 75% 0%, #191919, #0b0b0b 62%); color: #fff; font-family: var(--f-titolo); line-height: 1.3; }
-.sv-st::before { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(.09em .09em at 12% 22%, rgba(255,255,255,.4), transparent), radial-gradient(.08em .08em at 81% 14%, rgba(255,255,255,.3), transparent), radial-gradient(.08em .08em at 44% 86%, rgba(255,255,255,.25), transparent), radial-gradient(.09em .09em at 92% 66%, rgba(255,255,255,.3), transparent); }
-.sv-in { position: absolute; inset: 0; }
-.sv-in > * { position: absolute; }
-.sv-st b { font-weight: 700; }
-.sv-fin { background: #1a1a1a; border: 1px solid rgba(255,255,255,.18); box-shadow: 0 1.4em 2.8em rgba(0,0,0,.55); overflow: hidden; }
-.sv-bar { height: 1.7em; display: flex; align-items: center; gap: .45em; padding: 0 .75em; border-bottom: 1px solid rgba(255,255,255,.09); }
-.sv-bar b { width: .55em; height: .55em; border-radius: 50%; flex: none; }
-.sv-bar b:nth-child(1) { background: #10b981; } .sv-bar b:nth-child(2) { background: #fff; } .sv-bar b:nth-child(3) { background: #e30613; }
-.sv-bar span { margin-left: .6em; font-family: var(--f-mono); font-size: .62em; letter-spacing: .08em; color: #6b6b6b; }
-.sv-rg { display: block; height: .62em; background: rgba(255,255,255,.12); }
-.sv-btn { display: inline-block; position: relative; background: #10b981; color: #04120c; font-weight: 700; font-size: .95em; padding: .5em .85em; white-space: nowrap; }
-.sv-onda { position: absolute; left: 50%; top: 50%; width: 3em; height: 3em; margin: -1.5em 0 0 -1.5em; border-radius: 50%; border: .14em solid #10b981; opacity: 0; pointer-events: none; }
-.sv-nt { background: #1d1d1d; border: 1px solid rgba(16,185,129,.55); border-radius: .8em; padding: .55em .75em; display: grid; gap: .2em; box-shadow: 0 1em 2em rgba(0,0,0,.55); opacity: 0; }
-.sv-nt small { font-family: var(--f-mono); font-size: .62em; letter-spacing: .12em; text-transform: uppercase; color: #6b6b6b; }
-.sv-sp { display: inline-grid; place-items: center; width: 1.15em; height: 1.15em; background: #10b981; margin-right: .45em; vertical-align: -.2em; flex: none; }
-.sv-sp::after { content: ''; width: .48em; height: .26em; border-left: .13em solid #04120c; border-bottom: .13em solid #04120c; transform: translateY(-.05em) rotate(-45deg); }
-.sv-cur { left: 0; top: 0; width: 1.7em; height: 1.7em; z-index: 9; opacity: 0; filter: drop-shadow(0 .2em .3em rgba(0,0,0,.6)); }
-.sv-cur svg { width: 100%; height: 100%; display: block; }
-.sv-tit { font-weight: 800; letter-spacing: -.05em; line-height: .95; white-space: nowrap; }
-.sv-tit span { color: #8a8a8a; }
-.sv-lab { font-family: var(--f-mono); font-size: .6em; letter-spacing: .14em; text-transform: uppercase; color: #6b6b6b; }
-.sv-lab-chiara { color: #a3a3a3; } .sv-lab-verde { color: #6ee7b7; }
-.sv-q { display: inline-block; width: .8em; height: .8em; background: #e30613; vertical-align: -.1em; margin-right: .6em; }
-.sv-mini { flex: 1; height: 2.4em; border: 1px solid rgba(255,255,255,.09); padding: .45em; display: grid; gap: .35em; align-content: start; opacity: 0; }
-.sv-mini i:first-child { width: .7em; height: .7em; border: .1em solid #e30613; }
-.sv-mini .sv-rg { height: .4em; width: 70%; }
-/* negozio di notte */
-.sv-alba { inset: 0; background: linear-gradient(0deg, rgba(227,6,19,.22), rgba(250,204,21,.06) 45%, transparent 70%); opacity: 0; }
-.sv-luna { width: 3.4em; height: 3.4em; border-radius: 50%; box-shadow: inset -.9em -.2em 0 0 #e8e8e8; }
-.sv-ora { display: block; font-size: 4.6em; font-weight: 800; letter-spacing: -.05em; line-height: 1; font-variant-numeric: tabular-nums; }
-/* chat e agenda */
-.sv-telefono { border-radius: 1.5em; background: #0d0d0d; border: .1em solid rgba(255,255,255,.18); overflow: hidden; box-shadow: 0 1.4em 2.8em rgba(0,0,0,.6); }
-.sv-telefono::before { content: ''; position: absolute; top: .55em; left: 50%; width: 3em; height: .8em; margin-left: -1.5em; background: #000; border-radius: .5em; z-index: 3; }
-.sv-chat-testa { position: absolute; left: 0; right: 0; top: 0; padding: 1.9em .8em .6em; border-bottom: 1px solid rgba(255,255,255,.09); display: flex; gap: .5em; align-items: center; font-size: .8em; }
-.sv-chat-testa i { width: 2em; height: 2em; border-radius: 50%; background: #333; }
-.sv-bolla { max-width: 82%; padding: .45em .65em; border-radius: .8em; font-size: .78em; line-height: 1.3; background: #222; border-bottom-left-radius: .2em; opacity: 0; }
-.sv-bolla.sv-mia { background: #0f3d2e; margin-left: auto; border-bottom-left-radius: .8em; border-bottom-right-radius: .2em; }
-.sv-dots { width: 3em; display: none; gap: .25em; justify-content: center; opacity: 1; }
-.sv-dots i { width: .35em; height: .35em; border-radius: 50%; background: #6ee7b7; }
-.sv-agenda { display: grid; grid-template-columns: 2em repeat(5, 1fr); gap: .25em; padding: .6em; font-size: .62em; }
-.sv-agenda .sv-lab { font-size: .95em; text-align: center; }
-.sv-agenda > span:not(.sv-lab) { height: 3.2em; background: rgba(255,255,255,.03); }
-.sv-agenda > span.pieno { background: rgba(255,255,255,.1); }
-.sv-agenda > span:first-child { background: none; }
-.sv-agenda > .sv-slot { border: .15em dashed rgba(255,255,255,.18); background: transparent; display: grid; place-items: center; font-size: .9em; font-weight: 700; line-height: 1.1; text-align: center; color: #04120c; }
-/* gestionale */
-.sv-gest { display: grid; grid-template-columns: 5.4em 1fr; height: calc(100% - 1.7em); }
-.sv-gest-lato { border-right: 1px solid rgba(255,255,255,.09); padding: .9em .7em; display: grid; gap: .8em; align-content: start; }
-.sv-gest-lato i { width: 1.6em; height: 1.6em; background: #fff; }
-.sv-gest-lato span { font-size: .62em; color: #6b6b6b; border-left: .2em solid transparent; padding-left: .5em; }
-.sv-gest-lato span.on { color: #fff; border-left-color: #e30613; }
-.sv-gest-dati { padding: .9em 1em; display: grid; gap: .8em; align-content: start; }
-.sv-kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6em; }
-.sv-kpi > div { border: 1px solid rgba(255,255,255,.09); padding: .5em .6em; }
-.sv-kpi .sv-lab { font-size: .5em; display: block; }
-.sv-kpi b { display: block; font-size: 1.7em; letter-spacing: -.04em; font-variant-numeric: tabular-nums; font-weight: 800; }
-.sv-kpi b.verde { color: #6ee7b7; font-size: 1.6em; }
-.sv-kpi b.piccolo { font-size: .95em; white-space: nowrap; }
-.sv-kpi-col { grid-template-columns: 1fr; align-content: start; gap: .8em; }
-.sv-kpi-col b { font-size: 2em; }
-.sv-barre { display: flex; align-items: flex-end; gap: .45em; height: 4.4em; border-bottom: 1px solid rgba(255,255,255,.09); }
-.sv-barre i { flex: 1; height: 0; background: rgba(255,255,255,.16); }
-.sv-barre i.r { background: #e30613; }
-.sv-righe { display: grid; gap: .3em; font-size: .6em; overflow: hidden; height: 6.6em; }
-.sv-riga { display: grid; grid-template-columns: 1fr auto; gap: .5em; padding: .45em .6em; border: 1px solid rgba(255,255,255,.09); color: #a3a3a3; }
-.sv-riga span:last-child { color: #6b6b6b; }
-.sv-riga-nuova { background: rgba(16,185,129,.14); border-color: rgba(16,185,129,.5); color: #fff; height: 0; overflow: hidden; opacity: 0; }
-.sv-riga-nuova b { color: #6ee7b7; }
-/* report */
-.sv-report { display: grid; grid-template-columns: 1fr 8.4em; gap: 1em; padding: 1em 1.2em; height: calc(100% - 1.7em); }
-.sv-assex { display: flex; justify-content: space-between; margin-top: .4em; }
-.sv-assex .sv-lab { font-size: .5em; }
-/* cura */
-.sv-punteggio { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; }
-.sv-punteggio b { font-size: 3.6em; letter-spacing: -.06em; line-height: 1; font-weight: 800; }
-.sv-punteggio .sv-lab { margin-top: .6em; }
-.sv-ck { display: flex; align-items: center; white-space: nowrap; font-size: 1em; opacity: .25; }
+/* ---------- le anteprime (Anteprima.astro): su uno sfondo scuro, come nelle pagine servizio ---------- */
+.sv-palco, .sv-ap-scheda { background: radial-gradient(120% 90% at 75% 0%, #1b1b1b, #0b0b0b 62%); }
+.sv-palco { padding: clamp(18px, 2.4vw, 34px); }
+.sv-ap-scheda { padding: 16px 14px 18px; border-bottom: 1px solid var(--linea); }
+.sv-ap[hidden] { display: none; }
+html.js .sv-ap:not(.in-vista) .ap * { animation-play-state: paused; }
