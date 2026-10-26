@@ -6,7 +6,13 @@
 // sono nere con il quadratino rosso. Gli stili sono in styles/anteprime.css.
 import tazza from '../assets/img/prodotto-tazza.webp';
 import palestra from '../assets/img/annuncio-palestra.webp';
-import piatto from '../assets/img/bozza-piatto.webp';
+import pzImpasto from '../assets/img/pizza/impasto.webp';
+import pzPomodoro from '../assets/img/pizza/pomodoro.webp';
+import pzMozzarella from '../assets/img/pizza/mozzarella.webp';
+import pzCotta from '../assets/img/pizza/cotta.webp';
+import pzSchizzo from '../assets/img/pizza/schizzo.webp';
+import pzFiordilatte from '../assets/img/pizza/fiordilatte.webp';
+import pzBasilico from '../assets/img/pizza/basilico.webp';
 import '../styles/anteprime.css';
 // lazy: in home le anteprime sono sei, le foto si scaricano solo quando servono
 interface Props { id: string; lang?: 'it' | 'en'; lazy?: boolean }
@@ -15,7 +21,7 @@ const carica = lazy ? 'lazy' : 'eager';
 const it = lang === 'it';
 const T = (a: string, b: string) => (it ? a : b);
 const descr: Record<string, [string, string]> = {
-  sito: ['Anteprima: il sito di un’osteria, sul computer e sul telefono; un cliente prenota un tavolo e la prenotazione arriva al ristorante.', 'Preview: a restaurant website on desktop and phone; a guest books a table and the booking reaches the restaurant.'],
+  sito: ['Anteprima: il sito di una pizzeria; scorrendo, la pizza si compone ingrediente per ingrediente ed esce dal forno, poi un cliente prenota un tavolo.', 'Preview: a pizzeria website; as you scroll, the pizza builds itself ingredient by ingredient and comes out of the oven, then a guest books a table.'],
   ecommerce: ['Anteprima: la pagina prodotto di un negozio online di ceramiche; il carrello si riempie e arriva un nuovo ordine.', 'Preview: the product page of an online ceramics shop; the basket fills up and a new order arrives.'],
   ads: ['Anteprima: un post sponsorizzato su Instagram di una palestra e i numeri della campagna: richieste e costo per richiesta.', 'Preview: a sponsored Instagram post for a gym and the campaign numbers: enquiries and cost per enquiry.'],
   software: ['Anteprima: di notte una paziente scrive su WhatsApp a uno studio dentistico; l’assistente AI risponde, propone gli orari liberi e segna l’appuntamento in agenda.', 'Preview: at night a patient messages a dental practice on WhatsApp; the AI assistant replies, offers free slots and books the appointment in the calendar.'],
@@ -95,47 +101,48 @@ const anello = (v: number) => `stroke-dasharray:${v} 100`;
 
   {id === 'sito' && (
     <Fragment>
-      <div class="ap-fin sito-fin ap-vero">
-        <div class="ap-barra"><i></i><i></i><i></i><span>osterianavigli.it</span></div>
-        <div class="sito-vista"><div class="sito-pagina">
-          <div class="sito-nav"><b>Osteria <em>Navigli</em></b><span>{T('Menù', 'Menu')}</span><span>{T('La storia', 'Our story')}</span><span>{T('Dove siamo', 'Find us')}</span><span class="sito-nav-btn">{T('Prenota', 'Book')}</span></div>
-          <div class="sito-hero">
-            <div class="sito-hero-testo">
-              <small>{T('Cucina milanese dal 1972', 'Milanese cooking since 1972')}</small>
-              <h5>{T('Il tuo tavolo', 'Your table')}<br />{T('è pronto.', 'is ready.')}</h5>
-              <p>{T('Risotto, ossobuco e cotoletta come una volta, a due passi dalla Darsena.', 'Risotto, ossobuco and cotoletta like they used to be, by the Darsena.')}</p>
-              <div class="sito-azioni"><span class="sito-bott">{T('Prenota un tavolo', 'Book a table')}<i class="sito-cur c1"></i></span><span class="sito-bott2">{T('Vedi il menù', 'See the menu')}</span></div>
-              <span class="sito-google"><b>G</b> 4,8 <em>★★★★★</em> <small>{T('312 recensioni', '312 reviews')}</small></span>
+      <div class="ap-fin pz-fin ap-vero">
+        <div class="ap-barra"><i></i><i></i><i></i><span>brace-pizzeria.it</span></div>
+        <div class="pz-vista">
+          <div class="pz-nav"><b>Brace<em>.</em></b><span>{T('Menù', 'Menu')}</span><span>{T('Il forno', 'The oven')}</span><span>{T('Dove siamo', 'Find us')}</span><span class="pz-nav-btn">{T('Prenota', 'Book')}</span></div>
+          <div class="pz-testi">
+            {[
+              ['', T('La pizza,', 'Pizza,'), T('come deve essere.', 'the way it should be.'), T('Scorri e guardala nascere.', 'Scroll and watch it come to life.')],
+              ['01', T('Impasto', 'Dough'), '', T('48 ore di lievitazione, farina macinata a pietra.', '48-hour rise, stone-ground flour.')],
+              ['02', T('Pomodoro', 'Tomato'), '', T('San Marzano DOP, schiacciato a mano.', 'San Marzano PDO, crushed by hand.')],
+              ['03', T('Fior di latte', 'Fior di latte'), '', T('Di Agerola, arriva ogni mattina.', 'From Agerola, delivered every morning.')],
+              ['04', T('Basilico e olio', 'Basil and oil'), '', T('Basilico fresco e olio del Cilento.', 'Fresh basil and Cilento olive oil.')],
+              ['05', T('Forno a legna', 'Wood-fired oven'), '', T('485 gradi, 90 secondi.', '485 °C, 90 seconds.')],
+            ].map(([n, a1, a2, d], i) => (
+              <div class={`pz-passo pz-p${i}`}>
+                {n && <small><em>{n}</em> / 05</small>}
+                <b>{a1}{a2 && <Fragment><br /><span>{a2}</span></Fragment>}</b>
+                <p>{d}</p>
+                {i === 5 && <span class="pz-azioni"><span class="pz-cta">{T('Prenota un tavolo', 'Book a table')}<i class="pz-cur"></i></span><span class="pz-cta2">{T('Ordina a casa', 'Order in')}</span></span>}
+              </div>
+            ))}
+          </div>
+          <div class="pz-scena">
+            <i class="pz-fuoco"></i>
+            <i class="pz-ombra"></i>
+            <div class="pz-pizza">
+              <img class="pz-l pz-impasto" src={pzImpasto.src} width="640" height="640" alt="" loading={carica} decoding="async" />
+              <img class="pz-l pz-pomodoro" src={pzPomodoro.src} width="640" height="640" alt="" loading={carica} decoding="async" />
+              <img class="pz-l pz-mozzarella" src={pzMozzarella.src} width="640" height="640" alt="" loading={carica} decoding="async" />
+              <img class="pz-l pz-cotta" src={pzCotta.src} width="640" height="640" alt="" loading={carica} decoding="async" />
+              {[1, 2, 3].map((n) => <img class={`pz-cade pz-foglia f${n}`} src={pzBasilico.src} width="300" height="300" alt="" loading={carica} decoding="async" />)}
             </div>
-            <div class="sito-foto"><img src={piatto.src} width="600" height="400" alt="" loading={carica} decoding="async" /><span>{T('Il piatto del giorno', 'Today’s dish')}</span></div>
+            <img class="pz-cade pz-schizzo" src={pzSchizzo.src} width="300" height="300" alt="" loading={carica} decoding="async" />
+            {[1, 2, 3].map((n) => <img class={`pz-cade pz-latte m${n}`} src={pzFiordilatte.src} width="300" height="300" alt="" loading={carica} decoding="async" />)}
+            {[1, 2, 3].map((n) => <i class={`pz-vapore v${n}`}></i>)}
           </div>
-          <div class="sito-menu">
-            <small>{T('Il menù della settimana', 'This week’s menu')}</small>
-            <div>{[[T('Risotto giallo', 'Saffron risotto'), T('con midollo', 'with bone marrow')], [T('Ossobuco', 'Ossobuco'), T('con gremolada', 'with gremolata')], [T('Cotoletta', 'Cotoletta'), T('alla milanese', 'Milanese style')]].map(([n, d]) => <span><b>{n}</b><small>{d}</small></span>)}</div>
-          </div>
-          <div class="sito-prenota">
-            <b>{T('Prenota il tuo tavolo', 'Book your table')}</b>
-            <div class="sito-campi">
-              <span><small>{T('Giorno', 'Day')}</small><em class="sc1">{T('Venerdì 24', 'Friday 24')}</em></span>
-              <span><small>{T('Ora', 'Time')}</small><em class="sc2">20:30</em></span>
-              <span><small>{T('Persone', 'Guests')}</small><em class="sc3">4</em></span>
-            </div>
-            <span class="sito-conferma"><span class="sito-conf-a">{T('Conferma la prenotazione', 'Confirm booking')}</span><span class="sito-conf-b">✓ {T('Prenotato', 'Booked')}</span><i class="sito-cur c2"></i></span>
-          </div>
-        </div></div>
+          <div class="pz-indice">{[1, 2, 3, 4, 5].map((n) => <i class={`pz-i${n}`}></i>)}</div>
+          <i class="pz-barra-scorri"></i>
+        </div>
       </div>
-      <div class="ap-tel sito-tel ap-vero">
-        <div class="ig-stato"><span>9:41</span><i></i></div>
-        <div class="sito-tel-nav"><b>Osteria <em>Navigli</em></b><i></i></div>
-        <div class="sito-tel-foto"><img src={piatto.src} width="600" height="400" alt="" loading={carica} decoding="async" /></div>
-        <div class="sito-tel-testo"><small>{T('Cucina milanese dal 1972', 'Milanese cooking since 1972')}</small><b>{T('Il tuo tavolo è pronto.', 'Your table is ready.')}</b><span class="sito-google"><b>G</b> 4,8 <em>★★★★★</em></span></div>
-        <div class="sito-tel-azioni"><span>{T('Prenota un tavolo', 'Book a table')}</span></div>
-        <div class="sito-tel-lista">{[T('Risotto giallo', 'Saffron risotto'), T('Ossobuco', 'Ossobuco'), T('Cotoletta', 'Cotoletta')].map((n) => <span><b>{n}</b><i></i></span>)}</div>
-        <div class="sito-tel-barra"><span>{T('Chiama', 'Call')}</span><span class="wa">WhatsApp</span></div>
-      </div>
-      <div class="ap-notifica ap-vero sito-notifica">
+      <div class="ap-notifica ap-vero pz-notifica">
         <span class="ap-icona ok-ic">✓</span>
-        <span><b>{T('Nuova prenotazione dal sito', 'New booking from the website')}</b><small>{T('Tavolo per 4 · venerdì 24 · 20:30', 'Table for 4 · Friday 24 · 8:30 pm')}</small></span>
+        <span><b>{T('Nuova prenotazione dal sito', 'New booking from the website')}</b><small>{T('Tavolo per 4 · venerdì · 20:30', 'Table for 4 · Friday · 8:30 pm')}</small></span>
         <time>{T('adesso', 'now')}</time>
       </div>
     </Fragment>
