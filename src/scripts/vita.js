@@ -202,23 +202,6 @@ function decodifica() {
 
 
 
-// ---------- I servizi sul telefono: un indice, toccando una riga si apre (le altre si chiudono) ----------
-function indiceServizi() {
-  const schede = [...document.querySelectorAll('[data-servizio]')];
-  if (!schede.length) return;
-  const metti = (aperta) => schede.forEach((s) => {
-    s.classList.toggle('aperta', s === aperta);
-    s.querySelector('.servizio-apri')?.setAttribute('aria-expanded', String(s === aperta));
-  });
-  schede.forEach((s) => {
-    const b = s.querySelector('.servizio-apri');
-    if (!b) return;
-    b.hidden = false;
-    b.addEventListener('click', () => metti(s.classList.contains('aperta') ? null : s));
-  });
-  metti(schede[0]); // la prima arriva aperta: si capisce subito come funziona
-}
-
 // ---------- I tre problemi: la giornata «Oggi» e «Con noi», si scambia da sola finché non tocchi l'interruttore ----------
 function giornata() {
   document.querySelectorAll('[data-giornata]').forEach((box) => {
@@ -431,21 +414,6 @@ function cinetica() {
   });
 }
 
-// ---------- 16 · Le schede dei servizi: salgono e le spunte si spuntano una alla volta ----------
-function grigliaViva() {
-  document.querySelectorAll('[data-griglia-viva]').forEach((g) => {
-    const schede = [...g.children];
-    schede.forEach((c, i) => {
-      c.style.setProperty('--i', i);
-      c.querySelectorAll('.lista-check li').forEach((li, k) => li.style.setProperty('--k', k));
-    });
-    quandoVisibile(g, () => {
-      g.classList.add('atterra');
-      setTimeout(() => g.classList.add('atterrata'), 3600);
-    }, 0.04);
-  });
-}
-
 // ---------- 03 · Trova l'intruso: un anello va sul riquadro rosso; a ogni giro il rosso cambia posto ----------
 function intruso() {
   document.querySelectorAll('[data-intruso]').forEach((box) => {
@@ -587,7 +555,6 @@ export function avviaVita() {
   vicini(); // anche con «riduci movimento»
   salto();
   giornata(); // l'interruttore funziona anche con «riduci movimento»
-  indiceServizi();
   filaInfinita(); // si trascina anche con «riduci movimento», ma non scorre da sola
   if (ridotto) return;
   html.classList.add('vita-on');
@@ -599,7 +566,6 @@ export function avviaVita() {
   notifiche();
   metodoNumeri();
   cinetica();
-  grigliaViva();
   intruso();
   ricercaViva();
   primaDopo();

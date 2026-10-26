@@ -151,18 +151,6 @@ html.salto-entra main { transition: transform .6s cubic-bezier(.2, .8, .2, 1); }
 @keyframes cin-dx { from { transform: translateX(-50%); } to { transform: translateX(0); } }
 
 
-/* 16 · la griglia viva */
-[data-griglia-viva] { position: relative; }
-/* le schede salgono, poi le spunte verdi si accendono una alla volta (il prezzo conta in vita.js) */
-html.vita-on [data-griglia-viva]:not(.atterrata) > .card { opacity: 0; }
-[data-griglia-viva].atterra > .card { animation: sale .75s cubic-bezier(.2, .8, .2, 1) both calc(var(--i, 0) * .12s); }
-[data-griglia-viva].atterrata > .card { animation: none; opacity: 1; }
-@keyframes sale { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
-html.vita-on [data-griglia-viva]:not(.atterra) .lista-check li::before { transform: scale(0); }
-[data-griglia-viva].atterra .lista-check li::before { animation: spunta .45s ease-out both calc(.75s + var(--i, 0) * .12s + var(--k, 0) * .3s); }
-[data-griglia-viva].atterra .lista-check li { animation: compare .35s ease both calc(.75s + var(--i, 0) * .12s + var(--k, 0) * .3s); }
-@keyframes spunta { 0% { transform: scale(0); } 70% { transform: scale(1.3); } 100% { transform: none; } }
-@keyframes compare { from { opacity: 0; } }
 
 
 /* 03 · trova l'intruso (nel passo «Prima ti devono notare»): dodici grigi e uno rosso, un anello lo raggiunge */

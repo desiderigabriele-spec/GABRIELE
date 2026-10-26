@@ -68,7 +68,7 @@ html[data-tema='chiaro'] {
   color-scheme: light;
 }
 /* i dispositivi disegnati (telefoni, schermi, codice, finte app) restano scuri anche nella versione chiara */
-:is(.bozza, .st-fold, .pd-dopo, .compila-codice, .terminale, .intruso, .cursori, .focus-bolla, .fp-occhio, .intro-bolla) {
+:is(.bozza, .sv-st, .st-fold, .pd-dopo, .compila-codice, .terminale, .intruso, .cursori, .focus-bolla, .fp-occhio, .intro-bolla) {
   --latte: #ffffff; --latte-rgb: 255, 255, 255; --nebbia: #a3a3a3; --nebbia-2: #8a8a8a; --notte: #0a0a0a; --notte-rgb: 10, 10, 10;
   --linea: rgba(255, 255, 255, .12); --linea-forte: rgba(255, 255, 255, .24); --rosso-testo: #ff2d3a;
   color: var(--latte);
@@ -334,7 +334,6 @@ html.intro-attiva .intro { display: grid; }
 .svolta { margin-top: clamp(56px, 8vw, 100px); font-family: var(--f-titolo); font-size: clamp(1.7rem, 3.6vw, 3.1rem); line-height: 1.1; letter-spacing: -0.025em; max-width: 20ch; }
 
 /* ---------- Servizi ---------- */
-.servizi-griglia { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .card {
   --mx: 50%; --my: 50%;
   position: relative; padding: clamp(26px, 2.6vw, 36px);
@@ -347,62 +346,15 @@ html.intro-attiva .intro { display: grid; }
 .card::before { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(420px circle at var(--mx) var(--my), rgba(var(--brand-rgb),.06), transparent 60%); opacity: 0; transition: opacity .4s; }
 .card:hover { border-color: rgba(var(--brand-rgb),.4); }
 .card:hover::before { opacity: 1; }
-.servizio { display: grid; gap: .9rem; grid-template-rows: auto auto 1fr auto; padding: clamp(20px, 2vw, 28px); }
-.servizio-include { display: grid; gap: .5rem; align-content: start; padding-top: .8rem; border-top: 1px solid var(--linea); }
-.servizio-include-titolo { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--nebbia-2); }
-.servizio-include .lista-check { gap: .3rem; }
-.servizio-include .lista-check li { grid-template-columns: 16px 1fr; gap: .5rem; font-size: .85rem; line-height: 1.35; }
-.servizio-include .lista-check li::before { width: 14px; height: 14px; margin-top: .16em; background-size: 8px; }
-.servizio-top { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .9rem; align-items: center; }
-.servizio-top h3 { font-size: clamp(1.2rem, 1.5vw, 1.45rem); }
-.servizio-link { color: inherit; text-decoration: none; }
-.servizio-link::after { content: ''; position: absolute; inset: 0; z-index: 1; }
-.servizio-link:focus-visible { outline: none; }
-.servizio:has(.servizio-link:focus-visible) { outline: 2px solid var(--viola-chiaro); outline-offset: 3px; }
-.servizio:hover .link-freccia .freccia { transform: translateX(4px); }
 .servizio-icona { width: 46px; height: 46px; display: grid; place-items: center; border: 2px solid var(--rosso); color: var(--latte); transition: background .3s var(--ease), transform .35s var(--ease); }
 /* l'icona: bordo rosso e disegno bianco, il punto rosso del logo; al passaggio il riquadro si riempie di rosso */
 .servizio-icona .ico { stroke-width: 2.6; }
 .servizio-icona .ico .riempi { fill: rgba(var(--latte-rgb), .08); }
 @media (hover: hover) { :is(.card, a, .ts-punto):hover .servizio-icona { background: var(--rosso); } :is(.card, a, .ts-punto):hover .servizio-icona .punto { fill: var(--latte); } }
 .servizio-icona svg { width: 27px; height: 27px; }
-.servizio p { color: var(--nebbia); }
-.servizio-piede { display: flex; justify-content: space-between; align-items: end; gap: 1rem; padding-top: .9rem; border-top: 1px solid var(--linea); }
 .link-freccia { display: inline-flex; align-items: center; gap: .5rem; font-weight: 600; font-size: .92rem; text-decoration: none; color: var(--ambra); }
 .link-freccia:hover .freccia { transform: translateX(4px); }
 .link-freccia .freccia { transition: transform .4s var(--ease); color: var(--rosso-testo); }
-@media (max-width: 1020px) { .servizi-griglia { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 599px) { .servizi-griglia { grid-template-columns: 1fr; } }
-/* sul computer la scheda è com'era: i contenitori dell'indice non contano */
-.servizio-corpo, .servizio-dentro { display: contents; }
-.servizio-apri { display: none; }
-/* sul telefono: un indice. Righe con numero, icona e nome; toccando una riga si apre (vita.js) */
-@media (max-width: 599px) {
-  html.js .servizi-griglia { gap: 0; border-top: 1px solid var(--linea-forte); }
-  html.js .servizi-griglia > .servizio { display: block; padding: 0; background: none; border: 0; border-bottom: 1px solid var(--linea-forte); backdrop-filter: none; -webkit-backdrop-filter: none; }
-  html.js .servizio::before, html.js .servizio::after { display: none; }
-  html.js .servizio-link::after { display: none; }
-  html.js .servizio-top { position: relative; grid-template-columns: 22px 38px minmax(0, 1fr) 16px; gap: 10px; padding-block: 14px; }
-  html.js .servizio-top .mono { order: -1; font-size: .66rem; color: var(--nebbia-2); }
-  html.js .servizio-top .servizio-icona { width: 38px; height: 38px; }
-  html.js .servizio-top .servizio-icona svg { width: 22px; height: 22px; }
-  html.js .servizio-top h3 { font-size: 1.05rem; line-height: 1.15; }
-  html.js .servizio-apri { display: flex; position: absolute; inset: 0; z-index: 2; align-items: center; justify-content: flex-end; background: none; border: 0; padding: 0; cursor: pointer; color: inherit; }
-  html.js .servizio-apri:focus-visible { outline: 2px solid var(--rosso-testo); outline-offset: 2px; }
-  .servizio-piu { position: relative; width: 14px; height: 14px; }
-  .servizio-piu::before, .servizio-piu::after { content: ''; position: absolute; left: 0; top: 6px; width: 14px; height: 2px; background: var(--latte); transition: transform .35s var(--ease); }
-  .servizio-piu::after { transform: rotate(90deg); }
-  .servizio.aperta .servizio-piu::after { transform: rotate(0); }
-  html.js .servizio.aperta .servizio-icona { background: var(--rosso); }
-  html.js .servizio.aperta .servizio-icona .punto { fill: var(--latte); }
-  html.js .servizio-corpo { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s cubic-bezier(.16, 1, .3, 1); }
-  html.js .servizio.aperta .servizio-corpo { grid-template-rows: 1fr; }
-  html.js .servizio-dentro { display: grid; gap: 12px; min-height: 0; overflow: hidden; padding-left: 70px; }
-  html.js .servizio-dentro > p { margin: 0; font-size: .88rem; }
-  html.js .servizio-include { border-top: 0; padding-top: 0; }
-  html.js .servizio-piede { border-top: 0; padding-top: 0; margin-bottom: 18px; justify-content: flex-start; }
-}
-
 /* ---------- Calcolatore tempo risparmiato ---------- */
 /* Software con AI: l'assaggio «Stanotte, mentre dormivi» */
 .risparmio { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: clamp(28px, 5vw, 80px); align-items: center; }
@@ -761,7 +713,7 @@ html.menu-aperto .guida { opacity: 0; pointer-events: none; }
 @keyframes cometa { from { background-position: 100% 0; } to { background-position: 0 0; opacity: .2; } }
 
 /* angoli dritti ovunque, tranne il telefono disegnato, i siti degli altri (prima/dopo, lo studio della demo) e il giorno del calendario */
-*:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic), *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic)::before, *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic)::after { border-radius: 0 !important; }
+*:not(.tel, .tel *, .sv-st *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic), *:not(.tel, .tel *, .sv-st *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic)::before, *:not(.tel, .tel *, .sv-st *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic)::after { border-radius: 0 !important; }
 
 
 /* ==========================================================================
@@ -785,7 +737,6 @@ html.menu-aperto .guida { opacity: 0; pointer-events: none; }
   .passo { min-height: min(78vh, 760px); }
 }
 @media (min-width: 901px) {
-  .servizio p { font-size: .95rem; }
   .piano { grid-template-columns: minmax(0, 1fr) auto; column-gap: .6rem; }
   .piano > * { grid-column: 1 / -1; }
   .piano > .piano-badge { grid-column: 2; grid-row: 1; align-self: center; }
@@ -808,7 +759,6 @@ html.menu-aperto .guida { opacity: 0; pointer-events: none; }
   .sezione { padding-block: clamp(36px, 5svh, 60px); }
   .testa-sezione { margin-bottom: clamp(20px, 3.4svh, 40px); }
   .testa-riga .lead { font-size: 1rem; }
-  .servizio p { font-size: .88rem; }
   .cliente-anteprima { aspect-ratio: 16 / 4.2; }
   .cliente-corpo { padding: 16px 22px; gap: .55rem; }
   .chi-testo p { font-size: .9rem; }
@@ -855,18 +805,7 @@ html.menu-aperto .guida { opacity: 0; pointer-events: none; }
 @media (min-width: 901px) {
   #prezzi, #pacchetti, #servizi { padding-block: clamp(30px, 4.2svh, 56px); }
   #prezzi .testa-sezione, #pacchetti .testa-sezione, #servizi .testa-sezione { margin-bottom: clamp(16px, 2.6svh, 32px); }
-  /* servizi della home con «cosa include»: prezzo e «Scopri» su una riga sola, così le 6 schede stanno in uno schermo */
-  .servizio { gap: clamp(.4rem, .8svh, .7rem); padding: clamp(14px, 1.8svh, 24px) clamp(18px, 1.6vw, 24px); }
   .servizio-icona { width: 38px; height: 38px; }
-  .servizio p { line-height: 1.5; }
-  .servizio-include { padding-top: clamp(.4rem, .8svh, .7rem); gap: .3rem; }
-  .servizio-include .lista-check { gap: .15rem; }
-  .servizio-include .lista-check li { font-size: .82rem; line-height: 1.3; }
-  .servizio-piede { align-items: center; padding-top: clamp(.45rem, 1svh, .7rem); }
-}
-@media (min-width: 901px) and (max-height: 840px) {
-  .servizio-include .lista-check li:nth-child(n+3) { display: none; }
-  .servizio-include .lista-check li { font-size: .8rem; }
 }
 
 /* il nome si cambia toccandolo dove è scritto */

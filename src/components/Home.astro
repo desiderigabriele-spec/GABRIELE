@@ -9,6 +9,7 @@ import LogoGigante from './LogoGigante.astro';
 import MicroIcona from './MicroIcona.astro';
 import '../styles/chisiamo.css';
 import '../styles/recensioni.css';
+import '../styles/servizi-vivi.css';
 import { metodoStudio } from '../data/metodo.js';
 import volto from '../assets/img/gabriele-volto.webp';
 import { dati } from '../i18n/dati.js';
@@ -19,13 +20,15 @@ interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
 const it = lang === 'it';
 const T = (a: string, b: string) => (it ? a : b);
-const { servizi, metodo, lavori, faq, contatti, categorie } = dati(lang);
+const { servizi, metodo, lavori, faq, contatti } = dati(lang);
 const iniziali = (nome: string) => nome.replace(/^Dott\.\s*/, '').split(' ').map((p) => p[0]).slice(0, 2).join('');
 const eur = (n: number) => euro(n, lang);
 const preventivo = url('preventivo', lang);
 
-// per ogni servizio, cosa comprende il primo pacchetto (le voci, senza prezzi)
-const base = Object.fromEntries(categorie.map((c) => [c.id, c.livelli[0]]).filter(([, l]) => l?.include?.length));
+// i servizi sul telefono: una riga sola per scheda
+const brevi: Record<string, string> = it
+  ? { sito: 'Ti trovano su Google e ti scrivono.', ecommerce: 'Vendi 24 ore su 24, anche mentre dormi.', software: 'Il lavoro ripetitivo si fa da solo.', gestionale: 'Il programma fatto come lavori tu.', ads: 'Annunci che portano clienti, non solo «mi piace».', cura: 'Sempre aggiornato, sicuro e più efficace.' }
+  : { sito: 'People find you on Google and get in touch.', ecommerce: 'Sell 24/7, even while you sleep.', software: 'Repetitive work does itself.', gestionale: 'Software built around how you work.', ads: 'Ads that bring clients, not just likes.', cura: 'Always updated, secure and improving.' };
 // 12 · tipografia cinetica: tre righe giganti al posto del nastro
 const cinetica = it
   ? [['Siti web', 'Negozi online', 'Automazioni e AI', 'Gestionali'], ['Attenzione', 'Interesse', 'Fiducia', 'Desiderio', 'Azione'], ['Neuromarketing', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Copy che vende']]
@@ -93,8 +96,8 @@ const jsonLd = {
   <nav class="guida" aria-label={T('Capitoli', 'Chapters')} data-percorso>
     <span class="guida-luce" aria-hidden="true"></span>
     {(it
-      ? [['inizio', 'Guarda'], ['servizi', 'Scegli'], ['metodo', 'Fidati'], ['prezzi', 'Calcola'], ['azione', 'Scrivici']]
-      : [['inizio', 'Look'], ['servizi', 'Choose'], ['metodo', 'Trust'], ['prezzi', 'Work it out'], ['azione', 'Write to us']]
+      ? [['inizio', 'Guarda'], ['servizi', 'Scegli'], ['metodo', 'Fidati'], ['prezzi', 'Chiedi'], ['azione', 'Scrivici']]
+      : [['inizio', 'Look'], ['servizi', 'Choose'], ['metodo', 'Trust'], ['prezzi', 'Ask'], ['azione', 'Write to us']]
     ).map(([id, nome], i) => <a href={`#${id}`} data-capitolo={id}><span>{String(i + 1).padStart(2, '0')} · {nome}</span></a>)}
   </nav>
 
@@ -229,38 +232,42 @@ const jsonLd = {
           <span class="riga"><span><span class="em">{T('detto semplice.', 'in plain words.')}</span></span></span>
         </h2>
         <p class="lead" data-appare>{T(
-          'Sei servizi che lavorano insieme. Puoi sceglierne uno solo o farli parlare tra loro: è lì che i risultati si moltiplicano. Tocca una scheda per vedere come funziona.',
-          "Six services that work together. Pick just one or let them talk to each other: that's where results multiply. Tap a card to see how it works.",
+          'Sei servizi che lavorano insieme. Puoi sceglierne uno solo o farli parlare tra loro: è lì che i risultati si moltiplicano.',
+          "Six services that work together. Pick just one or let them talk to each other: that's where results multiply.",
         )}</p>
       </div>
-      <div class="servizi-griglia" data-griglia-viva>
-        {/* su telefono è un indice: righe con il nome, toccando una riga si apre (vita.js, indiceServizi) */}
-        {servizi.map((s) => (
-          <article class="card servizio" data-servizio>
-            <div class="servizio-top">
-              <span class="servizio-icona"><Icona nome={s.icona} /></span>
-              <h3><a class="servizio-link" href={urlServizio(s.id, lang)}>{s.titolo}</a></h3>
-              <span class="mono">{s.numero}</span>
-              <button class="servizio-apri" type="button" aria-expanded="false" aria-controls={`servizio-${s.id}`} hidden>
-                <span class="sr-only">{T(`Dettagli: ${s.titolo}`, `Details: ${s.titolo}`)}</span><span class="servizio-piu" aria-hidden="true"></span>
-              </button>
-            </div>
-            <div class="servizio-corpo" id={`servizio-${s.id}`}>
-              <div class="servizio-dentro">
-                <p>{s.semplice}</p>
-                {base[s.id] && (
-                  <div class="servizio-include">
-                    <span class="servizio-include-titolo">{T('Cosa comprende', 'What it includes')}</span>
-                    <ul class="lista-check">{base[s.id].include.slice(0, 3).map((x) => <li>{x}</li>)}</ul>
-                  </div>
-                )}
-                <div class="servizio-piede">
-                  <a class="link-freccia" href={urlServizio(s.id, lang)} tabindex="-1" aria-hidden="true">{T('Scopri', 'Discover')} <span class="freccia">→</span></a>
+      <!-- i servizi in movimento (servizi-vivi.js): sul computer l'indice e l'anteprima, sul telefono i nomi sopra e le schede da scorrere -->
+      <div class="sv" data-servizi-vivi data-lang={lang}>
+        <div class="sv-pc">
+          <nav class="sv-lista" aria-label={T('Servizi', 'Services')}>
+            {servizi.map((s) => (
+              <a class="sv-voce" href={urlServizio(s.id, lang)} data-id={s.id} data-titolo={s.titolo} data-testo={s.semplice}>
+                <span class="mono">{s.numero}</span><span class="servizio-icona"><Icona nome={s.icona} /></span><b>{s.titolo}</b><span class="freccia" aria-hidden="true">→</span>
+              </a>
+            ))}
+          </nav>
+          <div class="sv-anteprima" aria-hidden="true">
+            <div class="sv-st" data-sv-palco></div>
+            <div class="sv-info"><div><b data-sv-titolo></b><p data-sv-testo></p></div><a class="link-freccia" href={urlServizio(servizi[0].id, lang)} data-sv-scopri tabindex="-1">{T('Scopri', 'Discover')} <span class="freccia">→</span></a></div>
+          </div>
+        </div>
+        <div class="sv-tel">
+          <div class="sv-chips">{servizi.map((s, i) => <button class="sv-chip" type="button" aria-pressed={i === 0 ? 'true' : 'false'}><i></i>{s.titolo}</button>)}</div>
+          <div class="sv-fila" data-sv-fila>
+            {servizi.map((s) => (
+              <article class="sv-scheda">
+                <div class="sv-st" data-sv-scena={s.id} aria-hidden="true"></div>
+                <div class="sv-corpo">
+                  <div class="sv-riga1"><h3><a href={urlServizio(s.id, lang)}>{s.titolo}</a></h3><span class="mono">{s.numero} / 0{servizi.length}</span></div>
+                  <p>{brevi[s.id] || s.semplice}</p>
+                  <span class="link-freccia" aria-hidden="true">{T('Scopri', 'Discover')} <span class="freccia">→</span></span>
                 </div>
-              </div>
-            </div>
-          </article>
-        ))}
+              </article>
+            ))}
+          </div>
+          <div class="sv-sotto"><span class="sv-hint">{T('Scorri o tocca un nome', 'Swipe or tap a name')} <i aria-hidden="true">→</i></span><span class="sv-conta" data-sv-conta><b>01</b> / 0{servizi.length}</span></div>
+          <div class="sv-linea" data-sv-linea style={`--n:${servizi.length}`}><b></b></div>
+        </div>
       </div>
     </div>
   </section>
@@ -698,6 +705,11 @@ const jsonLd = {
     </div>
   </section>
 </Base>
+
+<script>
+  import { serviziVivi } from '../scripts/servizi-vivi.js';
+  serviziVivi();
+</script>
 
 <script>
   // Il calcolo in tre passi, in una finestra: lavori spuntati → ore ed euro in un anno → preventivo già compilato
