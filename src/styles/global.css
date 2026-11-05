@@ -1122,7 +1122,6 @@ html.vita-on .st-fold:not(.aperto) .sf-destra::after { opacity: .55; }
 .nav-voce { min-height: 44px; }
 .nome-btn, .tema-btn { width: 44px; height: 44px; }
 .lingua { height: 44px; }
-.footer-grid a { display: inline-block; padding-block: 10px; }
 .guida a::before { content: ''; position: absolute; inset: -16px; }
 /* la linea dei capitoli con quattro tappe: in alto, a un terzo, a due terzi e in fondo */
 .guida:has(a:nth-of-type(4):last-of-type) a:nth-of-type(2) { top: 33.33%; }
@@ -1131,5 +1130,30 @@ html.vita-on .st-fold:not(.aperto) .sf-destra::after { opacity: .55; }
 .hero .rassicura, .finale .rassicura { font-size: 1rem; }
 .site-header .btn { min-height: 44px; }
 .hc-freccia { width: 44px; height: 44px; margin-top: -22px; }
-.footer-legale a, .footer-legale button { display: inline-block; padding-block: 12px; }
 .site-header .brand { min-height: 44px; display: inline-flex; align-items: center; }
+
+/* Footer: è testo secondario, quindi più piccolo del testo da leggere (15 px) e righe fitte.
+   Col mouse basta un'area di 24 px (WCAG 2.5.8): qui ogni riga è alta circa 34 px. Col dito si allarga. */
+.site-footer { padding: 56px 0 96px; }
+.footer-grid ul { gap: 2px; }
+.footer-grid li { font-size: .94rem; }
+.footer-grid a { display: inline-block; padding-block: 5px; }
+.footer-claim { font-size: 1.5rem; }
+.footer-legale a, .footer-legale button { display: inline-block; padding-block: 6px; }
+@media (pointer: coarse) { .footer-grid a { padding-block: 9px; } }
+
+/* Hero e metodo dentro lo schermo anche sui portatili bassi: le misure seguono l'altezza dello schermo (svh) */
+@media (min-width: 821px) {
+  .hero-chiara { min-height: 100svh; padding-top: calc(var(--header-h) + clamp(16px, 3svh, 40px)); padding-bottom: clamp(16px, 3svh, 48px); }
+  .hero-chiara h1 { font-size: clamp(2.2rem, min(4.6vw, 7.4svh), 4.9rem); }
+  .hc-testo { gap: clamp(1rem, 2.4svh, 1.5rem); }
+  .hc-palco { width: min(100%, calc((100svh - var(--header-h) - 380px) * 52 / 44)); margin-inline: auto; }
+  .passo .intruso { max-width: min(30em, max(240px, calc((100svh - var(--header-h) - 380px) * 16 / 9))); }
+}
+@media (min-width: 821px) and (max-height: 800px) {
+  .hc-palco { width: min(100%, calc((100svh - var(--header-h) - 320px) * 52 / 44)); }
+  .hc-tab button { padding-block: .55rem; }
+  .hc-tab button .servizio-icona { display: none; }
+  .hc-vetrina { padding-block: 16px; }
+  .hc-info { margin-top: 10px; padding-top: 10px; }
+}

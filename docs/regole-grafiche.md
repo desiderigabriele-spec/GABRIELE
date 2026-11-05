@@ -9,9 +9,10 @@ Regole prese solo da fonti ufficiali o riconosciute. Valgono per tutte le pagine
 | Titolo → contenuto | `clamp(40px, 5vw, 64px)` | come sopra |
 | Lunghezza riga | testi lunghi al massimo ~62 caratteri (`.lead { max-width: 62ch }`) | WCAG 1.4.8 (≤ 80); Butterick, 45–90; ricerca sulla leggibilità, 50–70 |
 | Interlinea | testo corrente almeno 1.5; titoli 1.0–1.2 | WCAG 1.4.12; Butterick, 120–145 % |
-| Testo | mai sotto 16 px per il testo da leggere | Butterick, 15–25 px; web.dev |
+| Testo | mai sotto 16 px per il testo da leggere; footer e note 15 px (testo secondario) | Butterick, 15–25 px; web.dev |
 | Contrasto | almeno 4.5:1 per il testo normale, 3:1 per il testo grande | WCAG 1.4.3 |
-| Aree da toccare | almeno 44 × 44 px (minimo legale 24 px) e 8 px tra un'area e l'altra | WCAG 2.5.5 / 2.5.8; Apple HIG 44 pt; web.dev 48 px |
+| Aree da toccare | col dito almeno 44 px; col mouse basta il minimo di 24 px (es. righe del footer ~34 px) | WCAG 2.5.5 / 2.5.8; Apple HIG 44 pt; web.dev 48 px |
+| Dentro lo schermo | hero e passi del metodo stanno in una schermata anche sui portatili bassi (~650 px): misure legate all'altezza (svh) | scelta di progetto |
 | Scritte che scorrono | due righe, `clamp(1.6rem, 3.4vw, 3rem)`, 24 px sopra e sotto | decorative: non devono rubare spazio al contenuto |
 
 
