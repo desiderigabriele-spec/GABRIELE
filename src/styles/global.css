@@ -147,7 +147,8 @@ h2 { font-size: clamp(2.1rem, min(5vw, 7.6svh), 4.4rem); letter-spacing: -0.045e
 h3 { font-size: clamp(1.3rem, 1.8vw, 1.7rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; }
 p { margin: 0; text-wrap: pretty; }
 /* nei titoli la seconda parte è grigia, la parola chiave rossa: niente corsivi né sfumature */
-.em { color: var(--nebbia); }
+/* la parte «seconda» dei titoli: stesso colore, scritta fina (contrasto di peso, come nella grafica svizzera) */
+.em { color: inherit; font-weight: 300; }
 /* il percorso nel colore: la frase va dal grigio dello sguardo al verde del sì */
 .em-percorso { background: linear-gradient(90deg, var(--nebbia) 0%, var(--latte) 55%, var(--verde-testo) 92%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .em-firma { color: var(--rosso-testo); }

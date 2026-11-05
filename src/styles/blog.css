@@ -1,7 +1,7 @@
 /* Il blog: l'elenco (/blog) e l'articolo (/blog/<nome>). Il testo usa .prosa di global.css, qui le aggiunte. */
 .blog .testa-sezione { max-width: 820px; }
 .blog-titolo { font-family: var(--f-titolo); font-weight: 800; font-size: clamp(2.4rem, 6vw, 4.4rem); line-height: .98; letter-spacing: -.045em; margin: 0; }
-.blog-titolo .em { color: var(--nebbia-2, var(--nebbia)); }
+.blog-titolo .em { color: inherit; font-weight: 300; }
 .blog-vuoto { color: var(--nebbia); }
 .blog-lista { list-style: none; margin: clamp(28px, 5svh, 56px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 @media (max-width: 760px) { .blog-lista { grid-template-columns: minmax(0, 1fr); } }
