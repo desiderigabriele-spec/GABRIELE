@@ -170,31 +170,36 @@
 @keyframes pz-schizzo { 0%, 29.9% { opacity: 0; transform: rotate(var(--a)) translate(0) translateZ(0); } 30% { opacity: 1; } 31% { transform: rotate(var(--a)) translate(calc(var(--d) * .6)) translateZ(1.6em); } 32.2% { opacity: 1; transform: rotate(var(--a)) translate(var(--d)) translateZ(0); } 34%, 100% { opacity: 0; transform: rotate(var(--a)) translate(var(--d)) translateZ(0); } }
 .pz-mozzarella { animation: pz-mozzarella var(--ap-ciclo) ease infinite; }
 .pz-cotta { animation: pz-cotta var(--ap-ciclo) ease infinite; }
-@keyframes pz-mozzarella { 0%, 55% { opacity: 0; } 56%, 99% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes pz-mozzarella { 0%, 57.5% { opacity: 0; } 58.5%, 99% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes pz-cotta { 0%, 73% { opacity: 0; } 79%, 99% { opacity: 1; } 100% { opacity: 0; } }
-/* ogni pezzo è ritagliato dalla foto: cade con la gravità girando su sé stesso, l'ombra si stringe mentre si avvicina,
-   tocca, rimbalza appena e si posa esattamente al suo posto */
+/* ogni pezzo è ritagliato dalla foto e arriva lanciato a manciate dal davanti: vola ad arco girando su sé stesso,
+   l'ombra si stringe mentre scende, tocca un po' prima del suo posto, rimbalza appena e scivola esattamente dove sta */
 .pz-pezzo { opacity: 0; will-change: transform, opacity, filter; }
-.pz-latte { animation: pz-latte var(--ap-ciclo) infinite; }
+.pz-latte { animation: pz-latte var(--ap-ciclo) linear infinite; }
 .pz-foglia { animation: pz-foglia var(--ap-ciclo) ease-in-out infinite; }
 @keyframes pz-latte {
-  0%, 41% { opacity: 0; transform: translate3d(var(--dx), var(--dy), 15em) rotateX(var(--rx)) rotateY(var(--ry)) rotate(var(--rz)); filter: drop-shadow(1.8em 2.6em 1em rgba(0, 0, 0, .18)) blur(1px); animation-timing-function: cubic-bezier(.5, 0, 1, .55); }
-  41.4% { opacity: 1; }
-  44.4% { opacity: 1; transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotate(0); filter: drop-shadow(.08em .12em .08em rgba(0, 0, 0, .5)) blur(0); animation-timing-function: cubic-bezier(.2, .6, .4, 1); }
-  45.1% { transform: translate3d(0, 0, .55em) rotate(calc(var(--rz) * .03)); filter: drop-shadow(.25em .4em .25em rgba(0, 0, 0, .35)); animation-timing-function: cubic-bezier(.5, 0, 1, .6); }
-  45.8% { transform: translate3d(0, 0, 0) scale(1.05, .95); filter: drop-shadow(.08em .12em .08em rgba(0, 0, 0, .5)); }
-  46.5%, 56% { opacity: 1; transform: none; filter: drop-shadow(.06em .1em .06em rgba(0, 0, 0, .4)); }
-  57%, 100% { opacity: 0; transform: none; filter: none; }
+  0%, 41.00% { opacity: 0; transform: translate3d(calc(var(--ux) * -17.00em), calc(var(--uy) * -17.00em), 3.00em) rotateX(calc(var(--rx) * 1.00)) rotateY(calc(var(--ry) * 1.00)) rotate(calc(var(--rz) * 1.00)); filter: drop-shadow(1.70em 2.55em 1.10em rgba(0, 0, 0, 0.20)) blur(1.20px); }
+  41.54% { transform: translate3d(calc(var(--ux) * -14.64em), calc(var(--uy) * -14.64em), 6.12em) rotateX(calc(var(--rx) * 0.85)) rotateY(calc(var(--ry) * 0.85)) rotate(calc(var(--rz) * 0.85)); filter: drop-shadow(1.46em 2.19em 0.95em rgba(0, 0, 0, 0.24)) blur(1.02px); opacity: 1; }
+  42.08% { transform: translate3d(calc(var(--ux) * -12.29em), calc(var(--uy) * -12.29em), 7.98em) rotateX(calc(var(--rx) * 0.70)) rotateY(calc(var(--ry) * 0.70)) rotate(calc(var(--rz) * 0.70)); filter: drop-shadow(1.22em 1.83em 0.80em rgba(0, 0, 0, 0.29)) blur(0.84px); opacity: 1; }
+  42.62% { transform: translate3d(calc(var(--ux) * -9.94em), calc(var(--uy) * -9.94em), 8.58em) rotateX(calc(var(--rx) * 0.55)) rotateY(calc(var(--ry) * 0.55)) rotate(calc(var(--rz) * 0.55)); filter: drop-shadow(0.98em 1.47em 0.65em rgba(0, 0, 0, 0.33)) blur(0.66px); opacity: 1; }
+  43.16% { transform: translate3d(calc(var(--ux) * -7.58em), calc(var(--uy) * -7.58em), 7.92em) rotateX(calc(var(--rx) * 0.40)) rotateY(calc(var(--ry) * 0.40)) rotate(calc(var(--rz) * 0.40)); filter: drop-shadow(0.74em 1.11em 0.50em rgba(0, 0, 0, 0.38)) blur(0.48px); opacity: 1; }
+  43.70% { transform: translate3d(calc(var(--ux) * -5.22em), calc(var(--uy) * -5.22em), 6.00em) rotateX(calc(var(--rx) * 0.25)) rotateY(calc(var(--ry) * 0.25)) rotate(calc(var(--rz) * 0.25)); filter: drop-shadow(0.50em 0.75em 0.35em rgba(0, 0, 0, 0.42)) blur(0.30px); opacity: 1; }
+  44.24% { transform: translate3d(calc(var(--ux) * -2.87em), calc(var(--uy) * -2.87em), 2.82em) rotateX(calc(var(--rx) * 0.10)) rotateY(calc(var(--ry) * 0.10)) rotate(calc(var(--rz) * 0.10)); filter: drop-shadow(0.26em 0.39em 0.20em rgba(0, 0, 0, 0.47)) blur(0.12px); opacity: 1; }
+  44.60% { transform: translate3d(calc(var(--ux) * -1.30em), calc(var(--uy) * -1.30em), 0.00em) rotateX(calc(var(--rx) * 0.00)) rotateY(calc(var(--ry) * 0.00)) rotate(calc(var(--rz) * 0.00)); filter: drop-shadow(0.10em 0.15em 0.10em rgba(0, 0, 0, 0.50)) blur(0.00px); opacity: 1; }
+  45.3% { opacity: 1; transform: translate3d(calc(var(--ux) * -0.72em), calc(var(--uy) * -0.72em), .5em) rotate(calc(var(--rz) * .04)); filter: drop-shadow(.25em .4em .25em rgba(0, 0, 0, .35)); }
+  46% { transform: translate3d(calc(var(--ux) * -0.33em), calc(var(--uy) * -0.33em), 0) scale(1.05, .95); filter: drop-shadow(.08em .12em .08em rgba(0, 0, 0, .5)); }
+  47.2%, 58.6% { opacity: 1; transform: none; filter: drop-shadow(.06em .1em .06em rgba(0, 0, 0, .4)); }
+  59.5%, 100% { opacity: 0; transform: none; filter: none; }
 }
-/* le foglie sono leggere: scendono ondeggiando, a zig zag, e si appoggiano piano */
+/* le foglie sono leggere: lanciate dal davanti, salgono un poco e scendono ondeggiando a zig zag, poi si appoggiano piano */
 @keyframes pz-foglia {
-  0%, 56% { opacity: 0; transform: translate3d(calc(var(--dx) * 1.4), var(--dy), 17em) rotateX(60deg) rotateY(var(--ry)) rotate(var(--rz)); filter: drop-shadow(2em 3em 1.2em rgba(0, 0, 0, .15)); }
-  56.6% { opacity: 1; }
-  58% { transform: translate3d(calc(var(--dx) * -.8), calc(var(--dy) * .6), 12em) rotateX(-40deg) rotateY(calc(var(--ry) * -.8)) rotate(calc(var(--rz) * .6)); }
-  59.4% { transform: translate3d(calc(var(--dx) * .6), calc(var(--dy) * .3), 7em) rotateX(32deg) rotateY(calc(var(--ry) * .5)) rotate(calc(var(--rz) * .35)); filter: drop-shadow(1em 1.5em .7em rgba(0, 0, 0, .22)); }
-  60.8% { transform: translate3d(calc(var(--dx) * -.3), calc(var(--dy) * .1), 2.6em) rotateX(-16deg) rotateY(calc(var(--ry) * -.2)) rotate(calc(var(--rz) * .12)); }
-  62% { transform: translate3d(0, 0, .4em) rotateX(6deg) rotate(0); filter: drop-shadow(.2em .3em .2em rgba(0, 0, 0, .35)); }
-  62.8%, 79% { opacity: 1; transform: none; filter: drop-shadow(.05em .08em .05em rgba(0, 0, 0, .35)); }
+  0%, 56% { opacity: 0; transform: translate3d(calc(var(--ux) * -12em), calc(var(--uy) * -12em), 9em) rotateX(60deg) rotateY(var(--ry)) rotate(var(--rz)); filter: drop-shadow(2em 3em 1.2em rgba(0, 0, 0, .15)); }
+  56.4% { opacity: 1; }
+  57.6% { transform: translate3d(calc(var(--ux) * -6em + var(--dx) * .6), calc(var(--uy) * -6em), 13em) rotateX(-40deg) rotateY(calc(var(--ry) * -.8)) rotate(calc(var(--rz) * .6)); }
+  59% { transform: translate3d(calc(var(--ux) * -2.5em - var(--dx) * .5), calc(var(--uy) * -2.5em), 8em) rotateX(32deg) rotateY(calc(var(--ry) * .5)) rotate(calc(var(--rz) * .35)); filter: drop-shadow(1em 1.5em .7em rgba(0, 0, 0, .22)); }
+  60.4% { transform: translate3d(calc(var(--ux) * -1em + var(--dx) * .25), calc(var(--uy) * -1em), 3em) rotateX(-16deg) rotateY(calc(var(--ry) * -.2)) rotate(calc(var(--rz) * .12)); }
+  61.6% { transform: translate3d(0, 0, .4em) rotateX(6deg) rotate(0); filter: drop-shadow(.2em .3em .2em rgba(0, 0, 0, .35)); }
+  62.4%, 79% { opacity: 1; transform: none; filter: drop-shadow(.05em .08em .05em rgba(0, 0, 0, .35)); }
   80%, 100% { opacity: 0; transform: none; filter: none; }
 }
 .pz-vapore { position: absolute; bottom: 52%; width: 3.6em; height: 6em; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, .35), transparent); filter: blur(.4em); opacity: 0; animation: pz-vapore var(--ap-ciclo) ease-out infinite; }
