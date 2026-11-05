@@ -24,7 +24,7 @@ export const urlServizio = (id, lang = 'it') => (lang === 'en' ? `/en/services/$
 export const ui = {
   it: {
     locale: 'it_IT', vaiContenuto: 'Vai al contenuto', menu: 'Menu',
-    nav: [['servizi', 'Servizi'], ['@ai', 'AI per aziende'], ['metodo', 'Metodo'], ['lavori', 'Clienti'], ['chi-sono', 'Chi siamo']],
+    nav: [['servizi', 'Servizi'], ['@ai', 'AI per aziende'], ['metodo', 'Metodo'], ['lavori', 'Clienti'], ['@chi', 'Chi siamo']],
     megaTitolo: 'Sei servizi, un solo studio', megaAi: 'L’AI per aziende, spiegata semplice', megaAiTesto: 'Cosa può fare nella tua attività, con un esempio dal vivo.', megaVai: 'Scopri come funziona', da: 'da', mese: '/mese', menuServizi: 'I servizi',
     navEtichetta: 'Principale', home: 'Desideri&Code, home', ruolo: 'Siti web · AI · Pubblicità',
     ctaPreventivo: 'Richiedi un preventivo', whatsapp: 'Scrivici su WhatsApp',
@@ -43,7 +43,7 @@ export const ui = {
   },
   en: {
     locale: 'en_GB', vaiContenuto: 'Skip to content', menu: 'Menu',
-    nav: [['servizi', 'Services'], ['@ai', 'AI for business'], ['metodo', 'Method'], ['lavori', 'Clients'], ['chi-sono', 'About us']],
+    nav: [['servizi', 'Services'], ['@ai', 'AI for business'], ['metodo', 'Method'], ['lavori', 'Clients'], ['@chi', 'About us']],
     megaTitolo: 'Six services, one studio', megaAi: 'AI for business, in plain words', megaAiTesto: 'What it can do for your business, with a live example.', megaVai: 'See how it works', da: 'from', mese: '/month', menuServizi: 'Services',
     navEtichetta: 'Main', home: 'Desideri&Code, home', ruolo: 'Websites · AI · Advertising',
     ctaPreventivo: 'Request a quote', whatsapp: 'Message us on WhatsApp',

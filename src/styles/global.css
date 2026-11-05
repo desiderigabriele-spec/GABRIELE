@@ -883,6 +883,7 @@ html.ridotto .cap-testo { animation: none; }
 /* L'ingresso: a tutto schermo al primo arrivo, una scheda al centro con nome, sfondo e cookie; il sito si vede sfocato dietro */
 .benvenuto { position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; overscroll-behavior: contain; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); background: rgba(var(--notte-rgb), .8); backdrop-filter: blur(18px) saturate(.8); -webkit-backdrop-filter: blur(18px) saturate(.8); overflow-y: auto; touch-action: manipulation; opacity: 0; transition: opacity .4s var(--ease), background .4s; }
 .benvenuto.su { opacity: 1; }
+.benvenuto[hidden] { display: none; }
 html.bv-aperto { overflow: hidden; }
 html.bv-aperto .focus { visibility: hidden; }
 .bv-box { position: relative; width: min(460px, 100%); display: grid; gap: 1.25rem; padding: clamp(22px, 4vw, 34px); background: var(--superficie); border: 1px solid var(--linea-forte); border-top: 3px solid var(--rosso); box-shadow: 0 40px 90px -30px rgba(0, 0, 0, .8); transform: translateY(14px) scale(.98); transition: transform .5s var(--ease); }
@@ -1072,3 +1073,6 @@ html.vita-on .st-fold:not(.aperto) .sf-destra::after { opacity: .55; }
 .pv-privacy.errore { border-color: var(--fuoco); color: var(--fuoco); }
 .pv-privacy.errore input { border-color: var(--fuoco); }
 .pv-privacy a { color: var(--latte); text-decoration: underline; text-underline-offset: 3px; }
+/* la home più corta: i tre passi del metodo e quelli del preventivo, senza riquadri */
+#metodo .pv-tappe { margin-bottom: clamp(20px, 3svh, 32px); }
+.finale .pv-tappe { text-align: left; width: 100%; margin-block: clamp(8px, 2svh, 20px); }

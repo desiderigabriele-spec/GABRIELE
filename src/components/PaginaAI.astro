@@ -6,6 +6,7 @@ import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
 import Cursore from './Cursore.astro';
 import TuoSoftware from './TuoSoftware.astro';
+import AiOre from './AiOre.astro';
 import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -277,12 +278,15 @@ const demo = it ? {
         ))}
       </div>
       <p class="ai-rimando" data-appare>
-        <a class="link-freccia" href={`${url('home', lang)}#risparmio`}>{T('Calcola quante ore ti restituisce in un anno', 'Work out how many hours it gives back in a year')} <span class="freccia" aria-hidden="true">→</span></a>
+        <a class="link-freccia" href="#risparmio">{T('Calcola quante ore ti restituisce in un anno', 'Work out how many hours it gives back in a year')} <span class="freccia" aria-hidden="true">→</span></a>
       </p>
     </div>
   </section>
 
   <!-- Il programma su misura -->
+  <!-- la giornata di un cliente e il calcolo delle ore: prima stavano in home -->
+  <AiOre lang={lang} />
+
   <section class="sezione" id="su-misura" data-forma="2">
     <div class="wrap su-misura">
       <div class="testa-sezione" style="margin-bottom:0">
