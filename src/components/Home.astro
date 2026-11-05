@@ -114,13 +114,17 @@ const jsonLd = {
         <div class="hc-tab-testa"><span class="mono">{T('Guarda i servizi dal vivo', 'See the services live')}</span><span class="hc-clic mono" aria-hidden="true">{T('Scegli un servizio', 'Pick a service')}</span></div>
         <div class="hc-tab" role="group" aria-label={T('I servizi', 'Services')}>
           {servizi.map((s, i) => (
-            <button type="button" class={i === 0 ? 'on' : ''} data-hc={i} data-titolo={s.titolo} data-testo={brevi[s.id]} data-link={urlServizio(s.id, lang)} aria-pressed={i === 0 ? 'true' : 'false'}>
+            <button type="button" class={i === 0 ? 'on' : ''} data-hc={i} data-titolo={s.titolo} data-testo={brevi[s.id]} data-semplice={s.semplice} data-id={s.id} data-link={urlServizio(s.id, lang)} aria-pressed={i === 0 ? 'true' : 'false'}>
               <span class="servizio-icona"><Icona nome={s.icona} /></span><span>{corti[s.id]}</span><i class="hc-avanza" aria-hidden="true"></i>
             </button>
           ))}
         </div>
-        <div class="hc-palco" aria-hidden="true">
-          {servizi.map((s, i) => <div class="sv-ap hc-ap" data-ap={s.id} hidden={i !== 0}><Anteprima id={s.id} lang={lang} lazy={i !== 0} /></div>)}
+        <!-- l'anteprima si apre in grande toccandola (servizi-vivi.js): così si capisce che è un esempio vero, non una pubblicità -->
+        <div class="hc-palco">
+          {servizi.map((s, i) => <div class="sv-ap hc-ap" data-ap={s.id} hidden={i !== 0} aria-hidden="true"><Anteprima id={s.id} lang={lang} lazy={i !== 0} /></div>)}
+          <button class="hc-apri" type="button" data-hc-apri aria-haspopup="dialog">
+            <span class="hc-apri-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg>{T('Apri l’anteprima', 'Open the preview')}</span>
+          </button>
         </div>
         <button class="hc-freccia hc-prec" type="button" data-hc-prec aria-label={T('Servizio precedente', 'Previous service')}>←</button>
         <button class="hc-freccia hc-succ" type="button" data-hc-succ aria-label={T('Servizio successivo', 'Next service')}>→</button>
@@ -130,6 +134,25 @@ const jsonLd = {
         </div>
       </div>
     </div>
+    <dialog class="hc-dialogo" data-hc-dialogo aria-labelledby="hc-d-titolo" data-lenis-prevent>
+      <div class="hc-d-box">
+        <button class="hc-d-chiudi" type="button" data-hc-chiudi aria-label={T('Chiudi', 'Close')}>×</button>
+        <div class="hc-d-palco" data-hc-d-palco></div>
+        <div class="hc-d-info">
+          <span class="mono" data-hc-d-num></span>
+          <h2 id="hc-d-titolo" data-hc-d-titolo></h2>
+          <p data-hc-d-testo></p>
+          <div class="hc-d-azioni">
+            <a class="btn btn-azione" href={preventivo} data-hc-d-prev data-azione>{T('Richiedi un preventivo', 'Request a quote')} <span class="freccia" aria-hidden="true">→</span></a>
+            <a class="btn btn-vetro" href="#" data-hc-d-link>{T('Scopri il servizio', 'Discover the service')}</a>
+          </div>
+          <div class="hc-d-frecce">
+            <button type="button" data-hc-d-prec aria-label={T('Servizio precedente', 'Previous service')}>←</button>
+            <button type="button" data-hc-d-succ aria-label={T('Servizio successivo', 'Next service')}>→</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
   </section>
 
   <!-- la prova che altri si sono già fidati, subito sotto la promessa (riprova sociale): solo clienti veri -->
