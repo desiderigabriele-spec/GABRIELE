@@ -2,6 +2,7 @@
 // La home in italiano (/) e in inglese (/en/): stessa struttura, testi nella lingua della pagina.
 import Base from '../layouts/Base.astro';
 import Anteprima from './Anteprima.astro';
+import Icona from './Icona.astro';
 import Intruso from './Intruso.astro';
 import MicroIcona from './MicroIcona.astro';
 import '../styles/recensioni.css';
@@ -20,7 +21,10 @@ const preventivo = url('preventivo', lang);
 const cinetica = it
   ? [['Siti web', 'Negozi online', 'Automazioni e AI', 'Gestionali'], ['Attenzione', 'Interesse', 'Fiducia', 'Desiderio', 'Azione'], ['Neuromarketing', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Copy che vende']]
   : [['Websites', 'Online stores', 'AI & automation', 'Custom software'], ['Attention', 'Interest', 'Trust', 'Desire', 'Action'], ['Neuromarketing', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Copy that sells']];
-// i servizi nell'hero: una riga sola sotto l'anteprima
+// i servizi nell'hero: il nome corto sulle linguette, una riga sola sotto l'anteprima
+const corti: Record<string, string> = it
+  ? { sito: 'Siti web', ecommerce: 'Negozi', software: 'Automazioni', gestionale: 'Gestionali', ads: 'Pubblicità', cura: 'Cura' }
+  : { sito: 'Websites', ecommerce: 'Stores', software: 'Automation', gestionale: 'Software', ads: 'Ads', cura: 'Care' };
 const brevi: Record<string, string> = it
   ? { sito: 'Ti trovano su Google e ti scrivono.', ecommerce: 'Vendi 24 ore su 24, anche mentre dormi.', software: 'Il lavoro ripetitivo si fa da solo.', gestionale: 'Il programma fatto come lavori tu.', ads: 'Annunci che portano clienti, non solo «mi piace».', cura: 'Sempre aggiornato, sicuro e più efficace.' }
   : { sito: 'People find you on Google and get in touch.', ecommerce: 'Sell 24/7, even while you sleep.', software: 'Repetitive work does itself.', gestionale: 'Software built around how you work.', ads: 'Ads that bring clients, not just likes.', cura: 'Always updated, secure and improving.' };
@@ -94,9 +98,6 @@ const jsonLd = {
           'Studiamo come lavori, poi costruiamo gli strumenti che ti fanno risparmiare ore e portano clienti.',
           'We study how you work, then build the tools that save you hours and bring in clients.',
         )}</p>
-        <div class="hc-servizi" data-appare="0.3" role="group" aria-label={T('03 · Scegli', '03 · Choose')}>
-          {servizi.map((s, i) => <button type="button" class={i === 0 ? 'on' : ''} data-hc={i} data-titolo={s.titolo} data-testo={brevi[s.id]} data-link={urlServizio(s.id, lang)} aria-pressed={i === 0 ? 'true' : 'false'}>{s.titolo}</button>)}
-        </div>
         <div class="hero-azioni" data-appare="0.4">
           <a class="btn btn-azione btn-grande" href={preventivo} data-azione>{T('Richiedi un preventivo', 'Request a quote')} <span class="freccia" aria-hidden="true">→</span></a>
           <a class="btn btn-vetro btn-grande" href={url('demo', lang)}>{T('Guarda le demo', 'See the demos')}</a>
@@ -107,11 +108,22 @@ const jsonLd = {
         </ul>
       </div>
       <div class="hc-vetrina" id="servizi" data-hero-vetrina>
+        <!-- le linguette dei servizi sopra l'anteprima: la riga rossa sotto quella accesa si riempie fino al prossimo servizio -->
+        <div class="hc-tab-testa"><span class="mono">{T('Guarda i servizi dal vivo', 'See the services live')}</span><span class="hc-clic mono" aria-hidden="true">{T('Scegli un servizio', 'Pick a service')}</span></div>
+        <div class="hc-tab" role="group" aria-label={T('I servizi', 'Services')}>
+          {servizi.map((s, i) => (
+            <button type="button" class={i === 0 ? 'on' : ''} data-hc={i} data-titolo={s.titolo} data-testo={brevi[s.id]} data-link={urlServizio(s.id, lang)} aria-pressed={i === 0 ? 'true' : 'false'}>
+              <span class="servizio-icona"><Icona nome={s.icona} /></span><span>{corti[s.id]}</span><i class="hc-avanza" aria-hidden="true"></i>
+            </button>
+          ))}
+        </div>
         <div class="hc-palco" aria-hidden="true">
           {servizi.map((s, i) => <div class="sv-ap hc-ap" data-ap={s.id} hidden={i !== 0}><Anteprima id={s.id} lang={lang} lazy={i !== 0} /></div>)}
         </div>
+        <button class="hc-freccia hc-prec" type="button" data-hc-prec aria-label={T('Servizio precedente', 'Previous service')}>←</button>
+        <button class="hc-freccia hc-succ" type="button" data-hc-succ aria-label={T('Servizio successivo', 'Next service')}>→</button>
         <div class="hc-info">
-          <div><b data-hc-titolo>{servizi[0].titolo}</b><span data-hc-testo>{brevi[servizi[0].id]}</span></div>
+          <div><b><em class="mono" data-hc-num>01 / 0{servizi.length}</em> <span data-hc-titolo>{servizi[0].titolo}</span></b><span data-hc-testo>{brevi[servizi[0].id]}</span></div>
           <a class="link-freccia" href={urlServizio(servizi[0].id, lang)} data-hc-link>{T('Scopri', 'Discover')} <span class="freccia" aria-hidden="true">→</span></a>
         </div>
       </div>

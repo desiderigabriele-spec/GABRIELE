@@ -325,10 +325,6 @@ html.intro-attiva .intro { display: grid; }
 .hero-chiara h1 { font-size: clamp(2.5rem, min(5vw, 8.6svh), 4.9rem); }
 .hero-chiara h1 .quadratino { margin-left: .06em; }
 .hc-testo .lead { max-width: 30em; }
-.hc-servizi { display: flex; flex-wrap: wrap; gap: .45rem; }
-.hc-servizi button { padding: .45rem .75rem; background: none; border: 1px solid var(--linea-forte); color: var(--nebbia); font: inherit; font-size: .84rem; font-weight: 600; cursor: pointer; transition: border-color .3s, color .3s, background .3s; }
-.hc-servizi button.on { border-color: var(--rosso); color: var(--latte); background: rgba(227, 6, 19, .1); }
-.hc-servizi button:focus-visible { outline: 2px solid var(--verde-azione); outline-offset: 2px; }
 .hc-vetrina { position: relative; padding: clamp(18px, 2.4vw, 32px); background: radial-gradient(120% 90% at 75% 0%, #1b1b1b, #0b0b0b 62%); border: 1px solid var(--linea); }
 .hc-ap[hidden] { display: none; }
 html.js .sv-ap:not(.in-vista) .ap * { animation-play-state: paused; }
@@ -338,12 +334,39 @@ html.js .sv-ap:not(.in-vista) .ap * { animation-play-state: paused; }
 .hc-info b { font-family: var(--f-titolo); font-size: 1.15rem; letter-spacing: -.03em; }
 .hc-info span { color: #a3a3a3; font-size: .9rem; }
 .hc-info .link-freccia { color: #fff; white-space: nowrap; }
+.hc-info em { font-style: normal; font-size: .7rem; letter-spacing: .12em; color: #a3a3a3; margin-right: .3rem; }
+/* le linguette dei servizi sopra l'anteprima: si capisce subito che si possono toccare */
+.hc-tab-testa { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: .7rem; font-size: .68rem; letter-spacing: .14em; color: #a3a3a3; }
+.hc-tab-testa > span:first-child::before { content: ''; display: inline-block; width: .55rem; height: .55rem; background: var(--rosso); margin-right: .5rem; vertical-align: .02rem; }
+.hc-clic { color: #fff; }
+.hc-clic::after { content: ' ↓'; color: var(--rosso); display: inline-block; }
+@media (prefers-reduced-motion: no-preference) { .hc-vetrina:not(.scelto) .hc-clic::after { animation: hc-giu 1.4s ease-in-out infinite; } }
+@keyframes hc-giu { 50% { transform: translateY(3px); } }
+.hc-vetrina.scelto .hc-clic { visibility: hidden; }
+.hc-tab { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin-bottom: clamp(12px, 1.8svh, 18px); }
+.hc-tab button { position: relative; display: grid; justify-items: center; gap: .4rem; padding: .6rem .15rem .7rem; background: rgba(255, 255, 255, .03); border: 1px solid rgba(255, 255, 255, .14); color: #a3a3a3; font: inherit; font-size: .68rem; letter-spacing: -.01em; white-space: nowrap; font-weight: 600; cursor: pointer; overflow: hidden; transition: border-color .25s, color .25s, background .25s, transform .25s; }
+.hc-tab button .servizio-icona { width: 30px; height: 30px; border-width: 1.5px; border-color: rgba(255, 255, 255, .22); background: none; }
+.hc-tab button .servizio-icona svg { width: 18px; height: 18px; }
+.hc-tab button:hover { border-color: rgba(255, 255, 255, .5); color: #fff; transform: translateY(-2px); }
+.hc-tab button.on { border-color: var(--rosso); color: #fff; background: rgba(227, 6, 19, .12); }
+.hc-tab button.on .servizio-icona { border-color: var(--rosso); background: var(--rosso); }
+.hc-tab button.on .servizio-icona .punto { fill: #fff; }
+.hc-tab button:focus-visible { outline: 2px solid var(--verde-azione); outline-offset: 2px; }
+.hc-avanza { position: absolute; left: 0; bottom: 0; height: 3px; width: calc(var(--avanza, 0) * 100%); background: var(--rosso); }
+.hc-palco { position: relative; }
+.hc-freccia { position: absolute; top: 50%; z-index: 3; width: 42px; height: 42px; margin-top: -21px; display: grid; place-items: center; background: rgba(10, 10, 10, .75); border: 1px solid rgba(255, 255, 255, .25); color: #fff; font-size: 1.1rem; cursor: pointer; opacity: .55; transition: opacity .25s, border-color .25s; }
+.hc-prec { left: 8px; } .hc-succ { right: 8px; }
+.hc-vetrina:hover .hc-freccia { opacity: 1; }
+.hc-freccia:hover, .hc-freccia:focus-visible { border-color: var(--rosso); opacity: 1; outline: none; }
 @media (max-width: 900px) {
   .hc-griglia { grid-template-columns: minmax(0, 1fr); }
   .hc-vetrina { padding: 14px; }
-  .hc-servizi { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
-  .hc-servizi::-webkit-scrollbar { display: none; }
-  .hc-servizi button { flex: none; }
+  .hc-tab { display: flex; overflow-x: auto; scrollbar-width: none; margin-inline: -14px; padding-inline: 14px; }
+  .hc-tab::-webkit-scrollbar { display: none; }
+  .hc-tab button { flex: none; min-width: 84px; }
+  .hc-freccia { display: none; }
+  .hc-tab-testa > span:first-child { display: none; }
+  .hc-tab-testa { justify-content: flex-start; }
 }
 /* ---------- Problema ---------- */
 .svolta { margin-top: clamp(56px, 8vw, 100px); font-family: var(--f-titolo); font-size: clamp(1.7rem, 3.6vw, 3.1rem); line-height: 1.1; letter-spacing: -0.025em; max-width: 20ch; }
