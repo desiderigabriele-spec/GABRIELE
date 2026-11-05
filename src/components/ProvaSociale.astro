@@ -1,0 +1,28 @@
+---
+// Riprova sociale: una riga con i clienti veri (data/sito.js, lavori), messa vicino alle promesse e prima delle richieste.
+// Solo nomi e loghi reali: niente numeri inventati. Porta alle schede dei progetti in home (#lavori).
+import { dati } from '../i18n/dati.js';
+import { url } from '../i18n/ui.js';
+interface Props { lang?: 'it' | 'en'; titolo?: string }
+const { lang = 'it', titolo } = Astro.props;
+const it = lang === 'it';
+const { lavori } = dati(lang);
+const iniziali = (nome: string) => nome.replace(/^Dott\.\s*/, '').split(' ').map((p) => p[0]).slice(0, 2).join('');
+---
+<div class="prova">
+  <div class="wrap prova-riga">
+    <span class="mono prova-titolo">{titolo || (it ? 'Si sono già fidati di noi' : 'They already trust us')}</span>
+    <ul class="prova-clienti" role="list">
+      {lavori.map((l) => (
+        <li>
+          <a href={`${url('home', lang)}#lavori`} class="prova-cliente">
+            {l.logo
+              ? <img src={l.logo} alt="" width="36" height="36" loading="lazy" decoding="async" />
+              : <span class="cliente-iniziali" aria-hidden="true">{iniziali(l.cliente)}</span>}
+            <span><strong>{l.cliente}</strong><small>{l.settore.split(' · ')[0]}</small></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>

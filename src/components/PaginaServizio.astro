@@ -2,6 +2,7 @@
 // La pagina di un servizio, in italiano (/servizi/...) e in inglese (/en/services/...):
 // cosa ottieni, come funziona, esempi, pacchetti dal listino, domande e gli altri servizi.
 import Base from '../layouts/Base.astro';
+import ProvaSociale from './ProvaSociale.astro';
 import Icona from './Icona.astro';
 import Anteprima from './Anteprima.astro';
 import MicroIcona from './MicroIcona.astro';
@@ -152,6 +153,9 @@ const jsonLd = {
       </div>
     </div>
   </section>
+
+  <!-- riprova sociale prima di chiedere: i clienti veri che si sono già fidati -->
+  <ProvaSociale lang={lang} />
 
   <!-- Tre punti di partenza, senza prezzi: il preventivo si fa sul caso del cliente, dopo averci parlato -->
   <section class="sezione" id="pacchetti" data-forma="3">

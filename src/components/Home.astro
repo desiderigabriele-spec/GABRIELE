@@ -8,6 +8,8 @@ import MicroIcona from './MicroIcona.astro';
 import '../styles/recensioni.css';
 import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
+import { demo, tempi, ORDINE_DEMO } from '../data/demo.js';
+import ProvaSociale from './ProvaSociale.astro';
 
 interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
@@ -67,8 +69,8 @@ const jsonLd = {
   <nav class="guida" aria-label={T('Capitoli', 'Chapters')} data-percorso>
     <span class="guida-luce" aria-hidden="true"></span>
     {(it
-      ? [['inizio', 'Guarda'], ['metodo', 'Fidati'], ['lavori', 'Ascolta'], ['prezzi', 'Scrivici']]
-      : [['inizio', 'Look'], ['metodo', 'Trust'], ['lavori', 'Listen'], ['prezzi', 'Write to us']]
+      ? [['inizio', 'Guarda'], ['servizi', 'Scegli'], ['metodo', 'Fidati'], ['lavori', 'Ascolta'], ['prezzi', 'Scrivici']]
+      : [['inizio', 'Look'], ['servizi', 'Choose'], ['metodo', 'Trust'], ['lavori', 'Listen'], ['prezzi', 'Write to us']]
     ).map(([id, nome], i) => <a href={`#${id}`} data-capitolo={id}><span>{String(i + 1).padStart(2, '0')} · {nome}</span></a>)}
   </nav>
 
@@ -107,7 +109,7 @@ const jsonLd = {
           <li><MicroIcona nome="risposta" />{T('Risposta entro 24 ore', 'Reply within 24 hours')}</li>
         </ul>
       </div>
-      <div class="hc-vetrina" id="servizi" data-hero-vetrina>
+      <div class="hc-vetrina" id="vetrina" data-hero-vetrina>
         <!-- le linguette dei servizi sopra l'anteprima: la riga rossa sotto quella accesa si riempie fino al prossimo servizio -->
         <div class="hc-tab-testa"><span class="mono">{T('Guarda i servizi dal vivo', 'See the services live')}</span><span class="hc-clic mono" aria-hidden="true">{T('Scegli un servizio', 'Pick a service')}</span></div>
         <div class="hc-tab" role="group" aria-label={T('I servizi', 'Services')}>
@@ -130,6 +132,61 @@ const jsonLd = {
     </div>
   </section>
 
+  <!-- la prova che altri si sono già fidati, subito sotto la promessa (riprova sociale): solo clienti veri -->
+  <ProvaSociale lang={lang} />
+
+  <!-- 02 · SCEGLI: tutti i servizi scritti, uno per riga (si leggono in pochi secondi), poi le demo AI da guardare.
+       Prima si capisce cosa facciamo, poi lo si vede funzionare: è il passaggio dall'attenzione all'interesse -->
+  <section class="sezione" id="servizi" data-forma="1">
+    <div class="wrap">
+      <div class="testa-sezione testa-riga">
+        <span class="capitolo" data-appare>{T('02 · Scegli', '02 · Choose')}</span>
+        <h2 data-righe>
+          <span class="riga"><span>{T('Tutto quello che', 'Everything we')}</span></span>
+          <span class="riga"><span><span class="em">{T('facciamo per te.', 'do for you.')}</span></span></span>
+        </h2>
+        <p class="lead" data-appare>{T(
+          'Sei servizi, un solo studio che li fa parlare tra loro. Scegli da dove partire: ogni pagina ti mostra cosa ottieni e come funziona.',
+          'Six services, one studio that makes them work together. Pick where to start: each page shows what you get and how it works.',
+        )}</p>
+      </div>
+      <ol class="sv-elenco" data-sequenza>
+        {servizi.map((s) => (
+          <li>
+            <a class="sv-voce" href={urlServizio(s.id, lang)}>
+              <span class="mono sv-num">{s.numero}</span>
+              <span class="servizio-icona"><Icona nome={s.icona} /></span>
+              <span class="sv-testo"><strong>{s.titolo}</strong><span>{s.semplice}</span></span>
+              <span class="sv-vai">{T('Scopri', 'Discover')} <span class="freccia" aria-hidden="true">→</span></span>
+            </a>
+          </li>
+        ))}
+      </ol>
+      <div class="demo-ai" data-appare>
+        <div class="demo-ai-testa">
+          <span class="mono"><i class="demo-ai-punto" aria-hidden="true"></i>{T('Demo AI dal vivo', 'Live AI demos')}</span>
+          <h3>{T('Non fidarti sulla parola: guardala lavorare.', 'Don’t take our word for it: watch it work.')}</h3>
+          <a class="link-freccia" href={url('ai', lang)}>{T('L’AI per aziende, spiegata semplice', 'AI for business, explained simply')} <span class="freccia" aria-hidden="true">→</span></a>
+        </div>
+        <ul class="demo-ai-schede">
+          {ORDINE_DEMO.map((id, i) => {
+            const d = demo[lang][id];
+            return (
+              <li>
+                <a class="demo-ai-scheda" href={`${url('demo', lang)}#demo-${id}`}>
+                  <span class="servizio-icona"><Icona nome={d.icona} /></span>
+                  <span class="mono">Demo {i + 1} · {d.etichetta}</span>
+                  <strong>{d.breve}</strong>
+                  <span class="demo-ai-play"><span class="demo-ai-tri" aria-hidden="true"></span>{T('Guarda', 'Watch')} · {tempi[id].fine} {T('secondi', 'seconds')}</span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <div class="cinetica" data-cinetica aria-hidden="true">
     {cinetica.map((riga, r) => (
       <div class={`cinetica-riga ${r === 1 ? 'cinetica-dx cinetica-vuota' : 'cinetica-sx'}`}>
@@ -142,7 +199,7 @@ const jsonLd = {
   <section class="sezione" id="metodo" data-forma="2">
     <div class="wrap">
       <div class="testa-sezione">
-        <span class="capitolo">{T('02 · Fidati', '02 · Trust')}</span>
+        <span class="capitolo">{T('03 · Fidati', '03 · Trust')}</span>
         {it ? (
           <h2 data-righe>
             <span class="riga"><span>Cinque passi nella testa</span></span>
@@ -195,7 +252,7 @@ const jsonLd = {
   <section class="sezione" id="lavori" data-forma="2">
     <div class="wrap">
       <div class="testa-sezione testa-riga">
-        <span class="capitolo" data-appare>{T('03 · Ascolta', '03 · Listen')}</span>
+        <span class="capitolo" data-appare>{T('04 · Ascolta', '04 · Listen')}</span>
         <h2 data-righe>
           <span class="riga"><span>{T('Clienti veri,', 'Real clients,')}</span></span>
           <span class="riga"><span><span class="em">{T('siti veri.', 'real websites.')}</span></span></span>
@@ -284,7 +341,7 @@ const jsonLd = {
   <!-- RICHIEDI UN PREVENTIVO: niente listino. I tre passi, le garanzie in una riga e i bottoni, in una sezione sola -->
   <section class="sezione finale" id="prezzi" data-forma="4">
     <div class="wrap finale-testo">
-      <span class="capitolo" data-appare>{T('04 · Scrivici', '04 · Write to us')}</span>
+      <span class="capitolo" data-appare>{T('05 · Scrivici', '05 · Write to us')}</span>
       <!-- qualcuno sta cercando adesso: la barra scrive da sola ricerche vere (vita.js, ricercaViva) -->
       <div class="cerca-viva" data-cerca-viva data-ricerche={JSON.stringify(it
         ? ['osteria milano stasera', 'dentista vicino a me', 'idraulico urgente milano', 'parrucchiere aperto sabato', 'cucina su misura preventivo']
