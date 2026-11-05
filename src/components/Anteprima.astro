@@ -33,7 +33,15 @@ const anello = (v: number) => `stroke-dasharray:${v} 100`;
 // così ognuno cade e atterra esattamente dove sta nella foto dopo (scripts: nessuno, solo CSS)
 const pezziLatte: number[][] = [[31.1, 26.6, 40.2, 34.8], [50.3, 27.4, 55.3, 30.6], [44.6, 28.2, 48.6, 30.5], [59.5, 30.3, 70.9, 39.8], [50.1, 33.1, 52.4, 36.1], [50.1, 38.1, 56.7, 49.1], [34.7, 39.3, 41.0, 46.3], [30.4, 42.2, 33.0, 44.7], [78.1, 43.6, 80.8, 47.6], [22.8, 44.7, 27.8, 54.4], [64.9, 44.9, 74.9, 55.1], [35.5, 48.5, 42.0, 59.1], [48.5, 48.7, 53.0, 56.5], [26.1, 50.0, 27.7, 52.1], [55.1, 54.2, 63.3, 58.9], [42.0, 57.9, 43.9, 59.7], [25.9, 59.2, 32.7, 63.6], [45.3, 60.1, 49.8, 63.3], [68.8, 60.8, 72.6, 63.9], [42.0, 61.4, 44.6, 63.9], [61.1, 64.0, 66.6, 69.3], [38.5, 66.8, 47.8, 71.3], [47.1, 68.7, 57.5, 75.8]];
 const pezziFoglie: number[][] = [[40.4, 30.2, 45.5, 35.9], [66.6, 40.8, 69.7, 45.8], [47.0, 46.5, 55.8, 51.9], [26.8, 48.9, 31.9, 54.7], [59.3, 59.6, 65.4, 64.8], [35.5, 63.6, 41.9, 71.3]];
-const pezzo = ([l, t, r, b]: number[], i: number) => `clip-path:inset(${t - 1}% ${100 - r - 1}% ${100 - b - 1}% ${l - 1}%);transform-origin:${(l + r) / 2}% ${(t + b) / 2}%;--i:${i}`;
+// ogni pezzo cade a modo suo: da un punto un po' spostato, girando su sé stesso, con un ritardo diverso (numeri fissi, sempre uguali)
+const caso = (i: number, k: number) => { const x = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453; return x - Math.floor(x); };
+const pezzo = ([l, t, r, b]: number[], i: number, ritardo: number) => [
+  `clip-path:inset(${t - 1}% ${100 - r - 1}% ${100 - b - 1}% ${l - 1}%)`,
+  `transform-origin:${(l + r) / 2}% ${(t + b) / 2}%`,
+  `--dx:${((caso(i, 1) - .5) * 5).toFixed(2)}em`, `--dy:${((caso(i, 2) - .5) * 5).toFixed(2)}em`,
+  `--rx:${Math.round((caso(i, 3) - .5) * 260)}deg`, `--ry:${Math.round((caso(i, 4) - .5) * 260)}deg`, `--rz:${Math.round((caso(i, 5) - .5) * 360)}deg`,
+  `animation-delay:${ritardo.toFixed(2)}s`,
+].join(';');
 ---
 <div class={`ap ap-${id}`} role="img" aria-label={T(d[0], d[1])}>
 <div class="ap-dentro">
@@ -134,8 +142,10 @@ const pezzo = ([l, t, r, b]: number[], i: number) => `clip-path:inset(${t - 1}% 
               <img class="pz-l pz-pomodoro" src={pzPomodoro.src} width="640" height="640" alt="" loading={carica} decoding="async" />
               <img class="pz-l pz-mozzarella" src={pzMozzarella.src} width="640" height="640" alt="" loading={carica} decoding="async" />
               <img class="pz-l pz-cotta" src={pzCotta.src} width="640" height="640" alt="" loading={carica} decoding="async" />
-              {pezziLatte.map((b, i) => <img class="pz-l pz-pezzo pz-latte" style={pezzo(b, i)} src={pzLatte.src} width="640" height="640" alt="" loading={carica} decoding="async" />)}
-              {pezziFoglie.map((b, i) => <img class="pz-l pz-pezzo pz-foglia" style={pezzo(b, i)} src={pzFoglie.src} width="640" height="640" alt="" loading={carica} decoding="async" />)}
+              <img class="pz-l pz-goccia" src={pzPomodoro.src} width="640" height="640" alt="" loading={carica} decoding="async" />
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((n) => <i class="pz-schizzo" style={`--a:${n * 45 + 20}deg;--d:${(4 + caso(n, 7) * 3).toFixed(1)}em;--s:${(.35 + caso(n, 8) * .4).toFixed(2)}em`}></i>)}
+              {pezziLatte.map((b, i) => <img class="pz-l pz-pezzo pz-latte" style={pezzo(b, i, caso(i, 6) * 1.5)} src={pzLatte.src} width="640" height="640" alt="" loading={carica} decoding="async" />)}
+              {pezziFoglie.map((b, i) => <img class="pz-l pz-pezzo pz-foglia" style={pezzo(b, i, i * .24 + caso(i, 9) * .12)} src={pzFoglie.src} width="640" height="640" alt="" loading={carica} decoding="async" />)}
             </div>
             {[1, 2, 3].map((n) => <i class={`pz-vapore v${n}`}></i>)}
           </div>
