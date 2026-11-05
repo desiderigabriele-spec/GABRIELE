@@ -10,9 +10,8 @@ import pzImpasto from '../assets/img/pizza/impasto.webp';
 import pzPomodoro from '../assets/img/pizza/pomodoro.webp';
 import pzMozzarella from '../assets/img/pizza/mozzarella.webp';
 import pzCotta from '../assets/img/pizza/cotta.webp';
-import pzSchizzo from '../assets/img/pizza/schizzo.webp';
-import pzFiordilatte from '../assets/img/pizza/fiordilatte.webp';
-import pzBasilico from '../assets/img/pizza/basilico.webp';
+import pzLatte from '../assets/img/pizza/pezzi-latte.webp';
+import pzFoglie from '../assets/img/pizza/pezzi-basilico.webp';
 import '../styles/anteprime.css';
 // lazy: in home le anteprime sono sei, le foto si scaricano solo quando servono
 interface Props { id: string; lang?: 'it' | 'en'; lazy?: boolean }
@@ -30,6 +29,11 @@ const descr: Record<string, [string, string]> = {
 };
 const d = descr[id] || descr.ecommerce;
 const anello = (v: number) => `stroke-dasharray:${v} 100`;
+// la pizza: i pezzi di mozzarella e le foglie sono ritagliati dalle foto della pizza stessa ([sinistra, alto, destra, basso] in %),
+// così ognuno cade e atterra esattamente dove sta nella foto dopo (scripts: nessuno, solo CSS)
+const pezziLatte: number[][] = [[31.1, 26.6, 40.2, 34.8], [50.3, 27.4, 55.3, 30.6], [44.6, 28.2, 48.6, 30.5], [59.5, 30.3, 70.9, 39.8], [50.1, 33.1, 52.4, 36.1], [50.1, 38.1, 56.7, 49.1], [34.7, 39.3, 41.0, 46.3], [30.4, 42.2, 33.0, 44.7], [78.1, 43.6, 80.8, 47.6], [22.8, 44.7, 27.8, 54.4], [64.9, 44.9, 74.9, 55.1], [35.5, 48.5, 42.0, 59.1], [48.5, 48.7, 53.0, 56.5], [26.1, 50.0, 27.7, 52.1], [55.1, 54.2, 63.3, 58.9], [42.0, 57.9, 43.9, 59.7], [25.9, 59.2, 32.7, 63.6], [45.3, 60.1, 49.8, 63.3], [68.8, 60.8, 72.6, 63.9], [42.0, 61.4, 44.6, 63.9], [61.1, 64.0, 66.6, 69.3], [38.5, 66.8, 47.8, 71.3], [47.1, 68.7, 57.5, 75.8]];
+const pezziFoglie: number[][] = [[40.4, 30.2, 45.5, 35.9], [66.6, 40.8, 69.7, 45.8], [47.0, 46.5, 55.8, 51.9], [26.8, 48.9, 31.9, 54.7], [59.3, 59.6, 65.4, 64.8], [35.5, 63.6, 41.9, 71.3]];
+const pezzo = ([l, t, r, b]: number[], i: number) => `clip-path:inset(${t - 1}% ${100 - r - 1}% ${100 - b - 1}% ${l - 1}%);transform-origin:${(l + r) / 2}% ${(t + b) / 2}%;--i:${i}`;
 ---
 <div class={`ap ap-${id}`} role="img" aria-label={T(d[0], d[1])}>
 <div class="ap-dentro">
@@ -130,10 +134,9 @@ const anello = (v: number) => `stroke-dasharray:${v} 100`;
               <img class="pz-l pz-pomodoro" src={pzPomodoro.src} width="640" height="640" alt="" loading={carica} decoding="async" />
               <img class="pz-l pz-mozzarella" src={pzMozzarella.src} width="640" height="640" alt="" loading={carica} decoding="async" />
               <img class="pz-l pz-cotta" src={pzCotta.src} width="640" height="640" alt="" loading={carica} decoding="async" />
-              {[1, 2, 3].map((n) => <img class={`pz-cade pz-foglia f${n}`} src={pzBasilico.src} width="300" height="300" alt="" loading={carica} decoding="async" />)}
+              {pezziLatte.map((b, i) => <img class="pz-l pz-pezzo pz-latte" style={pezzo(b, i)} src={pzLatte.src} width="640" height="640" alt="" loading={carica} decoding="async" />)}
+              {pezziFoglie.map((b, i) => <img class="pz-l pz-pezzo pz-foglia" style={pezzo(b, i)} src={pzFoglie.src} width="640" height="640" alt="" loading={carica} decoding="async" />)}
             </div>
-            <img class="pz-cade pz-schizzo" src={pzSchizzo.src} width="300" height="300" alt="" loading={carica} decoding="async" />
-            {[1, 2, 3].map((n) => <img class={`pz-cade pz-latte m${n}`} src={pzFiordilatte.src} width="300" height="300" alt="" loading={carica} decoding="async" />)}
             {[1, 2, 3].map((n) => <i class={`pz-vapore v${n}`}></i>)}
           </div>
           <div class="pz-indice">{[1, 2, 3, 4, 5].map((n) => <i class={`pz-i${n}`}></i>)}</div>

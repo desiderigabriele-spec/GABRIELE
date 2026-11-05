@@ -150,21 +150,20 @@
 .pz-pizza { position: absolute; left: 2.2em; right: 2.2em; top: 2em; aspect-ratio: 1; transform: rotateX(32deg); transform-style: preserve-3d; animation: pz-entra var(--ap-ciclo) var(--ease) infinite; }
 @keyframes pz-entra { 0% { opacity: 0; transform: rotateX(32deg) translateY(-3em) scale(.6) rotate(-120deg); } 7% { opacity: 1; transform: rotateX(32deg) scale(.92) rotate(0deg); } 14%, 24% { transform: rotateX(32deg) scale(1) rotate(20deg); } 70% { transform: rotateX(32deg) scale(1) rotate(80deg); filter: none; } 73% { filter: brightness(1.35) saturate(1.3); } 80% { filter: none; } 96% { opacity: 1; transform: rotateX(32deg) scale(1.03) rotate(110deg); } 100% { opacity: 0; transform: rotateX(32deg) scale(1.1) rotate(120deg); } }
 .pz-l { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.pz-pomodoro { animation: pz-pomodoro var(--ap-ciclo) ease infinite; }
+.pz-pomodoro { animation: pz-pomodoro var(--ap-ciclo) linear infinite; -webkit-mask-image: conic-gradient(from -90deg, #000 calc(var(--pz-giro) - 25deg), transparent var(--pz-giro)); mask-image: conic-gradient(from -90deg, #000 calc(var(--pz-giro) - 25deg), transparent var(--pz-giro)); }
 .pz-mozzarella { animation: pz-mozzarella var(--ap-ciclo) ease infinite; }
 .pz-cotta { animation: pz-cotta var(--ap-ciclo) ease infinite; }
-@keyframes pz-pomodoro { 0%, 29% { opacity: 0; } 33%, 99% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes pz-mozzarella { 0%, 45% { opacity: 0; } 48%, 99% { opacity: 1; } 100% { opacity: 0; } }
+/* il sugo si stende girando, come col mestolo: la maschera ruota e scopre la foto col pomodoro */
+@property --pz-giro { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@keyframes pz-pomodoro { 0%, 27% { --pz-giro: 0deg; opacity: 1; } 37% { --pz-giro: 400deg; } 99% { --pz-giro: 400deg; opacity: 1; } 100% { --pz-giro: 400deg; opacity: 0; } }
+@keyframes pz-mozzarella { 0%, 55% { opacity: 0; } 56%, 99% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes pz-cotta { 0%, 73% { opacity: 0; } 79%, 99% { opacity: 1; } 100% { opacity: 0; } }
-.ap .pz-cade { position: absolute; height: auto; object-fit: contain; pointer-events: none; opacity: 0; }
-.ap .pz-schizzo { left: 2em; top: 0; width: 19em; animation: pz-schizzo var(--ap-ciclo) cubic-bezier(.5, 0, .75, 0) infinite; }
-@keyframes pz-schizzo { 0%, 26% { opacity: 0; transform: translateY(-14em) scale(.45) rotate(-40deg); } 27% { opacity: 1; } 30% { opacity: 1; transform: translateY(1em) scaleY(.62) scale(1.05) rotate(0deg); } 33%, 100% { opacity: 0; transform: translateY(1em) scaleY(.62) scale(1.18); } }
-.ap .pz-latte { width: 4.2em; animation: pz-latte var(--ap-ciclo) cubic-bezier(.5, 0, .75, 0) infinite; }
-.pz-latte.m1 { left: 4em; top: 6em; } .pz-latte.m2 { left: 11.5em; top: 4.5em; animation-delay: .25s; } .pz-latte.m3 { left: 8em; top: 11em; animation-delay: .5s; }
-@keyframes pz-latte { 0%, 41% { opacity: 0; transform: translateY(-15em) rotate(-90deg) scale(.7); } 42% { opacity: 1; } 45% { opacity: 1; transform: translateY(0) rotate(0) scaleY(.65); } 48%, 100% { opacity: 0; transform: translateY(0) scaleY(.65) scale(.9); } }
-.ap .pz-foglia { width: 16%; animation: pz-foglia var(--ap-ciclo) cubic-bezier(.3, 0, .6, 1) infinite; }
-.pz-foglia.f1 { left: 22%; top: 24%; } .pz-foglia.f2 { left: 56%; top: 38%; animation-delay: .3s; } .pz-foglia.f3 { left: 34%; top: 58%; animation-delay: .6s; }
-@keyframes pz-foglia { 0%, 55% { opacity: 0; transform: translateZ(14em) rotate(-160deg) scale(1.3); } 56% { opacity: 1; } 60% { opacity: 1; transform: translateZ(.2em) rotate(15deg) scale(.55); } 74% { opacity: 1; transform: translateZ(.2em) rotate(15deg) scale(.55); } 78%, 100% { opacity: 0; transform: translateZ(.2em) rotate(15deg) scale(.5); } }
+/* ogni pezzo è ritagliato dalla foto: cade dall'alto e si posa esattamente al suo posto */
+.pz-pezzo { opacity: 0; will-change: transform, opacity; }
+.pz-latte { animation: pz-latte var(--ap-ciclo) cubic-bezier(.33, 0, .2, 1) infinite; animation-delay: calc(var(--i) * .07s); }
+.pz-foglia { animation: pz-foglia var(--ap-ciclo) cubic-bezier(.33, 0, .2, 1) infinite; animation-delay: calc(var(--i) * .16s); }
+@keyframes pz-latte { 0%, 41% { opacity: 0; transform: translateZ(11em) rotate(-70deg) scale(1.25); } 42% { opacity: 1; } 45.5% { opacity: 1; transform: translateZ(0) rotate(0) scale(1); } 46.5% { transform: translateZ(0) scale(1.04, .96); } 47.5%, 56% { opacity: 1; transform: none; } 57%, 100% { opacity: 0; transform: none; } }
+@keyframes pz-foglia { 0%, 56% { opacity: 0; transform: translateZ(13em) rotate(160deg) scale(1.4); } 57% { opacity: 1; } 61% { opacity: 1; transform: translateZ(.6em) rotate(-8deg) scale(1.03); } 63%, 79% { opacity: 1; transform: none; } 80%, 100% { opacity: 0; transform: none; } }
 .pz-vapore { position: absolute; bottom: 52%; width: 3.6em; height: 6em; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, .35), transparent); filter: blur(.4em); opacity: 0; animation: pz-vapore var(--ap-ciclo) ease-out infinite; }
 .pz-vapore.v1 { left: 30%; } .pz-vapore.v2 { left: 48%; animation-delay: .6s; } .pz-vapore.v3 { left: 62%; animation-delay: 1.1s; }
 @keyframes pz-vapore { 0%, 78% { opacity: 0; transform: translateY(2em) scale(.6); } 84% { opacity: .9; } 94%, 100% { opacity: 0; transform: translateY(-6em) scale(1.4); } }
@@ -303,8 +302,9 @@
 html.js .sv-ill:not(.in-vista) .ap * { animation-play-state: paused; }
 html.ridotto .ap * { animation: none !important; }
 html.ridotto .ap .ap-notifica { opacity: 1; }
-html.ridotto .ap .ap-cursore, html.ridotto .ap .pz-cur, html.ridotto .ap .pz-cade, html.ridotto .ap .pz-vapore, html.ridotto .ap .wap-dito, html.ridotto .ap .wap-scrive, html.ridotto .ap .ap-da { display: none; }
+html.ridotto .ap .ap-cursore, html.ridotto .ap .pz-cur, html.ridotto .ap .pz-pezzo, html.ridotto .ap .pz-vapore, html.ridotto .ap .wap-dito, html.ridotto .ap .wap-scrive, html.ridotto .ap .ap-da { display: none; }
 html.ridotto .ap :is(.pz-pomodoro, .pz-mozzarella, .pz-cotta, .pz-p5, .pz-pizza) { opacity: 1; }
+html.ridotto .ap .pz-pomodoro { -webkit-mask-image: none; mask-image: none; }
 html.ridotto .ap .pz-pizza { transform: rotateX(32deg); }
 html.ridotto .ap :is(.wap-b, .wap-scelte, .wap-ev2) { opacity: 1; }
 html.ridotto .ap .ap-a { opacity: 1; }
