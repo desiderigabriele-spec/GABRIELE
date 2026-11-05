@@ -151,7 +151,7 @@ p { margin: 0; text-wrap: pretty; }
 .em { color: inherit; font-weight: 300; }
 /* il percorso nel colore: la frase va dal grigio dello sguardo al verde del sì */
 .em-percorso { background: linear-gradient(90deg, var(--nebbia) 0%, var(--latte) 55%, var(--verde-testo) 92%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.em-firma { color: var(--rosso-testo); }
+.em-firma { color: var(--rosso-testo); font-weight: inherit; }
 /* il punto finale del titolo è il quadratino rosso del logo */
 .quadratino { display: inline-block; width: .2em; height: .2em; margin-left: .05em; background: var(--rosso); }
 .mono { font-family: var(--f-mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--nebbia); }

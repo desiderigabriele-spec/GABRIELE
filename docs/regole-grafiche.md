@@ -25,3 +25,9 @@ Regole prese solo da fonti ufficiali o riconosciute. Valgono per tutte le pagine
 - Butterick, Practical Typography, lunghezza riga: https://practicaltypography.com/line-length.html
 - Ricerca sulla lunghezza della riga (Visible Language): https://journals.uc.edu/index.php/vl/article/view/5765
 - digital.gov, aree da toccare su mobile: https://digital.gov/guides/mobile-principles/tap-targets
+
+## Titoli: grassetto e sottile
+- In grassetto va la parte che l'occhio deve prendere per prima scorrendo: il beneficio per il cliente, il suo problema o il nome della cosa («facciamo per te», «cambiano davvero», «Quante ore ti rubano», «Automazioni AI, gestionali e siti»).
+- In sottile (`.em`, stesso colore) va il contesto che prepara o completa la frase («Tutto quello che», «Sei cose che», «per la tua azienda»).
+- Una sola parte sottile per titolo; le parole in rosso (`.em-firma`) restano in grassetto.
+- Le promesse che ci distinguono restano in grassetto e la conseguenza è sottile: «Prima ti ascoltiamo. / Poi il preventivo», «Prima studiamo. / Poi costruiamo».

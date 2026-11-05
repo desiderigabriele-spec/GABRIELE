@@ -169,8 +169,8 @@ const jsonLd = {
       <div class="testa-sezione testa-riga">
         <span class="capitolo" data-appare>{T('02 · Scegli', '02 · Choose')}</span>
         <h2 data-righe>
-          <span class="riga"><span>{T('Tutto quello che', 'Everything we')}</span></span>
-          <span class="riga"><span><span class="em">{T('facciamo per te.', 'do for you.')}</span></span></span>
+          <span class="riga"><span><span class="em">{T('Tutto quello che', 'Everything we')}</span></span></span>
+          <span class="riga"><span>{T('facciamo per te.', 'do for you.')}</span></span>
         </h2>
         <p class="lead" data-appare>{T(
           'Sei servizi, un solo studio che li fa parlare tra loro. Scegli da dove partire: ogni pagina ti mostra cosa ottieni e come funziona.',
@@ -359,8 +359,8 @@ const jsonLd = {
       <div class="testa-sezione centro">
         <span class="capitolo" data-appare>{T('Domande frequenti', 'Frequently asked questions')}</span>
         {it
-          ? <h2 data-righe><span class="riga"><span>Quello che <span class="em">tutti</span> ci chiedono.</span></span></h2>
-          : <h2 data-righe><span class="riga"><span>What <span class="em">everyone</span> asks us.</span></span></h2>}
+          ? <h2 data-righe><span class="riga"><span><span class="em">Quello che</span> tutti ci chiedono.</span></span></h2>
+          : <h2 data-righe><span class="riga"><span><span class="em">What</span> everyone asks us.</span></span></h2>}
       </div>
       <div class="faq">
         {faq.slice(0, 5).map((f) => (
