@@ -1,13 +1,10 @@
 ---
 // La home in italiano (/) e in inglese (/en/): stessa struttura, testi nella lingua della pagina.
 import Base from '../layouts/Base.astro';
-import Icona from './Icona.astro';
 import Anteprima from './Anteprima.astro';
 import Intruso from './Intruso.astro';
-import PrimaDopo from './PrimaDopo.astro';
 import MicroIcona from './MicroIcona.astro';
 import '../styles/recensioni.css';
-import '../styles/servizi-vivi.css';
 import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
 
@@ -23,7 +20,7 @@ const preventivo = url('preventivo', lang);
 const cinetica = it
   ? [['Siti web', 'Negozi online', 'Automazioni e AI', 'Gestionali'], ['Attenzione', 'Interesse', 'Fiducia', 'Desiderio', 'Azione'], ['Neuromarketing', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Copy che vende']]
   : [['Websites', 'Online stores', 'AI & automation', 'Custom software'], ['Attention', 'Interest', 'Trust', 'Desire', 'Action'], ['Neuromarketing', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Copy that sells']];
-// i servizi sul telefono: una riga sola per scheda
+// i servizi nell'hero: una riga sola sotto l'anteprima
 const brevi: Record<string, string> = it
   ? { sito: 'Ti trovano su Google e ti scrivono.', ecommerce: 'Vendi 24 ore su 24, anche mentre dormi.', software: 'Il lavoro ripetitivo si fa da solo.', gestionale: 'Il programma fatto come lavori tu.', ads: 'Annunci che portano clienti, non solo «mi piace».', cura: 'Sempre aggiornato, sicuro e più efficace.' }
   : { sito: 'People find you on Google and get in touch.', ecommerce: 'Sell 24/7, even while you sleep.', software: 'Repetitive work does itself.', gestionale: 'Software built around how you work.', ads: 'Ads that bring clients, not just likes.', cura: 'Always updated, secure and improving.' };
@@ -66,8 +63,8 @@ const jsonLd = {
   <nav class="guida" aria-label={T('Capitoli', 'Chapters')} data-percorso>
     <span class="guida-luce" aria-hidden="true"></span>
     {(it
-      ? [['inizio', 'Guarda'], ['problema', 'Capisci'], ['servizi', 'Scegli'], ['metodo', 'Fidati'], ['prezzi', 'Scrivici']]
-      : [['inizio', 'Look'], ['problema', 'See'], ['servizi', 'Choose'], ['metodo', 'Trust'], ['prezzi', 'Write to us']]
+      ? [['inizio', 'Guarda'], ['metodo', 'Fidati'], ['lavori', 'Ascolta'], ['prezzi', 'Scrivici']]
+      : [['inizio', 'Look'], ['metodo', 'Trust'], ['lavori', 'Listen'], ['prezzi', 'Write to us']]
     ).map(([id, nome], i) => <a href={`#${id}`} data-capitolo={id}><span>{String(i + 1).padStart(2, '0')} · {nome}</span></a>)}
   </nav>
 
@@ -98,19 +95,25 @@ const jsonLd = {
           'We study how you work, then build the tools that save you hours and bring in clients.',
         )}</p>
         <div class="hc-servizi" data-appare="0.3" role="group" aria-label={T('03 · Scegli', '03 · Choose')}>
-          {servizi.map((s, i) => <button type="button" class={i === 0 ? 'on' : ''} data-hc={i} aria-pressed={i === 0 ? 'true' : 'false'}>{s.titolo}</button>)}
+          {servizi.map((s, i) => <button type="button" class={i === 0 ? 'on' : ''} data-hc={i} data-titolo={s.titolo} data-testo={brevi[s.id]} data-link={urlServizio(s.id, lang)} aria-pressed={i === 0 ? 'true' : 'false'}>{s.titolo}</button>)}
         </div>
         <div class="hero-azioni" data-appare="0.4">
           <a class="btn btn-azione btn-grande" href={preventivo} data-azione>{T('Richiedi un preventivo', 'Request a quote')} <span class="freccia" aria-hidden="true">→</span></a>
-          <a class="btn btn-vetro btn-grande" href="#servizi">{T('Guarda i servizi', 'See the services')}</a>
+          <a class="btn btn-vetro btn-grande" href={url('demo', lang)}>{T('Guarda le demo', 'See the demos')}</a>
         </div>
         <ul class="rassicura" data-appare="0.5">
           <li><MicroIcona nome="tempo" />{T('Preventivo scritto, su misura', 'Written, tailored quote')}</li>
           <li><MicroIcona nome="risposta" />{T('Risposta entro 24 ore', 'Reply within 24 hours')}</li>
         </ul>
       </div>
-      <div class="hc-vetrina" data-hero-vetrina aria-hidden="true">
-        {servizi.map((s, i) => <div class="sv-ap hc-ap" data-ap={s.id} hidden={i !== 0}><Anteprima id={s.id} lang={lang} lazy={i !== 0} /></div>)}
+      <div class="hc-vetrina" id="servizi" data-hero-vetrina>
+        <div class="hc-palco" aria-hidden="true">
+          {servizi.map((s, i) => <div class="sv-ap hc-ap" data-ap={s.id} hidden={i !== 0}><Anteprima id={s.id} lang={lang} lazy={i !== 0} /></div>)}
+        </div>
+        <div class="hc-info">
+          <div><b data-hc-titolo>{servizi[0].titolo}</b><span data-hc-testo>{brevi[servizi[0].id]}</span></div>
+          <a class="link-freccia" href={urlServizio(servizi[0].id, lang)} data-hc-link>{T('Scopri', 'Discover')} <span class="freccia" aria-hidden="true">→</span></a>
+        </div>
       </div>
     </div>
   </section>
@@ -123,115 +126,11 @@ const jsonLd = {
     ))}
   </div>
 
-  <!-- IL PROBLEMA -->
-  <section class="sezione" id="problema" data-forma="0">
-    <div class="wrap">
-      <div class="testa-sezione">
-        <span class="capitolo" data-appare>{T('02 · Capisci', '02 · See')}</span>
-        {it ? (
-          <h2 data-righe>
-            <span class="riga"><span>Un sito bello non basta.</span></span>
-            <span class="riga"><span>Deve far venire <span class="em">voglia</span></span></span>
-            <span class="riga"><span>di sceglierti.</span></span>
-          </h2>
-        ) : (
-          <h2 data-righe>
-            <span class="riga"><span>A beautiful site isn't enough.</span></span>
-            <span class="riga"><span>It has to make people <span class="em">want</span></span></span>
-            <span class="riga"><span>to choose you.</span></span>
-          </h2>
-        )}
-      </div>
-      <!-- i tre problemi: la giornata di un cliente, due volte. «Oggi» ti perde, «Con noi» ti scrive (vita.js, giornata) -->
-      <div class="giornata" data-giornata>
-        <div class="gi-interruttore" role="group" aria-label={T('Scegli la giornata', 'Choose the day')}>
-          <i aria-hidden="true"></i>
-          <button type="button" class="on" aria-pressed="true" data-lato="oggi">{T('Oggi', 'Today')}</button>
-          <button type="button" aria-pressed="false" data-lato="noi">{T('Con noi', 'With us')}</button>
-        </div>
-        <ol class="gi-momenti" role="list">
-          {(it ? [
-            ['09:12', 'Cerca', 'Trova prima un altro.', 'Sei a pagina 3 di Google.', 'Trova te, per primo.', 'In cima a Google, nella sua zona.'],
-            ['09:14', 'Apre il sito', 'Lo chiude dopo 4 secondi.', 'Lento, e non si capisce cosa fai.', 'Capisce in 3 secondi.', 'Cosa fai, per chi e quanto costa.'],
-            ['21:40', 'Ci ripensa', 'Non ti scrive.', 'Nessun bottone chiaro: rimanda.', 'Ti scrive su WhatsApp.', 'Un tocco, messaggio già pronto.'],
-          ] : [
-            ['09:12', 'Searches', 'Finds someone else first.', "You're on page 3 of Google.", 'Finds you, first.', 'Top of Google, in their area.'],
-            ['09:14', 'Opens the site', 'Closes it after 4 seconds.', "Slow, and it's unclear what you do.", 'Gets it in 3 seconds.', 'What you do, for whom and what it costs.'],
-            ['21:40', 'Thinks it over', "Doesn't write to you.", 'No clear button: puts it off.', 'Messages you on WhatsApp.', 'One tap, message already written.'],
-          ]).map(([ora, cosa, oggi, oggiPerche, noi, noiPerche]) => (
-            <li class="gi-momento">
-              <span class="gi-ora">{ora} · {cosa}<span class="gi-esito" aria-hidden="true"></span></span>
-              <span class="gi-stato gi-oggi"><b>{oggi}</b><span>{oggiPerche}</span></span>
-              <span class="gi-stato gi-noi"><b>{noi}</b><span>{noiPerche}</span></span>
-            </li>
-          ))}
-        </ol>
-      </div>
-      <div class="svolta-riga">
-        <p class="svolta" data-appare>
-          {T('Noi costruiamo quel percorso.', 'We build that path.')} <span class="em em-percorso">{T('Dal primo sguardo al sì.', 'From first glance to yes.')}</span>
-        </p>
-        <PrimaDopo lang={lang} />
-      </div>
-    </div>
-  </section>
-
-  <!-- 02 · INTERESSE -->
-  <section class="sezione" id="servizi" data-forma="1">
-    <div class="wrap">
-      <div class="testa-sezione testa-riga">
-        <span class="capitolo" data-appare>{T('03 · Scegli', '03 · Choose')}</span>
-        <h2 data-righe>
-          <span class="riga"><span>{T('Cosa facciamo,', 'What we do,')}</span></span>
-          <span class="riga"><span><span class="em">{T('detto semplice.', 'in plain words.')}</span></span></span>
-        </h2>
-        <p class="lead" data-appare>{T(
-          'Sei servizi che lavorano insieme. Puoi sceglierne uno solo o farli parlare tra loro: è lì che i risultati si moltiplicano.',
-          "Six services that work together. Pick just one or let them talk to each other: that's where results multiply.",
-        )}</p>
-      </div>
-      <!-- i servizi in movimento (servizi-vivi.js): le stesse anteprime animate delle pagine servizio.
-           Sul computer l'indice e l'anteprima, sul telefono i nomi sopra e le schede da scorrere -->
-      <div class="sv" data-servizi-vivi data-lang={lang}>
-        <div class="sv-pc">
-          <nav class="sv-lista" aria-label={T('Servizi', 'Services')}>
-            {servizi.map((s) => (
-              <a class="sv-voce" href={urlServizio(s.id, lang)} data-id={s.id} data-titolo={s.titolo} data-testo={s.semplice}>
-                <span class="mono">{s.numero}</span><span class="servizio-icona"><Icona nome={s.icona} /></span><b>{s.titolo}</b><span class="freccia" aria-hidden="true">→</span>
-              </a>
-            ))}
-          </nav>
-          <div class="sv-anteprima" aria-hidden="true">
-            <div class="sv-palco">{servizi.map((s, i) => <div class="sv-ap" data-ap={s.id} hidden={i !== 0}><Anteprima id={s.id} lang={lang} lazy /></div>)}</div>
-            <div class="sv-info"><div><b data-sv-titolo></b><p data-sv-testo></p></div><a class="link-freccia" href={urlServizio(servizi[0].id, lang)} data-sv-scopri tabindex="-1">{T('Scopri', 'Discover')} <span class="freccia">→</span></a></div>
-          </div>
-        </div>
-        <div class="sv-tel">
-          <div class="sv-chips">{servizi.map((s, i) => <button class="sv-chip" type="button" aria-pressed={i === 0 ? 'true' : 'false'}><i></i>{s.titolo}</button>)}</div>
-          <div class="sv-fila" data-sv-fila>
-            {servizi.map((s) => (
-              <article class="sv-scheda">
-                <div class="sv-ap sv-ap-scheda"><Anteprima id={s.id} lang={lang} lazy /></div>
-                <div class="sv-corpo">
-                  <div class="sv-riga1"><h3><a href={urlServizio(s.id, lang)}>{s.titolo}</a></h3><span class="mono">{s.numero} / 0{servizi.length}</span></div>
-                  <p>{brevi[s.id] || s.semplice}</p>
-                  <span class="link-freccia" aria-hidden="true">{T('Scopri', 'Discover')} <span class="freccia">→</span></span>
-                </div>
-              </article>
-            ))}
-          </div>
-          <div class="sv-sotto"><span class="sv-hint">{T('Scorri o tocca un nome', 'Swipe or tap a name')} <i aria-hidden="true">→</i></span><span class="sv-conta" data-sv-conta><b>01</b> / 0{servizi.length}</span></div>
-          <div class="sv-linea" data-sv-linea style={`--n:${servizi.length}`}><b></b></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- 03 · IL METODO: i cinque passi. Scorrendo si accende un numero alla volta (rosso) e a destra entra il suo passo (vita.js, metodoNumeri) -->
   <section class="sezione" id="metodo" data-forma="2">
     <div class="wrap">
       <div class="testa-sezione">
-        <span class="capitolo">{T('04 · Fidati', '04 · Trust')}</span>
+        <span class="capitolo">{T('02 · Fidati', '02 · Trust')}</span>
         {it ? (
           <h2 data-righe>
             <span class="riga"><span>Cinque passi nella testa</span></span>
@@ -284,7 +183,7 @@ const jsonLd = {
   <section class="sezione" id="lavori" data-forma="2">
     <div class="wrap">
       <div class="testa-sezione testa-riga">
-        <span class="capitolo" data-appare>{T('Parlano di noi', 'What clients say')}</span>
+        <span class="capitolo" data-appare>{T('03 · Ascolta', '03 · Listen')}</span>
         <h2 data-righe>
           <span class="riga"><span>{T('Clienti veri,', 'Real clients,')}</span></span>
           <span class="riga"><span><span class="em">{T('siti veri.', 'real websites.')}</span></span></span>
@@ -373,7 +272,7 @@ const jsonLd = {
   <!-- RICHIEDI UN PREVENTIVO: niente listino. I tre passi, le garanzie in una riga e i bottoni, in una sezione sola -->
   <section class="sezione finale" id="prezzi" data-forma="4">
     <div class="wrap finale-testo">
-      <span class="capitolo" data-appare>{T('05 · Scrivici', '05 · Write to us')}</span>
+      <span class="capitolo" data-appare>{T('04 · Scrivici', '04 · Write to us')}</span>
       <!-- qualcuno sta cercando adesso: la barra scrive da sola ricerche vere (vita.js, ricercaViva) -->
       <div class="cerca-viva" data-cerca-viva data-ricerche={JSON.stringify(it
         ? ['osteria milano stasera', 'dentista vicino a me', 'idraulico urgente milano', 'parrucchiere aperto sabato', 'cucina su misura preventivo']

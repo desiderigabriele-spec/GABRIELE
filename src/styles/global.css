@@ -331,10 +331,19 @@ html.intro-attiva .intro { display: grid; }
 .hc-servizi button:focus-visible { outline: 2px solid var(--verde-azione); outline-offset: 2px; }
 .hc-vetrina { position: relative; padding: clamp(18px, 2.4vw, 32px); background: radial-gradient(120% 90% at 75% 0%, #1b1b1b, #0b0b0b 62%); border: 1px solid var(--linea); }
 .hc-ap[hidden] { display: none; }
+html.js .sv-ap:not(.in-vista) .ap * { animation-play-state: paused; }
+.hc-vetrina { scroll-margin-top: calc(var(--header-h) + 20px); }
+.hc-info { display: flex; justify-content: space-between; align-items: end; gap: 1rem; margin-top: clamp(14px, 2svh, 22px); padding-top: .9rem; border-top: 1px solid rgba(255, 255, 255, .12); color: #fff; }
+.hc-info > div { display: grid; gap: .15rem; min-width: 0; }
+.hc-info b { font-family: var(--f-titolo); font-size: 1.15rem; letter-spacing: -.03em; }
+.hc-info span { color: #a3a3a3; font-size: .9rem; }
+.hc-info .link-freccia { color: #fff; white-space: nowrap; }
 @media (max-width: 900px) {
   .hc-griglia { grid-template-columns: minmax(0, 1fr); }
   .hc-vetrina { padding: 14px; }
-  .hc-servizi { display: none; }
+  .hc-servizi { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
+  .hc-servizi::-webkit-scrollbar { display: none; }
+  .hc-servizi button { flex: none; }
 }
 /* ---------- Problema ---------- */
 .svolta { margin-top: clamp(56px, 8vw, 100px); font-family: var(--f-titolo); font-size: clamp(1.7rem, 3.6vw, 3.1rem); line-height: 1.1; letter-spacing: -0.025em; max-width: 20ch; }
