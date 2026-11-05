@@ -128,7 +128,7 @@ button { font: inherit; color: inherit; }
 .skip-link:focus { top: 1rem; }
 
 .wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
-.sezione { position: relative; padding-block: clamp(72px, 12vw, 120px); }
+.sezione { position: relative; padding-block: var(--sezione-spazio); }
 /* lo stacco tra le sezioni: aria sopra e sotto e, in mezzo, una fila di stelle che si accendono a onda (site.js) */
 .stelle-fila { position: relative; z-index: 1; width: min(1180px, calc(100% - 2 * var(--gutter))); margin: clamp(28px, 7svh, 96px) auto; height: 12px; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
 .stelle-fila i { width: 2px; height: 2px; background: var(--latte); opacity: .16; }
@@ -154,7 +154,7 @@ p { margin: 0; text-wrap: pretty; }
 .capitolo { display: inline-flex; align-items: center; gap: .75rem; font-family: var(--f-mono); font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--nebbia); }
 .capitolo::before { content: ''; width: 10px; height: 10px; flex: none; background: var(--rosso); }
 .lead { font-size: clamp(1.08rem, 1.1vw + .7rem, 1.35rem); color: var(--nebbia); max-width: 38em; line-height: 1.55; }
-.testa-sezione { display: grid; gap: clamp(.9rem, 2vh, 1.4rem); max-width: 860px; margin-bottom: clamp(28px, 4.4svh, 64px); }
+.testa-sezione { display: grid; gap: var(--sp-3); max-width: 860px; margin-bottom: var(--testa-spazio); }
 /* titolo a sinistra e frase a destra: metà altezza, stessa lettura */
 @media (min-width: 901px) {
   .testa-riga { max-width: none; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); column-gap: clamp(28px, 5vw, 80px); align-items: end; }
@@ -484,7 +484,7 @@ input[type='range']::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .passo .verbo::after { content: ''; position: absolute; left: 0; right: 0; bottom: -.04em; height: .09em; background: var(--rosso); transform-origin: left; transform: scaleX(var(--sotto, 1)); }
 html.vita-on .passo .verbo::after { transition: transform .12s linear; }
 html.ridotto .passo .verbo::after { transform: none; }
-.passo-testa { font-family: var(--f-titolo); font-weight: 600; letter-spacing: -0.02em; font-size: clamp(1.15rem, 1.6vw, 1.5rem); color: var(--latte); line-height: 1.3; max-width: 34em; }
+.passo-testa { font-family: var(--f-titolo); font-weight: 600; letter-spacing: -0.02em; font-size: clamp(1.15rem, 1.6vw, 1.5rem); color: var(--latte); line-height: 1.45; max-width: 34em; }
 /* la tecnica psicologica: il nome si vede sempre, la spiegazione si apre con «Vedi la spiegazione» */
 .passo-tecnica { max-width: 34em; background: rgba(var(--sup-rgb), .85); border: 1px solid var(--linea); border-left: 3px solid var(--rosso); }
 .passo-tecnica summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; padding: .85rem 1.1rem; }
@@ -752,7 +752,6 @@ html.menu-aperto .guida { opacity: 0; pointer-events: none; }
    Ogni sezione entra in uno schermo (computer): spazi e titoli seguono l'altezza della finestra
    ========================================================================== */
 @media (min-width: 901px) {
-  .sezione { padding-block: clamp(44px, 6.6svh, 96px); }
   .hero { padding-top: calc(var(--header-h) + 3svh); padding-bottom: 6svh; }
   .hero-testo { gap: clamp(1rem, 2.6svh, 1.8rem); }
   .hero-testo .lead { font-size: clamp(1.05rem, min(1.1vw + .6rem, 2.6svh), 1.35rem); }
@@ -788,8 +787,6 @@ html.menu-aperto .guida { opacity: 0; pointer-events: none; }
 }
 /* schermi bassi (portatili): un po' più compatto, sempre leggibile */
 @media (min-width: 901px) and (max-height: 840px) {
-  .sezione { padding-block: clamp(36px, 5svh, 60px); }
-  .testa-sezione { margin-bottom: clamp(20px, 3.4svh, 40px); }
   .testa-riga .lead { font-size: 1rem; }
   .cliente-anteprima { aspect-ratio: 16 / 4.2; }
   .cliente-corpo { padding: 16px 22px; gap: .55rem; }
@@ -833,8 +830,6 @@ html.menu-aperto .guida { opacity: 0; pointer-events: none; }
   .piano .lista-check li { font-size: .8rem; line-height: 1.3; }
 }
 @media (min-width: 901px) {
-  #prezzi, #pacchetti, #servizi { padding-block: clamp(30px, 4.2svh, 56px); }
-  #prezzi .testa-sezione, #pacchetti .testa-sezione, #servizi .testa-sezione { margin-bottom: clamp(16px, 2.6svh, 32px); }
   .servizio-icona { width: 38px; height: 38px; }
 }
 
@@ -1108,3 +1103,33 @@ html.vita-on .st-fold:not(.aperto) .sf-destra::after { opacity: .55; }
 /* la home più corta: i tre passi del metodo e quelli del preventivo, senza riquadri */
 #metodo .pv-tappe { margin-bottom: clamp(20px, 3svh, 32px); }
 .finale .pv-tappe { text-align: left; width: 100%; margin-block: clamp(8px, 2svh, 20px); }
+
+/* ==========================================================================
+   Regole di spazio, testo e tocco (da fonti attendibili, vedi docs/regole-grafiche.md)
+   - spazi su una griglia di 8 px (Material Design): 8 · 16 · 24 · 32 · 48 · 64 · 96 · 128
+   - tra una sezione e l'altra più spazio che dentro la sezione: si capisce cosa sta insieme
+   - testo corrente almeno 16 px, interlinea 1.5 (WCAG 1.4.12), righe di 45-75 caratteri (WCAG 1.4.8: max 80)
+   - aree da toccare almeno 44 × 44 px (Apple HIG, WCAG 2.5.5); mai sotto 24 px (WCAG 2.5.8)
+   ========================================================================== */
+:root {
+  --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px; --sp-6: 48px; --sp-8: 64px; --sp-12: 96px; --sp-16: 128px;
+  --sezione-spazio: clamp(80px, 9vw, 128px);   /* 80 sul telefono, 128 sugli schermi grandi */
+  --testa-spazio: clamp(40px, 5vw, 64px);      /* tra il titolo di una sezione e il suo contenuto */
+}
+.lead { max-width: 62ch; }
+.rassicura { font-size: 1rem; gap: var(--sp-1) var(--sp-3); }
+/* aree da toccare: almeno 44 px, anche dove il disegno è più piccolo */
+.nav-voce { min-height: 44px; }
+.nome-btn, .tema-btn { width: 44px; height: 44px; }
+.lingua { height: 44px; }
+.footer-grid a { display: inline-block; padding-block: 10px; }
+.guida a::before { content: ''; position: absolute; inset: -16px; }
+/* la linea dei capitoli con quattro tappe: in alto, a un terzo, a due terzi e in fondo */
+.guida:has(a:nth-of-type(4):last-of-type) a:nth-of-type(2) { top: 33.33%; }
+.guida:has(a:nth-of-type(4):last-of-type) a:nth-of-type(3) { top: 66.66%; }
+.guida:has(a:nth-of-type(4):last-of-type) a:nth-of-type(4) { top: 100%; }
+.hero .rassicura, .finale .rassicura { font-size: 1rem; }
+.site-header .btn { min-height: 44px; }
+.hc-freccia { width: 44px; height: 44px; margin-top: -22px; }
+.footer-legale a, .footer-legale button { display: inline-block; padding-block: 12px; }
+.site-header .brand { min-height: 44px; display: inline-flex; align-items: center; }
