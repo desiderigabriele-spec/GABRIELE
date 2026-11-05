@@ -1,7 +1,6 @@
 ---
-// «AI per aziende»: la giornata di un cliente (Oggi / Con noi), quante ore ti rubano i lavori ripetitivi e il calcolo
-// in tre passi in una finestra. Prima stavano in home; ora sono qui, dove chi vuole capire l'AI le cerca.
-import PrimaDopo from './PrimaDopo.astro';
+// «AI per aziende»: quante ore ti rubano i lavori ripetitivi e il calcolo in tre passi in una finestra.
+// Prima stava in home; ora è qui, dove chi vuole capire l'AI lo cerca.
 import { dati } from '../i18n/dati.js';
 import { url } from '../i18n/ui.js';
 import { euro } from '../data/formato.js';
@@ -39,59 +38,6 @@ const ripetitivi: [string, string, number][] = it ? [
   ['Writing reports and summaries', 'Every Monday the week’s summary arrives, in plain words.', 1.5],
 ];
 ---
-  <!-- IL PROBLEMA -->
-  <section class="sezione" id="problema" data-forma="0">
-    <div class="wrap">
-      <div class="testa-sezione">
-        <span class="capitolo" data-appare>{T('Il problema', 'The problem')}</span>
-        {it ? (
-          <h2 data-righe>
-            <span class="riga"><span>Un sito bello non basta.</span></span>
-            <span class="riga"><span>Deve far venire <span class="em">voglia</span></span></span>
-            <span class="riga"><span>di sceglierti.</span></span>
-          </h2>
-        ) : (
-          <h2 data-righe>
-            <span class="riga"><span>A beautiful site isn't enough.</span></span>
-            <span class="riga"><span>It has to make people <span class="em">want</span></span></span>
-            <span class="riga"><span>to choose you.</span></span>
-          </h2>
-        )}
-      </div>
-      <!-- i tre problemi: la giornata di un cliente, due volte. «Oggi» ti perde, «Con noi» ti scrive (vita.js, giornata) -->
-      <div class="giornata" data-giornata>
-        <div class="gi-interruttore" role="group" aria-label={T('Scegli la giornata', 'Choose the day')}>
-          <i aria-hidden="true"></i>
-          <button type="button" class="on" aria-pressed="true" data-lato="oggi">{T('Oggi', 'Today')}</button>
-          <button type="button" aria-pressed="false" data-lato="noi">{T('Con noi', 'With us')}</button>
-        </div>
-        <ol class="gi-momenti" role="list">
-          {(it ? [
-            ['09:12', 'Cerca', 'Trova prima un altro.', 'Sei a pagina 3 di Google.', 'Trova te, per primo.', 'In cima a Google, nella sua zona.'],
-            ['09:14', 'Apre il sito', 'Lo chiude dopo 4 secondi.', 'Lento, e non si capisce cosa fai.', 'Capisce in 3 secondi.', 'Cosa fai, per chi e quanto costa.'],
-            ['21:40', 'Ci ripensa', 'Non ti scrive.', 'Nessun bottone chiaro: rimanda.', 'Ti scrive su WhatsApp.', 'Un tocco, messaggio già pronto.'],
-          ] : [
-            ['09:12', 'Searches', 'Finds someone else first.', "You're on page 3 of Google.", 'Finds you, first.', 'Top of Google, in their area.'],
-            ['09:14', 'Opens the site', 'Closes it after 4 seconds.', "Slow, and it's unclear what you do.", 'Gets it in 3 seconds.', 'What you do, for whom and what it costs.'],
-            ['21:40', 'Thinks it over', "Doesn't write to you.", 'No clear button: puts it off.', 'Messages you on WhatsApp.', 'One tap, message already written.'],
-          ]).map(([ora, cosa, oggi, oggiPerche, noi, noiPerche]) => (
-            <li class="gi-momento">
-              <span class="gi-ora">{ora} · {cosa}<span class="gi-esito" aria-hidden="true"></span></span>
-              <span class="gi-stato gi-oggi"><b>{oggi}</b><span>{oggiPerche}</span></span>
-              <span class="gi-stato gi-noi"><b>{noi}</b><span>{noiPerche}</span></span>
-            </li>
-          ))}
-        </ol>
-      </div>
-      <div class="svolta-riga">
-        <p class="svolta" data-appare>
-          {T('Noi costruiamo quel percorso.', 'We build that path.')} <span class="em em-percorso">{T('Dal primo sguardo al sì.', 'From first glance to yes.')}</span>
-        </p>
-        <PrimaDopo lang={lang} />
-      </div>
-    </div>
-  </section>
-
   <!-- SOFTWARE CON AI: un assaggio che incuriosisce; il calcolo si fa in tre passi in una finestra -->
   <section class="sezione" id="risparmio" data-forma="1">
     <div class="wrap risparmio">
