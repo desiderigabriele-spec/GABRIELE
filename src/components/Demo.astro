@@ -11,8 +11,11 @@ import bagno from '../assets/img/demo-bagno.webp';
 import studio from '../assets/img/demo-studio.webp';
 import '../styles/demo.css';
 
-interface Props { id: 'whatsapp' | 'preventivo' | 'assistente'; lang?: 'it' | 'en'; numero?: number; tutte?: boolean; forma?: string }
-const { id, lang = 'it', numero, tutte = false, forma = '2' } = Astro.props;
+// finestra: la demo dentro una finestra che si apre (home, «Demo AI dal vivo»): niente sezione intorno e niente scritte che entrano
+interface Props { id: 'whatsapp' | 'preventivo' | 'assistente'; lang?: 'it' | 'en'; numero?: number; tutte?: boolean; forma?: string; finestra?: boolean }
+const { id, lang = 'it', numero, tutte = false, forma = '2', finestra = false } = Astro.props;
+const Contenitore = finestra ? 'div' : 'section';
+const entra = finestra ? undefined : '';
 const it = lang === 'it';
 const T = (a: string, b: string) => (it ? a : b);
 const d: any = demo[lang][id];
@@ -32,15 +35,15 @@ const config = { ...tm, scene: tm.scene.map((a: number, i: number) => ({ a, k: V
 const totale = id === 'preventivo' ? P.righe.reduce((s: number, r: [string, number]) => s + r[1], 0) : 0;
 const descr = `${d.titolo.join(' ')} ${V.scene.map((s: string[]) => s[1]).join(' ')}`;
 ---
-<section class="sezione demo-sez" id={`demo-${id}`} data-forma={forma}>
+<Contenitore class={finestra ? 'demo-fin' : 'sezione demo-sez'} id={`demo-${id}`} data-forma={finestra ? undefined : forma}>
   <div class="wrap">
     <div class="testa-sezione testa-riga demo-testa">
-      <span class="capitolo" data-appare>{numero ? `Demo ${numero} · ` : 'Demo · '}{d.etichetta}</span>
-      <h2 data-righe>
+      <span class="capitolo" data-appare={entra}>{numero ? `Demo ${numero} · ` : 'Demo · '}{d.etichetta}</span>
+      <h2 data-righe={entra}>
         <span class="riga"><span>{d.titolo[0]}</span></span>
         <span class="riga"><span><span class="em">{d.titolo[1]}</span></span></span>
       </h2>
-      <p class="lead" data-appare>{d.sotto}</p>
+      <p class="lead" data-appare={entra}>{d.sotto}</p>
     </div>
 
     <div class={`vd vd-${id}`} data-demo tabindex="0" role="region" aria-label={`${T('Demo video', 'Video demo')}: ${descr}`} data-pausa={T('Pausa', 'Pause')} data-play={T('Riproduci', 'Play')} data-ricomincia={T('Ricomincia', 'Start again')}>
@@ -281,7 +284,7 @@ const descr = `${d.titolo.join(' ')} ${V.scene.map((s: string[]) => s[1]).join('
       {tutte && <a class="link-freccia" href={url('demo', lang)}>{T('Guarda tutte le demo', 'See all the demos')} <span class="freccia" aria-hidden="true">→</span></a>}
     </p>
   </div>
-</section>
+</Contenitore>
 
 <script>
   import '../scripts/demo.js';

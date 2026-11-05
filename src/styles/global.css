@@ -1244,3 +1244,17 @@ html.vita-on .st-fold:not(.aperto) .sf-destra::after { opacity: .55; }
   .hc-d-palco { padding: 56px 12px 12px; }
   .hc-d-info { padding: var(--sp-3) var(--sp-2) var(--sp-4); }
 }
+
+/* Demo AI dal vivo: la demo si apre in una finestra sopra la home */
+.demo-dialogo { width: min(1280px, calc(100vw - 32px)); max-width: none; max-height: calc(100svh - 32px); padding: 0; border: 1px solid var(--linea-forte); background: var(--superficie); color: var(--latte); overflow: auto; }
+.demo-dialogo::backdrop { background: rgba(0, 0, 0, .72); backdrop-filter: blur(4px); }
+.demo-dialogo .demo-fin { padding: clamp(20px, 2.6vw, 36px) 0 clamp(16px, 2vw, 24px); }
+.demo-dialogo .demo-testa { margin-bottom: var(--sp-2); padding-right: 56px; }
+.demo-dialogo .demo-testa h2 { font-size: clamp(1.5rem, 2.6vw, 2.2rem); }
+.demo-dialogo .demo-testa .lead { display: none; }
+.demo-dialogo .vd { width: min(100%, calc((100svh - 250px) * 16 / 9)); }
+.demo-dialogo .demo-avviso { margin-top: var(--sp-2); }
+@media (max-width: 759px) {
+  .demo-dialogo { width: 100vw; height: 100svh; max-height: none; border: 0; }
+  .demo-dialogo .vd { height: min(calc(100svh - 230px), 177.8vw, 780px); }
+}

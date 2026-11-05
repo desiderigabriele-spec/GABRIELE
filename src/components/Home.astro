@@ -10,6 +10,7 @@ import { dati } from '../i18n/dati.js';
 import { url, urlServizio } from '../i18n/ui.js';
 import { demo, tempi, ORDINE_DEMO } from '../data/demo.js';
 import ProvaSociale from './ProvaSociale.astro';
+import Demo from './Demo.astro';
 
 interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
@@ -196,7 +197,7 @@ const jsonLd = {
             const d = demo[lang][id];
             return (
               <li>
-                <a class="demo-ai-scheda" href={`${url('demo', lang)}#demo-${id}`}>
+                <a class="demo-ai-scheda" href={`${url('demo', lang)}#demo-${id}`} data-demo-apri={id} aria-haspopup="dialog">
                   <span class="servizio-icona"><Icona nome={d.icona} /></span>
                   <span class="mono">Demo {i + 1} · {d.etichetta}</span>
                   <strong>{d.breve}</strong>
@@ -208,6 +209,13 @@ const jsonLd = {
         </ul>
       </div>
     </div>
+    <!-- le demo si aprono qui, in una finestra, e partono subito: si guardano senza lasciare la pagina -->
+    {ORDINE_DEMO.map((id, i) => (
+      <dialog class="demo-dialogo" data-demo-dialogo={id} aria-label={`Demo ${i + 1} · ${demo[lang][id].breve}`} data-lenis-prevent>
+        <button class="hc-d-chiudi" type="button" data-demo-chiudi aria-label={T('Chiudi', 'Close')}>×</button>
+        <Demo id={id as 'whatsapp'} lang={lang} numero={i + 1} tutte finestra />
+      </dialog>
+    ))}
   </section>
 
   <div class="cinetica" data-cinetica aria-hidden="true">
@@ -409,4 +417,17 @@ const jsonLd = {
 <script>
   import { serviziVivi } from '../scripts/servizi-vivi.js';
   serviziVivi();
+  // Demo AI dal vivo: la scheda apre la demo in una finestra e la fa ripartire dall'inizio
+  document.querySelectorAll<HTMLAnchorElement>('[data-demo-apri]').forEach((a) => {
+    const dlg = document.querySelector<HTMLDialogElement>(`[data-demo-dialogo="${a.dataset.demoApri}"]`);
+    if (!dlg) return;
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      dlg.showModal(); (window as any).gdLenis?.stop();
+      requestAnimationFrame(() => (dlg.querySelector('[data-rivedi]') as HTMLButtonElement)?.click());
+    });
+    dlg.addEventListener('close', () => (window as any).gdLenis?.start());
+    dlg.querySelector('[data-demo-chiudi]')!.addEventListener('click', () => dlg.close());
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  });
 </script>
