@@ -124,7 +124,7 @@ const jsonLd = {
         <div class="hc-palco">
           {servizi.map((s, i) => <div class="sv-ap hc-ap" data-ap={s.id} hidden={i !== 0} aria-hidden="true"><Anteprima id={s.id} lang={lang} lazy={i !== 0} /></div>)}
           <button class="hc-apri" type="button" data-hc-apri aria-haspopup="dialog">
-            <span class="hc-apri-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg>{T('Apri l’anteprima', 'Open the preview')}</span>
+            <span class="hc-apri-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg>{T('Ingrandisci', 'Enlarge')}</span>
           </button>
         </div>
         <button class="hc-freccia hc-prec" type="button" data-hc-prec aria-label={T('Servizio precedente', 'Previous service')}>←</button>
@@ -140,6 +140,9 @@ const jsonLd = {
         <button class="hc-d-chiudi" type="button" data-hc-chiudi aria-label={T('Chiudi', 'Close')}>×</button>
         <div class="hc-d-palco" data-hc-d-palco></div>
         <div class="hc-d-info">
+          <div class="hc-d-tab" role="group" aria-label={T('I servizi', 'Services')}>
+            {servizi.map((s, i) => <button type="button" data-hc-d-vai={i}>{corti[s.id]}</button>)}
+          </div>
           <span class="mono" data-hc-d-num></span>
           <h2 id="hc-d-titolo" data-hc-d-titolo></h2>
           <p data-hc-d-testo></p>
@@ -188,34 +191,35 @@ const jsonLd = {
       </ol>
       <div class="demo-ai" data-appare>
         <div class="demo-ai-testa">
-          <span class="mono"><i class="demo-ai-punto" aria-hidden="true"></i>{T('Demo AI dal vivo', 'Live AI demos')}</span>
-          <h3>{T('Non fidarti sulla parola: guardala lavorare.', 'Don’t take our word for it: watch it work.')}</h3>
+          <span class="mono"><i class="demo-ai-punto" aria-hidden="true"></i>{T('Dal vivo · 3 esempi', 'Live · 3 examples')}</span>
+          <h3>{T('Demo AI dal vivo', 'Live AI demos')}</h3>
+          <p class="demo-ai-sotto">{T('Non fidarti sulla parola: guardala lavorare. Tocca un riquadro per ingrandirlo.', 'Don’t take our word for it: watch it work. Tap a box to enlarge it.')}</p>
           <a class="link-freccia" href={url('ai', lang)}>{T('L’AI per aziende, spiegata semplice', 'AI for business, explained simply')} <span class="freccia" aria-hidden="true">→</span></a>
         </div>
+        <!-- ogni riquadro mostra la demo che gira in piccolo; toccandolo la stessa demo passa nella finestra grande e riparte -->
         <ul class="demo-ai-schede">
           {ORDINE_DEMO.map((id, i) => {
             const d = demo[lang][id];
             return (
-              <li>
-                <a class="demo-ai-scheda" href={`${url('demo', lang)}#demo-${id}`} data-demo-apri={id} aria-haspopup="dialog">
-                  <span class="servizio-icona"><Icona nome={d.icona} /></span>
+              <li class="demo-ai-scheda">
+                <div class="demo-ai-mini" data-demo-mini={id}><Demo id={id as 'whatsapp'} lang={lang} numero={i + 1} tutte finestra /></div>
+                <div class="demo-ai-dida">
                   <span class="mono">Demo {i + 1} · {d.etichetta}</span>
                   <strong>{d.breve}</strong>
-                  <span class="demo-ai-play"><span class="demo-ai-tri" aria-hidden="true"></span>{T('Guarda', 'Watch')} · {tempi[id].fine} {T('secondi', 'seconds')}</span>
-                </a>
+                  <span class="demo-ai-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg>{T('Ingrandisci', 'Enlarge')} · {tempi[id].fine} {T('secondi', 'seconds')}</span>
+                </div>
+                <a class="demo-ai-apri" href={`${url('demo', lang)}#demo-${id}`} data-demo-apri={id} aria-haspopup="dialog" aria-label={`${T('Ingrandisci la demo', 'Enlarge the demo')}: ${d.breve}`}></a>
               </li>
             );
           })}
         </ul>
       </div>
     </div>
-    <!-- le demo si aprono qui, in una finestra, e partono subito: si guardano senza lasciare la pagina -->
-    {ORDINE_DEMO.map((id, i) => (
-      <dialog class="demo-dialogo" data-demo-dialogo={id} aria-label={`Demo ${i + 1} · ${demo[lang][id].breve}`} data-lenis-prevent>
-        <button class="hc-d-chiudi" type="button" data-demo-chiudi aria-label={T('Chiudi', 'Close')}>×</button>
-        <Demo id={id as 'whatsapp'} lang={lang} numero={i + 1} tutte finestra />
-      </dialog>
-    ))}
+    <!-- la finestra grande delle demo: la demo del riquadro toccato viene spostata qui (vedi lo script in fondo) -->
+    <dialog class="demo-dialogo" data-demo-dialogo aria-label={T('Demo AI dal vivo', 'Live AI demo')} data-lenis-prevent>
+      <button class="hc-d-chiudi" type="button" data-demo-chiudi aria-label={T('Chiudi', 'Close')}>×</button>
+      <div data-demo-posto></div>
+    </dialog>
   </section>
 
   <div class="cinetica" data-cinetica aria-hidden="true">
@@ -417,17 +421,32 @@ const jsonLd = {
 <script>
   import { serviziVivi } from '../scripts/servizi-vivi.js';
   serviziVivi();
-  // Demo AI dal vivo: la scheda apre la demo in una finestra e la fa ripartire dall'inizio
+  // Demo AI dal vivo: nei riquadri le demo girano in piccolo (senza comandi); toccandone una passa nella finestra grande,
+  // riparte dall'inizio e si comanda; chiudendo torna nel suo riquadro e ricomincia a girare
+  const dlgDemo = document.querySelector<HTMLDialogElement>('[data-demo-dialogo]');
+  const posto = dlgDemo?.querySelector<HTMLElement>('[data-demo-posto]');
+  let inFinestra: HTMLElement | null = null, casa: HTMLElement | null = null;
+  const rivedi = (el: HTMLElement) => requestAnimationFrame(() => el.querySelector<HTMLButtonElement>('[data-rivedi]')?.click());
+  document.querySelectorAll<HTMLElement>('[data-demo-mini] .demo-fin').forEach((el) => el.setAttribute('inert', ''));
+  document.querySelectorAll<HTMLElement>('[data-demo-mini]').forEach((m) => new ResizeObserver(([e]) => m.style.setProperty('--k', String(e.contentRect.width / 960))).observe(m));
   document.querySelectorAll<HTMLAnchorElement>('[data-demo-apri]').forEach((a) => {
-    const dlg = document.querySelector<HTMLDialogElement>(`[data-demo-dialogo="${a.dataset.demoApri}"]`);
-    if (!dlg) return;
     a.addEventListener('click', (e) => {
+      if (!dlgDemo || !posto) return;
+      const mini = document.querySelector<HTMLElement>(`[data-demo-mini="${a.dataset.demoApri}"]`);
+      const el = mini?.querySelector<HTMLElement>('.demo-fin');
+      if (!mini || !el) return;
       e.preventDefault();
-      dlg.showModal(); (window as any).gdLenis?.stop();
-      requestAnimationFrame(() => (dlg.querySelector('[data-rivedi]') as HTMLButtonElement)?.click());
+      casa = mini; inFinestra = el;
+      el.removeAttribute('inert'); posto.append(el);
+      dlgDemo.showModal(); (window as any).gdLenis?.stop();
+      rivedi(el);
     });
-    dlg.addEventListener('close', () => (window as any).gdLenis?.start());
-    dlg.querySelector('[data-demo-chiudi]')!.addEventListener('click', () => dlg.close());
-    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
   });
+  dlgDemo?.addEventListener('close', () => {
+    (window as any).gdLenis?.start();
+    if (inFinestra && casa) { inFinestra.setAttribute('inert', ''); casa.append(inFinestra); rivedi(inFinestra); }
+    inFinestra = casa = null;
+  });
+  dlgDemo?.querySelector('[data-demo-chiudi]')?.addEventListener('click', () => dlgDemo.close());
+  dlgDemo?.addEventListener('click', (e) => { if (e.target === dlgDemo) dlgDemo.close(); });
 </script>

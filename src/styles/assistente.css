@@ -47,12 +47,12 @@
 .fp-scelte button, .fp-scelte a { border: 1px solid var(--linea-forte); background: none; color: var(--latte); padding: 8px 11px; font: inherit; font-size: .84rem; cursor: pointer; text-align: left; text-decoration: none; }
 .fp-scelte :is(button, a):hover, .fp-scelte :is(button, a):focus-visible { border-color: var(--latte); outline: none; }
 .fp-scelte .forte { background: var(--verde-azione); border-color: var(--verde-azione); color: var(--verde-azione-scritta); font-weight: 600; }
-.fp-scelte .wa { border-color: #25d366; color: #b8f5cf; }
+.fp-scelte .wa { border-color: var(--wa-bordo); color: var(--wa-testo); }
 .fp-piede { border-top: 1px solid var(--linea); padding: 8px; display: grid; gap: 8px; }
 .fp-azioni { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .fp-azioni a { display: grid; place-items: center; padding: 10px 8px; font-size: .86rem; font-weight: 600; text-decoration: none; }
 .fp-pv { background: var(--verde-azione); color: var(--verde-azione-scritta); }
-.fp-wa { border: 1px solid #25d366; color: #b8f5cf; }
+.fp-wa { border: 1px solid var(--wa-bordo); color: var(--wa-testo); }
 .fp-scrivi { display: flex; gap: 6px; }
 .fp-scrivi input { flex: 1; min-width: 0; height: 44px; background: transparent; border: 1px solid var(--linea-forte); color: var(--latte); padding: 0 10px; font: inherit; font-size: 16px; }
 .fp-scrivi input:focus { outline: none; border-color: var(--latte); }

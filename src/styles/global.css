@@ -32,6 +32,8 @@
   --azione-testo: #ffffff;
   /* i bottoni d'azione: verde smeraldo pieno, scritta quasi nera (rosso per guardare, verde per agire) */
   --verde-azione: #10b981; --verde-azione-su: #34d399; --verde-azione-scritta: #04130d; --verde-rgb: 16, 185, 129;
+  /* il verde di WhatsApp per le scritte: chiaro sul nero, scuro sul bianco (contrasto 4.5:1) */
+  --wa-testo: #b8f5cf; --wa-bordo: #25d366;
   /* il verde quando è scritta: un filo più chiaro sul nero, un filo più scuro sulla carta */
   --verde-testo: #34d399;
 
@@ -65,6 +67,7 @@ html[data-tema='chiaro'] {
   --ambra: #0a0a0a;
   --rosso-testo: #d10512;
   --verde-azione-su: #0f9f6e; --verde-testo: #0f9f6e;
+  --wa-testo: #0a7a3a; --wa-bordo: #1a9e4f;
   color-scheme: light;
 }
 /* i dispositivi disegnati (telefoni, schermi, codice, finte app) restano scuri anche nella versione chiara */
@@ -746,7 +749,8 @@ html.menu-aperto .guida { opacity: 0; pointer-events: none; }
 @keyframes cometa { from { background-position: 100% 0; } to { background-position: 0 0; opacity: .2; } }
 
 /* angoli dritti ovunque, tranne il telefono disegnato, i siti degli altri (prima/dopo, lo studio della demo) e il giorno del calendario */
-*:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic), *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic)::before, *:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic)::after { border-radius: 0 !important; }
+/* :where() tiene la regola a specificità zero: vince sugli angoli normali, ma chi dichiara un raggio con !important (tondini, telefoni) lo mantiene */
+:where(*:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic)), :where(*:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic))::before, :where(*:not(.tel, .tel *, .pd-prima *, .pd-dopo *, .intro *, .vd-mondo *, .ap-vero, .ap-vero *, .ap .wa-ic))::after { border-radius: 0 !important; }
 
 
 /* ==========================================================================
@@ -1190,11 +1194,6 @@ html.vita-on .st-fold:not(.aperto) .sf-destra::after { opacity: .55; }
 .demo-ai-testa h3 { font-family: var(--f-titolo); font-size: clamp(1.4rem, 2.2vw, 1.9rem); letter-spacing: -0.03em; line-height: 1.1; color: var(--latte); }
 .demo-ai-testa .link-freccia { color: var(--latte); font-size: .92rem; }
 .demo-ai-schede { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-1); }
-.demo-ai-scheda { display: grid; gap: var(--sp-1); align-content: start; height: 100%; padding: var(--sp-3); text-decoration: none; color: var(--latte); background: rgba(var(--latte-rgb), .03); border: 1px solid var(--linea-forte); transition: border-color .25s, transform .25s; }
-.demo-ai-scheda:hover, .demo-ai-scheda:focus-visible { border-color: var(--rosso); transform: translateY(-2px); outline: none; }
-.demo-ai-scheda .servizio-icona { background: none; margin-bottom: var(--sp-1); }
-.demo-ai-scheda .mono { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--nebbia); }
-.demo-ai-scheda strong { font-family: var(--f-titolo); font-size: 1.1rem; letter-spacing: -0.02em; line-height: 1.2; }
 .demo-ai-play { margin-top: var(--sp-1); display: inline-flex; align-items: center; gap: 8px; font-size: .86rem; color: var(--latte); }
 .demo-ai-tri { width: 0; height: 0; border-left: 8px solid var(--rosso); border-block: 5px solid transparent; }
 @media (max-width: 980px) {
@@ -1211,9 +1210,7 @@ html.vita-on .st-fold:not(.aperto) .sf-destra::after { opacity: .55; }
   .prova-riga { gap: var(--sp-1) var(--sp-3); }
 }
 @media (max-width: 820px) {
-  .demo-ai-scheda { grid-template-columns: auto minmax(0, 1fr); column-gap: var(--sp-2); row-gap: 4px; padding: var(--sp-2); }
-  .demo-ai-scheda .servizio-icona { grid-row: span 3; margin: 0; width: 40px; height: 40px; }
-  .demo-ai-play { margin-top: 0; }
+    .demo-ai-play { margin-top: 0; }
 }
 
 /* l'anteprima dell'hero si apre in grande (servizi-vivi.js) */
@@ -1258,3 +1255,29 @@ html.vita-on .st-fold:not(.aperto) .sf-destra::after { opacity: .55; }
   .demo-dialogo { width: 100vw; height: 100svh; max-height: none; border: 0; }
   .demo-dialogo .vd { height: min(calc(100svh - 230px), 177.8vw, 780px); }
 }
+
+/* Demo AI dal vivo: titolo chiaro, riquadri con la demo che gira in piccolo */
+.demo-ai-testa h3 { font-size: clamp(1.8rem, 3vw, 2.6rem); }
+.demo-ai-sotto { color: var(--nebbia); font-size: 1rem; line-height: 1.5; max-width: 30ch; }
+.demo-ai-scheda { position: relative; display: grid; grid-template-rows: auto 1fr; padding: 0; height: 100%; color: var(--latte); background: rgba(var(--latte-rgb), .03); border: 1px solid var(--linea-forte); transition: border-color .25s, transform .25s; }
+.demo-ai-scheda:hover, .demo-ai-scheda:focus-within { border-color: var(--rosso); transform: translateY(-2px); }
+.demo-ai-mini { position: relative; overflow: hidden; background: #050505; aspect-ratio: 16 / 10; }
+.demo-ai-mini .demo-fin { padding: 0; }
+.demo-ai-mini .demo-fin > .wrap { padding: 0; max-width: none; }
+.demo-ai-mini :is(.demo-testa, .vd-comandi, .demo-avviso, .sr-only) { display: none !important; }
+/* nel riquadro la demo è disegnata a grandezza piena (960×600) e rimpicciolita tutta insieme: --k lo calcola lo script della home */
+.demo-ai-mini .vd { position: absolute; left: 0; top: 0; width: 960px; max-width: none; height: 600px; aspect-ratio: auto; margin: 0; transform: scale(var(--k, .3)); transform-origin: 0 0; pointer-events: none; }
+.demo-ai-dida { display: grid; gap: 6px; align-content: start; padding: var(--sp-2); }
+.demo-ai-dida .mono { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--nebbia); }
+.demo-ai-dida strong { font-family: var(--f-titolo); font-size: 1.1rem; letter-spacing: -0.02em; line-height: 1.2; }
+.demo-ai-play svg { width: 14px; height: 14px; color: var(--rosso); }
+.demo-ai-apri { position: absolute; inset: 0; z-index: 2; cursor: zoom-in; }
+.demo-ai-apri:focus-visible { outline: 2px solid var(--verde-azione); outline-offset: 2px; }
+@media (max-width: 820px) {
+  .demo-ai-dida { padding: 12px; }
+}
+/* la finestra dei servizi: si sceglie anche dalle linguette in alto */
+.hc-d-tab { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: var(--sp-1); }
+.hc-d-tab button { min-height: 36px; padding: 0 12px; background: none; border: 1px solid var(--linea-forte); color: var(--nebbia); font: 600 .8rem/1 var(--f-testo); cursor: pointer; transition: border-color .2s, color .2s; }
+.hc-d-tab button:hover { border-color: var(--latte); color: var(--latte); }
+.hc-d-tab button.on { border-color: var(--rosso); color: var(--latte); background: rgba(227, 6, 19, .08); }

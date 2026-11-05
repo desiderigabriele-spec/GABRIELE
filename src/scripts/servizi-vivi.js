@@ -41,6 +41,7 @@ export function serviziVivi() {
     num.textContent = `${String(i + 1).padStart(2, '0')} / ${tot}`;
     if (dlg && b) {
       q('[data-hc-d-num]').textContent = num.textContent;
+      dlg.querySelectorAll('[data-hc-d-vai]').forEach((t, j) => { t.classList.toggle('on', j === i); t.setAttribute('aria-pressed', String(j === i)); });
       q('[data-hc-d-titolo]').textContent = b.dataset.titolo;
       q('[data-hc-d-testo]').textContent = b.dataset.semplice;
       q('[data-hc-d-link]').href = b.dataset.link;
@@ -63,6 +64,7 @@ export function serviziVivi() {
     });
     q('[data-hc-chiudi]').addEventListener('click', () => dlg.close());
     dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    dlg.querySelectorAll('[data-hc-d-vai]').forEach((t) => t.addEventListener('click', () => mostra(+t.dataset.hcDVai)));
     q('[data-hc-d-prec]').addEventListener('click', () => mostra((att - 1 + ap.length) % ap.length));
     q('[data-hc-d-succ]').addEventListener('click', () => mostra((att + 1) % ap.length));
   }

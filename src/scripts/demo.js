@@ -96,7 +96,8 @@ document.querySelectorAll('[data-demo]').forEach((player) => {
     ultimo = ora;
     if (!va || !visto || tenuto || document.hidden) { giroId = 0; ultimo = 0; return; }
     t = Math.min(FINE, t + dt);
-    if (t >= FINE) { va = false; segna(); }
+    // nel riquadro piccolo della home (data-demo-mini) la demo ricomincia da sola, come una GIF
+    if (t >= FINE) { if (player.closest('[data-demo-mini]')) t = 0; else { va = false; segna(); } }
     disegna();
     giroId = requestAnimationFrame(giro);
   }
