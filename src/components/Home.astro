@@ -3,6 +3,7 @@
 import Base from '../layouts/Base.astro';
 import Icona from './Icona.astro';
 import Anteprima from './Anteprima.astro';
+import Intruso from './Intruso.astro';
 import MicroIcona from './MicroIcona.astro';
 import '../styles/recensioni.css';
 import '../styles/servizi-vivi.css';
@@ -13,7 +14,7 @@ interface Props { lang?: 'it' | 'en' }
 const { lang = 'it' } = Astro.props;
 const it = lang === 'it';
 const T = (a: string, b: string) => (it ? a : b);
-const { servizi, lavori, faq, contatti } = dati(lang);
+const { servizi, metodo, lavori, faq, contatti } = dati(lang);
 const iniziali = (nome: string) => nome.replace(/^Dott\.\s*/, '').split(' ').map((p) => p[0]).slice(0, 2).join('');
 const preventivo = url('preventivo', lang);
 
@@ -150,32 +151,54 @@ const jsonLd = {
     </div>
   </section>
 
-  <!-- COME LAVORIAMO: tre passi, semplici. Il metodo completo è nella pagina Chi siamo -->
+  <!-- 03 · IL METODO: i cinque passi. Scorrendo si accende un numero alla volta (rosso) e a destra entra il suo passo (vita.js, metodoNumeri) -->
   <section class="sezione" id="metodo" data-forma="2">
     <div class="wrap">
-      <div class="testa-sezione testa-riga">
-        <span class="capitolo" data-appare>{T('Come lavoriamo', 'How we work')}</span>
-        <h2 data-righe>
-          <span class="riga"><span>{T('Prima studiamo.', 'First we study.')}</span></span>
-          <span class="riga"><span><span class="em">{T('Poi costruiamo.', 'Then we build.')}</span></span></span>
-        </h2>
-        <p class="lead" data-appare>{T(
-          'Ogni progetto parte dal tuo lavoro, non da un modello già pronto.',
-          'Every project starts from your work, not from a ready-made template.',
+      <div class="testa-sezione">
+        <span class="capitolo">{T('Il metodo', 'The method')}</span>
+        {it ? (
+          <h2 data-righe>
+            <span class="riga"><span>Cinque passi nella testa</span></span>
+            <span class="riga"><span>del <span class="em em-firma">tuo cliente.</span></span></span>
+          </h2>
+        ) : (
+          <h2 data-righe>
+            <span class="riga"><span>Five steps inside</span></span>
+            <span class="riga"><span><span class="em em-firma">your client's mind.</span></span></span>
+          </h2>
+        )}
+        <p class="lead">{T(
+          'Le cinque tappe che ogni persona attraversa prima di comprare. Per ognuna usiamo tecniche studiate dalla psicologia e provate sul campo.',
+          'The five stages everyone goes through before buying. For each one we use techniques studied by psychology and tested in the field.',
         )}</p>
       </div>
-      <ol class="pv-tappe" data-sequenza>
-        {(it ? [
-          ['Studiamo', 'Il tuo mercato, i concorrenti e le persone che vuoi raggiungere: cosa cercano e cosa le fa decidere.'],
-          ['Progettiamo e costruiamo', 'Testi, design e automazioni pensati con la psicologia di chi compra. Ti mostriamo tutto prima di andare online.'],
-          ['Misuriamo e miglioriamo', 'Dopo il lancio guardiamo i numeri veri e ogni mese miglioriamo quello che porta più clienti.'],
-        ] : [
-          ['We study', 'Your market, your competitors and the people you want to reach: what they look for and what makes them decide.'],
-          ['We design and build', 'Copy, design and automations built around how people buy. We show you everything before going live.'],
-          ['We measure and improve', 'After launch we look at the real numbers and every month we improve what brings in the most clients.'],
-        ]).map(([t, d], i) => <li><span class="mono">0{i + 1}</span><b>{t}</b><p>{d}</p></li>)}
-      </ol>
-      <a class="link-freccia" href={url('chi', lang)} data-appare>{T('Il metodo completo e chi siamo', 'Our full method and who we are')} <span class="freccia" aria-hidden="true">→</span></a>
+    </div>
+    <div class="metodo-pista" data-metodo>
+      <div class="metodo-palco wrap">
+        <ol class="metodo-numeri" aria-hidden="true">
+          {metodo.map((_, i) => <li class={i === 0 ? 'on' : ''}>{String(i + 1).padStart(2, '0')}</li>)}
+        </ol>
+        <div class="metodo-passi">
+          {metodo.map((m, i) => (
+            <article class={`passo${i === 0 ? ' on' : ''}`}>
+              <span class="passo-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <span class="capitolo">{String(i + 1).padStart(2, '0')} · {m.passo}</span>
+              {/* il verbo del passo è sottolineato: la linea si allunga mentre scorri il passo (vita.js, metodoNumeri) */}
+              <h3>{(() => { const k = m.verbo ? m.titolo.indexOf(m.verbo) : -1; return k < 0 ? m.titolo : <>{m.titolo.slice(0, k)}<span class="verbo">{m.verbo}</span>{m.titolo.slice(k + m.verbo.length)}</>; })()}</h3>
+              <p class="passo-testa">{m.testa}</p>
+              {/* il nome della tecnica si vede sempre; la spiegazione la apre solo chi è curioso */}
+              <details class="passo-tecnica">
+                <summary>
+                  <span class="pt-nome mono">{T('Tecnica', 'Technique')} · <b>{m.tecnica}</b></span>
+                  <span class="pt-vedi"><span class="pt-piu" aria-hidden="true"></span><span class="pt-apri">{T('Vedi la spiegazione', 'See the explanation')}</span><span class="pt-chiudi">{T('Chiudi', 'Close')}</span></span>
+                </summary>
+                <p class="pt-corpo">{m.spiega}</p>
+              </details>
+              {i === 0 && <Intruso lang={lang} />}
+            </article>
+          ))}
+        </div>
+      </div>
     </div>
   </section>
 
