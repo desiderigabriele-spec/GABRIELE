@@ -1,21 +1,47 @@
-// I servizi in home (Home.astro, [data-servizi-vivi]): le stesse anteprime animate delle pagine servizio (Anteprima.astro).
+// L'hero e i servizi in home (Home.astro): le stesse anteprime animate delle pagine servizio (Anteprima.astro).
 // Computer: l'indice a sinistra e l'anteprima a destra; le voci si alternano da sole, a ogni giro dell'animazione,
 // finché non ci passi sopra. Telefono: i nomi in alto come bottoni e le schede da scorrere, che partono da Siti web.
-// Ogni anteprima si muove solo quando si vede e riparte dall'inizio quando entra nello schermo.
 
 const fermo = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const riparti = (el) => el.querySelectorAll('.ap *').forEach((e) => e.getAnimations().forEach((a) => { a.cancel(); a.play(); }));
 const durata = (el) => (parseFloat(getComputedStyle(el.querySelector('.ap')).getPropertyValue('--ap-ciclo')) || 7) * 1000;
 
+// ogni anteprima si muove solo quando si vede e riparte dall'inizio quando entra nello schermo
+const io = new IntersectionObserver((voci) => voci.forEach((v) => {
+  const el = v.target, prima = el.classList.contains('in-vista');
+  if (v.isIntersecting && !prima && !fermo) riparti(el);
+  el.classList.toggle('in-vista', v.isIntersecting);
+}), { threshold: 0.15 });
+
+// L'hero: le anteprime dei servizi girano da sole, una per giro d'animazione; il nome del servizio sotto il titolo
+// si accende insieme, e toccandolo si va a quel servizio (poi riprende a girare)
+function heroVetrina() {
+  const box = document.querySelector('[data-hero-vetrina]');
+  if (!box) return;
+  const ap = [...box.querySelectorAll('.sv-ap')], nomi = [...document.querySelectorAll('[data-hc]')];
+  ap.forEach((el) => io.observe(el));
+  let att = 0, inizio = performance.now();
+  const mostra = (i) => {
+    att = i; inizio = performance.now();
+    ap.forEach((el, j) => { el.hidden = j !== i; });
+    if (!fermo) riparti(ap[i]);
+    nomi.forEach((b, j) => { b.classList.toggle('on', j === i); b.setAttribute('aria-pressed', String(j === i)); });
+  };
+  nomi.forEach((b, i) => b.addEventListener('click', () => mostra(i)));
+  if (fermo) return;
+  const giro = (now) => {
+    const el = ap[att];
+    if (!el.classList.contains('in-vista') || document.hidden) inizio = now - Math.min(now - inizio, 1000);
+    else if (now - inizio >= durata(el)) mostra((att + 1) % ap.length);
+    requestAnimationFrame(giro);
+  };
+  requestAnimationFrame(giro);
+}
+
 export function serviziVivi() {
+  heroVetrina();
   const box = document.querySelector('[data-servizi-vivi]');
   if (!box) return;
-
-  const io = new IntersectionObserver((voci) => voci.forEach((v) => {
-    const el = v.target, prima = el.classList.contains('in-vista');
-    if (v.isIntersecting && !prima && !fermo) riparti(el);
-    el.classList.toggle('in-vista', v.isIntersecting);
-  }), { threshold: 0.15 });
   box.querySelectorAll('.sv-ap').forEach((el) => io.observe(el));
 
   // computer: indice + anteprima

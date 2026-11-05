@@ -58,11 +58,6 @@
 .fp-scrivi input:focus { outline: none; border-color: var(--latte); }
 .fp-scrivi button { width: 44px; height: 44px; border: 0; background: var(--latte); color: var(--notte); font-weight: 700; font-size: 1.1rem; cursor: pointer; }
 
-/* sul telefono il benvenuto (nome e cookie) occupa il fondo: il tondino sale sopra di lui, così resta sempre visibile */
-.focus { transition: bottom .4s var(--ease); }
-@media (max-width: 900px) {
-  html:has(.benvenuto.su) .focus:not(.aperta) { bottom: calc(var(--benvenuto-alto, 160px) + 24px + env(safe-area-inset-bottom, 0px)); }
-}
 /* l'indice dei capitoli sul telefono copre lo schermo dal basso: lì il tondino si fa da parte */
 html:has(.cap-indice.aperto) .focus { opacity: 0; pointer-events: none; }
 

@@ -77,10 +77,10 @@ function nomeCheSiDecodifica() {
   document.querySelectorAll('[data-nome]').forEach((el) => io.observe(el));
 }
 
-// ---------- il benvenuto: nome e cookie in un pannellino in basso, una sola conferma ----------
-// Il nome si chiede una volta sola, i cookie finché non scegli. «Accetta ed entra» e «Solo necessari»
-// «Personalizza» apre le scelte nello stesso riquadro, tutte spente; «Continua senza accettare» rifiuta subito.
-// Il consenso non è mai già spuntato.
+// ---------- l'ingresso: nome, sfondo e cookie in una schermata sola, al primo arrivo ----------
+// Il nome si chiede una volta sola, i cookie finché non scegli. «Entra nel sito» accetta con un tocco,
+// «Entra solo con i cookie necessari» rifiuta, «Personalizza» apre le scelte nello stesso riquadro, tutte spente.
+// Il consenso non è mai già spuntato. Mentre è aperta, la pagina dietro non scorre.
 const CHIAVE_COOKIE = 'gd-cookie';
 const CHIAVE_SCELTE = 'gd-cookie-scelte';
 const leggiScelte = () => { try { return JSON.parse(localStorage.getItem(CHIAVE_SCELTE) || '{}') || {}; } catch (_) { return {}; } };
@@ -103,8 +103,6 @@ function benvenuto() {
   const [testoPersonalizza, testoSalva] = JSON.parse(no.dataset.testi);
   let chiediNome = false, chiediCookie = false, personalizzo = false;
 
-  const misura = () => html.style.setProperty('--benvenuto-alto', `${box.offsetHeight}px`);
-  if ('ResizeObserver' in window) new ResizeObserver(misura).observe(box);
 
   // la vista: il testo con «Personalizza | Accetta», oppure le scelte con «Salva le mie scelte | Accetta tutti»
   function vista() {
@@ -114,7 +112,6 @@ function benvenuto() {
     senza.hidden = !chiediCookie;
     no.textContent = personalizzo ? testoSalva : testoPersonalizza;
     si.firstChild.textContent = `${personalizzo ? testoTutti : chiediNome && chiediCookie ? testoSi : chiediCookie ? testoAccetta : testoEntra} `;
-    requestAnimationFrame(misura);
   }
   function mostra(nome, cookie) {
     chiediNome = nome; chiediCookie = cookie; personalizzo = false;
@@ -127,7 +124,9 @@ function benvenuto() {
     categorie.forEach((c) => { c.checked = !!prima[c.dataset.bvCat]; });
     vista();
     box.hidden = false;
-    requestAnimationFrame(() => { box.classList.add('su'); misura(); });
+    html.classList.add('bv-aperto'); window.gdLenis?.stop();
+    requestAnimationFrame(() => box.classList.add('su'));
+    if (nome && matchMedia('(pointer: fine)').matches) setTimeout(() => campo.focus({ preventScroll: true }), 450);
     traccia(nome ? 'nome_chiesto' : 'cookie_chiesti');
   }
   // scelta: { statistica, pubblicita } oppure null se non si chiedevano i cookie
@@ -148,7 +147,8 @@ function benvenuto() {
       } else traccia('nome_saltato');
     }
     box.classList.remove('su');
-    setTimeout(() => { box.hidden = true; html.style.setProperty('--benvenuto-alto', '0px'); }, 350);
+    html.classList.remove('bv-aperto'); window.gdLenis?.start();
+    setTimeout(() => { box.hidden = true; }, 400);
     chiediNome = chiediCookie = personalizzo = false;
   }
   const tutti = () => ({ statistica: true, pubblicita: true });
@@ -182,11 +182,9 @@ function benvenuto() {
   const serveNome = !p.nome && !leggi('gd-nome-chiesto');
   const serveCookie = !leggi(CHIAVE_COOKIE);
   if (!serveNome && !serveCookie) return;
-  const vai = () => setTimeout(() => {
-    if (html.classList.contains('menu-aperto')) return setTimeout(vai, 1500);
-    mostra(serveNome, serveCookie);
-  }, 900);
-  if (html.classList.contains('intro-attiva')) window.addEventListener('gd-intro-fine', vai, { once: true }); else setTimeout(vai, 1600);
+  // subito: appena finisce l'avvio col logo (o al caricamento, se l'avvio non c'è)
+  const vai = () => mostra(serveNome, serveCookie);
+  if (html.classList.contains('intro-attiva')) window.addEventListener('gd-intro-fine', vai, { once: true }); else vai();
 }
 
 // ---------- il nome si cambia dove è scritto ----------

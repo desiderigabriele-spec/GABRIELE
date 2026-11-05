@@ -313,26 +313,10 @@ const RITORNO = {
   window.gdTrack('bentornato');
 })();
 
-// ---------- Lingua: chi ha il browser in un'altra lingua riceve un avviso discreto ----------
+// ---------- Lingua: la scelta (EN nell'header, link nel footer) si ricorda ----------
 document.addEventListener('click', (e) => {
   const a = e.target.closest('a[data-lingua]');
   if (!a) return;
   ls.set('gd-lingua', a.dataset.lingua);
   window.gdTrack('lingua', { lingua: a.dataset.lingua });
 });
-(function avvisoLingua() {
-  const box = document.querySelector('[data-avviso-lingua]');
-  if (!box || ls.get('gd-lingua') || ss.get('gd-avviso-lingua')) return;
-  const browser = (navigator.languages?.[0] || navigator.language || 'it').toLowerCase();
-  const vuoleItaliano = browser.startsWith('it');
-  // sulla pagina italiana l'avviso propone l'inglese a chi non ha il browser in italiano, e viceversa
-  if ((box.dataset.per === 'en') === vuoleItaliano) return;
-  ss.set('gd-avviso-lingua', '1');
-  const chiudi = () => { box.classList.remove('visibile'); setTimeout(() => { box.hidden = true; }, 500); };
-  box.querySelector('[data-avviso-chiudi]').addEventListener('click', () => { ls.set('gd-lingua', lang); chiudi(); });
-  setTimeout(() => {
-    box.hidden = false;
-    requestAnimationFrame(() => box.classList.add('visibile'));
-    setTimeout(chiudi, 12000);
-  }, html.classList.contains('intro-attiva') ? 3200 : 1500);
-})();

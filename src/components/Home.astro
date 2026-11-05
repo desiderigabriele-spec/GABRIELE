@@ -5,8 +5,6 @@ import Icona from './Icona.astro';
 import Anteprima from './Anteprima.astro';
 import PrimaDopo from './PrimaDopo.astro';
 import Intruso from './Intruso.astro';
-import Bozza from './Bozza.astro';
-import LogoGigante from './LogoGigante.astro';
 import MicroIcona from './MicroIcona.astro';
 import '../styles/chisiamo.css';
 import '../styles/recensioni.css';
@@ -30,12 +28,6 @@ const preventivo = url('preventivo', lang);
 const brevi: Record<string, string> = it
   ? { sito: 'Ti trovano su Google e ti scrivono.', ecommerce: 'Vendi 24 ore su 24, anche mentre dormi.', software: 'Il lavoro ripetitivo si fa da solo.', gestionale: 'Il programma fatto come lavori tu.', ads: 'Annunci che portano clienti, non solo «mi piace».', cura: 'Sempre aggiornato, sicuro e più efficace.' }
   : { sito: 'People find you on Google and get in touch.', ecommerce: 'Sell 24/7, even while you sleep.', software: 'Repetitive work does itself.', gestionale: 'Software built around how you work.', ads: 'Ads that bring clients, not just likes.', cura: 'Always updated, secure and improving.' };
-// 12 · tipografia cinetica: tre righe giganti al posto del nastro
-const cinetica = it
-  ? [['Siti web', 'Negozi online', 'Automazioni e AI', 'Gestionali'], ['Attenzione', 'Interesse', 'Fiducia', 'Desiderio', 'Azione'], ['Neuromarketing', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Copy che vende']]
-  : [['Websites', 'Online stores', 'AI & automation', 'Custom software'], ['Attention', 'Interest', 'Trust', 'Desire', 'Action'], ['Neuromarketing', 'Meta Ads', 'Google Ads', 'TikTok Ads', 'Copy that sells']];
-// 01 · le parole che il cursore scrive in fondo al titolo
-const scrive = it ? 'sceglie,scrive,chiama,compra' : 'clients,buyers,bookings,fans';
 
 // Il calcolatore: lavori sempre uguali, cosa fa l'AI al posto tuo, ore a settimana (stima prudente)
 const ripetitivi: [string, string, number][] = it ? [
@@ -103,72 +95,48 @@ const jsonLd = {
   </nav>
 
   <!-- 01 · ATTENZIONE -->
-  <section class="hero" id="inizio" data-forma="0">
-    <LogoGigante />
-    <div class="griglia-magnetica" data-griglia-magnetica aria-hidden="true"></div>
-    <div class="wrap">
-      <div class="hero-testo">
-        {/* a destra: il sito che nasce dal codice e, sotto, la citazione (sempre staccata, mai coperta) */}
-        <div class="hero-spazio-occhio">
-          <Bozza lang={lang} />
-        <div class="didascalia">
-          {/* una citazione: le virgolette grandi, la frase, e la seconda parte che chiude in grassetto */}
-          <blockquote class="didascalia-testo">
-            <p>{T("L'attenzione è la moneta più preziosa di oggi.", "Attention is today's most valuable currency.")} <b>{T('Chi la cattura, vince.', 'Whoever captures it, wins.')}</b></p>
-          </blockquote>
+  <!-- HERO: si capisce subito cosa facciamo. A sinistra il titolo, una frase e un bottone; a destra le anteprime dei servizi
+       che girano da sole (le stesse delle pagine servizio), con il nome del servizio acceso sotto il titolo (servizi-vivi.js) -->
+  <section class="hero hero-chiara" id="inizio" data-forma="0">
+    <div class="wrap hc-griglia">
+      <div class="hc-testo">
+        <h1 data-righe>
+          <span class="riga riga-nome" data-riga-nome hidden><span><span data-saluto></span><span data-nome></span>,</span></span>
+          {it ? (
+            <Fragment>
+              <span class="riga"><span data-minuscola>Automazioni AI,</span></span>
+              <span class="riga"><span>gestionali e siti</span></span>
+              <span class="riga"><span class="em">per la tua azienda</span><span class="quadratino" aria-hidden="true"></span></span>
+            </Fragment>
+          ) : (
+            <Fragment>
+              <span class="riga"><span data-minuscola>AI automation,</span></span>
+              <span class="riga"><span>custom software</span></span>
+              <span class="riga"><span class="em">and websites</span><span class="quadratino" aria-hidden="true"></span></span>
+            </Fragment>
+          )}
+        </h1>
+        <p class="lead" data-appare="0.2">{T(
+          'Studiamo come lavori, poi costruiamo gli strumenti che ti fanno risparmiare ore e portano clienti.',
+          'We study how you work, then build the tools that save you hours and bring in clients.',
+        )}</p>
+        <div class="hc-servizi" data-appare="0.3" role="group" aria-label={T('I servizi', 'Services')}>
+          {servizi.map((s, i) => <button type="button" class={i === 0 ? 'on' : ''} data-hc={i} aria-pressed={i === 0 ? 'true' : 'false'}>{s.titolo}</button>)}
         </div>
-        </div>
-        <span class="capitolo" data-appare>{T('01 · Guarda', '01 · Look')}</span>
-        {it ? (
-          <h1 data-righe>
-            <span class="riga riga-nome" data-riga-nome hidden><span><span data-saluto></span><span data-nome></span>,</span></span>
-            <span class="riga"><span data-minuscola>Trasformiamo</span></span>
-            <span class="riga"><span>chi ti guarda</span></span>
-            <span class="riga"><span>in chi ti <span class="sr-only">sceglie.</span><span class="parola-punto" data-scrive={scrive} aria-hidden="true"><span class="scrive-testo">sceglie</span><span class="quadratino"></span></span></span></span>
-          </h1>
-        ) : (
-          <h1 data-righe>
-            <span class="riga riga-nome" data-riga-nome hidden><span><span data-saluto></span><span data-nome></span>,</span></span>
-            <span class="riga"><span>We turn</span></span>
-            <span class="riga"><span>attention</span></span>
-            <span class="riga"><span>into <span class="sr-only">clients.</span><span class="parola-punto" data-scrive={scrive} aria-hidden="true"><span class="scrive-testo">clients</span><span class="quadratino"></span></span></span></span>
-          </h1>
-        )}
-        {it ? (
-          <p class="lead" data-appare="0.25">
-            <a class="parola-iride" href="#servizi">Siti web</a>, <a class="parola-iride" href="#servizi">negozi online</a>, <a class="parola-iride" href="#servizi">software con intelligenza artificiale</a> e <a class="parola-iride" href="#servizi">pubblicità</a>.
-            Progettati con la psicologia per portare le persone <strong style="color:var(--latte);font-weight:600">dal primo sguardo al «sì»</strong>.
-          </p>
-        ) : (
-          <p class="lead" data-appare="0.25">
-            <a class="parola-iride" href="#servizi">Websites</a>, <a class="parola-iride" href="#servizi">online stores</a>, <a class="parola-iride" href="#servizi">AI software</a> and <a class="parola-iride" href="#servizi">advertising</a>.
-            Designed with psychology to take people <strong style="color:var(--latte);font-weight:600">from first glance to "yes"</strong>.
-          </p>
-        )}
         <div class="hero-azioni" data-appare="0.4">
           <a class="btn btn-azione btn-grande" href={preventivo} data-azione>{T('Richiedi un preventivo', 'Request a quote')} <span class="freccia" aria-hidden="true">→</span></a>
-          <a class="btn btn-vetro btn-grande" href="#metodo">{T('Guarda come funziona', 'See how it works')}</a>
+          <a class="btn btn-vetro btn-grande" href="#servizi">{T('Guarda i servizi', 'See the services')}</a>
         </div>
-        <ul class="rassicura" data-appare="0.55">
+        <ul class="rassicura" data-appare="0.5">
           <li><MicroIcona nome="tempo" />{T('Preventivo scritto, su misura', 'Written, tailored quote')}</li>
           <li><MicroIcona nome="risposta" />{T('Risposta entro 24 ore', 'Reply within 24 hours')}</li>
-          <li><MicroIcona nome="luogo" />{contatti.zona}</li>
         </ul>
       </div>
-    </div>
-    <a class="scorri" href="#problema" aria-label={T('Scorri', 'Scroll')}>
-      <span class="mono">{T('Scorri', 'Scroll')}</span>
-      <span class="scorri-linea"></span>
-    </a>
-  </section>
-
-  <div class="cinetica" data-cinetica aria-hidden="true">
-    {cinetica.map((riga, r) => (
-      <div class={`cinetica-riga ${r === 1 ? 'cinetica-dx cinetica-vuota' : 'cinetica-sx'}`}>
-        <div>{[0, 1].map(() => <span>{riga.map((p, k) => <>{r === 2 && k === 0 ? <span class="cinetica-rossa">{p}</span> : p}<span class="q"></span></>)}</span>)}</div>
+      <div class="hc-vetrina" data-hero-vetrina aria-hidden="true">
+        {servizi.map((s, i) => <div class="sv-ap hc-ap" data-ap={s.id} hidden={i !== 0}><Anteprima id={s.id} lang={lang} lazy={i !== 0} /></div>)}
       </div>
-    ))}
-  </div>
+    </div>
+  </section>
 
   <!-- IL PROBLEMA -->
   <section class="sezione" id="problema" data-forma="0">
