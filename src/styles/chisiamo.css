@@ -38,7 +38,7 @@ img.cs-volto { object-fit: cover; background: var(--superficie-2); }
 @media (max-width: 820px) { .cs-hero.hero .hero-azioni { display: flex; flex-wrap: wrap; gap: .8rem; } .cs-hero.hero .hero-azioni .btn-vetro { display: inline-flex; } }
 
 /* chi dirige: la foto (per ora le iniziali) e una presentazione breve; la strada lunga in una tendina */
-.cs-dirige { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: clamp(24px, 5vw, 72px); align-items: start; }
+.cs-dirige { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 860px; gap: clamp(24px, 5vw, 72px); align-items: start; }
 .cs-dirige-testo { display: grid; gap: 1.1rem; min-width: 0; }
 .cs-carica { margin: -.4rem 0 0; font-family: var(--f-mono); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--rosso-testo); }
 .cs-ritratto { position: relative; aspect-ratio: 4 / 5; width: 100%; max-width: 380px; display: grid; place-items: center; background: linear-gradient(160deg, var(--superficie-2), var(--notte)); border: 1px solid var(--linea-forte); }
