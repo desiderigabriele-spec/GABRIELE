@@ -1,0 +1,235 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'IT'; src: url('inter-tight.woff2') format('woff2'); font-weight: 100 900; }
+@font-face { font-family: 'JM'; src: url('mono.woff2') format('woff2'); font-weight: 100 900; }
+html, body { margin: 0; background: #000; }
+#out { display: block; }
+#gl { display: none; }
+</style></head>
+<body>
+<canvas id="out" width="1080" height="1920"></canvas>
+<canvas id="gl" width="540" height="960"></canvas>
+<script>
+// Video di lancio Desideri&Code (copione B). render(t) disegna il fotogramma al secondo t: è deterministico,
+// così ogni fotogramma si può ridisegnare uguale. Fumo in WebGL, tutto il resto sul canvas 2D.
+const W = 1080, H = 1920;
+const out = document.getElementById('out'), c = out.getContext('2d');
+const glc = document.getElementById('gl');
+const gl = glc.getContext('webgl', { preserveDrawingBuffer: true, premultipliedAlpha: false, alpha: true });
+let EN = [];
+
+// ---------- fumo: rumore frattale deformato su sé stesso, illuminato di lato ----------
+const vs = `attribute vec2 p; varying vec2 uv; void main(){ uv = p*.5+.5; gl_Position = vec4(p,0.,1.); }`;
+const fs = `precision highp float; varying vec2 uv; uniform float t, dens, rosso, lx, seed;
+float h(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }
+float n(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
+  return mix(mix(h(i),h(i+vec2(1,0)),f.x), mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x), f.y); }
+float fbm(vec2 p){ float v=0., a=.5; for(int i=0;i<5;i++){ v+=a*n(p); p=p*2.03+vec2(1.7,9.2); a*=.5; } return v; }
+void main(){
+  vec2 p = vec2(uv.x*0.5625, uv.y) * 3.2 + seed;
+  vec2 q = vec2(fbm(p + vec2(0., t*.07)), fbm(p + vec2(5.2,1.3) - t*.05));
+  vec2 r = vec2(fbm(p + 3.6*q + vec2(1.7,9.2) + t*.16), fbm(p + 3.6*q + vec2(8.3,2.8) - t*.13));
+  float f = fbm(p + 3.8*r);
+  // dove sta il fumo: due masse che si muovono e si scontrano al centro
+  vec2 a = vec2(.35 + .12*sin(t*.31), .58 + .08*sin(t*.23));
+  vec2 b = vec2(.68 + .1*cos(t*.27), .44 + .1*cos(t*.19));
+  vec2 s = vec2(uv.x, uv.y*1.25);
+  // le masse hanno il bordo mosso dal rumore stesso: nuvole separate nel nero, non un velo uniforme
+  vec2 w = (r - .5) * .22;
+  float m = exp(-13.*dot(s+w-vec2(a.x,a.y*1.25), s+w-vec2(a.x,a.y*1.25))) + .85*exp(-15.*dot(s-w-vec2(b.x,b.y*1.25), s-w-vec2(b.x,b.y*1.25)));
+  m *= .6 + dens*.7;
+  float d = smoothstep(.5, .78, f*.7 + m*.55) * smoothstep(.08, .5, m) * min(1., dens*1.4);
+  // luce: confronto con il rumore spostato verso la luce (in alto a destra) = rilievo
+  float f2 = fbm(p + 3.8*r + vec2(.035, .05));
+  float luce = clamp(.55 + (f - f2)*6., 0., 1.4);
+  vec3 scuro = vec3(.06,.05,.06), chiaro = vec3(.86,.76,.77);
+  vec3 col = mix(scuro, chiaro, pow(f,1.6)*luce);
+  // il laser rosso illumina il fumo vicino
+  float vicino = exp(-abs(uv.x - lx)*14.);
+  col += vec3(1.,.12,.12) * vicino * .9 * d + vec3(.9,.1,.12) * rosso * .55;
+  gl_FragColor = vec4(col, clamp(d*1.15,0.,1.));
+}`;
+function sh(type, src) { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
+const prog = gl.createProgram(); gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(prog); gl.useProgram(prog);
+const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+const U = Object.fromEntries(['t','dens','rosso','lx','seed'].map((k) => [k, gl.getUniformLocation(prog, k)]));
+
+// ---------- tempi e musica ----------
+const COLPI = [5.85, 7.6, 9.85, 10.85, 11.85, 13.6, 15.85, 17.6, 22.34];
+const energia = (t) => { const i = t / 0.125, a = Math.floor(i); const x = EN[a] ?? 0, y = EN[a + 1] ?? x; return x + (y - x) * (i - a); };
+const dopo = (t, c) => t - c;                       // secondi dall'ultimo colpo c
+const ultimoColpo = (t) => COLPI.filter((c) => c <= t).pop();
+const lampo = (t) => { const c = ultimoColpo(t); if (c === undefined) return 0; const d = t - c; return d < 0 ? 0 : Math.exp(-d * 7); };
+// quanto fumo: niente all'inizio, pieno nei colpi, qualche filo nel respiro, un'ultima esplosione, poi niente
+function fumo(t) {
+  const e = energia(t);
+  if (t < 5.6) return 0;
+  if (t < 9.7) return 0.35 + e * 0.45;
+  if (t < 18.6) return 0.62 + e * 0.38;
+  if (t < 21.6) return Math.max(0, 0.55 - (t - 18.6) * 0.15);
+  if (t < 22.3) return 0.05;
+  if (t < 23.6) return 0.9 * Math.exp(-(t - 22.34) * 1.8);
+  return 0;
+}
+// casuale ripetibile
+const rnd = (s) => { s = Math.sin(s * 12.9898 + 78.233) * 43758.5453; return s - Math.floor(s); };
+const lx = (t) => { const c = ultimoColpo(t) ?? 0; return 0.22 + rnd(c * 3.1) * 0.56; };
+
+// ---------- il copione ----------
+const R = [
+  { a: 0.4, b: 2.75, righe: [['Il tuo sito', 'm', 86], ['porta clienti?', 'b', 86]] },
+  { a: 2.9, b: 5.6, righe: [['O sta solo lì?', 'm', 86]] },
+  { a: 5.85, b: 7.45, righe: [['Basta.', 'b', 250]] },
+  { a: 7.6, b: 9.7, righe: [['Ti devono', 'l', 130], ['notare.', 'b', 150]] },
+  { a: 9.85, b: 10.8, righe: [['Capire.', 'b', 170]] },
+  { a: 10.85, b: 11.8, righe: [['Fidarsi.', 'b', 170]] },
+  { a: 11.85, b: 13.45, righe: [['Scegliere.', 'b', 170]] },
+  { a: 13.6, b: 15.8, righe: [['Noi progettiamo', 'l', 120]] },
+  { a: 15.85, b: 17.45, righe: [['Noi progettiamo', 'l', 120], ['ogni secondo.', 'b', 140]], nuova: 1 },
+  { a: 17.6, b: 19.0, righe: [['SITI · AI · PUBBLICITÀ', 'mono', 54]] },
+  { a: 19.1, b: 21.45, righe: [['Da oggi, a Milano', 'mono', 44]], scrive: 1 },
+];
+const font = (k, px) => k === 'mono' ? `500 ${px}px JM` : `${k === 'b' ? 800 : k === 'l' ? 300 : 500} ${px}px IT`;
+const spazio = (k, px) => k === 'mono' ? px * 0.16 : k === 'b' ? -px * 0.045 : -px * 0.03;
+
+function scritte(t) {
+  const s = R.find((x) => t >= x.a && t < x.b + 0.14);
+  if (!s) return;
+  const d = t - s.a, fuori = Math.max(0, t - s.b) / 0.14;
+  const entra = Math.min(1, d / 0.32), eo = 1 - Math.pow(1 - entra, 3);
+  const alto = s.righe.reduce((h, r) => h + r[2] * 1.02, 0);
+  let y = H * 0.47 - alto / 2;
+  s.righe.forEach(([testo, k, px], i) => {
+    y += px * 0.88;
+    const nuova = s.nuova === undefined || i >= s.nuova;
+    const sc = nuova ? 1 + (1 - eo) * 0.22 : 1;
+    const al = (nuova ? eo : 1) * (1 - fuori);
+    let txt = testo;
+    if (s.scrive) { const n = Math.floor(Math.min(1, d / 1.1) * testo.length); txt = testo.slice(0, n) + (Math.floor(t * 3) % 2 ? '▍' : ' '); }
+    c.save();
+    c.font = font(k, px); c.letterSpacing = spazio(k, px) + 'px'; c.textAlign = 'center'; c.textBaseline = 'alphabetic';
+    c.translate(W / 2, y - px * 0.3); c.scale(sc, sc); c.translate(0, px * 0.3);
+    // separazione dei colori all'arrivo, come un segnale disturbato
+    const sep = nuova ? (1 - eo) * 18 + lampo(t) * 6 : lampo(t) * 3;
+    c.globalCompositeOperation = 'lighter';
+    c.globalAlpha = al * 0.85; c.fillStyle = '#ff1e1e'; c.fillText(txt, -sep, 0);
+    c.fillStyle = '#19d7ff'; c.globalAlpha = al * 0.55; c.fillText(txt, sep, 0);
+    c.globalCompositeOperation = 'source-over'; c.globalAlpha = al;
+    c.filter = nuova && entra < 1 ? `blur(${(1 - eo) * 10}px)` : 'none';
+    c.fillStyle = '#fff'; c.fillText(txt, 0, 0);
+    c.restore();
+    y += px * 0.14 + (k === 'mono' ? 10 : 0);
+  });
+}
+
+// ---------- il logo e la firma ----------
+const logo = new Image(); logo.src = 'logo.svg';
+function firma(t) {
+  if (t < 22.34) return;
+  const d = t - 22.34, e = Math.min(1, d / 0.35), eo = 1 - Math.pow(1 - e, 3);
+  const su = Math.min(1, Math.max(0, (t - 23.4) / 0.6)), so = 1 - Math.pow(1 - su, 3);
+  const cy = H * 0.45 - so * 120;
+  c.save(); c.globalAlpha = eo;
+  const L = 200 * (1 + (1 - eo) * 0.3);
+  c.drawImage(logo, W / 2 - L / 2, cy - L - 40, L, L);
+  c.font = '800 118px IT'; c.letterSpacing = '-6px'; c.textAlign = 'center'; c.fillStyle = '#fff';
+  const tw = c.measureText('Desideri&Code').width;
+  c.fillText('Desideri&Code', W / 2 - 14, cy + 90);
+  c.fillStyle = '#e30613'; c.fillRect(W / 2 - 14 + tw / 2 + 6, cy + 90 - 26, 26, 26);
+  c.restore();
+  if (su <= 0) return;
+  c.save(); c.globalAlpha = so;
+  c.font = '500 50px JM'; c.letterSpacing = '4px'; c.textAlign = 'center'; c.fillStyle = '#fff';
+  c.fillText('desidericode.it', W / 2, cy + 250);
+  const bw = 600, bh = 112, bx = W / 2 - bw / 2, by = cy + 310 + (1 - so) * 30;
+  c.fillStyle = '#10b981'; c.fillRect(bx, by, bw, bh);
+  c.font = '600 46px IT'; c.letterSpacing = '-1px'; c.fillStyle = '#04130d'; c.fillText('Preventivo gratuito  →', W / 2, by + bh / 2 + 16);
+  c.restore();
+}
+
+// ---------- pellicola: polvere, graffi, angoli ----------
+const POLVERE = Array.from({ length: 260 }, (_, i) => ({ x: rnd(i + 1), y: rnd(i + 101), v: 0.004 + rnd(i + 201) * 0.02, s: 2 + rnd(i + 301) * 5, q: rnd(i + 401) > 0.7 }));
+function polvere(t) {
+  c.save();
+  POLVERE.forEach((p, i) => {
+    const y = ((p.y - t * p.v) % 1 + 1) % 1, x = p.x + Math.sin(t * 0.6 + i) * 0.004;
+    const fl = 0.25 + 0.75 * Math.abs(Math.sin(t * (2 + (i % 7)) + i));
+    c.globalAlpha = fl * (0.35 + energia(t) * 0.5);
+    c.fillStyle = '#fff';
+    if (p.q) { c.strokeStyle = '#fff'; c.lineWidth = 1.5; c.strokeRect(x * W, y * H, p.s * 1.6, p.s * 1.6); }
+    else c.fillRect(x * W, y * H, p.s * 0.6, p.s * 0.6);
+  });
+  // graffi verticali che durano un fotogramma
+  const fot = Math.floor(t * 30);
+  if (rnd(fot * 0.37) > 0.82) { c.globalAlpha = 0.18; c.fillStyle = '#ddd'; c.fillRect(rnd(fot) * W, 0, 2, H); }
+  // angoli del mirino
+  c.globalAlpha = 0.35; c.strokeStyle = '#fff'; c.lineWidth = 2;
+  const m = 56, l = 34;
+  [[m, m, 1, 1], [W - m, m, -1, 1], [m, H - m, 1, -1], [W - m, H - m, -1, -1]].forEach(([x, y, a, b]) => { c.beginPath(); c.moveTo(x, y + l * b); c.lineTo(x, y); c.lineTo(x + l * a, y); c.stroke(); });
+  c.globalAlpha = 0.45; c.font = '500 22px JM'; c.letterSpacing = '4px'; c.fillStyle = '#fff'; c.textAlign = 'left';
+  c.fillText('DESIDERI&CODE', m + 8, m + 52);
+  c.textAlign = 'right'; c.fillText('00:' + String(Math.floor(t)).padStart(2, '0') + ':' + String(Math.floor((t % 1) * 30)).padStart(2, '0'), W - m - 8, m + 52);
+  c.restore();
+}
+
+// ---------- laser e lampi rossi ----------
+function rosso(t) {
+  const lp = lampo(t), e = energia(t);
+  const attivo = t > 4.4 && t < 22.9;
+  // il fondo diventa rosso sui colpi forti, come nel riferimento
+  if (attivo && lp > 0.01) {
+    const g = c.createLinearGradient(lx(t) * W, 0, lx(t) * W + (rnd(ultimoColpo(t)) > .5 ? 1 : -1) * W * 0.9, 0);
+    g.addColorStop(0, `rgba(200,10,16,${0.85 * lp})`); g.addColorStop(1, `rgba(60,0,4,${0.25 * lp})`);
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+  }
+  // nella salita prima del primo colpo il rosso cresce di lato
+  if (t > 3.8 && t < 5.85) { const k = (t - 3.8) / 2.05; const g = c.createLinearGradient(W, 0, W * 0.4, 0); g.addColorStop(0, `rgba(170,8,14,${k * 0.6})`); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(0, 0, W, H); }
+  if (!attivo && !(t > 0.2 && t < 4.4)) return;
+  // il laser: una riga sottile con l'alone; all'inizio una sola riga ferma, poi salta sui colpi
+  const x = t < 4.4 ? W * 0.12 : lx(t) * W;
+  const forza = t < 4.4 ? 0.35 + Math.sin(t * 9) * 0.08 : 0.55 + lp * 0.45 + e * 0.2;
+  c.save(); c.globalCompositeOperation = 'lighter';
+  const g = c.createLinearGradient(x - 60, 0, x + 60, 0);
+  g.addColorStop(0, 'rgba(255,20,20,0)'); g.addColorStop(0.5, `rgba(255,30,30,${0.35 * forza})`); g.addColorStop(1, 'rgba(255,20,20,0)');
+  c.fillStyle = g; c.fillRect(x - 60, 0, 120, H);
+  c.fillStyle = `rgba(255,${80 + lp * 120},${80 + lp * 120},${forza})`; c.fillRect(x - 2, 0, 4, H);
+  // un secondo laser più debole nei momenti pieni
+  if (t > 9.7 && t < 18.6) { const x2 = (1 - lx(t)) * W; c.fillStyle = `rgba(255,30,30,${0.35 + e * 0.3})`; c.fillRect(x2 - 1, 0, 2, H); }
+  c.restore();
+}
+
+function render(t) {
+  c.globalAlpha = 1; c.filter = 'none';
+  c.fillStyle = '#050505'; c.fillRect(0, 0, W, H);
+  // vignettatura
+  rosso(t);
+  const d = fumo(t);
+  if (d > 0.01) {
+    gl.viewport(0, 0, glc.width, glc.height); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform1f(U.t, t * (1 + energia(t) * 0.0) + Math.max(0, t - 9.7) * 0.25); gl.uniform1f(U.dens, d); gl.uniform1f(U.rosso, lampo(t));
+    gl.uniform1f(U.lx, lx(t)); gl.uniform1f(U.seed, 3.7);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    // il fumo «respira» col volume
+    const z = 1 + energia(t) * 0.06 + lampo(t) * 0.04;
+    c.save(); c.translate(W / 2, H / 2); c.scale(z, z); c.translate(-W / 2, -H / 2);
+    c.drawImage(glc, 0, 0, W, H); c.restore();
+  }
+  polvere(t);
+  scritte(t);
+  firma(t);
+  const vg = c.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.75);
+  vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.55)');
+  c.fillStyle = vg; c.fillRect(0, 0, W, H);
+  // lo scuotimento sui colpi forti
+}
+window.pronto = (async () => {
+  EN = await (await fetch('energia.json')).json().catch(() => []);
+  await document.fonts.load('800 100px IT'); await document.fonts.load('300 100px IT'); await document.fonts.load('500 40px JM');
+  await new Promise((r) => (logo.complete ? r() : (logo.onload = r)));
+  return true;
+})();
+window.render = render;
+</script>
+</body></html>
