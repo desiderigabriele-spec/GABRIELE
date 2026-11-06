@@ -196,7 +196,9 @@ const jsonLd = {
           <p class="demo-ai-sotto">{T('Non fidarti sulla parola: guardala lavorare. Tocca un riquadro per ingrandirlo.', 'Don’t take our word for it: watch it work. Tap a box to enlarge it.')}</p>
           <a class="link-freccia" href={url('ai', lang)}>{T('L’AI per aziende, spiegata semplice', 'AI for business, explained simply')} <span class="freccia" aria-hidden="true">→</span></a>
         </div>
-        <!-- ogni riquadro mostra la demo che gira in piccolo; toccandolo la stessa demo passa nella finestra grande e riparte -->
+        <!-- ogni riquadro mostra la demo che gira in piccolo; toccandolo la stessa demo passa nella finestra grande e riparte.
+             Sul telefono i riquadri scorrono in orizzontale, uno alla volta -->
+        <span class="mono scorri-avviso" aria-hidden="true">{T('Scorri per vedere le altre', 'Swipe to see the others')} <span class="freccia">→</span></span>
         <ul class="demo-ai-schede">
           {ORDINE_DEMO.map((id, i) => {
             const d = demo[lang][id];
