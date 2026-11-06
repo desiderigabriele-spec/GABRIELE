@@ -40,6 +40,21 @@ if (form) {
   // già compilato quello che sappiamo
   const p = leggiProfilo();
   if (p.nome && !f.nome.value) f.nome.value = p.nome;
+  // nome e contatto scritti nella home (sezione «Scrivici»): nome e cognome divisi, telefono o email al posto giusto
+  try {
+    const q = new URLSearchParams(location.search);
+    const inizio = JSON.parse(sessionStorage.getItem('gd-inizio') || 'null') || (q.get('chi') ? { chi: q.get('chi'), contatto: q.get('contatto') || '' } : null);
+    if (inizio) {
+      const [primo, ...resto] = String(inizio.chi || '').trim().split(/\s+/);
+      if (primo) f.nome.value = primo;
+      if (resto.length && !f.cognome.value) f.cognome.value = resto.join(' ');
+      const c = String(inizio.contatto || '').trim();
+      if (c.includes('@')) { if (!f.email.value) f.email.value = c; } else if (c && !f.telefono.value) f.telefono.value = c;
+      sessionStorage.removeItem('gd-inizio');
+      // si riparte dal primo campo ancora vuoto
+      requestAnimationFrame(() => [...form.querySelectorAll('input[required]:not([type=checkbox]), textarea')].find((x) => !x.value.trim())?.focus({ preventScroll: false }));
+    }
+  } catch (_) {}
   const s = new URLSearchParams(location.search).get('s');
   if (s) form.querySelectorAll('[name="servizi"]').forEach((c) => { if (c.value === s.split(':')[0]) c.checked = true; });
   try {

@@ -393,26 +393,32 @@ const jsonLd = {
         <span class="riga"><span><span class="em">{T('Poi il preventivo', 'Then the quote')}</span><span class="quadratino" aria-hidden="true"></span></span></span>
       </h2>
       <p class="lead" data-appare>{T(
-        'Ogni azienda è diversa, per questo non trovi listini. Ci racconti cosa ti serve, ci sentiamo e ti mandiamo un preventivo scritto, voce per voce.',
-        'Every business is different, so you won’t find a price list. You tell us what you need, we talk, and we send you a written quote, line by line.',
+        'Ogni azienda è diversa, per questo non trovi listini: ti ascoltiamo e ti mandiamo un preventivo scritto, voce per voce.',
+        'Every business is different, so you won’t find a price list: we listen, then send you a written quote, line by line.',
       )}</p>
-      <ol class="pv-tappe" data-sequenza>
-        {(it ? [
-          ['Ci racconti cosa ti serve', 'Due minuti: nome, contatti e due righe sul tuo lavoro.'],
-          ['Ti chiamiamo per conoscerci', 'Venti minuti, gratis e senza impegno.'],
-          ['Ricevi il preventivo scritto', 'Su misura, voce per voce, con i tempi.'],
-        ] : [
-          ['Tell us what you need', 'Two minutes: name, contact details and a couple of lines about your work.'],
-          ['We call you to get to know you', 'Twenty minutes, free and with no commitment.'],
-          ['You get the written quote', 'Tailored, line by line, with timings.'],
-        ]).map(([t, d], i) => <li><span class="mono">0{i + 1}</span><b>{t}</b><p>{d}</p></li>)}
-      </ol>
-      <div class="hero-azioni" data-appare style="justify-content:center">
-        <a class="btn btn-azione btn-grande" href={preventivo} data-azione>{T('Richiedi un preventivo', 'Request a quote')} <span class="freccia" aria-hidden="true">→</span></a>
-        <a class="btn btn-vetro btn-grande" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
+      <!-- la richiesta comincia già qui: nome e contatto, poi «Continua» porta alla pagina del preventivo con i dati già scritti
+           (niente viene inviato da qui: passano solo alla pagina dopo, vedi lo script in fondo e scripts/preventivo.js) -->
+      <div class="inizia" data-appare>
+        <ol class="inizia-passi">
+          {(it ? ['Ci racconti', 'Ti chiamiamo', 'Preventivo'] : ['You tell us', 'We call you', 'Quote']).map((x, i) => <li class={i === 0 ? 'on' : ''}><span class="mono">{i + 1}</span>{x}</li>)}
+        </ol>
+        <div class="inizia-barra" aria-hidden="true"><i></i></div>
+        <form class="inizia-form" action={preventivo} method="get" data-inizia>
+          <label>{T('Come ti chiami?', 'What’s your name?')}<input name="chi" autocomplete="name" placeholder={T('Nome e cognome', 'First and last name')} required /></label>
+          <label>{T('Il tuo telefono o la tua email', 'Your phone or email')}<input name="contatto" autocomplete="tel" placeholder={T('Per richiamarti', 'So we can call you back')} required /></label>
+          <button class="btn btn-azione btn-grande" type="submit" data-azione>{T('Continua', 'Continue')} <span class="freccia" aria-hidden="true">→</span></button>
+          <p class="inizia-dopo">{T('Poi ci racconti il progetto in due righe.', 'Then you tell us about the project in a couple of lines.')}</p>
+        </form>
+        <!-- inversione del rischio, subito prima di decidere -->
+        <div class="timbro">
+          <i aria-hidden="true">✓</i>
+          <p><b>{T('Se il preventivo non ti convince, non devi niente.', 'If the quote doesn’t convince you, you owe nothing.')}</b> {T('Nessun costo, nessun impegno.', 'No cost, no commitment.')}</p>
+        </div>
       </div>
+      <span class="oppure mono">{T('oppure', 'or')}</span>
+      <a class="btn btn-vetro btn-grande btn-wa-verde" href={`https://wa.me/${contatti.whatsapp}?text=${encodeURIComponent(waTesto)}`} target="_blank" rel="noopener" data-wa data-wa-testo={waTesto}>{T('Scrivici su WhatsApp', 'Message us on WhatsApp')}</a>
       <ul class="rassicura centro" data-appare>
-        <li><MicroIcona nome="gratis" />{T('Preventivo gratuito', 'Free quote')}</li>
+        <li><MicroIcona nome="risposta" />{T('Risposta entro 24 ore', 'Reply within 24 hours')}</li>
         <li><MicroIcona nome="chiamata" />{T('Ritocchi finché ti convince', "Tweaks until you're convinced")}</li>
         <li><MicroIcona nome="libero" />{T('Tutto è tuo: codice, dominio, account', 'Everything is yours: code, domain, accounts')}</li>
       </ul>
@@ -423,6 +429,22 @@ const jsonLd = {
 <script>
   import { serviziVivi } from '../scripts/servizi-vivi.js';
   serviziVivi();
+  // «Scrivici»: il modulo comincia in home. Nome e contatto passano alla pagina del preventivo (sessionStorage), senza inviarli
+  import { leggiProfilo } from '../scripts/profilo.js';
+  const inizia = document.querySelector<HTMLFormElement>('[data-inizia]');
+  if (inizia) {
+    const chi = inizia.elements.namedItem('chi') as HTMLInputElement;
+    const nome = leggiProfilo().nome;
+    if (nome && !chi.value) chi.value = nome;
+    inizia.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!inizia.reportValidity()) return;
+      const dati = Object.fromEntries(new FormData(inizia));
+      try { sessionStorage.setItem('gd-inizio', JSON.stringify(dati)); } catch (_) {}
+      (window as any).gdTrack?.('inizia_preventivo');
+      location.href = inizia.action;
+    });
+  }
   // Demo AI dal vivo: nei riquadri le demo girano in piccolo (senza comandi); toccandone una passa nella finestra grande,
   // riparte dall'inizio e si comanda; chiudendo torna nel suo riquadro e ricomincia a girare
   const dlgDemo = document.querySelector<HTMLDialogElement>('[data-demo-dialogo]');
